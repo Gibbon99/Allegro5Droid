@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
 		percentInFrame = accumulator / tickTime;
 
-		sys_smoothDelta(percentInFrame, 59.0f);
+		sys_smoothDelta(percentInFrame, displayRefreshRate);
 
 		sys_displayScreen(percentInFrame);
 		fps++;
