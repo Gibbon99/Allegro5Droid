@@ -6,12 +6,57 @@
 ALLEGRO_TIMER   *timingTimer;
 ALLEGRO_DISPLAY *display;
 
+#define VSYNC_WAIT 1
+#define VSYNC_FORCE_OFF 2
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Get information about connected adapters and monitors
+void sys_getMonitorInfo()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	ALLEGRO_MONITOR_INFO info;
+	int                  numAdapters = 0;
+	int dpi = 0;
+
+	numAdapters = al_get_num_video_adapters();
+
+	printf("%d adapters found...\n", numAdapters);
+
+	for (int i = 0; i < numAdapters; i++)
+	{
+		al_get_monitor_info(i, &info);
+		printf("Adapter %d: ", i);
+
+		dpi = al_get_monitor_dpi(i);
+		printf("(%d, %d) - (%d, %d) - dpi: %d\n", info.x1, info.y1, info.x2, info.y2, dpi);
+
+		al_set_new_display_adapter(i);
+		printf("   Available fullscreen display modes:\n");
+
+		for (int j = 0; j < al_get_num_display_modes(); j++)
+		{
+			ALLEGRO_DISPLAY_MODE mode;
+
+			al_get_display_mode(j, &mode);
+
+			printf("   Mode %3d: %4d x %4d, %d Hz\n", j, mode.width, mode.height, mode.refresh_rate);
+		}
+	}
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Start the display
 bool sys_initDisplay()
 //----------------------------------------------------------------------------------------------------------------------
 {
+	ALLEGRO_DISPLAY_MODE mode;
+
+	al_set_new_display_option(0, VSYNC_WAIT, ALLEGRO_SUGGEST);
+
+//	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+
 	display = al_create_display(windowWidth, windowHeight);
 	if (nullptr == display)
 	{
@@ -19,6 +64,14 @@ bool sys_initDisplay()
 		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create window.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 		return false;
 	}
+
+//	printf("%i\n", display->refresh_rate);
+
+	sys_getMonitorInfo();
+
+	al_get_display_mode(0, &mode);
+
+	displayRefreshRate = mode.refresh_rate;
 	return true;
 }
 

@@ -9,15 +9,15 @@
 #include "allegro5/allegro_primitives.h"
 #include "sys_util.h"
 
-#define TICKS_PER_SECOND 30
+#define TICKS_PER_SECOND 30.0f
 #define MAX_FRAMESKIP  5
 
-extern bool         quitProgram;
-extern unsigned int fps;
-extern unsigned int thinkFPS;
-extern unsigned int printFPS;
-extern unsigned int printThinkFPS;
-extern double       frameTimePrint;
-extern double       frameTime;
-extern int          windowWidth;
-extern int          windowHeight;
+extern bool   quitProgram;
+extern double fps;
+extern double thinkFPS;
+extern double printFPS;
+extern double printThinkFPS;
+extern double frameTimePrint;
+extern int    windowWidth;
+extern int    windowHeight;
+extern int    displayRefreshRate;

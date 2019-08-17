@@ -15,9 +15,8 @@ void sys_gameTickRun()
 	{
 		circlePosX = 50.0f;
 		circlePosY = 100.0f;
-		velocity   = 4.0f;
+		velocity   = 4.00f;
 	}
-
 
 	prevCirclePosX = circlePosX;
 	prevCirclePosY = circlePosY;
@@ -25,13 +24,13 @@ void sys_gameTickRun()
 	circlePosX += velocity;
 	circlePosY     = 100.0f;
 
-	if (circlePosX > windowWidth - 32)
+	if (circlePosX > windowWidth - 128)
 	{
-		velocity = -4.0f;
+		velocity = -4.50f;
 	}
 
-	if (circlePosX < 32)
+	if (circlePosX < 1)
 	{
-		velocity = 4.0f;
+		velocity = 4.50f;
 	}
 }
