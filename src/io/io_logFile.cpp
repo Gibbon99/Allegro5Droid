@@ -249,7 +249,7 @@ void *io_processLoggingEventQueue()
 
 		if (evt_shouldThreadRun(LOGGING_THREAD_NAME))
 		{
-//			PARA_rest(THREAD_DELAY_MS);
+			PARA_rest(THREAD_DELAY_MS);
 
 			if (!loggingEventQueue.empty())   // stuff in the queue to process
 			{
@@ -316,9 +316,7 @@ void io_initLogfile()
 
 	while (!evt_isThreadReady(LOGGING_THREAD_NAME))
 	{
-		printf("Waiting for logging thread to be ready\n");
 	}// Wait for thread to be ready to use
-
 
 	evt_pushEvent(0, PARA_EVENT_LOGFILE, LOGFILE_EVENT_START, 0, 0, "logfile.log");
 }

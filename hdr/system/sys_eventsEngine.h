@@ -9,7 +9,7 @@ typedef int (*functionPtr)( ... );
 #define CLIENT_GAME_FILENAME_SIZE       32
 #define MAIN_THREAD_SIZE                32
 
-#define THREAD_DELAY_MS                 30
+#define THREAD_DELAY_MS                 0.1
 
 #define LOGGING_THREAD_NAME             "loggingThread"
 #define LOGGING_MUTEX_NAME              "loggingMutex"

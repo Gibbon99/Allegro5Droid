@@ -125,6 +125,8 @@ void sys_initAll()
 	io_initLogfile();
 	con_initConsole();
 
+	while (!isDoneConsole);
+
 	sys_changeMode(MODE_CONSOLE);
 
 	if (!io_startFileSystem())
@@ -174,5 +176,5 @@ void sys_initAll()
 	{
 		return;
 	}
-	sys_changeMode(MODE_GAME);
+//	sys_changeMode(MODE_GAME);
 }

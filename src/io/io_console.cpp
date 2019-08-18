@@ -37,9 +37,9 @@ void con_pushNewEvent(union PARA_EVENT newEvent)
 void con_startConsole()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	conLines.reserve(500);
-	isDoneConsole = true;
+	conLines.reserve(100);
 	gam_setVisibleConLines(0);
+	isDoneConsole = true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -54,9 +54,7 @@ void con_initConsole()
 
 	while (!evt_isThreadReady(CONSOLE_THREAD_NAME))
 	{
-		printf("Waiting for console thread to be ready.\n");
 	};    // Wait for thread to be ready to use
-
 
 	evt_pushEvent(0, PARA_EVENT_CONSOLE, CONSOLE_EVENT_START, 0, 0, "");
 }
@@ -166,7 +164,7 @@ void *con_processConsoleEventQueue()
 
 		if (evt_shouldThreadRun(CONSOLE_THREAD_NAME))
 		{
-//			PARA_rest(THREAD_DELAY_MS);
+			PARA_rest(THREAD_DELAY_MS);
 
 			if (!consoleEventQueue.empty())   // stuff in the queue to process
 			{

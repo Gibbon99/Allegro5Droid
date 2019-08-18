@@ -46,12 +46,12 @@ PARA_THREAD *PARA_createThread(functionPtr threadFunction, const std::string thr
 {
 	PARA_THREAD     *tempThread;
 
-	tempThread = al_create_thread(reinterpret_cast<void *(*)(ALLEGRO_THREAD *, void *)>(threadFunction), nullptr);
-	if (tempThread == nullptr)
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Unable to create thread [ %s ]", threadName.c_str()));
+	al_run_detached_thread(reinterpret_cast<void *(*)(void *)>(threadFunction), nullptr);
+//	if (tempThread == nullptr)
+//		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Unable to create thread [ %s ]", threadName.c_str()));
 
 	log_logMessage(LOG_LEVEL_INFO, sys_getString("Created thread [ %s ]", threadName.c_str()));
-	al_start_thread(tempThread);
+//	al_start_thread(tempThread);
 
 	return tempThread;
 }

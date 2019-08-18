@@ -34,7 +34,14 @@ void evt_setThreadReady(std::string threadName)
 	{
 		if (threadName == threadItr.name)
 		{
-			threadItr.ready = true;
+			if (!threadItr.ready)
+			{
+				threadItr.ready = true;
+
+				printf("Thread [ %s ] set to ready = true\n", threadName.c_str());
+
+				return;
+			}
 		}
 	}
 }
@@ -123,12 +130,15 @@ void evt_registerThread(functionPtr threadFunction, const std::string threadName
 {
 	_registeredThreads newThread;
 
-	newThread.thread = PARA_createThread(*threadFunction, threadName);
 	newThread.name   = threadName;
 	newThread.run    = false;
 	newThread.ready  = false;
-
 	registeredThreads.push_back(newThread);
+	//
+	// Create vector element first
+	// Thread was being created too fast and running before the vector element was created
+	// resulting in no elements being available when size() was tested
+	registeredThreads[registeredThreads.size()].thread = PARA_createThread(*threadFunction, threadName);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
