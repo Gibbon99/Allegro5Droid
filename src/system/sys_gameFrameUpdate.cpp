@@ -11,26 +11,38 @@ float velocity   = -10.0f;
 void sys_gameTickRun()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	if (velocity < -5.0f)
+	switch (currentMode)
 	{
-		circlePosX = 50.0f;
-		circlePosY = 100.0f;
-		velocity   = 4.00f;
-	}
+		case MODE_CONSOLE:
+			break;
 
-	prevCirclePosX = circlePosX;
-	prevCirclePosY = circlePosY;
+		case MODE_GAME:
+			if (velocity < -5.0f)
+			{
+				circlePosX = 50.0f;
+				circlePosY = 100.0f;
+				velocity   = 1.00f;
+			}
 
-	circlePosX += velocity;
-	circlePosY     = 100.0f;
+			prevCirclePosX = circlePosX;
+			prevCirclePosY = circlePosY;
 
-	if (circlePosX > windowWidth - 128)
-	{
-		velocity = -4.50f;
-	}
+			circlePosX += velocity;
+			circlePosY     = 100.0f;
 
-	if (circlePosX < 1)
-	{
-		velocity = 4.50f;
+			if ((int)circlePosX > screenWidth - 32)
+			{
+				velocity = -1.0f;
+			}
+
+			if (circlePosX < 1.0f)
+			{
+				velocity = 1.0f;
+			}
+
+			break;
+
+		default:
+			break;
 	}
 }

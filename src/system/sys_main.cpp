@@ -12,11 +12,14 @@ double thinkFPS       = 0;
 double printThinkFPS  = 0;
 double frameTimePrint = 0;
 
-bool quitProgram  = false;
-int  windowWidth  = 0;
-int  windowHeight = 0;
-
-int displayRefreshRate = 0;
+bool quitProgram        = false;
+int  windowWidth        = 0;
+int  windowHeight       = 0;
+int  screenWidth        = 0;
+int  screenHeight       = 0;
+int  screenType         = 0;
+int  displayRefreshRate = 0;
+int  currentMode        = 0;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -62,11 +65,11 @@ int main(int argc, char *argv[])
 
 	sys_initAll();
 
-	currentTime = al_get_time();
+	currentTime = PARA_getTime();
 
 	while (!quitProgram)
 	{
-		newTime   = al_get_time();
+		newTime   = PARA_getTime();
 		frameTime = newTime - currentTime;
 
 		if (frameTime > 0.25)
@@ -94,9 +97,19 @@ int main(int argc, char *argv[])
 		sys_displayScreen(percentInFrame);
 		fps++;
 
-		frameTimePrint = (al_get_time() - newTime) * 1000.0f;
+		frameTimePrint = (PARA_getTime() - newTime) * 1000.0f;
 		sys_pushFrameTimeIntoQueue(frameTimePrint, 1.0f);
 	}
 
 	sys_shutdownToSystem();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Change to a new mode
+void sys_changeMode(int newMode)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	currentMode = newMode;
+	printf("Changing mode\n");
 }

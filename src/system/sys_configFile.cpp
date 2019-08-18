@@ -1,6 +1,6 @@
 #include "hdr/system/sys_configFile.h"
 
-#define CONFIG_FILENAME "data/config.ini"
+#define CONFIG_FILENAME "config.ini"
 
 ALLEGRO_CONFIG  *configFile;
 
@@ -20,6 +20,11 @@ bool cfg_getStartupValues()
 
 	windowWidth = (int)strtol(al_get_config_value(configFile, "main", "windowWidth"), nullptr, 10);
 	windowHeight = (int)strtol(al_get_config_value(configFile, "main", "windowHeight"), nullptr, 10);
+
+	screenWidth = (int)strtol(al_get_config_value(configFile, "main", "screenWidth"), nullptr, 10);
+	screenHeight = (int)strtol(al_get_config_value(configFile, "main", "screenHeight"), nullptr, 10);
+
+	screenType = (int)strtol(al_get_config_value(configFile, "main", "screenType"), nullptr, 10);
 
 	al_destroy_config(configFile);
 

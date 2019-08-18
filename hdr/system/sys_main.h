@@ -7,10 +7,21 @@
 #include "allegro5/allegro_native_dialog.h"
 #include "allegro5/allegro_font.h"
 #include "allegro5/allegro_primitives.h"
-#include "sys_util.h"
+#include "allegro5/allegro_image.h"
+#include "allegro5/allegro_physfs.h"
+#include "system/sys_wrapper.h"
+#include "system/sys_util.h"
+#include "chipmunk.h"
 
 #define TICKS_PER_SECOND 30.0f
-#define MAX_FRAMESKIP  5
+
+enum GAME_MODES
+{
+	MODE_CONSOLE = 0,
+	MODE_GAME
+};
+
+typedef int (*functionPtr)(...);
 
 extern bool   quitProgram;
 extern double fps;
@@ -21,3 +32,18 @@ extern double frameTimePrint;
 extern int    windowWidth;
 extern int    windowHeight;
 extern int    displayRefreshRate;
+extern int    screenWidth;
+extern int    screenHeight;
+extern int    screenType;
+extern int    currentMode;
+
+typedef struct
+{
+	int red;
+	int green;
+	int blue;
+	int alpha;
+}             __paraColor;
+
+// Change to a new mode
+void sys_changeMode(int newMode);

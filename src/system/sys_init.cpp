@@ -1,10 +1,17 @@
 #include <hdr/system/sys_gameEvents.h>
 #include <hdr/system/sys_configFile.h>
 #include <hdr/system/sys_font.h>
+#include <hdr/system/sys_gameFrameRender.h>
+#include <hdr/system/sys_eventsEngine.h>
+#include <hdr/io/io_logFile.h>
+#include <hdr/io/io_fileSystem.h>
+#include <hdr/io/io_console.h>
+#include <hdr/system/sys_scriptEngine.h>
 #include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
 ALLEGRO_DISPLAY *display;
+ALLEGRO_BITMAP  *windowIcon;
 
 #define VSYNC_WAIT 1
 #define VSYNC_FORCE_OFF 2
@@ -17,22 +24,22 @@ void sys_getMonitorInfo()
 {
 	ALLEGRO_MONITOR_INFO info;
 	int                  numAdapters = 0;
-	int dpi = 0;
+	int                  dpi         = 0;
 
 	numAdapters = al_get_num_video_adapters();
 
-	printf("%d adapters found...\n", numAdapters);
+	log_logMessage(LOG_LEVEL_INFO, sys_getString("%d adapters found...", numAdapters));
 
 	for (int i = 0; i < numAdapters; i++)
 	{
 		al_get_monitor_info(i, &info);
-		printf("Adapter %d: ", i);
+		log_logMessage(LOG_LEVEL_INFO, sys_getString("Adapter %d: ", i));
 
 		dpi = al_get_monitor_dpi(i);
-		printf("(%d, %d) - (%d, %d) - dpi: %d\n", info.x1, info.y1, info.x2, info.y2, dpi);
+		log_logMessage(LOG_LEVEL_INFO, sys_getString("(%d, %d) - (%d, %d) - dpi: %d", info.x1, info.y1, info.x2, info.y2, dpi));
 
 		al_set_new_display_adapter(i);
-		printf("   Available fullscreen display modes:\n");
+		log_logMessage(LOG_LEVEL_INFO, sys_getString("   Available fullscreen display modes:"));
 
 		for (int j = 0; j < al_get_num_display_modes(); j++)
 		{
@@ -40,7 +47,7 @@ void sys_getMonitorInfo()
 
 			al_get_display_mode(j, &mode);
 
-			printf("   Mode %3d: %4d x %4d, %d Hz\n", j, mode.width, mode.height, mode.refresh_rate);
+			log_logMessage(LOG_LEVEL_INFO, sys_getString("   Mode %3d: %4d x %4d, %d Hz", j, mode.width, mode.height, mode.refresh_rate));
 		}
 	}
 }
@@ -52,10 +59,30 @@ bool sys_initDisplay()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	ALLEGRO_DISPLAY_MODE mode;
+	int                  screenTypeFlag = 0;
+
+	switch (screenType)
+	{
+		case 0:
+			screenTypeFlag = ALLEGRO_WINDOWED;
+			break;
+
+		case 1:
+			screenTypeFlag = ALLEGRO_FULLSCREEN_WINDOW;
+			break;
+
+		case 2:
+			screenTypeFlag = ALLEGRO_FULLSCREEN;
+			break;
+
+		default:
+			screenTypeFlag = ALLEGRO_WINDOWED;
+			break;
+	}
 
 	al_set_new_display_option(0, VSYNC_WAIT, ALLEGRO_SUGGEST);
 
-//	al_set_new_display_flags(ALLEGRO_FULLSCREEN_WINDOW);
+	al_set_new_display_flags(screenTypeFlag);
 
 	display = al_create_display(windowWidth, windowHeight);
 	if (nullptr == display)
@@ -67,11 +94,19 @@ bool sys_initDisplay()
 
 //	printf("%i\n", display->refresh_rate);
 
-	sys_getMonitorInfo();
+//	sys_getMonitorInfo();
 
 	al_get_display_mode(0, &mode);
 
 	displayRefreshRate = mode.refresh_rate;
+
+	sys_initRenderVariables();
+
+	windowIcon = al_load_bitmap("icon.bmp");
+	if (nullptr != windowIcon)
+	{
+		al_set_display_icon(display, windowIcon);
+	}
 	return true;
 }
 
@@ -86,6 +121,25 @@ void sys_initAll()
 		quitProgram = true;
 		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the Allegro library", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 	}
+	runThreads = true;
+	io_initLogfile();
+	con_initConsole();
+
+	sys_changeMode(MODE_CONSOLE);
+
+	if (!io_startFileSystem())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the filesystem.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
+	al_set_physfs_file_interface(); // Set to current main thread
+
+	sys_initScriptEngine();
+	//
+	// Load images
+	al_init_image_addon();
+
 	al_install_keyboard();
 	al_install_mouse();
 	//
@@ -120,4 +174,5 @@ void sys_initAll()
 	{
 		return;
 	}
+	sys_changeMode(MODE_GAME);
 }
