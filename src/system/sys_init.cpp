@@ -120,15 +120,15 @@ void sys_initAll()
 	{
 		quitProgram = true;
 		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the Allegro library", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
 	}
 	runThreads = true;
 	io_initLogfile();
 	con_initConsole();
 
 	while (!isDoneConsole);
-
-	sys_changeMode(MODE_CONSOLE);
-
+	//
+	// Start fileSystem first - need to be able to read config file and set paths
 	if (!io_startFileSystem())
 	{
 		quitProgram = true;
@@ -137,31 +137,63 @@ void sys_initAll()
 	}
 	al_set_physfs_file_interface(); // Set to current main thread
 
-	sys_initScriptEngine();
 	//
-	// Load images
-	al_init_image_addon();
-
-	al_install_keyboard();
-	al_install_mouse();
-	//
-	// Read startup values from config file
+	// Read startup values from config file - need window sizes and display options
 	if (!cfg_getStartupValues())
 	{
 		return;
 	}
-	//
-	// Start an event queue
-	evt_initEvents();
 	//
 	// Start display
 	if (!sys_initDisplay())
 	{
 		return;
 	}
-	al_register_event_source(eventQueue, al_get_display_event_source(display));
+	al_install_keyboard();  // Needs to be before Events can be registered
+	al_install_mouse();
 	//
-	// Create timing to track FPS, thinkFPS and frameTime
+	// Start an event queue
+	evt_initEvents();
+	al_register_event_source(eventQueue, al_get_display_event_source(display));
+	al_register_event_source(eventQueue, al_get_keyboard_event_source());
+//	al_register_event_source(eventQueue, al_get_mouse_event_source());
+	//
+	// Display output on screen
+	sys_changeMode(MODE_CONSOLE);
+	//
+	// Start, load and compile scripts
+	if (!sys_initScriptEngine())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Script Engine.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
+	//
+	// Load images from addon
+	if (!al_init_image_addon())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Image addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
+	//
+	// Use Audio library
+	if (!al_install_audio())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
+	//
+	// Start Audio Codec library
+	if (!al_init_acodec_addon())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio Codec addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
+	//
+	// Create timer to track FPS, thinkFPS and frameTime
 	timingTimer = al_create_timer(1.0f);
 	if (nullptr == timingTimer)
 	{
@@ -176,5 +208,9 @@ void sys_initAll()
 	{
 		return;
 	}
+	//
+	// Load resources from file system
+	sys_runScriptFunction("script_loadAllResources", "");
+	
 //	sys_changeMode(MODE_GAME);
 }

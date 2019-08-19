@@ -44,3 +44,6 @@ void sys_scriptAddHostFunction(const std::string funcName, functionPtr funcPtr);
 
 // Cache the functionID from functions in the scripts
 void sys_scriptCacheScriptFunctions();
+
+// Add a new function that is defined in a script - create name to call it from host
+void sys_scriptAddScriptFunction(std::string funcName, std::string hostCallName);

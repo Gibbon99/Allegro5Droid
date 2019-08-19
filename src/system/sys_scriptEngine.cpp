@@ -52,15 +52,6 @@ std::vector<_hostScriptFunctions> hostScriptFunctions;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Get the number of script files that will be used
-int sys_getNumScriptFiles()
-//----------------------------------------------------------------------------------------------------------------------
-{
-	return numScriptFiles;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
 // Add a new function that is defined in a script - create name to call it from host
 void sys_scriptAddScriptFunction(std::string funcName, std::string hostCallName)
 //----------------------------------------------------------------------------------------------------------------------
@@ -302,7 +293,7 @@ bool sys_loadAndCompileScripts()
 				log_logMessage(LOG_LEVEL_INFO, sys_getString("Failed to add script section [ %s ].", scriptItr.c_str()));
 				break;
 		}
-		free(memoryBuffer);
+//		free(memoryBuffer);
 
 	}
 	//
@@ -395,6 +386,8 @@ bool sys_initScriptEngine()
 
 	// Add all the functions that the scripts can access
 	sys_scriptInitFunctions();
+
+	sys_loadAndCompileScripts();
 
 	return true;
 }

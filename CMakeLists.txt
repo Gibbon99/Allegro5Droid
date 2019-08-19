@@ -92,7 +92,7 @@ set ( CXX_SRCS
         hdr/system/sys_font.h
         src/system/sys_util.cpp
         hdr/system/sys_util.h
-        src/system/sys_scriptEngine.cpp hdr/system/sys_scriptEngine.h src/system/sys_scriptConfig.cpp hdr/system/sys_scriptConfig.h src/system/sys_scriptFunctions.cpp hdr/system/sys_scriptFunctions.h src/io/io_logFile.cpp hdr/io/io_logFile.h src/system/sys_eventsEngine.cpp hdr/system/sys_eventsEngine.h src/system/sys_wrapper.cpp hdr/system/sys_wrapper.h src/io/io_console.cpp hdr/io/io_console.h src/io/io_fileSystem.cpp hdr/io/io_fileSystem.h)
+        src/system/sys_scriptEngine.cpp hdr/system/sys_scriptEngine.h src/system/sys_scriptConfig.cpp hdr/system/sys_scriptConfig.h src/system/sys_scriptFunctions.cpp hdr/system/sys_scriptFunctions.h src/io/io_logFile.cpp hdr/io/io_logFile.h src/system/sys_eventsEngine.cpp hdr/system/sys_eventsEngine.h src/system/sys_wrapper.cpp hdr/system/sys_wrapper.h src/io/io_console.cpp hdr/io/io_console.h src/io/io_fileSystem.cpp hdr/io/io_fileSystem.h src/io/io_resources.cpp hdr/io/io_resources.h)
 
 # Define the C sources
 set(C_SRCS
@@ -149,6 +149,9 @@ target_link_libraries(Allegro5Droid
         allegro_primitives
         allegro_image
         allegro_physfs
+        allegro_audio
+        allegro_acodec
+        allegro_ttf
         physfs
         pthread
         )

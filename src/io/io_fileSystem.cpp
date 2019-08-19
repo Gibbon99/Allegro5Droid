@@ -225,6 +225,8 @@ void io_getScriptFileNames()
 	{
 		tempFileName = *i;
 		scriptFileCache.push_back(tempFileName);
+
+		log_logMessage(LOG_LEVEL_INFO, sys_getString("Script [ %s ]", tempFileName.c_str()));
 	}
 
 	PHYSFS_freeList(rc);

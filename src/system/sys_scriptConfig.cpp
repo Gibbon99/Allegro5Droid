@@ -1,3 +1,4 @@
+#include <hdr/io/io_resources.h>
 #include "hdr/system/sys_scriptConfig.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16,6 +17,7 @@ void sys_scriptInitFunctions()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	sys_scriptAddHostFunction("void sys_printConInt(string &in, uint param)", (functionPtr) &sys_scriptPrintInt);
+	sys_scriptAddHostFunction("void sys_loadResource(string &in, string &in, int type, int numFrames, int size)", (functionPtr) &sys_loadResource);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -24,5 +26,5 @@ void sys_scriptInitFunctions()
 void sys_scriptInitScriptFunctions()
 //----------------------------------------------------------------------------------------------------------------------
 {
-
+	sys_scriptAddScriptFunction("void script_loadAllResources()", "script_loadAllResources");
 }

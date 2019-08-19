@@ -26,8 +26,6 @@ void evt_initEvents()
 		quitProgram = true;
 		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the event queue.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 	}
-	al_register_event_source(eventQueue, al_get_keyboard_event_source());
-//	al_register_event_source(eventQueue, al_get_mouse_event_source());
 }
 
 //----------------------------------------------------------------------------------------------------------------------
