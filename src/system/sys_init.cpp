@@ -7,9 +7,13 @@
 #include <hdr/io/io_fileSystem.h>
 #include <hdr/io/io_console.h>
 #include <hdr/system/sys_scriptEngine.h>
-#include "system/sys_init.h"
+#include <hdr/system/sys_timerFunctions.h>
+#include <hdr/io/io_resourceLevel.h>
+#include <hdr/game/gam_render.h>
+//#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
+ALLEGRO_TIMER   *fadeTimer;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_BITMAP  *windowIcon;
 
@@ -19,198 +23,193 @@ ALLEGRO_BITMAP  *windowIcon;
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Get information about connected adapters and monitors
-void sys_getMonitorInfo()
+void sys_getMonitorInfo ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	ALLEGRO_MONITOR_INFO info;
 	int                  numAdapters = 0;
 	int                  dpi         = 0;
 
-	numAdapters = al_get_num_video_adapters();
+	numAdapters = al_get_num_video_adapters ();
 
-	log_logMessage(LOG_LEVEL_INFO, sys_getString("%d adapters found...", numAdapters));
+	log_logMessage (LOG_LEVEL_INFO, sys_getString ("%d adapters found...", numAdapters));
 
 	for (int i = 0; i < numAdapters; i++)
-	{
-		al_get_monitor_info(i, &info);
-		log_logMessage(LOG_LEVEL_INFO, sys_getString("Adapter %d: ", i));
-
-		dpi = al_get_monitor_dpi(i);
-		log_logMessage(LOG_LEVEL_INFO, sys_getString("(%d, %d) - (%d, %d) - dpi: %d", info.x1, info.y1, info.x2, info.y2, dpi));
-
-		al_set_new_display_adapter(i);
-		log_logMessage(LOG_LEVEL_INFO, sys_getString("   Available fullscreen display modes:"));
-
-		for (int j = 0; j < al_get_num_display_modes(); j++)
 		{
-			ALLEGRO_DISPLAY_MODE mode;
+			al_get_monitor_info (i, &info);
+			log_logMessage (LOG_LEVEL_INFO, sys_getString ("Adapter %d: ", i));
 
-			al_get_display_mode(j, &mode);
+			dpi = al_get_monitor_dpi (i);
+			log_logMessage (LOG_LEVEL_INFO, sys_getString ("(%d, %d) - (%d, %d) - dpi: %d", info.x1, info.y1, info.x2, info.y2, dpi));
 
-			log_logMessage(LOG_LEVEL_INFO, sys_getString("   Mode %3d: %4d x %4d, %d Hz", j, mode.width, mode.height, mode.refresh_rate));
+			al_set_new_display_adapter (i);
+			log_logMessage (LOG_LEVEL_INFO, sys_getString ("   Available fullscreen display modes:"));
+
+			for (int j = 0; j < al_get_num_display_modes (); j++)
+				{
+					ALLEGRO_DISPLAY_MODE mode;
+
+					al_get_display_mode (j, &mode);
+
+					log_logMessage (LOG_LEVEL_INFO, sys_getString ("   Mode %3d: %4d x %4d, %d Hz", j, mode.width, mode.height, mode.refresh_rate));
+				}
 		}
-	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Start the display
-bool sys_initDisplay()
+bool sys_initDisplay ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	ALLEGRO_DISPLAY_MODE mode;
 	int                  screenTypeFlag = 0;
 
 	switch (screenType)
-	{
-		case 0:
-			screenTypeFlag = ALLEGRO_WINDOWED;
+		{
+			case 0:
+				screenTypeFlag = ALLEGRO_WINDOWED;
 			break;
 
-		case 1:
-			screenTypeFlag = ALLEGRO_FULLSCREEN_WINDOW;
+			case 1:
+				screenTypeFlag = ALLEGRO_FULLSCREEN_WINDOW;
 			break;
 
-		case 2:
-			screenTypeFlag = ALLEGRO_FULLSCREEN;
+			case 2:
+				screenTypeFlag = ALLEGRO_FULLSCREEN;
 			break;
 
-		default:
-			screenTypeFlag = ALLEGRO_WINDOWED;
+			default:
+				screenTypeFlag = ALLEGRO_WINDOWED;
 			break;
-	}
+		}
 
-	al_set_new_display_option(0, VSYNC_WAIT, ALLEGRO_SUGGEST);
+	al_set_new_display_option (0, VSYNC_WAIT, ALLEGRO_SUGGEST);
 
-	al_set_new_display_flags(screenTypeFlag);
+	al_set_new_display_flags (screenTypeFlag);
 
-	display = al_create_display(windowWidth, windowHeight);
+	display = al_create_display (windowWidth, windowHeight);
 	if (nullptr == display)
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create window.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return false;
-	}
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create window.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return false;
+		}
 
 //	printf("%i\n", display->refresh_rate);
 
 //	sys_getMonitorInfo();
 
-	al_get_display_mode(0, &mode);
+	al_get_display_mode (0, &mode);
 
 	displayRefreshRate = mode.refresh_rate;
 
-	sys_initRenderVariables();
+	sys_initRenderVariables ();
 
-	windowIcon = al_load_bitmap("icon.bmp");
+	windowIcon = al_load_bitmap ("icon.bmp");
 	if (nullptr != windowIcon)
-	{
-		al_set_display_icon(display, windowIcon);
-	}
+		{
+			al_set_display_icon (display, windowIcon);
+		}
 	return true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Run init for system startup
-void sys_initAll()
+void sys_initAll ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	if (!al_install_system(ALLEGRO_VERSION_INT, nullptr))
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the Allegro library", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
+	if (!al_install_system (ALLEGRO_VERSION_INT, nullptr))
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the Allegro library", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return;
+		}
 	runThreads = true;
-	io_initLogfile();
-	con_initConsole();
+	io_initLogfile ();
+	con_initConsole ();
 
 	while (!isDoneConsole);
 	//
 	// Start fileSystem first - need to be able to read config file and set paths
-	if (!io_startFileSystem())
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the filesystem.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
-	al_set_physfs_file_interface(); // Set to current main thread
+	if (!io_startFileSystem ())
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the filesystem.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return;
+		}
+	al_set_physfs_file_interface (); // Set to current main thread
 
 	//
 	// Read startup values from config file - need window sizes and display options
-	if (!cfg_getStartupValues())
-	{
-		return;
-	}
+	if (!cfg_getStartupValues ())
+		{
+			return;
+		}
 	//
 	// Start display
-	if (!sys_initDisplay())
-	{
-		return;
-	}
-	al_install_keyboard();  // Needs to be before Events can be registered
-	al_install_mouse();
+	if (!sys_initDisplay ())
+		{
+			return;
+		}
+	al_install_keyboard ();  // Needs to be before Events can be registered
+	al_install_mouse ();
 	//
 	// Start an event queue
-	evt_initEvents();
-	al_register_event_source(eventQueue, al_get_display_event_source(display));
-	al_register_event_source(eventQueue, al_get_keyboard_event_source());
+	evt_initEvents ();
+	al_register_event_source (eventQueue, al_get_display_event_source (display));
+	al_register_event_source (eventQueue, al_get_keyboard_event_source ());
 //	al_register_event_source(eventQueue, al_get_mouse_event_source());
 	//
 	// Display output on screen
-	sys_changeMode(MODE_CONSOLE);
+	sys_changeMode (MODE_CONSOLE, false);
 	//
 	// Start, load and compile scripts
-	if (!sys_initScriptEngine())
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Script Engine.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
+	if (!sys_initScriptEngine ())
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Script Engine.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return;
+		}
 	//
 	// Load images from addon
-	if (!al_init_image_addon())
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Image addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
+	if (!al_init_image_addon ())
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Image addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return;
+		}
 	//
 	// Use Audio library
-	if (!al_install_audio())
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
+	if (!al_install_audio ())
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return;
+		}
 	//
 	// Start Audio Codec library
-	if (!al_init_acodec_addon())
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio Codec addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
+	if (!al_init_acodec_addon ())
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio Codec addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return;
+		}
 	//
-	// Create timer to track FPS, thinkFPS and frameTime
-	timingTimer = al_create_timer(1.0f);
-	if (nullptr == timingTimer)
-	{
-		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Timers. Exiting", "Could not start the initial timer.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-	}
-	al_register_event_source(eventQueue, al_get_timer_event_source(timingTimer));
-	al_start_timer(timingTimer);
+	// Create all the timers
+	if (!tim_initAllTimers ())
+		return;
 	//
 	// Create built in library font
-	if (!fnt_initSystemFont())
-	{
-		return;
-	}
+	if (!fnt_initSystemFont ())
+		{
+			return;
+		}
 	//
 	// Load resources from file system
-	sys_runScriptFunction("script_loadAllResources", "");
-	
-//	sys_changeMode(MODE_GAME);
+	sys_runScriptFunction ("script_loadAllResources", "");
+
+	gam_calcTileTexCoords ();
+//	sys_changeMode (MODE_GAME, true);
 }

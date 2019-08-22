@@ -12,20 +12,22 @@
 #include "allegro5/allegro_audio.h"
 #include "allegro5/allegro_acodec.h"
 #include "allegro5/allegro_ttf.h"
+#include "allegro5/allegro_memfile.h"
 #include "system/sys_wrapper.h"
 #include "system/sys_util.h"
 #include "chipmunk.h"
 #include "data/sharedDefines.h"
 
-#define TICKS_PER_SECOND 30.0f
 
-enum GAME_MODES
-{
+#define TICKS_PER_SECOND  30.0f
+#define TILE_SIZE         32.0f
+
+enum GAME_MODES {
 	MODE_CONSOLE = 0,
 	MODE_GAME
 };
 
-typedef int (*functionPtr)(...);
+typedef int (*functionPtr) (...);
 
 extern bool   quitProgram;
 extern double fps;
@@ -41,8 +43,7 @@ extern int    screenHeight;
 extern int    screenType;
 extern int    currentMode;
 
-typedef struct
-{
+typedef struct {
 	int red;
 	int green;
 	int blue;
@@ -50,4 +51,4 @@ typedef struct
 }             __paraColor;
 
 // Change to a new mode
-void sys_changeMode(int newMode);
+void sys_changeMode (int newMode, bool fade);

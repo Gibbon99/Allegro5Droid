@@ -9,6 +9,7 @@ typedef int (*functionPtr)( ... );
 #define PARA_THREAD     ALLEGRO_THREAD
 #define PARA_BITMAP     ALLEGRO_BITMAP
 #define PARA_DISPLAY    ALLEGRO_DISPLAY
+#define PARA_MEM_FILE   ALLEGRO_FILE
 
 // Lock a mutex
 void PARA_lockMutex(PARA_MUTEX *thisMutex);
@@ -36,3 +37,12 @@ void PARA_presentFrame(PARA_DISPLAY *thisDisplay, PARA_BITMAP *thisBitmap);
 
 // Get current time
 double PARA_getTime();
+
+// Return a file pointer to a block of memory to be treated like a file
+PARA_MEM_FILE *para_openMemFile(char *memoryPointer, int memorySize);
+
+// Wrap the library file read routine
+void para_readFile(PARA_MEM_FILE *filePointer, void *memoryPtr, size_t readSize);
+
+// Close a memory file
+void para_closeFile(PARA_MEM_FILE *filePointer);

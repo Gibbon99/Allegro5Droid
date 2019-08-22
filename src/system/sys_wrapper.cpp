@@ -108,3 +108,40 @@ double PARA_getTime()
 {
 	return al_get_time();
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Return a file pointer to a block of memory to be treated like a file
+PARA_MEM_FILE *para_openMemFile(char *memoryPointer, int memorySize)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	PARA_MEM_FILE   *filePointer;
+
+	filePointer = al_open_memfile(memoryPointer, memorySize, "r");
+
+	return filePointer;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Wrap the library file read routine
+void para_readFile(PARA_MEM_FILE *filePointer, void *memoryPtr, size_t readSize)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	size_t      returnValue;
+
+	returnValue = al_fread(filePointer, memoryPtr, readSize);
+	if (returnValue == 0)
+		{
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("Failed in reading file."));
+		}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Close a memory file
+void para_closeFile(PARA_MEM_FILE *filePointer)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	al_fclose(filePointer);
+}

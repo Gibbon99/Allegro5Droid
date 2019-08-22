@@ -107,9 +107,23 @@ int main(int argc, char *argv[])
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Change to a new mode
-void sys_changeMode(int newMode)
+void sys_changeMode(int newMode, bool fade)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	currentMode = newMode;
 	printf("Changing mode\n");
+
+	if (fade)
+		{
+			previousScreen = al_clone_bitmap(backingBitmap);
+
+			fadeAlphaValue = 255;
+			fadeInProgress = FADE_ON;
+			if (nullptr != fadeTimer)
+				al_start_timer(fadeTimer);
+		}
+	else
+		{
+			fadeInProgress = FADE_NONE;
+		}
 }

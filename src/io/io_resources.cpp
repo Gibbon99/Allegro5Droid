@@ -1,50 +1,8 @@
 #include <map>
-#include <hdr/io/io_logFile.h>
+#include "hdr/io/io_logFile.h"
 #include "hdr/io/io_resources.h"
 
-typedef struct
-{
-	bool        loaded;
-	std::string fileName;
-} __resourceCommon;
-
-typedef struct
-{
-	ALLEGRO_BITMAP   *bitmap;
-	std::string      fileName;
-	int              width;
-	int              height;
-	__resourceCommon common;
-} __bitmap;
-
-typedef struct
-{
-	ALLEGRO_SAMPLE   *audio;
-	__resourceCommon  common;
-} __audio;
-
-typedef struct
-{
-	ALLEGRO_FONT     *font;
-	int              size;
-	__resourceCommon common;
-} __font;
-
-typedef struct
-{
-	int *memLevel;
-} __level;
-
-typedef struct
-{
-	ALLEGRO_BITMAP   *bitmap;
-	int              numFrames;
-	int              frameWidth;
-	int              frameHeight;
-	__resourceCommon common;
-} __sprite;
-
-std::map<std::string, __bitmap> bitmaps;
+std::map<std::string, __bitmap> bitmap;
 std::map<std::string, __audio>  audio;
 std::map<std::string, __font>   fonts;
 std::map<std::string, __level>  levels;
@@ -65,7 +23,7 @@ void sys_loadResourceBitmap(std::string key, std::string fileName)
 	if (nullptr == tempBitmap.bitmap)
 	{
 		tempBitmap.common.loaded = false;
-		bitmaps.insert(std::pair<std::string, __bitmap>(key, tempBitmap));
+		bitmap.insert(std::pair<std::string, __bitmap>(key, tempBitmap));
 		log_logMessage(LOG_LEVEL_ERROR, sys_getString("Failed to load [ %s ]", fileName.c_str()));
 		return;
 	}
@@ -73,7 +31,7 @@ void sys_loadResourceBitmap(std::string key, std::string fileName)
 	tempBitmap.width         = al_get_bitmap_width(tempBitmap.bitmap);
 	tempBitmap.height        = al_get_bitmap_height(tempBitmap.bitmap);
 	tempBitmap.common.loaded = true;
-	bitmaps.insert(std::pair<std::string, __bitmap>(key, tempBitmap));
+	bitmap.insert(std::pair<std::string, __bitmap>(key, tempBitmap));
 
 	log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Loaded [ %s ]", fileName.c_str()));
 }
@@ -190,6 +148,26 @@ void sys_loadResource(std::string key, std::string fileName, int type, int numFr
 	}
 }
 
+//---------------------------------------------------------------------------------------------------------------------------
+//
+// Draw a bitmap
+void sys_drawBitmap (std::string keyName, float posX, float posY, int drawMode)
+//---------------------------------------------------------------------------------------------------------------------------
+{
+	switch (drawMode)
+		{
+			case RENDER_FULLSCREEN:
+				al_draw_scaled_bitmap(bitmap.at(keyName).bitmap, 0, 0, bitmap.at (keyName).width, bitmap.at(keyName).height,
+				                      0, 0, screenWidth, screenHeight, 0);
+	break;
+
+			case RENDER_SOURCE:
+				al_draw_bitmap(bitmap.at(keyName).bitmap, 0.0f, 0.0f, 0);
+				return;
+		}
+
+//	al_draw_bitmap (bitmap.at(keyName).bitmap, 0, 0, 0);
+}
 //---------------------------------------------------------------------------------------------------------------------------
 //
 // Play an Audio file

@@ -1,3 +1,4 @@
+
 enum RESOURCE_TYPES
 {
 	RESOURCE_BITMAP = 0,

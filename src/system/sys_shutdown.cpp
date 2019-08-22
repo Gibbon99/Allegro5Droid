@@ -1,6 +1,7 @@
 #include <hdr/system/sys_gameEvents.h>
 #include <hdr/system/sys_font.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/io/io_console.h>
 #include "hdr/system/sys_shutdown.h"
 #include "hdr/system/sys_scriptEngine.h"
 
@@ -20,4 +21,7 @@ void sys_shutdownToSystem()
 	evt_destroyMutexes();
 	al_uninstall_system();
 	sys_stopScriptEngine();
+	con_stopConsole();
+
+	sys_freeMemory();
 }

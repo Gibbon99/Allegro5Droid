@@ -1,5 +1,15 @@
 
+#include <map>
+#include <hdr/io/io_logFile.h>
 #include "hdr/system/sys_util.h"
+
+typedef struct
+{
+	char        *pointer;
+	int         size;
+} _memoryMap;
+
+std::map<std::string, _memoryMap>        memoryMap;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -28,4 +38,41 @@ std::string sys_getString (std::string format, ...)
 	va_end(vaArgs);
 
 	return std::string (zc.data ());
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Allocate memory and return pointer - record the size as well
+char *sys_malloc(int memorySize, const std::string keyName)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	_memoryMap      newMemoryMapEntry;
+
+	newMemoryMapEntry.pointer = (char *)malloc(sizeof(char) * memorySize);
+	if (newMemoryMapEntry.pointer == nullptr)
+		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Memory allocation error for [ %s ]", keyName.c_str()));
+
+	newMemoryMapEntry.size = memorySize;
+
+	memoryMap.insert(std::pair<std::string, _memoryMap>(keyName, newMemoryMapEntry));
+
+	return newMemoryMapEntry.pointer;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Go through memory map and free allocations
+void sys_freeMemory()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (memoryMap.empty())
+		return;
+
+	for (auto &memoryItr : memoryMap)
+		{
+//		log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Free memory [ %s ]", memoryItr.first.c_str()));
+
+			if (memoryItr.second.pointer != nullptr)
+				free(memoryItr.second.pointer);
+		}
 }

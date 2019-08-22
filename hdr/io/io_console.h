@@ -31,6 +31,9 @@ void *con_processConsoleEventQueue();
 // Init the console system
 void con_initConsole();
 
+// Stop the console
+void con_stopConsole();
+
 // Draw the contents of the console
 void con_renderConsole();
 

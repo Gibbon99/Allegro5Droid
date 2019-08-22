@@ -67,7 +67,6 @@ void con_stopConsole()
 {
 	isDoneConsole = false;
 	evt_setThreadState(false, CONSOLE_THREAD_NAME);
-	PARA_rest(100);
 	conLines.clear();
 }
 
@@ -164,7 +163,7 @@ void *con_processConsoleEventQueue()
 
 		if (evt_shouldThreadRun(CONSOLE_THREAD_NAME))
 		{
-			PARA_rest(THREAD_DELAY_MS);
+			PARA_rest(THREAD_DELAY_MS / 10);
 
 			if (!consoleEventQueue.empty())   // stuff in the queue to process
 			{
@@ -248,7 +247,6 @@ void con_renderConsole()
 //	ttf_setCurrentFont("console.ttf");
 
 	for (auto consoleItr = conLines.rbegin(); consoleItr != conLines.rend(); ++consoleItr)
-//	for (auto consoleItr = conLines.begin(); consoleItr != conLines.end(); ++consoleItr)
 	{
 		fnt_printSystemFont(positionX, positionY, consoleItr->conLine);
 
