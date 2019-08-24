@@ -4,6 +4,7 @@
 #include <hdr/io/io_console.h>
 #include "hdr/system/sys_shutdown.h"
 #include "hdr/system/sys_scriptEngine.h"
+#include "hdr/system/sys_physics.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -13,6 +14,7 @@ void sys_shutdownToSystem()
 {
 	evt_stopThreads();
 
+	sys_freePhysicsEngine();
 	fnt_destroySystemFont();
 	if (eventQueue != nullptr)
 		al_destroy_event_queue(eventQueue);

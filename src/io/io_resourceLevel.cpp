@@ -11,7 +11,7 @@ cpVect drawOffset;
 //---------------------------------------------------------
 //
 // Convert current tile information into padded array
-// Suitable for display on current playfield size
+// Suitable for display on current screen size
 void lvl_addPaddingToLevel (const std::string fileName)
 //---------------------------------------------------------
 {
@@ -21,21 +21,22 @@ void lvl_addPaddingToLevel (const std::string fileName)
 	int              destX, destY;
 	std::string      levelName;
 
+	drawOffset.x = (screenWidth / TILE_SIZE);
+	drawOffset.y = (screenHeight / TILE_SIZE);
+
 	destX = drawOffset.x / 2;
 	destY = drawOffset.y / 2;
 
 	tempDimensions.x = shipLevel.at (fileName).levelDimensions.x;
 	tempDimensions.y = shipLevel.at (fileName).levelDimensions.y;
 
+	printf("Level [ %s ] dimensions [ %f %f ]\n", fileName.c_str(), shipLevel.at (fileName).levelDimensions.x, shipLevel.at (fileName).levelDimensions.y);
+
 	tempLevel.reserve ((shipLevel.at (fileName).levelDimensions.x + drawOffset.x) *
 	                   (shipLevel.at (fileName).levelDimensions.y + drawOffset.y));
 
-//	for (int i = 0; i < (shipLevel.at (fileName).levelDimensions.x + drawOffset.x) * (shipLevel.at (fileName).levelDimensions.y + drawOffset.y); i++)
 	tempLevel.assign ((shipLevel.at (fileName).levelDimensions.x + drawOffset.x) *
 	                  (shipLevel.at (fileName).levelDimensions.y + drawOffset.y), 0);
-//		tempLevel.push_back (0);	// Blank tile
-//		tempLevel[i] = 0; // Blank tile
-
 
 	for (countY = 0; countY != shipLevel.at (fileName).levelDimensions.y; countY++)
 		{

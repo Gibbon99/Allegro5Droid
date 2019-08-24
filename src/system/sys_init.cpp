@@ -10,12 +10,16 @@
 #include <hdr/system/sys_timerFunctions.h>
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/game/gam_render.h>
+#include <hdr/game/gam_player.h>
+#include <hdr/io/io_keyboard.h>
 //#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
 ALLEGRO_TIMER   *fadeTimer;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_BITMAP  *windowIcon;
+
+bool initResourcesAllDone = false;
 
 #define VSYNC_WAIT 1
 #define VSYNC_FORCE_OFF 2
@@ -211,5 +215,20 @@ void sys_initAll ()
 	sys_runScriptFunction ("script_loadAllResources", "");
 
 	gam_calcTileTexCoords ();
-//	sys_changeMode (MODE_GAME, true);
+
+	gam_drawAllTiles();
+
+	sys_runScriptFunction("script_initGUI", std::string());
+
+	io_setDefaultKeybindings();
+	io_setKeyDescription();
+
+	sys_setupPhysicsEngine();
+	sys_setupClientPlayerPhysics();
+
+	playerWorldPos = gam_getLiftWorldPosition (0, currentLevelName);
+
+	sys_setClientPlayerPhysicsPosition ( playerWorldPos );
+
+	sys_changeMode (MODE_GAME, true);
 }

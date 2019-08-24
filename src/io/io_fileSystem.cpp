@@ -66,6 +66,13 @@ bool io_startFileSystem()
 	log_logMessage(LOG_LEVEL_INFO, sys_getString("Linked against PhysFS version %d.%d.%d.",  linked.major, linked.minor, linked.patch ));
 
 	//
+	// Setup directory to write if needed
+	if (0 == PHYSFS_setWriteDir("data"))
+		{
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("Failed to set write path [ %s ]", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode())));
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("The directory [ data ] holding all the data files is not present. Check the installation."));
+		}
+	//
 	// Set base directory
 	if ( 0 == PHYSFS_mount ( "data", "/", 1 ) )
 	{

@@ -67,4 +67,6 @@ void script_loadAllResources()
 	lvl_loadShipLevel("newDeck18.dat");
 	lvl_loadShipLevel("newDeck19.dat");
 	lvl_loadShipLevel("newDeck20.dat");
+
+	initResourcesAllDone = true;
 }

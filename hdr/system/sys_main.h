@@ -18,9 +18,23 @@
 #include "chipmunk.h"
 #include "data/sharedDefines.h"
 
-
 #define TICKS_PER_SECOND  30.0f
 #define TILE_SIZE         32.0f
+
+#define NO_PASS_TILE                40
+#define LIFT_TILE                   NO_PASS_TILE + 1
+#define HEALING_TILE                LIFT_TILE + 4
+
+#define ALERT_GREEN_TILE            4
+#define ALERT_YELLOW_TILE           5
+#define ALERT_RED_TILE              6
+
+#define TERMINAL_TOP                51
+#define TERMINAL_BOTTOM             52
+#define TERMINAL_RIGHT              53
+#define TERMINAL_LEFT               54
+
+#define HEALING_TILE                LIFT_TILE + 4
 
 enum GAME_MODES {
 	MODE_CONSOLE = 0,

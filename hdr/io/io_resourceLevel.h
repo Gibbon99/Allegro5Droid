@@ -1,7 +1,10 @@
 #pragma once
 
 #include <unordered_map>
+#include <hdr/system/sys_physics.h>
 #include "system/sys_main.h"
+
+extern cpVect drawOffset;
 
 //-----------------------------------------------------------------------------
 //
@@ -84,7 +87,7 @@ typedef struct {
 	std::vector<_bullet> bullet;
 	bool                 wallPhysicsCreated  = false;
 	bool                 droidPhysicsCreated = false;
-//	std::vector<_physicObject> solidWalls;
+	std::vector<_physicObject> solidWalls;
 	cpShapeFilter        deckShapeFilter;
 	cpBitmask            deckCategory;
 	cpBitmask            deckMask;

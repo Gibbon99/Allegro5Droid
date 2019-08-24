@@ -6,6 +6,7 @@
 #include <hdr/io/io_console.h>
 #include <hdr/io/io_resources.h>
 #include <hdr/game/gam_hud.h>
+#include <hdr/game/gam_render.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -133,12 +134,17 @@ void sys_displayScreen (double interpolation)
 			break;
 
 			case MODE_GAME:
+				/*
 				renderCirclePosX = prevCirclePosX + ((circlePosX - prevCirclePosX) * interpolation);
+
 				renderCirclePosY   = circlePosY; // + (velocity * interpolation);
 
 				al_draw_filled_rectangle (renderCirclePosX, renderCirclePosY, renderCirclePosX + 32, renderCirclePosY + 32, al_map_rgb_f (0, 0, 0));
 
 			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN);
+				 */
+
+			gam_drawVisibleScreen();
 			hud_renderHUD();
 			break;
 
@@ -146,7 +152,7 @@ void sys_displayScreen (double interpolation)
 				break;
 		}
 
-	sys_renderFrameTimeQueue ();
+//	sys_renderFrameTimeQueue ();
 
 	sys_screenFade();
 }

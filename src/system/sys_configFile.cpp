@@ -1,3 +1,4 @@
+#include <hdr/gui/gui_text.h>
 #include "hdr/system/sys_configFile.h"
 
 #define CONFIG_FILENAME "config.ini"
@@ -25,6 +26,8 @@ bool cfg_getStartupValues()
 	screenHeight = (int)strtol(al_get_config_value(configFile, "main", "screenHeight"), nullptr, 10);
 
 	screenType = (int)strtol(al_get_config_value(configFile, "main", "screenType"), nullptr, 10);
+	
+	currentLanguage = (int)strtol(al_get_config_value(configFile, "main", "currentLanguage"), nullptr, 10);
 
 	al_destroy_config(configFile);
 

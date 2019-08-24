@@ -1,3 +1,4 @@
+#include <hdr/system/sys_physics.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 float prevCirclePosX, prevCirclePosY;
@@ -17,29 +18,9 @@ void sys_gameTickRun()
 			break;
 
 		case MODE_GAME:
-			if (velocity < -5.0f)
-			{
-				circlePosX = 50.0f;
-				circlePosY = 100.0f;
-				velocity   = 1.00f;
-			}
 
-			prevCirclePosX = circlePosX;
-			prevCirclePosY = circlePosY;
-
-			circlePosX += velocity;
-			circlePosY     = 100.0f;
-
-			if ((int)circlePosX > screenWidth - 32)
-			{
-				velocity = -1.0f;
-			}
-
-			if (circlePosX < 1.0f)
-			{
-				velocity = 1.0f;
-			}
-
+			//	cpSpaceStep (space, SKIP_TICKS);
+			cpSpaceStep (space, 1000.0f / 30.0f);
 			break;
 
 		default:

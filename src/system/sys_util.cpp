@@ -70,7 +70,7 @@ void sys_freeMemory()
 
 	for (auto &memoryItr : memoryMap)
 		{
-//		log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Free memory [ %s ]", memoryItr.first.c_str()));
+		printf("%s\n", sys_getString("Free memory [ %i bytes ] - [ %s ]", memoryItr.second.size, memoryItr.first.c_str()).c_str());
 
 			if (memoryItr.second.pointer != nullptr)
 				free(memoryItr.second.pointer);
