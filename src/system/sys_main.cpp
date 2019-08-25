@@ -21,6 +21,37 @@ int  screenType         = 0;
 int  displayRefreshRate = 0;
 int  currentMode        = 0;
 
+std::vector<double>    deltaArray;
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Smooth delta two
+double sys_smoothDelta2(double delta)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	static int numFramesToSmooth = 100;
+	double totalDelta;
+
+	if (deltaArray.size() < numFramesToSmooth)
+		{
+			deltaArray.push_back (delta);
+		}
+	else
+		{
+			for (int i = 0; i != deltaArray.size () - 1; i++)
+				{
+					deltaArray[i] = deltaArray[i + 1];
+				}
+			deltaArray[deltaArray.size() - 1] = delta;
+		}
+
+	for (auto index : deltaArray)
+		{
+			totalDelta += index;
+		}
+	return totalDelta / deltaArray.size();
+
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Smooth out the delta ( frame time ) for rendering
@@ -92,13 +123,20 @@ int main(int argc, char *argv[])
 
 		percentInFrame = accumulator / tickTime;
 
-		sys_smoothDelta(percentInFrame, displayRefreshRate);
+//		sys_smoothDelta(percentInFrame, displayRefreshRate);
 
-		sys_displayScreen(percentInFrame);
+		double smoothedDelta = sys_smoothDelta2(percentInFrame);
+
+		sys_displayScreen(smoothedDelta);
 		fps++;
 
+		sys_pushFrameTimeIntoQueue(smoothedDelta, 10.00f);
+
 		frameTimePrint = (PARA_getTime() - newTime) * 1000.0f;
-		sys_pushFrameTimeIntoQueue(frameTimePrint, 1.0f);
+//		sys_pushFrameTimeIntoQueue(percentInFrame, 100.0f);
+
+		if (accumulator < 0.0f)
+			accumulator = 0.0f;
 	}
 
 	sys_shutdownToSystem();

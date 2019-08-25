@@ -1,4 +1,5 @@
 #include <map>
+#include <hdr/io/io_resourceSprite.h>
 #include "hdr/io/io_logFile.h"
 #include "hdr/io/io_resources.h"
 
@@ -81,30 +82,6 @@ void sys_loadResourceFont(std::string key, std::string fileName, int size)
 	fonts.insert(std::pair<std::string, __font>(key, tempFont));
 }
 
-//---------------------------------------------------------------------------------------------------------------------------
-//
-// Load a sprite
-void sys_loadResourceSprite(std::string key, std::string fileName, int numFrames)
-//---------------------------------------------------------------------------------------------------------------------------
-{
-	__sprite tempSprite;
-
-	tempSprite.common.fileName = fileName;
-	tempSprite.numFrames       = numFrames;
-	tempSprite.bitmap          = al_load_bitmap(fileName.c_str());
-
-	if (nullptr == tempSprite.bitmap)
-	{
-		tempSprite.common.loaded = false;
-		sprites.insert(std::pair<std::string, __sprite>(key, tempSprite));
-		log_logMessage(LOG_LEVEL_ERROR, sys_getString("Failed to load sprite [ %s ]", fileName.c_str()));
-		return;
-	}
-
-	tempSprite.frameWidth  = al_get_bitmap_width(tempSprite.bitmap) / numFrames;
-	tempSprite.frameHeight = al_get_bitmap_height(tempSprite.bitmap);
-	sprites.insert(std::pair<std::string, __sprite>(key, tempSprite));
-}
 
 //---------------------------------------------------------------------------------------------------------------------------
 //
@@ -136,7 +113,7 @@ void sys_loadResource(std::string key, std::string fileName, int type, int numFr
 			break;
 
 		case RESOURCE_SPRITE:
-			sys_loadResourceSprite(key, fileName, numFrames);
+			io_loadResourceSprite (key, fileName, numFrames);
 			break;
 
 		case RESOURCE_TILES:

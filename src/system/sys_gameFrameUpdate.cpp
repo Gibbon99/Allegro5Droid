@@ -1,4 +1,5 @@
 #include <hdr/system/sys_physics.h>
+#include <hdr/io/io_resourceSprite.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 float prevCirclePosX, prevCirclePosY;
@@ -18,6 +19,8 @@ void sys_gameTickRun()
 			break;
 
 		case MODE_GAME:
+
+			io_testAnimateSprite();
 
 			//	cpSpaceStep (space, SKIP_TICKS);
 			cpSpaceStep (space, 1000.0f / 30.0f);

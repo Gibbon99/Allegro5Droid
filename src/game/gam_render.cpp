@@ -136,9 +136,12 @@ void gam_drawAllTiles ()
 //-----------------------------------------------------------------------------
 //
 // Draw the visible screen
-void gam_drawVisibleScreen ()
+void gam_drawVisibleScreen (double interpolation)
 //-----------------------------------------------------------------------------
 {
+	cpVect renderPlayerWorldPos;
+
+	renderPlayerWorldPos = previousPlayerWorldPos + ((playerWorldPos - previousPlayerWorldPos) * interpolation);
 	al_set_target_bitmap (backingBitmap);
-	al_draw_bitmap_region (completeLevelBMP, playerWorldPos.x, playerWorldPos.y, screenWidth, screenHeight, 0, 0, 0);
+	al_draw_bitmap_region (completeLevelBMP, renderPlayerWorldPos.x, renderPlayerWorldPos.y, screenWidth, screenHeight, 0, 0, 0);
 }

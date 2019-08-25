@@ -4,6 +4,7 @@
 #include "system/sys_physics.h"
 
 extern cpVect playerWorldPos;
+extern cpVect previousPlayerWorldPos;
 extern cpVect        playerVelocity;
 extern _physicObject playerPhysicsObjectClient;
 

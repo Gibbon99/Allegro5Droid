@@ -7,6 +7,7 @@
 #include <hdr/io/io_resources.h>
 #include <hdr/game/gam_hud.h>
 #include <hdr/game/gam_render.h>
+#include <hdr/io/io_resourceSprite.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -26,7 +27,7 @@ double renderCirclePosX, renderCirclePosY;
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Process if we need to do a screen fade or not
-void sys_screenFade()
+void sys_screenFade ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (fadeInProgress == FADE_NONE)
@@ -88,7 +89,7 @@ void sys_pushFrameTimeIntoQueue (double thisFrameTime, float factor)
 
 	renderFrameTime = thisFrameTime * factor;
 
-	for (int i                      = 0; i != screenWidth - 1; i++)
+	for (int i = 0; i != screenWidth - 1; i++)
 		{
 			frameTimeArray[i] = frameTimeArray[i + 1];
 		}
@@ -121,12 +122,6 @@ void sys_displayScreen (double interpolation)
 {
 	PARA_prepareFrame (backingBitmap);
 
-	//
-	// Draw everything here
-	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
-	fnt_printSystemFont (5, 10, sys_getString ("thinkFPS [ %f ] frameTime [ %f ] ", printThinkFPS, frameTimePrint));
-	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
-
 	switch (currentMode)
 		{
 			case MODE_CONSOLE:
@@ -144,15 +139,22 @@ void sys_displayScreen (double interpolation)
 			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN);
 				 */
 
-			gam_drawVisibleScreen();
-			hud_renderHUD();
+			gam_drawVisibleScreen (interpolation);
+			io_renderSpriteFrame("001", io_getFrame(), screenWidth / 2, screenHeight / 2);
+			hud_renderHUD ();
 			break;
 
 			default:
 				break;
 		}
 
-//	sys_renderFrameTimeQueue ();
+	sys_renderFrameTimeQueue ();
 
-	sys_screenFade();
+	//
+	// Draw everything here
+	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
+	fnt_printSystemFont (5, 10, sys_getString ("thinkFPS [ %f ] frameTime [ %f ] ", printThinkFPS, frameTimePrint));
+	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
+
+	sys_screenFade ();
 }

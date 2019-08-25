@@ -3,11 +3,12 @@
 #include <hdr/io/io_keyboard.h>
 #include "hdr/game/gam_player.h"
 
-cpVect playerWorldPos;
+cpVect        playerWorldPos;
+cpVect        previousPlayerWorldPos;
 cpVect        playerVelocity;
-float         playerAcceleration = 1.00f;
-float         playerMaxSpeed     = 3.06f;
-float         gravity            = 2.04f;
+float         playerAcceleration = 0.001f;
+float         playerMaxSpeed     = 0.010f;
+float         gravity            = 0.020f;
 _physicObject playerPhysicsObjectClient;
 
 // ----------------------------------------------------------------------------
@@ -16,8 +17,8 @@ _physicObject playerPhysicsObjectClient;
 cpVect gam_getLiftWorldPosition (int whichLift, std::string whichLevel)
 // ----------------------------------------------------------------------------
 {
-	int whichTile, countY, countX, liftCounter;
-	int tilePosX, tilePosY;
+	int   whichTile, countY, countX, liftCounter;
+	int   tilePosX, tilePosY;
 	float pixelX, pixelY;
 
 	cpVect returnPosition;
@@ -58,18 +59,15 @@ cpVect gam_getLiftWorldPosition (int whichLift, std::string whichLevel)
 	return returnPosition;
 }
 
-
 //-----------------------------------------------------------------------------
 //
 // Process player movement
-void gam_processPlayerMovement()
+void gam_processPlayerMovement ()
 //-----------------------------------------------------------------------------
 {
-	float thinkTime = 0.016f;
-
 	if (keyBinding[gameLeft].currentlyPressed)
 		{
-			playerVelocity.x -= playerAcceleration * thinkTime;
+			playerVelocity.x -= playerAcceleration;
 			if (playerVelocity.x < -playerMaxSpeed)
 				{
 					playerVelocity.x = -playerMaxSpeed;
@@ -78,7 +76,7 @@ void gam_processPlayerMovement()
 
 	else if (keyBinding[gameRight].currentlyPressed)
 		{
-			playerVelocity.x += playerAcceleration * thinkTime;
+			playerVelocity.x += playerAcceleration;
 			if (playerVelocity.x > playerMaxSpeed)
 				{
 					playerVelocity.x = playerMaxSpeed;
@@ -87,7 +85,7 @@ void gam_processPlayerMovement()
 
 	if (keyBinding[gameUp].currentlyPressed)
 		{
-			playerVelocity.y -= playerAcceleration * thinkTime;
+			playerVelocity.y -= playerAcceleration;
 			if (playerVelocity.y < -playerMaxSpeed)
 				{
 					playerVelocity.y = -playerMaxSpeed;
@@ -96,7 +94,7 @@ void gam_processPlayerMovement()
 
 	else if (keyBinding[gameDown].currentlyPressed)
 		{
-			playerVelocity.y += playerAcceleration * thinkTime;
+			playerVelocity.y += playerAcceleration;
 			if (playerVelocity.y > playerMaxSpeed)
 				{
 					playerVelocity.y = playerMaxSpeed;
@@ -109,7 +107,7 @@ void gam_processPlayerMovement()
 		{
 			if (playerVelocity.x < 0.0f)
 				{
-					playerVelocity.x += gravity * thinkTime;
+					playerVelocity.x += gravity;
 					if (playerVelocity.x > 0.0f)
 						{
 							playerVelocity.x = 0.0f;
@@ -121,7 +119,7 @@ void gam_processPlayerMovement()
 		{
 			if (playerVelocity.x > 0.0f)
 				{
-					playerVelocity.x -= gravity * thinkTime;
+					playerVelocity.x -= gravity;
 					if (playerVelocity.x < 0.0f)
 						{
 							playerVelocity.x = 0.0f;
@@ -133,7 +131,7 @@ void gam_processPlayerMovement()
 		{
 			if (playerVelocity.y < 0.0f)
 				{
-					playerVelocity.y += gravity * thinkTime;
+					playerVelocity.y += gravity;
 					if (playerVelocity.y > 0.0f)
 						{
 							playerVelocity.y = 0.0f;
@@ -145,7 +143,7 @@ void gam_processPlayerMovement()
 		{
 			if (playerVelocity.y > 0.0f)
 				{
-					playerVelocity.y -= gravity * thinkTime;
+					playerVelocity.y -= gravity;
 					if (playerVelocity.y < 0.0f)
 						{
 							playerVelocity.y = 0.0f;
@@ -153,6 +151,7 @@ void gam_processPlayerMovement()
 				}
 		}
 
-	playerWorldPos = cpBodyGetPosition(playerPhysicsObjectClient.body);
+	previousPlayerWorldPos = playerWorldPos;
+	playerWorldPos         = cpBodyGetPosition (playerPhysicsObjectClient.body);
 }
 

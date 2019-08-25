@@ -48,6 +48,8 @@ void script_loadAllResources()
 	sys_loadResource("tut_terminal", "tut_terminal.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource("alltiles", "alltiles.bmp", RESOURCE_BITMAP, 0, 0);
 
+	sys_loadResource("001", "001.bmp", RESOURCE_SPRITE, 9, 0);
+
 	lvl_loadShipLevel("newDeck1.dat");
 	lvl_loadShipLevel("newDeck2.dat");
 	lvl_loadShipLevel("newDeck3.dat");
