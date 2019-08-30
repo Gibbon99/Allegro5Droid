@@ -2,12 +2,9 @@
 #include <hdr/io/io_resourceSprite.h>
 #include <hdr/game/gam_droidAI.h>
 #include <hdr/game/gam_render.h>
+#include <hdr/io/io_resourceLevel.h>
+#include <hdr/game/gam_player.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
-
-float prevCirclePosX, prevCirclePosY;
-float circlePosX = 50.0f;
-float circlePosY = 100.0f;
-float velocity   = -10.0f;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -21,10 +18,11 @@ void sys_gameTickRun()
 			break;
 
 		case MODE_GAME:
-
 			io_testAnimateSprite();
-
-			drd_processDroidAI ( currentLevelName );
+			gam_processPlayerMovement ();
+			cpBodySetForce (playerDroid.body, playerDroid.velocity);
+			sys_updateVisibleScreenArea();
+			drd_processDroidAI ( lvl_getCurrentLevelName() );
 
 			//	cpSpaceStep (space, SKIP_TICKS);
 			cpSpaceStep (space, 1000.0f / TICKS_PER_SECOND);

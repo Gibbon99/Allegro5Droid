@@ -24,10 +24,8 @@ void ai_processDroidMovement ( const std::string levelName )
 
 	for ( int index = 0; index != shipLevel.at ( levelName ).numDroids; index++ )
 		{
-
 			if ( shipLevel.at ( levelName ).droid[index].currentMode != DROID_MODE_DEAD)
 				{
-
 					maxWorldSize.x = shipLevel.at (levelName).levelDimensions.x * TILE_SIZE;
 					maxWorldSize.y = shipLevel.at (levelName).levelDimensions.y * TILE_SIZE;
 
@@ -196,7 +194,7 @@ int ai_moveDroidToWaypoint ( int whichDroid, const std::string levelName )
 		}
 
 
-	shipLevel.at (levelName).droid[whichDroid].currentSpeed = 0.003f;
+	shipLevel.at (levelName).droid[whichDroid].currentSpeed = 0.003f;       // TODO update database values
 
 
 
@@ -225,11 +223,6 @@ int ai_moveDroidToWaypoint ( int whichDroid, const std::string levelName )
 		{
 			shipLevel.at (levelName).droid[whichDroid].velocity = cpvzero;
 			cpBodySetVelocity ( shipLevel.at (levelName).droid[whichDroid].body, shipLevel.at (levelName).droid[whichDroid].velocity );
-
-
-			printf("Droid [ %i ] reached waypoint\n", whichDroid);
-
-
 			return AI_RESULT_SUCCESS;
 		}
 	else

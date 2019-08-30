@@ -2,8 +2,6 @@
 
 #include "system/sys_main.h"
 
-extern std::string currentLevelName;
-
 // Setup up precalculated coords for the tiles
 void gam_calcTileTexCoords ();
 

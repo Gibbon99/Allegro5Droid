@@ -18,8 +18,14 @@ cpVect sys_getDirection ( cpVect sourcePoint, cpVect destPoint );
 // Convert worldPosition coords to screen coords
 cpVect sys_worldToScreen ( cpVect worldPos, int shapeSize );
 
+// Update the visible screen area bounding box
+void sys_updateVisibleScreenArea();
+
 // Is an object visible on the screen
-bool sys_visibleOnScreen (cpVect worldCoord, int shapeSize);
+cpBool sys_visibleOnScreen (cpVect worldCoord, int shapeSize);
 
 // Put four bytes ( chars ) into one int value
 int sys_pack4Bytes(char one, char two, char three, char four);
+
+// Returns 4 char bytes into passed in array from INT parameter
+void sys_getPackedBytes(int sourceNumber, unsigned char *returnArray);

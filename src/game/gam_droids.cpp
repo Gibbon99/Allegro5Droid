@@ -134,20 +134,16 @@ void gam_renderDroids (const std::string levelName, float interpolate)
 
 	for ( int index = 0; index != shipLevel.at ( levelName ).numDroids; index++ )
 		{
-//			if (shipLevel.at ( levelName ).droid[index].currentMode != DROID_MODE_DEAD)
+			if (shipLevel.at ( levelName ).droid[index].currentMode != DROID_MODE_DEAD)
 				{
 
 //					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
-//	    if (sys_visibleOnScreen(shipLevel.at(levelName).droid[index].worldPos, 32))
+				    if (sys_visibleOnScreen(shipLevel.at(levelName).droid[index].worldPos, SPRITE_SIZE))
 						{
 
 							drawPosition = shipLevel.at (levelName).droid[index].previousWorldPos + ((shipLevel.at (levelName).droid[index].worldPos - shipLevel.at (levelName).droid[index].previousWorldPos) * interpolate);
 							drawPosition = sys_worldToScreen ( drawPosition, 24 );
 
-							if (0 == index)
-								{
-									printf("Pos [ %f %f ]\n", drawPosition.x, drawPosition.y);
-								}
 //							drawPosition = shipLevel.at (levelName).droid[index].worldPos;
 
 //							drawPosition.y = (int) drawPosition.y;   // Remove the fraction portion to stop blurring in Y direction

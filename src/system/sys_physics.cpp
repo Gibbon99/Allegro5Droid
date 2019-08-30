@@ -3,6 +3,7 @@
 #include <bitset>
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_logFile.h>
+#include <hdr/game/gam_physicsCollisions.h>
 
 float playerMass;              // Set from startup script
 
@@ -29,6 +30,32 @@ void sys_setPlayerPhysicsPosition (cpVect newPosition)
 		return;
 
 	cpBodySetPosition (playerDroid.body, newPosition);
+
+	cpSpaceReindexShapesForBody(space, playerDroid.body);
+}
+
+
+//-------------------------------------------------------------------
+//
+// Change the physics shape filter for the player on level change
+void sys_changePlayerPhysicsFilter()
+//-------------------------------------------------------------------
+{
+	cpShapeFilter           playerShapeFilter;
+	std::bitset<32>         playerBitset;
+
+	playerBitset.reset();
+	playerBitset = shipLevel.at ( lvl_getCurrentLevelName() ).deckCategory;        // Set category to this current level
+	playerShapeFilter.categories = static_cast<cpBitmask>(playerBitset.to_ulong());
+
+	playerBitset.reset();
+
+	playerBitset = shipLevel.at ( lvl_getCurrentLevelName () ).deckCategory;        // Collide with everything in this category ( droids, walls )
+
+	playerShapeFilter.mask = static_cast<cpBitmask>(playerBitset.to_ulong());
+	playerShapeFilter.group = CP_NO_GROUP;
+
+	cpShapeSetFilter(playerDroid.shape, playerShapeFilter);
 }
 
 //-------------------------------------------------------------------
@@ -37,20 +64,13 @@ void sys_setPlayerPhysicsPosition (cpVect newPosition)
 void sys_setupPlayerPhysics ()
 //-------------------------------------------------------------------
 {
-	cpVect playerOffset;
-
-	playerOffset = {0.0f, 0.0f};
-
 	if (playerDroid.body != nullptr)
 		return;
 
-	playerMass   = 10.5f;
-	playerRadius = 24.0f;
-
-	playerDroid.body = cpSpaceAddBody (space, cpBodyNew (playerMass, cpMomentForCircle (playerMass, 0.0f, playerRadius, playerOffset)));
+	playerDroid.body = cpSpaceAddBody (space, cpBodyNew (playerMass, cpMomentForCircle (playerMass, 0.0f, playerRadius, cpvzero)));
 	cpBodySetMass (playerDroid.body, playerMass);
 
-	playerDroid.shape = cpSpaceAddShape (space, cpCircleShapeNew (playerDroid.body, playerRadius, playerOffset));
+	playerDroid.shape = cpSpaceAddShape (space, cpCircleShapeNew (playerDroid.body, playerRadius, cpvzero));
 	cpShapeSetFriction (playerDroid.shape, playerFriction);
 	cpShapeSetElasticity (playerDroid.shape, playerElastic);
 	cpShapeSetCollisionType (playerDroid.shape, PHYSIC_TYPE_PLAYER);
@@ -73,7 +93,7 @@ bool sys_setupPhysicsEngine ()
 	// Amount of overlap between shapes that is allowed.
 	cpSpaceSetCollisionSlop (space, collisionSlop);
 
-//	sys_setupCollisionHandlers();
+	sys_setupCollisionHandlers();
 
 	physicsStarted = true;
 
@@ -92,6 +112,26 @@ void sys_freePhysicsEngine ()
 		}
 
 	cpSpaceFree (space);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Draw physics walls
+void sys_debugPhysicsWalls(std::string whichLevel)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	cpVect          wallStart, wallFinish;
+
+	for (intptr_t i = 0; i != shipLevel.at(whichLevel).numLineSegments; i++)
+	{
+		wallStart  = shipLevel.at(whichLevel).lineSegments[i].start;
+		wallFinish = shipLevel.at(whichLevel).lineSegments[i].finish;
+
+		wallStart = sys_worldToScreen(wallStart, 100);
+		wallFinish = sys_worldToScreen(wallFinish, 100);
+
+		al_draw_line (wallStart.x, wallStart.y, wallFinish.x, wallFinish.y, al_map_rgb (155, 100, 255), 2);
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -227,17 +267,21 @@ void sys_debugPhysics(std::string levelName)
 				{
 					tempPosition = cpBodyGetPosition (shipLevel.at (levelName).droid[i].body);
 
-					tempPosition = sys_worldToScreen ( tempPosition, 24 );
+					tempPosition = sys_worldToScreen ( tempPosition, SPRITE_SIZE );
 
 					al_draw_circle (tempPosition.x, tempPosition.y, 12, al_map_rgb (255, 255, 255), 2);
 				}
 		}
+
+	tempPosition = cpBodyGetPosition(playerDroid.body);
+	tempPosition = sys_worldToScreen(tempPosition, SPRITE_SIZE);
+	al_draw_circle (tempPosition.x, tempPosition.y, 12, al_map_rgb (255, 255, 255), 2);
 }
 
 //---------------------------------------------------------------
 //
 // Update the droids information from physics properties
-void drd_updateDroidPosition (const std::string levelName, int whichDroid)
+void sys_updateDroidPosition (const std::string levelName, int whichDroid)
 //---------------------------------------------------------------
 {
 	cpVect     tempPosition;

@@ -133,10 +133,11 @@ void sys_displayScreen (double interpolation)
 			case MODE_GAME:
 
 				gam_drawVisibleScreen (interpolation);
-			lvl_showWayPoints (currentLevelName);
-			sys_debugPhysics(currentLevelName);
+//			lvl_showWayPoints (lvl_getCurrentLevelName());
+//			sys_debugPhysics(lvl_getCurrentLevelName());
+//				sys_debugPhysicsWalls(lvl_getCurrentLevelName());
 
-			gam_renderDroids (currentLevelName, interpolation);
+			gam_renderDroids (lvl_getCurrentLevelName(), interpolation);
 
 //			io_renderSpriteFrame("123", io_getFrame(), screenWidth / 2, screenHeight / 2);
 			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);

@@ -99,28 +99,24 @@ int main(int argc, char *argv[])
 
 		percentInFrame = accumulator / tickTime;
 
+		percentInFrame = cpflerp(0.0, 1.0f, percentInFrame);
+
 		double smoothedDelta = sys_smoothDelta2(percentInFrame);
 
-		if (smoothedDelta < 0.0f)
-			smoothedDelta = 0.0f;
+//		smoothedDelta = cpfclamp(smoothedDelta, 0.0f, 1.0f);
 
-		if (smoothedDelta > 1.0f)
-			smoothedDelta = 1.0f;
-
-//		smoothedDelta = percentInFrame;
+//		double smoothedDelta = percentInFrame;
 
 		sys_displayScreen(smoothedDelta);
 		fps++;
 
-		sys_pushFrameTimeIntoQueue(smoothedDelta, 10.00f);
+		sys_pushFrameTimeIntoQueue(accumulator, 500.00f);
 
 		frameTimePrint = (PARA_getTime() - newTime) * 1000.0f;
-//		sys_pushFrameTimeIntoQueue(percentInFrame, 100.0f);
 
 		if (accumulator < 0.0f)
 			accumulator = 0.0f;
 	}
-
 	sys_shutdownToSystem();
 }
 

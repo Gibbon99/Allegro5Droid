@@ -13,7 +13,6 @@ struct _tileTexCoords {
 
 _tileTexCoords *tileTexCoords   = nullptr;
 int            numTileAcrossInTexture, numTilesDownInTexture;
-std::string    currentLevelName = "Research";
 
 //-----------------------------------------------------------------------------
 //
@@ -104,10 +103,19 @@ void gam_drawAllTiles ()
 {
 	int whichTile = 0;
 
+	if (completeLevelBMP != nullptr)
+	{
+		//
+		// Already exists - need to destroy and recreate it
+		al_destroy_bitmap(completeLevelBMP);
+		completeLevelBMP = nullptr;
+	}
+	//
+	// Now recreate it with the correct size for the current level
 	if (completeLevelBMP == nullptr)
 		{
-			completeLevelBMP = al_create_bitmap (shipLevel.at (currentLevelName).levelDimensions.x * TILE_SIZE,
-			                                     shipLevel.at (currentLevelName).levelDimensions.y * TILE_SIZE);
+			completeLevelBMP = al_create_bitmap (shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x * TILE_SIZE,
+			                                     shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.y * TILE_SIZE);
 			if (nullptr == completeLevelBMP)
 				{
 					al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could create backing bimap.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
@@ -117,17 +125,18 @@ void gam_drawAllTiles ()
 			al_set_target_bitmap (completeLevelBMP);
 			al_clear_to_color (al_map_rgb (1, 0, 0));
 		}
-
+	//
+	// Render all tiles onto it
 	al_set_target_bitmap (completeLevelBMP);
 
 	int countX = 0;
 	int countY = 0;
 
-	for (countY = 0; countY != shipLevel.at (currentLevelName).levelDimensions.y; countY++)
+	for (countY = 0; countY != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.y; countY++)
 		{
-			for (countX = 0; countX != shipLevel.at (currentLevelName).levelDimensions.x; countX++)
+			for (countX = 0; countX != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x; countX++)
 				{
-					whichTile = shipLevel.at (currentLevelName).tiles[(countY * shipLevel.at (currentLevelName).levelDimensions.x) + countX];
+					whichTile = shipLevel.at (lvl_getCurrentLevelName()).tiles[(countY * shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x) + countX];
 					gam_drawSingleTile (countX * TILE_SIZE, countY * TILE_SIZE, whichTile);
 				}
 		}

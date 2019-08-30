@@ -223,3 +223,12 @@ void lvl_showWayPoints (const std::string levelName);
 
 // Return the deckNumber for the passed in level string
 int lvl_getDeckNumber (const std::string levelName);
+
+// Return the current level name
+std::string lvl_getCurrentLevelName();
+
+// Set the new level name - check it matches against the existing level names
+void lvl_setCurrentLevelName(std::string newName);
+
+// Change to a new level
+void lvl_chengeToLevel(std::string newLevelName);

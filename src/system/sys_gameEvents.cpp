@@ -187,9 +187,6 @@ void evt_handleEvents ()
 				}
 			break;
 		}
-
-	gam_processPlayerMovement ();
-	cpBodySetForce (playerDroid.body, playerDroid.velocity);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

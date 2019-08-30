@@ -17,6 +17,10 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable("int currentLanguage", &currentLanguage);
 	sys_scriptAddHostVariable ("float wayPointDestinationSize", &wayPointDestinationSize);
 	sys_scriptAddHostVariable ("float shipDamping", &shipDamping);
+	sys_scriptAddHostVariable("float playerRadius", &playerRadius);
+	sys_scriptAddHostVariable("float playerMass", &playerMass);
+	sys_scriptAddHostVariable("float playerFriction", &playerFriction);
+	sys_scriptAddHostVariable("float playerElastic", &playerElastic);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

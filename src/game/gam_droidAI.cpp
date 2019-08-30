@@ -686,7 +686,7 @@ void drd_processDroidAI (const std::string levelName)
 //					gam_processIgnoreCollisions ( levelName, i );
 
 //					gam_droidWeaponCharge ( i, levelName );
-					drd_updateDroidPosition (levelName, i);
+				sys_updateDroidPosition(levelName, i);
 				}
 //		gam_animateDroid ( whichLevel, i, delayInterval );
 		}

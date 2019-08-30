@@ -62,8 +62,8 @@ void io_renderTintedSpriteFrame(std::string key, int whichFrame, float posX, flo
 
 	try
 		{
-			newPosX = posX; // - sprites.at(key).renderOffsetX;
-			newPosY = posY; // - sprites.at(key).renderOffsetY;
+			newPosX = posX - sprites.at(key).renderOffsetX;
+			newPosY = posY - sprites.at(key).renderOffsetY;
 
 			al_draw_tinted_bitmap_region (sprites.at(key).bitmap,
 					al_map_rgb(red, green, blue),
