@@ -1,4 +1,6 @@
 #include <cmath>
+#include <hdr/game/gam_render.h>
+#include <hdr/game/gam_droidAI.h>
 #include "system/sys_main.h"
 #include "system/sys_init.h"
 #include "system/sys_gameFrameUpdate.h"
@@ -54,32 +56,6 @@ double sys_smoothDelta2(double delta)
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Smooth out the delta ( frame time ) for rendering
-void sys_smoothDelta(double &deltaPtr, double refreshRate)
-//----------------------------------------------------------------------------------------------------------------------
-{
-	static double smoothDeltaBuffer = 0;
-	static int    frameCount        = 0;
-	static double oldDelta          = 0;
-
-	// add in whatever time we currently have saved in the buffer
-	deltaPtr += smoothDeltaBuffer;
-
-	// calculate how many frames will have passed on the next vsync
-	frameCount = (int) (deltaPtr * refreshRate + 1);
-
-	// save off the delta, we will need it later to update the buffer
-	oldDelta = deltaPtr;
-
-	// recalculate delta to be an even frame rate multiple
-	deltaPtr = frameCount / refreshRate;
-
-	// update delta buffer so we keep the same time on average
-	smoothDeltaBuffer = oldDelta - deltaPtr;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
 // Run main loop
 //
 // Fixed update frames
@@ -123,9 +99,15 @@ int main(int argc, char *argv[])
 
 		percentInFrame = accumulator / tickTime;
 
-//		sys_smoothDelta(percentInFrame, displayRefreshRate);
-
 		double smoothedDelta = sys_smoothDelta2(percentInFrame);
+
+		if (smoothedDelta < 0.0f)
+			smoothedDelta = 0.0f;
+
+		if (smoothedDelta > 1.0f)
+			smoothedDelta = 1.0f;
+
+//		smoothedDelta = percentInFrame;
 
 		sys_displayScreen(smoothedDelta);
 		fps++;

@@ -12,6 +12,9 @@
 #include <hdr/game/gam_render.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_keyboard.h>
+#include <hdr/game/gam_droids.h>
+#include <hdr/game/gam_droidAI.h>
+#include <hdr/game/gam_database.h>
 //#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
@@ -210,13 +213,14 @@ void sys_initAll ()
 		{
 			return;
 		}
+
+	gl_setupDroidToSpriteLookup();
+
 	//
 	// Load resources from file system
 	sys_runScriptFunction ("script_loadAllResources", "");
 
 	gam_calcTileTexCoords ();
-
-	gam_drawAllTiles();
 
 	sys_runScriptFunction("script_initGUI", std::string());
 
@@ -224,11 +228,29 @@ void sys_initAll ()
 	io_setKeyDescription();
 
 	sys_setupPhysicsEngine();
-	sys_setupClientPlayerPhysics();
+	sys_setupPlayerPhysics ();
 
-	playerWorldPos = gam_getLiftWorldPosition (0, currentLevelName);
+	playerDroid.worldPos = gam_getLiftWorldPosition (0, currentLevelName);
 
-	sys_setClientPlayerPhysicsPosition ( playerWorldPos );
+	sys_setPlayerPhysicsPosition (playerDroid.worldPos);
+
+	evt_initGameLoopQueue ();
+
+	ai_setupAITree();
+
+	gam_getDBInformation();
+
+	for ( auto &levelItr : shipLevel )
+		{
+//			sys_createSolidWalls    ( levelItr.first );
+			gam_initDroidValues     ( levelItr.first );
+			sys_createEnemyPhysics  ( levelItr.first );
+//			gam_findHealingTiles    ( levelItr.first );
+//			gam_findLiftPositions   ( levelItr.first );
+//		gam_doorTriggerSetup();
+		}
+
+	gam_drawAllTiles();
 
 	sys_changeMode (MODE_GAME, true);
 }

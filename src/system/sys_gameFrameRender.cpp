@@ -8,6 +8,8 @@
 #include <hdr/game/gam_hud.h>
 #include <hdr/game/gam_render.h>
 #include <hdr/io/io_resourceSprite.h>
+#include <hdr/game/gam_player.h>
+#include <hdr/game/gam_droids.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -89,7 +91,7 @@ void sys_pushFrameTimeIntoQueue (double thisFrameTime, float factor)
 
 	renderFrameTime = thisFrameTime * factor;
 
-	for (int i = 0; i != screenWidth - 1; i++)
+	for (int i                      = 0; i != screenWidth - 1; i++)
 		{
 			frameTimeArray[i] = frameTimeArray[i + 1];
 		}
@@ -129,18 +131,18 @@ void sys_displayScreen (double interpolation)
 			break;
 
 			case MODE_GAME:
-				/*
-				renderCirclePosX = prevCirclePosX + ((circlePosX - prevCirclePosX) * interpolation);
 
-				renderCirclePosY   = circlePosY; // + (velocity * interpolation);
+				gam_drawVisibleScreen (interpolation);
+			lvl_showWayPoints (currentLevelName);
+			sys_debugPhysics(currentLevelName);
 
-				al_draw_filled_rectangle (renderCirclePosX, renderCirclePosY, renderCirclePosX + 32, renderCirclePosY + 32, al_map_rgb_f (0, 0, 0));
+			gam_renderDroids (currentLevelName, interpolation);
 
-			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN);
-				 */
+//			io_renderSpriteFrame("123", io_getFrame(), screenWidth / 2, screenHeight / 2);
+			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 
-			gam_drawVisibleScreen (interpolation);
-			io_renderSpriteFrame("001", io_getFrame(), screenWidth / 2, screenHeight / 2);
+
+
 			hud_renderHUD ();
 			break;
 
@@ -155,6 +157,7 @@ void sys_displayScreen (double interpolation)
 	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
 	fnt_printSystemFont (5, 10, sys_getString ("thinkFPS [ %f ] frameTime [ %f ] ", printThinkFPS, frameTimePrint));
 	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
+	fnt_printSystemFont (5, 30, sys_getString ("Pos [ %f %f ]", playerDroid.worldPos.x, playerDroid.worldPos.y));
 
 	sys_screenFade ();
 }

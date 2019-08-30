@@ -1,15 +1,15 @@
 
 #include <map>
 #include <hdr/io/io_logFile.h>
+#include <hdr/game/gam_player.h>
 #include "hdr/system/sys_util.h"
 
-typedef struct
-{
-	char        *pointer;
-	int         size;
+typedef struct {
+	char *pointer;
+	int  size;
 } _memoryMap;
 
-std::map<std::string, _memoryMap>        memoryMap;
+std::map<std::string, _memoryMap> memoryMap;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -43,18 +43,18 @@ std::string sys_getString (std::string format, ...)
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Allocate memory and return pointer - record the size as well
-char *sys_malloc(int memorySize, const std::string keyName)
+char *sys_malloc (int memorySize, const std::string keyName)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	_memoryMap      newMemoryMapEntry;
+	_memoryMap newMemoryMapEntry;
 
-	newMemoryMapEntry.pointer = (char *)malloc(sizeof(char) * memorySize);
+	newMemoryMapEntry.pointer = (char *) malloc (sizeof (char) * memorySize);
 	if (newMemoryMapEntry.pointer == nullptr)
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Memory allocation error for [ %s ]", keyName.c_str()));
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Memory allocation error for [ %s ]", keyName.c_str ()));
 
 	newMemoryMapEntry.size = memorySize;
 
-	memoryMap.insert(std::pair<std::string, _memoryMap>(keyName, newMemoryMapEntry));
+	memoryMap.insert (std::pair<std::string, _memoryMap> (keyName, newMemoryMapEntry));
 
 	return newMemoryMapEntry.pointer;
 }
@@ -62,17 +62,115 @@ char *sys_malloc(int memorySize, const std::string keyName)
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Go through memory map and free allocations
-void sys_freeMemory()
+void sys_freeMemory ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	if (memoryMap.empty())
+	if (memoryMap.empty ())
 		return;
 
 	for (auto &memoryItr : memoryMap)
 		{
-		printf("%s\n", sys_getString("Free memory [ %i bytes ] - [ %s ]", memoryItr.second.size, memoryItr.first.c_str()).c_str());
+			printf ("%s\n", sys_getString ("Free memory [ %i bytes ] - [ %s ]", memoryItr.second.size, memoryItr.first.c_str ()).c_str ());
 
 			if (memoryItr.second.pointer != nullptr)
-				free(memoryItr.second.pointer);
+				free (memoryItr.second.pointer);
 		}
+}
+
+//-----------------------------------------------------------------------------
+//
+// Heads towards destination
+cpVect sys_getDirection (cpVect sourcePoint, cpVect destPoint)
+//-----------------------------------------------------------------------------
+{
+	cpVect tempDirection;
+
+	tempDirection = cpvsub (sourcePoint, destPoint);
+	tempDirection = cpvnormalize (tempDirection);
+
+	return tempDirection;
+}
+
+//----------------------------------------------------------------------
+//
+// Is an object visible on the screen
+bool sys_visibleOnScreen (cpVect worldCoord, int shapeSize)
+//----------------------------------------------------------------------
+{
+	typedef struct {
+		float x;
+		float y;
+		float w;
+		float h;
+	} __myRect;
+
+	__myRect screenArea;
+
+	if ((worldCoord.x < 0) || (worldCoord.y < 0))
+		return false;
+
+	screenArea.x = playerDroid.worldPos.x - (shapeSize * 2);
+	screenArea.y = playerDroid.worldPos.y - (shapeSize * 2);
+	screenArea.w = windowWidth + shapeSize;
+	screenArea.h = windowHeight + shapeSize;
+
+	if (worldCoord.x < screenArea.x)
+		return false;
+
+	if (worldCoord.y < screenArea.y)
+		return false;
+
+	if (worldCoord.x > screenArea.x + (screenArea.w + (shapeSize * 2)))
+		return false;
+
+	if (worldCoord.y > screenArea.y + (screenArea.h + (shapeSize * 2)))
+		return false;
+
+	return true;
+}
+
+
+//-----------------------------------------------------------------------------
+//
+// Convert worldPosition coords to screen coords
+cpVect sys_worldToScreen ( cpVect worldPos, int shapeSize )
+//-----------------------------------------------------------------------------
+{
+	cpVect  screenCoords;
+
+	if ( true == sys_visibleOnScreen ( worldPos, shapeSize ) )
+		{
+			screenCoords.x = worldPos.x - playerDroid.worldPos.x;
+			screenCoords.y = worldPos.y - playerDroid.worldPos.y;
+		}
+	else
+		{
+			screenCoords.x = -1;
+			screenCoords.y = -1;
+
+			screenCoords.x = worldPos.x - playerDroid.worldPos.x;
+			screenCoords.y = worldPos.y - playerDroid.worldPos.y;
+		}
+	return screenCoords;
+}
+
+
+//-----------------------------------------------------------------------------
+//
+// Put four bytes ( chars ) into one int value
+int sys_pack4Bytes(char one, char two, char three, char four)
+//-----------------------------------------------------------------------------
+{
+	int returnValue = 0;
+
+	returnValue <<= 8;
+	returnValue |= one;
+	returnValue <<= 8;
+	returnValue |= two;
+	returnValue <<= 8;
+	returnValue |= three;
+	returnValue <<= 8;
+	returnValue |= four;
+
+	return returnValue;
 }

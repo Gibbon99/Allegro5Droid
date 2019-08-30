@@ -1,5 +1,7 @@
 #include <hdr/system/sys_physics.h>
 #include <hdr/io/io_resourceSprite.h>
+#include <hdr/game/gam_droidAI.h>
+#include <hdr/game/gam_render.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 float prevCirclePosX, prevCirclePosY;
@@ -22,8 +24,10 @@ void sys_gameTickRun()
 
 			io_testAnimateSprite();
 
+			drd_processDroidAI ( currentLevelName );
+
 			//	cpSpaceStep (space, SKIP_TICKS);
-			cpSpaceStep (space, 1000.0f / 30.0f);
+			cpSpaceStep (space, 1000.0f / TICKS_PER_SECOND);
 			break;
 
 		default:

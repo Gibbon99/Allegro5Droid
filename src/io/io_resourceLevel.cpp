@@ -85,8 +85,8 @@ bool lvl_loadShipLevel (const std::string fileName)
 	int  fileSize = 0;
 	char *memoryBuffer;
 
-	drawOffset.x = (screenWidth / TILE_SIZE); // Padding to make tilePosX always positive
-	drawOffset.y = (screenHeight / TILE_SIZE); // Padding to make tilePosY always positive
+	drawOffset.x = (screenWidth); // Padding to make tilePosX always positive
+	drawOffset.y = (screenHeight); // Padding to make tilePosY always positive
 
 	fileSize     = io_getFileSize(fileName.c_str());
 	if (fileSize < 0)
@@ -131,11 +131,11 @@ bool lvl_loadShipLevel (const std::string fileName)
 			para_readFile (fp, &tempSegment.start, sizeof (tempSegment.start));
 			para_readFile (fp, &tempSegment.finish, sizeof (tempSegment.finish));
 
-			tempSegment.start.x += (drawOffset.x) * TILE_SIZE;
-			tempSegment.start.y += (drawOffset.y) * TILE_SIZE;
+			tempSegment.start.x += drawOffset.x;
+			tempSegment.start.y += drawOffset.y;
 
-			tempSegment.finish.x += (drawOffset.x) * TILE_SIZE;
-			tempSegment.finish.y += (drawOffset.y) * TILE_SIZE;
+			tempSegment.finish.x += drawOffset.x;
+			tempSegment.finish.y += drawOffset.y;
 
 			tempLevel.lineSegments.push_back (tempSegment);
 		}
@@ -147,8 +147,8 @@ bool lvl_loadShipLevel (const std::string fileName)
 			//
 			// Why is this needed?  Pixel offset from screen res?
 			//
-			tempWaypoint.x += (drawOffset.x) * TILE_SIZE;
-			tempWaypoint.y += (drawOffset.y) * TILE_SIZE;
+			tempWaypoint.x += drawOffset.x;
+			tempWaypoint.y += drawOffset.y;
 
 			tempLevel.wayPoints.push_back (tempWaypoint);
 		}
@@ -209,4 +209,85 @@ bool lvl_loadShipLevel (const std::string fileName)
 	log_logMessage (LOG_LEVEL_INFO, sys_getString ("Loaded ship level [ %s ] - index [ %i ]", tempLevel.levelName, tempLevel.deckNumber));
 
 	return true;
+}
+
+
+//-----------------------------------------------------------------------------------------------------
+//
+// Return the levelName from the passed in deckNumber
+std::string lvl_returnLevelNameFromDeck (int deckNumber)
+//-----------------------------------------------------------------------------------------------------
+{
+//
+// Using   for (auto levelItr : levelInfo)
+// Results in massive FPS drop
+//
+	for (auto const &levelItr : shipLevel)
+		{
+			if (deckNumber == levelItr.second.deckNumber)
+				{
+					return levelItr.second.levelName;
+				}
+		}
+	return "Not Found";
+}
+
+//-----------------------------------------------------------------------------------------
+//
+// Return the deckNumber for the passed in level string
+int lvl_getDeckNumber (const std::string levelName)
+//-----------------------------------------------------------------------------------------
+{
+	auto levelItr = shipLevel.find (levelName);
+
+	if (levelItr != shipLevel.end ())
+		{
+			if (levelItr->second.mapVersion == -1)  // Not loaded properly
+				{
+					log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Trying to access invalid level [ %s ]", levelName.c_str ()));
+					return -1;
+				}
+			return levelItr->second.deckNumber;
+		}
+	log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Unable to find levelName [ %s ] - [ %s ]", levelName.c_str (), __func__));
+
+	return -1;   // Not found
+}
+
+//--------------------------------------------------------------------------
+//
+// Render the waypoint segments
+void lvl_showWayPoints (const std::string levelName)
+//--------------------------------------------------------------------------
+{
+	int indexCount;
+	cpVect lineStart;
+	cpVect lineFinish;
+	_lineSegment tempLine;
+	cpVect wallStartDraw, wallFinishDraw;
+
+	indexCount = 0;
+
+	for (auto it: shipLevel.at (levelName).wayPoints)
+		{
+			tempLine.start = shipLevel.at (levelName).wayPoints[indexCount];
+
+			if (indexCount + 1 < shipLevel.at (levelName).numWaypoints)
+				tempLine.finish = shipLevel.at (levelName).wayPoints[indexCount + 1];
+			else
+				tempLine.finish = shipLevel.at (levelName).wayPoints[0];
+
+			lineStart.x = static_cast<float>(tempLine.start.x);
+			lineStart.y = static_cast<float>(tempLine.start.y);
+
+			lineFinish.x = static_cast<float>(tempLine.finish.x);
+			lineFinish.y = static_cast<float>(tempLine.finish.y);
+
+			wallStartDraw = sys_worldToScreen (lineStart, 50);
+			wallFinishDraw = sys_worldToScreen (lineFinish, 50);
+
+			al_draw_line (wallStartDraw.x, wallStartDraw.y, wallFinishDraw.x, wallFinishDraw.y, al_map_rgb (255, 100, 255), 2);
+
+			indexCount++;
+		}
 }

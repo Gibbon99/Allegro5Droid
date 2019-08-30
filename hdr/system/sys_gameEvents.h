@@ -9,3 +9,10 @@ void evt_handleEvents();
 
 // Init the event queues
 void evt_initEvents();
+
+// Init the Game Loop thread event queue
+void evt_initGameLoopQueue();
+
+// Process the events put onto the GameLoop queue - run by detached thread
+void *evt_processGameEventQueue ();
+

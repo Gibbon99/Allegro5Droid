@@ -17,6 +17,9 @@ typedef int (*functionPtr)( ... );
 #define CONSOLE_THREAD_NAME             "consoleThread"
 #define CONSOLE_MUTEX_NAME              "consoleMutex"
 
+#define GAME_THREAD_NAME                "gameLoopThread"
+#define GAME_MUTEX_NAME                 "gameMutex"
+
 enum PARA_EVENT_TYPES
 {
 	PARA_EVENT_LOGFILE = 0,
@@ -35,6 +38,13 @@ enum eventActions
 	CONSOLE_EVENT_START,
 	CONSOLE_EVENT_STOP,
 	CONSOLE_EVENT_LOG,
+
+	MAIN_LOOP_EVENT,
+	MAIN_LOOP_EVENT_ADD_BULLET,
+	MAIN_LOOP_EVENT_REMOVE_DROID_PHYSICS,
+
+	USER_EVENT_AUDIO,
+	AUDIO_PLAY_SAMPLE
 };
 
 //

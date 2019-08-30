@@ -1,6 +1,7 @@
 #include <hdr/system/sys_gameFrameRender.h>
 #include <hdr/system/sys_init.h>
 #include <hdr/system/sys_gameEvents.h>
+#include <hdr/game/gam_pathFind.h>
 #include "hdr/system/sys_timerFunctions.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -31,6 +32,13 @@ bool tim_initAllTimers ()
 		}
 	al_register_event_source (eventQueue, al_get_timer_event_source (fadeTimer));
 
+	aStarPathTimer = al_create_timer (aStarPathInterval);
+	if (nullptr == aStarPathTimer)
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Timers. Exiting", "Could not init fade timer.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return false;
+		}
 	return true;
 }
 

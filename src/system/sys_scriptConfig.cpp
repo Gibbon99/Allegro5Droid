@@ -2,6 +2,8 @@
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/system/sys_init.h>
 #include <hdr/gui/gui_text.h>
+#include <hdr/io/io_resourceSprite.h>
+#include <hdr/game/gam_droidAIPatrol.h>
 #include "hdr/system/sys_scriptConfig.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -13,6 +15,8 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable("int quitProgram", &quitProgram);
 	sys_scriptAddHostVariable("bool initResourcesAllDone", &initResourcesAllDone);
 	sys_scriptAddHostVariable("int currentLanguage", &currentLanguage);
+	sys_scriptAddHostVariable ("float wayPointDestinationSize", &wayPointDestinationSize);
+	sys_scriptAddHostVariable ("float shipDamping", &shipDamping);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -26,6 +30,7 @@ void sys_scriptInitFunctions()
 	sys_scriptAddHostFunction("bool lvl_loadShipLevel (string &in)", (functionPtr) &lvl_loadShipLevel);
 	sys_scriptAddHostFunction("void gui_addKeyAndText(string &in, string &in)", (functionPtr) &gui_addKeyAndText);
 	sys_scriptAddHostFunction("string gui_getString(string &in)", (functionPtr) &gui_getString);
+	sys_scriptAddHostFunction("void io_spriteSetAlphaColor(string &in, int red, int green, int blue)", (functionPtr) &io_spriteSetAlphaColor);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -141,7 +141,10 @@ void gam_drawVisibleScreen (double interpolation)
 {
 	cpVect renderPlayerWorldPos;
 
-	renderPlayerWorldPos = previousPlayerWorldPos + ((playerWorldPos - previousPlayerWorldPos) * interpolation);
+	renderPlayerWorldPos = previousPlayerWorldPos + ((playerDroid.worldPos - previousPlayerWorldPos) * interpolation);
 	al_set_target_bitmap (backingBitmap);
-	al_draw_bitmap_region (completeLevelBMP, renderPlayerWorldPos.x, renderPlayerWorldPos.y, screenWidth, screenHeight, 0, 0, 0);
+	al_draw_bitmap_region (completeLevelBMP,
+	                       (float)renderPlayerWorldPos.x - (screenWidth / 2),
+	                       (float)renderPlayerWorldPos.y - (screenHeight / 2),
+	                       (float)screenWidth, (float)screenHeight, 0, 0, 0);
 }

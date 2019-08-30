@@ -45,7 +45,16 @@ void sys_freePhysicsEngine();
 void sys_createSolidWalls(const std::string levelName);
 
 // Setup client player droid physics information
-void sys_setupClientPlayerPhysics();
+void sys_setupPlayerPhysics();
 
 // Set the player physics position in the world
-void sys_setClientPlayerPhysicsPosition ( cpVect newPosition );
+void sys_setPlayerPhysicsPosition (cpVect newPosition );
+
+// Create the physics bodies and shapes for the enemy droids
+void sys_createEnemyPhysics (const std::string levelName);
+
+// Update the droids information from physics properties
+void drd_updateDroidPosition (const std::string levelName, int whichDroid);
+
+// Debug physics objects
+void sys_debugPhysics(std::string levelName);

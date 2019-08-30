@@ -36,6 +36,8 @@
 
 #define HEALING_TILE                LIFT_TILE + 4
 
+#define SPRITE_SIZE   24
+
 enum GAME_MODES {
 	MODE_CONSOLE = 0,
 	MODE_GAME

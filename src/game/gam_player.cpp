@@ -3,13 +3,11 @@
 #include <hdr/io/io_keyboard.h>
 #include "hdr/game/gam_player.h"
 
-cpVect        playerWorldPos;
 cpVect        previousPlayerWorldPos;
-cpVect        playerVelocity;
 float         playerAcceleration = 0.001f;
 float         playerMaxSpeed     = 0.010f;
-float         gravity            = 0.020f;
-_physicObject playerPhysicsObjectClient;
+float         gravity            = 0.002f;
+_droid        playerDroid;
 
 // ----------------------------------------------------------------------------
 //
@@ -35,15 +33,18 @@ cpVect gam_getLiftWorldPosition (int whichLift, std::string whichLevel)
 						{
 							if (liftCounter == whichLift)
 								{
-									tilePosX = countX - ((screenWidth / TILE_SIZE) / 2);
-									tilePosY = countY - ((screenHeight / TILE_SIZE) / 2);
-									tilePosY += 1;
+									tilePosX = countX * TILE_SIZE; //countX - ((screenWidth / TILE_SIZE) / 2);
+									tilePosY = countY * TILE_SIZE; //countY - ((screenHeight / TILE_SIZE) / 2);
+									tilePosY += TILE_SIZE;
 
 									pixelX = TILE_SIZE / 2;
 									pixelY = -TILE_SIZE / 2;
 
-									returnPosition.x = (tilePosX * TILE_SIZE) + pixelX;
-									returnPosition.y = (tilePosY * TILE_SIZE) + pixelY;
+//									returnPosition.x = (tilePosX * TILE_SIZE) + pixelX;
+//									returnPosition.y = (tilePosY * TILE_SIZE) + pixelY;
+
+									returnPosition.x = tilePosX + pixelX;
+									returnPosition.y = tilePosY + pixelY;
 
 									return returnPosition;
 								}
@@ -67,37 +68,38 @@ void gam_processPlayerMovement ()
 {
 	if (keyBinding[gameLeft].currentlyPressed)
 		{
-			playerVelocity.x -= playerAcceleration;
-			if (playerVelocity.x < -playerMaxSpeed)
+			
+			playerDroid.velocity.x -= playerAcceleration;
+			if (playerDroid.velocity.x < -playerMaxSpeed)
 				{
-					playerVelocity.x = -playerMaxSpeed;
+					playerDroid.velocity.x = -playerMaxSpeed;
 				}
 		}
 
 	else if (keyBinding[gameRight].currentlyPressed)
 		{
-			playerVelocity.x += playerAcceleration;
-			if (playerVelocity.x > playerMaxSpeed)
+			playerDroid.velocity.x += playerAcceleration;
+			if (playerDroid.velocity.x > playerMaxSpeed)
 				{
-					playerVelocity.x = playerMaxSpeed;
+					playerDroid.velocity.x = playerMaxSpeed;
 				}
 		}
 
 	if (keyBinding[gameUp].currentlyPressed)
 		{
-			playerVelocity.y -= playerAcceleration;
-			if (playerVelocity.y < -playerMaxSpeed)
+			playerDroid.velocity.y -= playerAcceleration;
+			if (playerDroid.velocity.y < -playerMaxSpeed)
 				{
-					playerVelocity.y = -playerMaxSpeed;
+					playerDroid.velocity.y = -playerMaxSpeed;
 				}
 		}
 
 	else if (keyBinding[gameDown].currentlyPressed)
 		{
-			playerVelocity.y += playerAcceleration;
-			if (playerVelocity.y > playerMaxSpeed)
+			playerDroid.velocity.y += playerAcceleration;
+			if (playerDroid.velocity.y > playerMaxSpeed)
 				{
-					playerVelocity.y = playerMaxSpeed;
+					playerDroid.velocity.y = playerMaxSpeed;
 				}
 		}
 
@@ -105,53 +107,53 @@ void gam_processPlayerMovement ()
 // Do gravity slowdown when no key is pressed
 	if (!keyBinding[gameLeft].currentlyPressed)
 		{
-			if (playerVelocity.x < 0.0f)
+			if (playerDroid.velocity.x < 0.0f)
 				{
-					playerVelocity.x += gravity;
-					if (playerVelocity.x > 0.0f)
+					playerDroid.velocity.x += gravity;
+					if (playerDroid.velocity.x > 0.0f)
 						{
-							playerVelocity.x = 0.0f;
+							playerDroid.velocity.x = 0.0f;
 						}
 				}
 		}
 
 	if (!keyBinding[gameRight].currentlyPressed)
 		{
-			if (playerVelocity.x > 0.0f)
+			if (playerDroid.velocity.x > 0.0f)
 				{
-					playerVelocity.x -= gravity;
-					if (playerVelocity.x < 0.0f)
+					playerDroid.velocity.x -= gravity;
+					if (playerDroid.velocity.x < 0.0f)
 						{
-							playerVelocity.x = 0.0f;
+							playerDroid.velocity.x = 0.0f;
 						}
 				}
 		}
 
 	if (!keyBinding[gameUp].currentlyPressed)
 		{
-			if (playerVelocity.y < 0.0f)
+			if (playerDroid.velocity.y < 0.0f)
 				{
-					playerVelocity.y += gravity;
-					if (playerVelocity.y > 0.0f)
+					playerDroid.velocity.y += gravity;
+					if (playerDroid.velocity.y > 0.0f)
 						{
-							playerVelocity.y = 0.0f;
+							playerDroid.velocity.y = 0.0f;
 						}
 				}
 		}
 
 	if (!keyBinding[gameDown].currentlyPressed)
 		{
-			if (playerVelocity.y > 0.0f)
+			if (playerDroid.velocity.y > 0.0f)
 				{
-					playerVelocity.y -= gravity;
-					if (playerVelocity.y < 0.0f)
+					playerDroid.velocity.y -= gravity;
+					if (playerDroid.velocity.y < 0.0f)
 						{
-							playerVelocity.y = 0.0f;
+							playerDroid.velocity.y = 0.0f;
 						}
 				}
 		}
 
-	previousPlayerWorldPos = playerWorldPos;
-	playerWorldPos         = cpBodyGetPosition (playerPhysicsObjectClient.body);
+	previousPlayerWorldPos = playerDroid.worldPos;
+	playerDroid.worldPos         = cpBodyGetPosition (playerDroid.body);
 }
 
