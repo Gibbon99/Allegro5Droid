@@ -5,14 +5,22 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_physicsCollisions.h>
 
-float playerMass;              // Set from startup script
+typedef struct
+{
+	b2BodyDef    bodyDef;
+	b2Body       *body;
+	b2EdgeShape  shape;
+	b2FixtureDef fixture;
+} __physicWall;
 
-cpSpace *space;
-float   playerRadius;            // Set from startup script
-float   playerFriction;          // Set from startup script
-float   playerElastic;           // Set from startup script
+float pixelsPerMeter;           // Set from startup script
+float playerMass;                // Set from startup script
 
-cpVect shipGravity;
+float playerRadius;            // Set from startup script
+float playerFriction;          // Set from startup script
+float playerElastic;           // Set from startup script
+
+b2Vec2 shipGravity;
 float  shipDamping;              // Set from startup script
 float  collisionSlop;            // Set from startup script
 float  wallFriction;             // Set from startup script
@@ -20,20 +28,32 @@ float  wallRadius;               // Set from startup script
 
 bool physicsStarted;
 
+b2World *physicsWorld;
+int32   velocityIterations = 8;   //how strongly to correct velocity
+int32   positionIterations = 3;   //how strongly to correct position
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Step the world
+void sys_stepPhysicsWorld(float stepAmount)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	physicsWorld->Step(stepAmount, velocityIterations, positionIterations);
+}
+
 //-------------------------------------------------------------------
 //
 // Set the player physics position in the world
-void sys_setPlayerPhysicsPosition (cpVect newPosition)
+void sys_setPlayerPhysicsPosition(b2Vec2 newPosition)
 //-------------------------------------------------------------------
 {
 	if (playerDroid.body == nullptr)
+	{
 		return;
+	}
 
-	cpBodySetPosition (playerDroid.body, newPosition);
-
-	cpSpaceReindexShapesForBody(space, playerDroid.body);
+	playerDroid.bodyDef.position.Set(newPosition.x / pixelsPerMeter, newPosition.y / pixelsPerMeter);
 }
-
 
 //-------------------------------------------------------------------
 //
@@ -41,40 +61,35 @@ void sys_setPlayerPhysicsPosition (cpVect newPosition)
 void sys_changePlayerPhysicsFilter()
 //-------------------------------------------------------------------
 {
-	cpShapeFilter           playerShapeFilter;
-	std::bitset<32>         playerBitset;
 
-	playerBitset.reset();
-	playerBitset = shipLevel.at ( lvl_getCurrentLevelName() ).deckCategory;        // Set category to this current level
-	playerShapeFilter.categories = static_cast<cpBitmask>(playerBitset.to_ulong());
-
-	playerBitset.reset();
-
-	playerBitset = shipLevel.at ( lvl_getCurrentLevelName () ).deckCategory;        // Collide with everything in this category ( droids, walls )
-
-	playerShapeFilter.mask = static_cast<cpBitmask>(playerBitset.to_ulong());
-	playerShapeFilter.group = CP_NO_GROUP;
-
-	cpShapeSetFilter(playerDroid.shape, playerShapeFilter);
 }
 
 //-------------------------------------------------------------------
 //
 // Setup client player droid physics information
-void sys_setupPlayerPhysics ()
+void sys_setupPlayerPhysics()
 //-------------------------------------------------------------------
 {
 	if (playerDroid.body != nullptr)
+	{
 		return;
+	}
 
-	playerDroid.body = cpSpaceAddBody (space, cpBodyNew (playerMass, cpMomentForCircle (playerMass, 0.0f, playerRadius, cpvzero)));
-	cpBodySetMass (playerDroid.body, playerMass);
+	playerDroid.worldPos = gam_getLiftWorldPosition(0, lvl_getCurrentLevelName());
 
-	playerDroid.shape = cpSpaceAddShape (space, cpCircleShapeNew (playerDroid.body, playerRadius, cpvzero));
-	cpShapeSetFriction (playerDroid.shape, playerFriction);
-	cpShapeSetElasticity (playerDroid.shape, playerElastic);
-	cpShapeSetCollisionType (playerDroid.shape, PHYSIC_TYPE_PLAYER);
-	cpShapeSetUserData (playerDroid.shape, (cpDataPointer) -1);  // Passed into collision routine
+	playerDroid.bodyDef.type = b2_dynamicBody;
+	playerDroid.bodyDef.position.Set(playerDroid.worldPos.x / pixelsPerMeter, playerDroid.worldPos.y / pixelsPerMeter);
+	playerDroid.bodyDef.angle = 0;
+	playerDroid.body          = physicsWorld->CreateBody(&playerDroid.bodyDef);
+
+	playerDroid.shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
+	playerDroid.shape.m_p.Set(0, 0);
+
+	playerDroid.fixtureDef.shape       = &playerDroid.shape;
+	playerDroid.fixtureDef.density     = 1;
+	playerDroid.fixtureDef.friction    = 0.3f;
+	playerDroid.fixtureDef.restitution = 0.1f;
+	playerDroid.body->CreateFixture(&playerDroid.fixtureDef);
 
 	playerDroid.velocity.x = 0.0f;
 	playerDroid.velocity.y = 0.0f;
@@ -83,17 +98,14 @@ void sys_setupPlayerPhysics ()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup Physics engine - run once
-bool sys_setupPhysicsEngine ()
+bool sys_setupPhysicsEngine()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	shipGravity = cpv (0, 0);
-	space       = cpSpaceNew ();
-	cpSpaceSetGravity (space, shipGravity);
-	cpSpaceSetDamping (space, shipDamping);
-	// Amount of overlap between shapes that is allowed.
-	cpSpaceSetCollisionSlop (space, collisionSlop);
+	// Define the gravity vector.
+	b2Vec2 gravity(0.0f, 0.0f);
 
-	sys_setupCollisionHandlers();
+	// Construct a world object, which will hold and simulate the rigid bodies.
+	physicsWorld = new b2World(gravity);
 
 	physicsStarted = true;
 
@@ -103,15 +115,11 @@ bool sys_setupPhysicsEngine ()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Cleanup Physics engine - run once
-void sys_freePhysicsEngine ()
+void sys_freePhysicsEngine()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	if (nullptr == space)
-		{
-			return;
-		}
+	delete physicsWorld;
 
-	cpSpaceFree (space);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -120,134 +128,107 @@ void sys_freePhysicsEngine ()
 void sys_debugPhysicsWalls(std::string whichLevel)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	cpVect          wallStart, wallFinish;
+	b2Vec2 wallStart, wallFinish;
 
 	for (intptr_t i = 0; i != shipLevel.at(whichLevel).numLineSegments; i++)
 	{
-		wallStart  = shipLevel.at(whichLevel).lineSegments[i].start;
-		wallFinish = shipLevel.at(whichLevel).lineSegments[i].finish;
+		wallStart.x = shipLevel.at(whichLevel).lineSegments[i].start.x;
+		wallStart.y = shipLevel.at(whichLevel).lineSegments[i].start.y;
 
-		wallStart = sys_worldToScreen(wallStart, 100);
+		wallFinish.x = shipLevel.at(whichLevel).lineSegments[i].finish.x;
+		wallFinish.y = shipLevel.at(whichLevel).lineSegments[i].finish.y;
+
+		wallStart  = sys_worldToScreen(wallStart, 100);
 		wallFinish = sys_worldToScreen(wallFinish, 100);
 
-		al_draw_line (wallStart.x, wallStart.y, wallFinish.x, wallFinish.y, al_map_rgb (155, 100, 255), 2);
+		al_draw_line(wallStart.x, wallStart.y, wallFinish.x, wallFinish.y, al_map_rgb(155, 100, 255), 2);
 	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Create the solid walls for this level
-void sys_createSolidWalls (const std::string levelName)
+void sys_setupSolidWalls(const std::string levelName)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	cpVect          wallStart, wallFinish;
-	_physicObject   tempWall;
-	cpShapeFilter   wallShapeFilter;
-	std::bitset<32> wallBitset;
+	b2Vec2              wallStart, wallFinish;
+	std::vector<b2Vec2> wallPositions;
+	__physicWall    tempWall;
 
-	if (0 == shipLevel.at (levelName).numLineSegments)
-		{
-			return;
-		}
+	if (0 == shipLevel.at(levelName).numLineSegments)
+	{
+		return;
+	}
+
+	for (int i = 0; i != shipLevel.at(levelName).numLineSegments; i++)
+	{
+		wallStart.x = shipLevel.at(levelName).lineSegments[i].start.x / pixelsPerMeter;
+		wallStart.y = shipLevel.at(levelName).lineSegments[i].start.y / pixelsPerMeter;
+
+		wallFinish.x = shipLevel.at(levelName).lineSegments[i].finish.x / pixelsPerMeter;
+		wallFinish.y = shipLevel.at(levelName).lineSegments[i].finish.y / pixelsPerMeter;
+
+		tempWall.bodyDef.type = b2_staticBody;
+		tempWall.bodyDef.position.Set(0, 0);
+		tempWall.body = physicsWorld->CreateBody(&tempWall.bodyDef);
+
+		tempWall.shape.Set(wallStart, wallFinish);
+		tempWall.fixture.shape = &tempWall.shape;
+		tempWall.body->CreateFixture(&tempWall.fixture);
+
+		wallPositions.push_back(wallStart);
+	}
 
 	// TODO: Remove this after game finished and all physics objects destroyed
-//	if ( shipLevel.at ( levelName ).wallPhysicsCreated )     // Create the physics as we visit the level
-//		return;
+	if (shipLevel.at(levelName).wallPhysicsCreated)
+	{     // Create the physics as we visit the level
+		return;
+	}
 
-	shipLevel.at (levelName).solidWalls.clear ();
-	shipLevel.at (levelName).solidWalls.reserve (static_cast<unsigned long>(shipLevel.at (levelName).numLineSegments));
+//	solidWallChain.CreateLoop(&wallPositions[0], wallPositions.size());
 
-	for (intptr_t i = 0; i != shipLevel.at (levelName).numLineSegments; i++)
-		{
-			wallStart  = shipLevel.at (levelName).lineSegments[i].start;
-			wallFinish = shipLevel.at (levelName).lineSegments[i].finish;
-
-			tempWall.body  = cpBodyNewStatic ();
-			tempWall.shape = cpSegmentShapeNew (tempWall.body, wallStart, wallFinish, wallRadius);
-			shipLevel.at (levelName).solidWalls.push_back (tempWall);
-			cpSpaceAddShape (space, shipLevel.at (levelName).solidWalls[i].shape);
-			cpShapeSetFriction (shipLevel.at (levelName).solidWalls[i].shape, wallFriction);
-
-			cpShapeSetCollisionType (shipLevel.at (levelName).solidWalls[i].shape, PHYSIC_TYPE_WALL);
-			//
-			// Setup collision shape filtering bitmasks
-			//
-			wallBitset.reset ();                                         // Clear the bitset
-			wallBitset = shipLevel.at (levelName).deckCategory;       // Each wall on this level is in this category
-			wallShapeFilter.categories = static_cast<cpBitmask>(wallBitset.to_ulong ());     // Set the category
-
-			wallBitset.reset ();                                         // Clear the bitset
-
-			wallBitset = shipLevel.at (levelName).deckCategory;       // Collide with everything in this category ( includes other droids on this level )
-			wallBitset[PHYSIC_TYPE_PLAYER] = true;                      // and the player
-			wallShapeFilter.mask = static_cast<cpBitmask>(wallBitset.to_ulong ());
-
-			wallShapeFilter.group = CP_NO_GROUP;
-
-			cpShapeSetFilter (shipLevel.at (levelName).solidWalls[i].shape, wallShapeFilter);
-
-			cpShapeSetUserData (shipLevel.at (levelName).solidWalls[i].shape, (cpDataPointer) i);
-		}
-
-	shipLevel.at (levelName).wallPhysicsCreated = true;
-	cpSpaceReindexStatic (space);
+	shipLevel.at(levelName).wallPhysicsCreated = true;
 }
 
 //-------------------------------------------------------------------
 //
 // Create the physics bodies and shapes for the enemy droids
-void sys_createEnemyPhysics (const std::string levelName)
+void sys_setupEnemyPhysics(const std::string levelName)
 //-------------------------------------------------------------------
 {
 	std::bitset<32> droidBitset;        // Use standard bitmasks
-	cpShapeFilter   droidShapeFilter;
-	int             packedValue;
 
 	if (!physicsStarted)
-		{
-			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Attempting to setup droid physics with no engine."));
-			return;
-		}
-
-	if (shipLevel.at (levelName).droidPhysicsCreated)
+	{
+		log_logMessage(LOG_LEVEL_ERROR, sys_getString("Attempting to setup droid physics with no engine."));
 		return;
+	}
 
-	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
-		{
+	if (shipLevel.at(levelName).droidPhysicsCreated)
+	{
+		return;
+	}
 
-			shipLevel.at (levelName).droid[i].body = cpSpaceAddBody (space, cpBodyNew (shipLevel.at (levelName).droid[i].mass, cpMomentForCircle (shipLevel.at (levelName).droid[i].mass, 0.0f, playerRadius, cpvzero)));
+	for (int i = 0; i != shipLevel.at(levelName).numDroids; i++)
+	{
+		shipLevel.at(levelName).droid[i].bodyDef.type = b2_dynamicBody;
+		shipLevel.at(levelName).droid[i].bodyDef.position.Set(
+				shipLevel.at(levelName).droid[i].worldPos.x / pixelsPerMeter,
+				shipLevel.at(levelName).droid[i].worldPos.y / pixelsPerMeter);
+		shipLevel.at(levelName).droid[i].bodyDef.angle = 0;
+		shipLevel.at(levelName).droid[i].body          = physicsWorld->CreateBody(&shipLevel.at(levelName).droid[i].bodyDef);
 
-			cpBodySetMass (shipLevel.at (levelName).droid[i].body, shipLevel.at (levelName).droid[i].mass);
+		shipLevel.at(levelName).droid[i].shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
+		shipLevel.at(levelName).droid[i].shape.m_p.Set(0, 0);
 
-			shipLevel.at (levelName).droid[i].shape = cpSpaceAddShape (space, cpCircleShapeNew (shipLevel.at (levelName).droid[i].body, playerRadius, cpvzero));
-			cpShapeSetFriction (shipLevel.at (levelName).droid[i].shape, playerFriction);
-			cpShapeSetElasticity (shipLevel.at (levelName).droid[i].shape, playerElastic);
+		shipLevel.at(levelName).droid[i].fixtureDef.shape       = &shipLevel.at(levelName).droid[i].shape;
+		shipLevel.at(levelName).droid[i].fixtureDef.density     = 1;
+		shipLevel.at(levelName).droid[i].fixtureDef.friction    = 0.3f;
+		shipLevel.at(levelName).droid[i].fixtureDef.restitution = 0.1f;
+		shipLevel.at(levelName).droid[i].body->CreateFixture(&shipLevel.at(levelName).droid[i].fixtureDef);
+	}
 
-			cpShapeSetCollisionType (shipLevel.at (levelName).droid[i].shape, PHYSIC_TYPE_ENEMY);
-			packedValue = sys_pack4Bytes (static_cast<char>(lvl_getDeckNumber (levelName)), (char) i, 0, 0);
-			cpShapeSetUserData (shipLevel.at (levelName).droid[i].shape, (cpDataPointer) packedValue);    // Passed into collision routine
-
-			cpBodySetPosition (shipLevel.at (levelName).droid[i].body, shipLevel.at (levelName).droid[i].worldPos);
-			//
-			// Setup the bitmasks for collision filtering
-			//
-
-			droidBitset.reset ();                    // Clear it
-			droidBitset = shipLevel.at (levelName).deckCategory;  // Set category to this level
-			droidShapeFilter.categories = static_cast<cpBitmask>(droidBitset.to_ulong ());    // Set chipmunk cpBitmask
-
-			droidBitset.reset ();                    // Clear it again
-
-			droidBitset = shipLevel.at (levelName).deckCategory;      // will collide with everything on this level ( this category )
-			droidBitset[PHYSIC_TYPE_PLAYER] = true;                     // and the player
-			droidShapeFilter.mask = static_cast<cpBitmask>(droidBitset.to_ulong ());          // Set chipmunk cpBitmask
-
-			droidShapeFilter.group = CP_NO_GROUP;                       // Doesn't belong to any group
-
-			cpShapeSetFilter (shipLevel.at (levelName).droid[i].shape, droidShapeFilter);   // Set the category and collision mask
-		}
-
-	shipLevel.at (levelName).droidPhysicsCreated = true;
+	shipLevel.at(levelName).droidPhysicsCreated = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -256,63 +237,85 @@ void sys_createEnemyPhysics (const std::string levelName)
 void sys_debugPhysics(std::string levelName)
 //-----------------------------------------------------------------------------
 {
-	cpVect tempPosition;
+	b2Vec2 tempPosition;
 
-	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
-		{
-			//
-			// Check body is valid
-			//
+	for (int i = 0; i != shipLevel.at(levelName).numDroids; i++)
+	{
+		//
+		// Check body is valid
+		//
 //			if (cpTrue == cpSpaceContainsBody (space, shipLevel.at (levelName).droid[i].body))
-				{
-					tempPosition = cpBodyGetPosition (shipLevel.at (levelName).droid[i].body);
+		{
+			tempPosition = shipLevel.at(levelName).droid[i].body->GetPosition();
+			tempPosition *= pixelsPerMeter;
 
-					tempPosition = sys_worldToScreen ( tempPosition, SPRITE_SIZE );
+			tempPosition = sys_worldToScreen(tempPosition, SPRITE_SIZE);
 
-					al_draw_circle (tempPosition.x, tempPosition.y, 12, al_map_rgb (255, 255, 255), 2);
-				}
+
+			al_draw_circle(tempPosition.x, tempPosition.y, 12, al_map_rgb(255, 255, 255), 2);
 		}
+	}
 
-	tempPosition = cpBodyGetPosition(playerDroid.body);
+	tempPosition = playerDroid.body->GetPosition();
+	tempPosition *= pixelsPerMeter;
 	tempPosition = sys_worldToScreen(tempPosition, SPRITE_SIZE);
-	al_draw_circle (tempPosition.x, tempPosition.y, 12, al_map_rgb (255, 255, 255), 2);
+	al_draw_circle(tempPosition.x, tempPosition.y, 12, al_map_rgb(255, 255, 255), 2);
 }
 
 //---------------------------------------------------------------
 //
 // Update the droids information from physics properties
-void sys_updateDroidPosition (const std::string levelName, int whichDroid)
+void sys_updateDroidPosition(const std::string levelName, int whichDroid)
 //---------------------------------------------------------------
 {
-	cpVect     tempPosition;
-	cpVect     maxWorldSize;
+	b2Vec2     tempPosition;
+	b2Vec2     maxWorldSize;
 	static int frameCount = 0;
 
-	maxWorldSize.x = shipLevel.at (levelName).levelDimensions.x * TILE_SIZE;
-	maxWorldSize.y = shipLevel.at (levelName).levelDimensions.y * TILE_SIZE;
+	try
+	{
+		maxWorldSize.x = shipLevel.at(levelName).levelDimensions.x * TILE_SIZE;
+		maxWorldSize.y = shipLevel.at(levelName).levelDimensions.y * TILE_SIZE;
+	}
 
+	catch (const std::out_of_range &oor)
+	{
+		printf("updateDroidPosition - Unable to find level [ %s ]\n", levelName.c_str());
+		return;
+	}
 	//
 	// Check body is valid
 	//
-	if (cpTrue == cpSpaceContainsBody (space, shipLevel.at (levelName).droid[whichDroid].body))
+//	if (cpTrue == cpSpaceContainsBody (space, shipLevel.at (levelName).droid[whichDroid].body))
+	{
+		tempPosition = shipLevel.at(levelName).droid[whichDroid].body->GetPosition();      // Get position in meters
+		tempPosition.x *= pixelsPerMeter;           // Change to pixels
+		tempPosition.y *= pixelsPerMeter;
+
+		if (0 == whichDroid)
 		{
-			tempPosition = cpBodyGetPosition (shipLevel.at (levelName).droid[whichDroid].body);
-
-			if ((tempPosition.x < 0) || (tempPosition.y < 0) || (tempPosition.x > maxWorldSize.x) ||
-			    (tempPosition.y > maxWorldSize.y))
-				{
-			printf ( "ERROR: Setting invalid worldPos [ %3.3f %3.3f ] from body Droid [ %i ] Level [ %s ] Frame [ %i ]\n", tempPosition.x, tempPosition.y, whichDroid, levelName.c_str (), static_cast<int>(frameCount));
-					return;
-				}
-
-				shipLevel.at(levelName).droid[whichDroid].previousWorldPos = shipLevel.at (levelName).droid[whichDroid].worldPos;
-			shipLevel.at (levelName).droid[whichDroid].worldPos = tempPosition;
+			printf("Position [ %f %f ]\n", tempPosition.x, tempPosition.y);
 		}
+
+		if ((tempPosition.x < 0) || (tempPosition.y < 0) || (tempPosition.x > maxWorldSize.x) ||
+		    (tempPosition.y > maxWorldSize.y))
+		{
+			printf("ERROR: Setting invalid worldPos [ %3.3f %3.3f ] from body Droid [ %i ] Level [ %s ] Frame [ %i ]\n", tempPosition.x, tempPosition.y, whichDroid, levelName.c_str(), static_cast<int>(frameCount));
+			return;
+		}
+
+		shipLevel.at(levelName).droid[whichDroid].previousWorldPos = shipLevel.at(levelName).droid[whichDroid].worldPos;
+		shipLevel.at(levelName).droid[whichDroid].worldPos         = tempPosition;
+
+		shipLevel.at(levelName).droid[whichDroid].body->SetLinearVelocity({0, 0});
+	}
+/*
 	else
 		{
 			printf ("ERROR: Attempting to get position from invalid body - droid [ %i ]\n", whichDroid);
 			return;
 		}
+		*/
 }
 
 

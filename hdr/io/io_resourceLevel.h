@@ -4,7 +4,9 @@
 #include <hdr/system/sys_physics.h>
 #include "system/sys_main.h"
 
-extern cpVect drawOffset;
+extern b2Vec2 drawOffset;
+extern b2ChainShape     solidWallChain;
+typedef struct cpVect{float x,y;} cpVect;
 
 //-----------------------------------------------------------------------------
 //
@@ -12,7 +14,8 @@ extern cpVect drawOffset;
 //
 //-----------------------------------------------------------------------------
 
-typedef struct {
+typedef struct
+{
 	cpVect start;
 	cpVect finish;
 }             _lineSegment;
@@ -23,7 +26,8 @@ typedef struct {
 //
 //-----------------------------------------------------------------------------
 
-typedef struct {
+typedef struct
+{
 	int tunnel;
 	int posX;
 	int posY;
@@ -35,14 +39,16 @@ typedef struct {
 //
 //-----------------------------------------------------------------------------
 
-typedef struct {
+typedef struct
+{
 	int    pos;                // position in array
 	int    currentFrame;       // which frame are we on
 	float  frameDelay;         // animation counter
-	cpVect worldPos;           // Position in world coords
+	b2Vec2 worldPos;           // Position in world coords
 }             _basicHealing;
 
-typedef struct {
+typedef struct
+{
 	int         currentMode;                // What is the droid doing; transfer, healing, terminal etc
 	int         droidType;
 	int         currentHealth;
@@ -56,19 +62,21 @@ typedef struct {
 	float currentSpeed;
 	float acceleration;
 
-	cpVect worldPos;
-	cpVect previousWorldPos;
-	cpVect middlePosition;             // TODO set middle position for droids
+	b2Vec2 worldPos;
+	b2Vec2 previousWorldPos;
+	b2Vec2 middlePosition;             // TODO set middle position for droids
 
-	cpVect destinationCoords;          // This is the line segment end point
-	cpVect destDirection;              // Which way is the droid heading
-	cpVect velocity;                   // Current speed
+	b2Vec2 destinationCoords;          // This is the line segment end point
+	b2Vec2 destDirection;              // Which way is the droid heading
+	b2Vec2 velocity;                   // Current speed
 
 	int overTile;                   // which tile is the droid on
 
-	cpBody  *body;                      // Used for physics and collisions
-	cpShape *shape;
-	float   mass;                       // Used for collision response
+	b2BodyDef     bodyDef;                      // Used for physics and collisions
+	b2CircleShape shape;
+	b2FixtureDef  fixtureDef;
+	b2Body        *body;
+	float         mass;                       // Used for collision response
 
 	bool ignoreCollisions;           // Ignoring collisions for the time period
 //	bool            isExploding;
@@ -109,7 +117,7 @@ typedef struct {
 	int    currentAStarIndex;         // Index into aStarWaypoints array
 	bool   aStarDestinationFound;
 	bool   aStarInitDone;
-	cpVect previousWaypoints;
+	b2Vec2 previousWaypoints;
 
 	bool onFleeTile;
 	bool foundFleeTile;
@@ -121,9 +129,9 @@ typedef struct {
 	bool onHealingTile;
 	bool foundHealingTile;
 	/*
-cpVect acceleration;
+b2Vec2 acceleration;
 
-cpVect screenPos;
+b2Vec2 screenPos;
 
 
 //
@@ -143,7 +151,7 @@ int ai_nextState;
 float ai_noActionCounter;
 float ai_noActionCount;
 
-cpVect originPosition;     // Remember this to return to
+b2Vec2 originPosition;     // Remember this to return to
 bool foundOriginPath;
 bool returnToOrigin;
 bool foundOriginPosition;
@@ -151,7 +159,7 @@ bool foundOriginPosition;
 float healingCount;
 bool foundWPTile;        // Go here after healing
 
-cpVect destinationTile;        // Where is the droid heading
+b2Vec2 destinationTile;        // Where is the droid heading
 bool resumeDestFound;        // Set from running thread - aStar found destination
 bool resumeThreadStarted;    // Is the thread started and running
 
@@ -159,13 +167,14 @@ bool resumeThreadStarted;    // Is the thread started and running
 
 } _droid;
 
-typedef struct {
+typedef struct
+{
 	bool        isAlive;
-	cpFloat     angle;
-	cpVect      worldPos;
-	cpVect      previousWorldPos;
-	cpVect      travelDirection;
-	cpVect      size;
+	float     angle;
+	b2Vec2      worldPos;
+	b2Vec2      previousWorldPos;
+	b2Vec2      travelDirection;
+	b2Vec2      size;
 	int         type;
 	int         currentAnimFrame;
 	float       animDelayCount;
@@ -177,15 +186,16 @@ typedef struct {
 //  _physicObject	bulletPhysicsObject;
 } _bullet;
 
-typedef struct {
+typedef struct
+{
 	int                       mapVersion;
 	int                       numLineSegments;
 	int                       numWaypoints;
 	int                       numDroids;
 	int                       numLifts;
-	cpVect                    levelDimensions;
+	b2Vec2                    levelDimensions;
 	std::vector<_lineSegment> lineSegments;
-	std::vector<cpVect>       wayPoints;
+	std::vector<b2Vec2>       wayPoints;
 	std::vector<int>          tiles;
 	std::vector<int>          droidTypes;
 	char                      levelName[20];
@@ -205,24 +215,20 @@ typedef struct {
 	std::vector<_bullet>       bullet;
 	bool                       wallPhysicsCreated  = false;
 	bool                       droidPhysicsCreated = false;
-	std::vector<_physicObject> solidWalls;
-	cpShapeFilter              deckShapeFilter;
-	cpBitmask                  deckCategory;
-	cpBitmask                  deckMask;
 } _levelStruct;
 
 extern std::unordered_map<std::string, _levelStruct> shipLevel;
 
 // Populate the shipdeck structure from a file in memory
-bool lvl_loadShipLevel (const std::string fileName);
+bool lvl_loadShipLevel(const std::string fileName);
 
 // Return the levelName from the passed in deckNumber
-std::string lvl_returnLevelNameFromDeck (int deckNumber);
+std::string lvl_returnLevelNameFromDeck(int deckNumber);
 
-void lvl_showWayPoints (const std::string levelName);
+void lvl_showWayPoints(const std::string levelName);
 
 // Return the deckNumber for the passed in level string
-int lvl_getDeckNumber (const std::string levelName);
+int lvl_getDeckNumber(const std::string levelName);
 
 // Return the current level name
 std::string lvl_getCurrentLevelName();

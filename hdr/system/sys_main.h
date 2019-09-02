@@ -15,8 +15,8 @@
 #include "allegro5/allegro_memfile.h"
 #include "system/sys_wrapper.h"
 #include "system/sys_util.h"
-#include "chipmunk.h"
 #include "data/sharedDefines.h"
+#include "Box2D/Box2D.h"
 
 #define TICKS_PER_SECOND  30.0f
 #define TILE_SIZE         32.0f

@@ -21,7 +21,7 @@ void PARA_unlockMutex(PARA_MUTEX *thisMutex);
 void PARA_destroyMutex(PARA_MUTEX *thisMutex);
 
 // Rest for the passed in milliseconds
-void PARA_rest(double ms);
+void PARA_rest(double seconds);
 
 // Wrap around creating a thread
 PARA_THREAD *PARA_createThread(functionPtr threadFunction, const std::string threadName);

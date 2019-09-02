@@ -9,7 +9,7 @@
 
 typedef struct {
 	bool   walkable;
-	cpVect tileLocation;
+	b2Vec2 tileLocation;
 	int    parent;
 	int    g_movementCost;
 	int    h_estMoveCost;
@@ -22,13 +22,13 @@ typedef struct {
 	bool                   pathReady;
 	bool                   wayPointsReady;
 	bool                   inUse;
-	cpVect                 startTile;
-	cpVect                 destTile;
+	b2Vec2                 startTile;
+	b2Vec2                 destTile;
 	int                    currentNodePtrClosedList;
 	std::vector<_pathNode> openNodes;
 	std::vector<_pathNode> closedNodes;
 	std::vector<_pathNode> foundPath;
-	std::vector<cpVect>    wayPoints;
+	std::vector<b2Vec2>    wayPoints;
 } _nodeList;
 
 extern std::vector<_nodeList> path;
@@ -39,7 +39,7 @@ extern ALLEGRO_TIMER     *aStarPathTimer;
 
 // Allocate new structure if required or reuse existing one
 // Start thread process
-int gam_AStarRequestNewPath (cpVect start, cpVect destination, int whichDroid, const std::string whichLevel);
+int gam_AStarRequestNewPath (b2Vec2 start, b2Vec2 destination, int whichDroid, const std::string whichLevel);
 
 // Check if the current thread pathfinding is finished
 bool gam_AStarIsPathReady (int whichPath);

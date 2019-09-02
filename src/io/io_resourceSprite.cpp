@@ -55,6 +55,7 @@ void io_spriteSetAlphaColor(std::string key, int red, int green, int blue)
 //
 // Render a sprite tinting to a different color
 // Position is the center of the sprite - offset by frame width and height
+// Position is in world space pixels
 void io_renderTintedSpriteFrame(std::string key, int whichFrame, float posX, float posY, int red, int green, int blue)
 //---------------------------------------------------------------------------------------------------------------------------
 {

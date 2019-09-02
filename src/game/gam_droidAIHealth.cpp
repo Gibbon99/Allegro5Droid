@@ -93,8 +93,8 @@ int ai_onHealingTile ( int whichDroid, const std::string levelName )
 int ai_reachedHealingTile ( int whichDroid, const std::string levelName )
 //-----------------------------------------------------------------------------
 {
-	cpVect healingTileLocation;
-	cpVect	droidWorldPosTiles;
+	b2Vec2 healingTileLocation;
+	b2Vec2	droidWorldPosTiles;
 
 	if ( !shipLevel.at( levelName ).droid[whichDroid].foundHealingTile )
 		{

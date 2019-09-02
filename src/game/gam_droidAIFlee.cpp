@@ -98,8 +98,8 @@ int ai_onFleeTile ( int whichDroid, const std::string levelName )
 int ai_reachedFleeTile ( int whichDroid, const std::string levelName )
 //-----------------------------------------------------------------------------
 {
-	cpVect fleeTileLocation;
-	cpVect droidWorldPosTiles;
+	b2Vec2 fleeTileLocation;
+	b2Vec2 droidWorldPosTiles;
 
 	if ( !shipLevel.at ( levelName ).droid[whichDroid].foundFleeTile )
 		{

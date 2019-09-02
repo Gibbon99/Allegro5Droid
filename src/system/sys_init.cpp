@@ -127,102 +127,102 @@ bool sys_initDisplay ()
 void sys_initAll ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	if (!al_install_system (ALLEGRO_VERSION_INT, nullptr))
-		{
-			quitProgram = true;
-			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the Allegro library", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-			return;
-		}
+	if (!al_install_system(ALLEGRO_VERSION_INT, nullptr))
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the Allegro library", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
 	runThreads = true;
-	io_initLogfile ();
-	con_initConsole ();
+	io_initLogfile();
+	con_initConsole();
 
 	while (!isDoneConsole);
 	//
 	// Start fileSystem first - need to be able to read config file and set paths
-	if (!io_startFileSystem ())
-		{
-			quitProgram = true;
-			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the filesystem.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-			return;
-		}
-	al_set_physfs_file_interface (); // Set to current main thread
+	if (!io_startFileSystem())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the filesystem.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
+	al_set_physfs_file_interface(); // Set to current main thread
 
 	//
 	// Read startup values from config file - need window sizes and display options
-	if (!cfg_getStartupValues ())
-		{
-			return;
-		}
+	if (!cfg_getStartupValues())
+	{
+		return;
+	}
 	//
 	// Start display
-	if (!sys_initDisplay ())
-		{
-			return;
-		}
-	al_install_keyboard ();  // Needs to be before Events can be registered
-	al_install_mouse ();
+	if (!sys_initDisplay())
+	{
+		return;
+	}
+	al_install_keyboard();  // Needs to be before Events can be registered
+	al_install_mouse();
 	//
 	// Start an event queue
-	evt_initEvents ();
-	al_register_event_source (eventQueue, al_get_display_event_source (display));
-	al_register_event_source (eventQueue, al_get_keyboard_event_source ());
+	evt_initEvents();
+	al_register_event_source(eventQueue, al_get_display_event_source(display));
+	al_register_event_source(eventQueue, al_get_keyboard_event_source());
 //	al_register_event_source(eventQueue, al_get_mouse_event_source());
 	//
 	// Display output on screen
-	sys_changeMode (MODE_CONSOLE, false);
+	sys_changeMode(MODE_CONSOLE, false);
 	//
 	// Start, load and compile scripts
-	if (!sys_initScriptEngine ())
-		{
-			quitProgram = true;
-			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Script Engine.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-			return;
-		}
+	if (!sys_initScriptEngine())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Script Engine.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
 	//
 	// Load images from addon
-	if (!al_init_image_addon ())
-		{
-			quitProgram = true;
-			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Image addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-			return;
-		}
+	if (!al_init_image_addon())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Image addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
 	//
 	// Use Audio library
-	if (!al_install_audio ())
-		{
-			quitProgram = true;
-			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-			return;
-		}
+	if (!al_install_audio())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
 	//
 	// Start Audio Codec library
-	if (!al_init_acodec_addon ())
-		{
-			quitProgram = true;
-			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio Codec addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-			return;
-		}
+	if (!al_init_acodec_addon())
+	{
+		quitProgram = true;
+		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio Codec addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
 	//
 	// Create all the timers
-	if (!tim_initAllTimers ())
+	if (!tim_initAllTimers())
 		return;
 	//
 	// Create built in library font
-	if (!fnt_initSystemFont ())
-		{
-			return;
-		}
+	if (!fnt_initSystemFont())
+	{
+		return;
+	}
 
 	gl_setupDroidToSpriteLookup();
 
 	//
 	// Load resources from file system
-	sys_runScriptFunction ("script_loadAllResources", "");
+	sys_runScriptFunction("script_loadAllResources", "");
 
 	lvl_setCurrentLevelName("Research");
 
-	gam_calcTileTexCoords ();
+	gam_calcTileTexCoords();
 
 	sys_runScriptFunction("script_initGUI", std::string());
 
@@ -230,25 +230,25 @@ void sys_initAll ()
 	io_setKeyDescription();
 
 	sys_setupPhysicsEngine();
-	sys_setupPlayerPhysics ();
+	sys_setupPlayerPhysics();
 
-	evt_initGameLoopQueue ();
+	evt_initGameLoopQueue();
 
 	ai_setupAITree();
 
 	gam_getDBInformation();
 
-	for ( auto &levelItr : shipLevel )
-		{
-			sys_createSolidWalls    ( levelItr.first );
-			gam_initDroidValues     ( levelItr.first );
-			sys_createEnemyPhysics  ( levelItr.first );
+	for (auto &levelItr : shipLevel)
+	{
+//		sys_setupSolidWalls(levelItr.first);
+		gam_initDroidValues(levelItr.first);
+//		sys_setupEnemyPhysics(levelItr.first);
 //			gam_findHealingTiles    ( levelItr.first );
 //			gam_findLiftPositions   ( levelItr.first );
 //		    gam_doorTriggerSetup();
-		}
+	}
 
 	lvl_chengeToLevel("Research");
 
-	sys_changeMode (MODE_GAME, true);
+	sys_changeMode(MODE_GAME, true);
 }

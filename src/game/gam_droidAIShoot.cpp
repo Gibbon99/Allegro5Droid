@@ -75,8 +75,8 @@ int ai_findBulletDest (int whichDroid, const std::string levelName)
 int ai_shootBullet (int whichDroid, const std::string levelName)
 //-----------------------------------------------------------------------------
 {
-	cpVect bulletStartPos;
-	cpVect bulletDestPos;
+	b2Vec2 bulletStartPos;
+	b2Vec2 bulletDestPos;
 
 #ifdef DEBUG_SHOOT
 	printf ("Fire bullet [ %i ]\n", whichDroid);

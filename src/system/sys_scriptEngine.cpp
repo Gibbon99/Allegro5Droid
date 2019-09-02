@@ -479,7 +479,7 @@ void sys_debugPrintVariables()
 		}
 		else
 		{
-			auto *getValue = (cpVect *) varPointer;
+			auto *getValue = (b2Vec2 *) varPointer;
 			log_logMessage(LOG_LEVEL_INFO, sys_getString(" %s = {...}\n", ctx->GetVarDeclaration(n, stackLevel)));
 			log_logMessage(LOG_LEVEL_INFO, sys_getString("Debug [ %3.3f %3.3f ]\n", getValue->x, getValue->y));
 		}

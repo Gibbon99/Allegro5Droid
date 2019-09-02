@@ -5,11 +5,12 @@
 #include <hdr/game/gam_render.h>
 #include "hdr/io/io_resourceLevel.h"
 
-#define MAP_VERSION                115
+#define MAP_VERSION                116
 
 std::unordered_map<std::string, _levelStruct> shipLevel;
-cpVect                                        drawOffset;
+b2Vec2                                        drawOffset;
 std::string                                   currentLevelName;
+b2ChainShape     solidWallChain;
 
 //---------------------------------------------------------
 //
@@ -45,7 +46,7 @@ void lvl_addPaddingToLevel(const std::string fileName)
 //---------------------------------------------------------
 {
 	std::vector<int> tempLevel;
-	cpVect           tempDimensions{};
+	b2Vec2           tempDimensions{};
 	int              countY, countX, whichTile;
 	int              destX, destY;
 	std::string      levelName;
@@ -112,6 +113,7 @@ bool lvl_loadShipLevel(const std::string fileName)
 	int           tempTile;
 	int           fileSize  = 0;
 	char          *memoryBuffer;
+	float tempFloat;
 
 	drawOffset.x = (screenWidth / 2); // Padding to make tilePosX always positive
 	drawOffset.y = (screenHeight / 2); // Padding to make tilePosY always positive
@@ -142,7 +144,7 @@ bool lvl_loadShipLevel(const std::string fileName)
 	if (checkVersion != MAP_VERSION)
 	{
 		log_logMessage(LOG_LEVEL_ERROR, sys_getString("MAP_VERSION wrong for file [ %s ]", fileName.c_str()));
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Wanted [ %i ] got from file [ %i ]", MAP_VERSION, checkVersion));
+		log_logMessage(LOG_LEVEL_EXIT, sys_getString("MAP_VERSION wrong for file. Wanted [ %i ] got from file [ %i ]", MAP_VERSION, checkVersion));
 	}
 	//
 	// Read number variables
@@ -150,14 +152,28 @@ bool lvl_loadShipLevel(const std::string fileName)
 	para_readFile(fp, (void *) &tempLevel.numWaypoints, sizeof(tempLevel.numWaypoints));
 	para_readFile(fp, (void *) &tempLevel.numDroids, sizeof(tempLevel.numDroids));
 	para_readFile(fp, (void *) &tempLevel.numLifts, sizeof(tempLevel.numLifts));
-	para_readFile(fp, (void *) &tempLevel.levelDimensions, sizeof(tempLevel.levelDimensions));
+
+	para_readFile(fp, &tempFloat, sizeof(tempFloat));
+	tempLevel.levelDimensions.x = tempFloat;
+
+	para_readFile(fp, &tempFloat, sizeof(tempFloat));
+	tempLevel.levelDimensions.y = tempFloat;
 
 	//
 	// Line segments for physics collisions
 	for (int i = 0; i != tempLevel.numLineSegments; i++)
 	{
-		para_readFile(fp, &tempSegment.start, sizeof(tempSegment.start));
-		para_readFile(fp, &tempSegment.finish, sizeof(tempSegment.finish));
+		para_readFile(fp, &tempFloat, sizeof(tempFloat));
+		tempSegment.start.x = tempFloat;
+
+		para_readFile(fp, &tempFloat, sizeof(tempFloat));
+		tempSegment.start.y = tempFloat;
+
+		para_readFile(fp, &tempFloat, sizeof(tempFloat));
+		tempSegment.finish.x = tempFloat;
+
+		para_readFile(fp, &tempFloat, sizeof(tempFloat));
+		tempSegment.finish.y = tempFloat;
 
 		tempSegment.start.x += drawOffset.x;
 		tempSegment.start.y += drawOffset.y;
@@ -171,13 +187,23 @@ bool lvl_loadShipLevel(const std::string fileName)
 	// Waypoints for Droid patrol
 	for (int i = 0; i != tempLevel.numWaypoints; i++)
 	{
-		para_readFile(fp, &tempWaypoint, sizeof(tempWaypoint));
+		para_readFile(fp, &tempFloat, sizeof(tempFloat));
+		tempWaypoint.x = tempFloat;
+
+		para_readFile(fp, &tempFloat, sizeof(tempFloat));
+		tempWaypoint.y = tempFloat;
 
 		tempWaypoint.x += drawOffset.x;
 		tempWaypoint.y += drawOffset.y;
 
-		tempLevel.wayPoints.push_back(tempWaypoint);
+		b2Vec2 tempVec2;
+
+		tempVec2.x = tempWaypoint.x;
+		tempVec2.y = tempWaypoint.y;
+
+		tempLevel.wayPoints.push_back(tempVec2);
 	}
+
 	//
 	// Load each droid type on the current level
 	for (int i = 0; i != tempLevel.numDroids; i++)
@@ -201,7 +227,7 @@ bool lvl_loadShipLevel(const std::string fileName)
 	//
 	// Extract the deck number from the filename
 	std::string output     = fileName;
-	std::string removePart = "newDeck";
+	std::string removePart = "116-newDeck";
 
 	output.erase(0, removePart.size());
 	std::string::size_type idx = output.rfind('.');
@@ -216,13 +242,6 @@ bool lvl_loadShipLevel(const std::string fileName)
 		tempLevel.deckNumber = -1;
 		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Unable to parse deck filename for index [ %s ]", fileName.c_str()));
 	}
-
-	std::bitset<32> testMask;
-
-	testMask.reset();
-	testMask[tempLevel.deckNumber] = true;
-
-	tempLevel.deckCategory = static_cast<cpBitmask>(testMask.to_ulong());
 
 	// Generate physics masks and categories
 	tempLevel.wallPhysicsCreated  = false;
@@ -287,24 +306,27 @@ void lvl_showWayPoints(const std::string levelName)
 //--------------------------------------------------------------------------
 {
 	int          indexCount;
-	cpVect       lineStart;
-	cpVect       lineFinish;
+	b2Vec2       lineStart;
+	b2Vec2       lineFinish;
 	_lineSegment tempLine;
-	cpVect       wallStartDraw, wallFinishDraw;
+	b2Vec2       wallStartDraw, wallFinishDraw;
 
 	indexCount = 0;
 
 	for (auto it: shipLevel.at(levelName).wayPoints)
 	{
-		tempLine.start = shipLevel.at(levelName).wayPoints[indexCount];
+		tempLine.start.x = shipLevel.at(levelName).wayPoints[indexCount].x;
+		tempLine.start.y = shipLevel.at(levelName).wayPoints[indexCount].y;
 
 		if (indexCount + 1 < shipLevel.at(levelName).numWaypoints)
 		{
-			tempLine.finish = shipLevel.at(levelName).wayPoints[indexCount + 1];
+			tempLine.finish.x = shipLevel.at(levelName).wayPoints[indexCount + 1].x;
+			tempLine.finish.y = shipLevel.at(levelName).wayPoints[indexCount + 1].y;
 		}
 		else
 		{
-			tempLine.finish = shipLevel.at(levelName).wayPoints[0];
+			tempLine.finish.x = shipLevel.at(levelName).wayPoints[0].x;
+			tempLine.finish.y = shipLevel.at(levelName).wayPoints[0].y;
 		}
 
 		lineStart.x = static_cast<float>(tempLine.start.x);
@@ -334,6 +356,9 @@ void lvl_chengeToLevel(std::string newLevelName)
 
 	sys_setPlayerPhysicsPosition(playerDroid.worldPos);
 	sys_changePlayerPhysicsFilter();
+
+	sys_setupEnemyPhysics(newLevelName);
+	sys_setupSolidWalls (newLevelName);
 
 	gam_drawAllTiles();
 }

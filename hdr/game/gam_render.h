@@ -9,4 +9,4 @@ void gam_calcTileTexCoords ();
 void gam_drawAllTiles();
 
 // Draw the visible screen
-void gam_drawVisibleScreen (double interpolation);
+void gam_drawVisibleScreen (float interpolation);

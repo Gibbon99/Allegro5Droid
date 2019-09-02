@@ -17,17 +17,19 @@
 #define BYTE_THREE          3
 
 typedef struct _physicObject {
-	cpBody  *body;
-	cpShape *shape;
+	b2BodyDef     bodyDef;                      // Used for physics and collisions
+	b2CircleShape shape;
+	b2FixtureDef  fixtureDef;
+	b2Body        *body;
 } _physicObject;
 
-extern cpSpace *space;
+extern float   pixelsPerMeter;           // Set from startup script
 extern float   playerMass;              // Set from startup script
 extern float   playerRadius;            // Set from startup script
 extern float   playerFriction;          // Set from startup script
 extern float   playerElastic;           // Set from startup script
 
-extern cpVect shipGravity;
+extern b2Vec2 shipGravity;
 extern float  shipDamping;              // Set from startup script
 extern float  collisionSlop;            // Set from startup script
 extern float  wallFriction;             // Set from startup script
@@ -42,7 +44,7 @@ bool sys_setupPhysicsEngine();
 void sys_freePhysicsEngine();
 
 // Create the solid walls for this level
-void sys_createSolidWalls(const std::string levelName);
+void sys_setupSolidWalls(const std::string levelName);
 
 void sys_changePlayerPhysicsFilter();
 
@@ -50,10 +52,10 @@ void sys_changePlayerPhysicsFilter();
 void sys_setupPlayerPhysics();
 
 // Set the player physics position in the world
-void sys_setPlayerPhysicsPosition (cpVect newPosition );
+void sys_setPlayerPhysicsPosition (b2Vec2 newPosition );
 
 // Create the physics bodies and shapes for the enemy droids
-void sys_createEnemyPhysics (const std::string levelName);
+void sys_setupEnemyPhysics (const std::string levelName);
 
 // Update the droids information from physics properties
 void sys_updateDroidPosition (const std::string levelName, int whichDroid);
@@ -63,3 +65,6 @@ void sys_debugPhysics(std::string levelName);
 
 // Draw physics walls
 void sys_debugPhysicsWalls(std::string whichLevel);
+
+// Step the world
+void sys_stepPhysicsWorld(float stepAmount);

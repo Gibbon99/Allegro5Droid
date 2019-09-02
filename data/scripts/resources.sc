@@ -97,32 +97,37 @@ void script_loadAllResources()
 	sys_loadResource("999", "999.bmp", RESOURCE_SPRITE, 9, 0);
 	io_spriteSetAlphaColor("999", 255, 0, 255);
 
-	lvl_loadShipLevel("newDeck1.dat");
-	lvl_loadShipLevel("newDeck2.dat");
-	lvl_loadShipLevel("newDeck3.dat");
-	lvl_loadShipLevel("newDeck4.dat");
-	lvl_loadShipLevel("newDeck5.dat");
-	lvl_loadShipLevel("newDeck6.dat");
-	lvl_loadShipLevel("newDeck8.dat");
-	lvl_loadShipLevel("newDeck9.dat");
-	lvl_loadShipLevel("newDeck10.dat");
-	lvl_loadShipLevel("newDeck11.dat");
-	lvl_loadShipLevel("newDeck12.dat");
-	lvl_loadShipLevel("newDeck13.dat");
-	lvl_loadShipLevel("newDeck14.dat");
-	lvl_loadShipLevel("newDeck15.dat");
-	lvl_loadShipLevel("newDeck16.dat");
-	lvl_loadShipLevel("newDeck17.dat");
-	lvl_loadShipLevel("newDeck18.dat");
-	lvl_loadShipLevel("newDeck19.dat");
-	lvl_loadShipLevel("newDeck20.dat");
+	lvl_loadShipLevel("116-newDeck0.dat");
+	lvl_loadShipLevel("116-newDeck1.dat");
+	lvl_loadShipLevel("116-newDeck2.dat");
+	lvl_loadShipLevel("116-newDeck3.dat");
+	lvl_loadShipLevel("116-newDeck4.dat");
+	lvl_loadShipLevel("116-newDeck5.dat");
+	lvl_loadShipLevel("116-newDeck6.dat");
+	lvl_loadShipLevel("116-newDeck8.dat");
+	lvl_loadShipLevel("116-newDeck9.dat");
+	lvl_loadShipLevel("116-newDeck10.dat");
+	lvl_loadShipLevel("116-newDeck11.dat");
+	lvl_loadShipLevel("116-newDeck12.dat");
+	lvl_loadShipLevel("116-newDeck13.dat");
+	lvl_loadShipLevel("116-newDeck14.dat");
+	lvl_loadShipLevel("116-newDeck15.dat");
+	lvl_loadShipLevel("116-newDeck16.dat");
+	lvl_loadShipLevel("116-newDeck17.dat");
+	lvl_loadShipLevel("116-newDeck18.dat");
+	lvl_loadShipLevel("116-newDeck19.dat");
+	lvl_loadShipLevel("116-newDeck20.dat");
 
 	initResourcesAllDone = true;
 
-	wayPointDestinationSize = 3.0f;
+	pixelsPerMeter          = 12.0f;        // 12 pixels is 1 meter
+	wayPointDestinationSize = 1.0f;         // 1 meter
 	shipDamping             = 0.0f;
 	playerRadius            = 12.0f;
 	playerMass              = 10.5f;
 	playerFriction          = 0.5f;
 	playerElastic           = 0.8f;
+	playerAcceleration      = 120.101f;
+	playerMaxSpeed          = 200.00f;
+	gravity                 = 90.20f;
 }

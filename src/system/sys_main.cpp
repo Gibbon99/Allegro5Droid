@@ -99,13 +99,13 @@ int main(int argc, char *argv[])
 
 		percentInFrame = accumulator / tickTime;
 
-		percentInFrame = cpflerp(0.0, 1.0f, percentInFrame);
+//		percentInFrame = cpflerp(0.0, 1.0f, percentInFrame);
 
-		double smoothedDelta = sys_smoothDelta2(percentInFrame);
+//		double smoothedDelta = sys_smoothDelta2(percentInFrame);
 
 //		smoothedDelta = cpfclamp(smoothedDelta, 0.0f, 1.0f);
 
-//		double smoothedDelta = percentInFrame;
+		double smoothedDelta = percentInFrame;
 
 		sys_displayScreen(smoothedDelta);
 		fps++;

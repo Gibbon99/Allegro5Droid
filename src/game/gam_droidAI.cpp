@@ -470,12 +470,12 @@ void ai_debugTree (std::string startNode)
 //-----------------------------------------------------------------------------
 //
 // Find the nearest tile type
-cpVect ai_findNearestTile (int whichDroid, int tileType, std::string levelName)
+b2Vec2 ai_findNearestTile (int whichDroid, int tileType, std::string levelName)
 //-----------------------------------------------------------------------------
 {
 	float  lowestDistance, distance;
 	int    lowestIndex;
-	cpVect tempLocation;
+	b2Vec2 tempLocation;
 
 	lowestDistance = 9999;
 
@@ -501,7 +501,7 @@ cpVect ai_findNearestTile (int whichDroid, int tileType, std::string levelName)
 
 			for (int i = 0; i != shipLevel.at (levelName).healing.size (); i++)
 				{
-					distance = cpvdist (shipLevel.at (levelName).healing[i].worldPos, shipLevel.at (levelName).droid[whichDroid].worldPos);
+					distance = b2Distance(shipLevel.at (levelName).healing[i].worldPos, shipLevel.at (levelName).droid[whichDroid].worldPos);
 					//
 					// TODO: Remove double check
 					// More than 2 tiles away
@@ -536,7 +536,7 @@ cpVect ai_findNearestTile (int whichDroid, int tileType, std::string levelName)
 					tempLocation.x = shipLevel.at (levelName).wayPoints[i].x;
 					tempLocation.y = shipLevel.at (levelName).wayPoints[i].y;
 
-					distance = cpvdist (tempLocation, shipLevel.at (levelName).droid[whichDroid].worldPos);
+					distance = b2Distance (tempLocation, shipLevel.at (levelName).droid[whichDroid].worldPos);
 					//
 					// More than 2 tiles away
 					if ((distance < lowestDistance) && (distance > (TILE_SIZE * 2)))
@@ -653,7 +653,7 @@ void ai_findBestState (int whichDroid, const std::string levelName)
 //-----------------------------------------------------------------------------
 //
 // Clear the hasCollided flag before running physics
-void drd_clearHadCollidedFlag (const std::string levelName)
+void ai_clearHadCollidedFlag (const std::string levelName)
 //-----------------------------------------------------------------------------
 {
 	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
@@ -671,7 +671,7 @@ void drd_clearHadCollidedFlag (const std::string levelName)
 //-----------------------------------------------------------------------------
 //
 // Process the AI for each enemy droid
-void drd_processDroidAI (const std::string levelName)
+void ai_processDroidAI (const std::string levelName)
 //-----------------------------------------------------------------------------
 {
 	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
@@ -686,7 +686,8 @@ void drd_processDroidAI (const std::string levelName)
 //					gam_processIgnoreCollisions ( levelName, i );
 
 //					gam_droidWeaponCharge ( i, levelName );
-				sys_updateDroidPosition(levelName, i);
+
+					sys_updateDroidPosition(levelName, i);
 				}
 //		gam_animateDroid ( whichLevel, i, delayInterval );
 		}

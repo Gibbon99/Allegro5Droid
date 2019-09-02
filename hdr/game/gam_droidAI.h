@@ -98,12 +98,12 @@ extern int          collisionDamageInflicted;
 extern float        badHealthFactor;
 
 // Process the AI for each enemy droid
-void drd_processDroidAI ( std::string levelName);
+void ai_processDroidAI (const std::string levelName);
 
 // Clear the hasCollided flag before running physics
 void drd_clearHadCollidedFlag();
 
-cpVect ai_findNearestTile ( int whichDroid, int tileType, std::string levelName );
+b2Vec2 ai_findNearestTile ( int whichDroid, int tileType, std::string levelName );
 
 
 

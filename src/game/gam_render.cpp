@@ -8,7 +8,7 @@
 PARA_BITMAP *completeLevelBMP = nullptr;
 
 struct _tileTexCoords {
-	cpVect texCoord;
+	b2Vec2 texCoord;
 };
 
 _tileTexCoords *tileTexCoords   = nullptr;
@@ -17,7 +17,7 @@ int            numTileAcrossInTexture, numTilesDownInTexture;
 //-----------------------------------------------------------------------------
 //
 // Return texture coords for passed in tile
-cpVect gam_getTileTexCoords (int whichTile)
+b2Vec2 gam_getTileTexCoords (int whichTile)
 //-----------------------------------------------------------------------------
 {
 	return tileTexCoords[whichTile].texCoord;
@@ -67,7 +67,7 @@ void inline gam_drawSingleTile (float destX, float destY, int whichTile)
 //-----------------------------------------------------------------------------
 {
 	static int    previousTile = -1;
-	static cpVect textureCoordsSrc;
+	static b2Vec2 textureCoordsSrc;
 
 #ifdef TILE_LOOKUP
 	if (previousTile != whichTile)
@@ -145,12 +145,15 @@ void gam_drawAllTiles ()
 //-----------------------------------------------------------------------------
 //
 // Draw the visible screen
-void gam_drawVisibleScreen (double interpolation)
+void gam_drawVisibleScreen (float interpolation)
 //-----------------------------------------------------------------------------
 {
-	cpVect renderPlayerWorldPos;
+	b2Vec2 renderPlayerWorldPos;
 
-	renderPlayerWorldPos = previousPlayerWorldPos + ((playerDroid.worldPos - previousPlayerWorldPos) * interpolation);
+	renderPlayerWorldPos = playerDroid.worldPos - previousPlayerWorldPos;
+	renderPlayerWorldPos *= interpolation;
+	renderPlayerWorldPos += previousPlayerWorldPos;
+
 	al_set_target_bitmap (backingBitmap);
 	al_draw_bitmap_region (completeLevelBMP,
 	                       (float)renderPlayerWorldPos.x - (screenWidth / 2),

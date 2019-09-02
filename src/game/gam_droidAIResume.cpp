@@ -60,8 +60,8 @@ int ai_onResumeDest ( int whichDroid, const std::string levelName )
 int ai_reachedResumeDest ( int whichDroid, const std::string levelName )
 //-----------------------------------------------------------------------------
 {
-	cpVect nearestWP;
-	cpVect droidWorldPosTiles;
+	b2Vec2 nearestWP;
+	b2Vec2 droidWorldPosTiles;
 
 	if ( !shipLevel.at( levelName ).droid[whichDroid].destSet )
 		{

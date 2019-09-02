@@ -44,7 +44,7 @@ int          aStarPathInterval;      // From script
 //-----------------------------------------------------------------------------
 //
 // Find the distance from one tile to the next - Manhatten distance
-int gam_AStarFindDistance ( cpVect fromTile, cpVect toTile )
+int gam_AStarFindDistance ( b2Vec2 fromTile, b2Vec2 toTile )
 //-----------------------------------------------------------------------------
 {
 	int costX, costY;
@@ -58,7 +58,7 @@ int gam_AStarFindDistance ( cpVect fromTile, cpVect toTile )
 //-----------------------------------------------------------------------------
 //
 // Add a tile to the openNode list
-inline void gam_AStarAddTileToOpenNode ( int whichPath, cpVect whichTile, int moveCost, int parent )
+inline void gam_AStarAddTileToOpenNode ( int whichPath, b2Vec2 whichTile, int moveCost, int parent )
 //-----------------------------------------------------------------------------
 {
 #ifdef DEBUG_ASTAR
@@ -178,7 +178,7 @@ bool gam_AStarIsTileSolid ( int tileIndex, int whichPath )
 //-----------------------------------------------------------------------------
 //
 // Check if node is in the CLOSED list
-bool gam_AStarIsNodeInClosedList ( int whichPath, cpVect whichNode )
+bool gam_AStarIsNodeInClosedList ( int whichPath, b2Vec2 whichNode )
 //-----------------------------------------------------------------------------
 {
 	for ( int i = 0; i != (int)path[whichPath].closedNodes.size(); i++ )
@@ -193,7 +193,7 @@ bool gam_AStarIsNodeInClosedList ( int whichPath, cpVect whichNode )
 //-----------------------------------------------------------------------------
 //
 // Check if node is in the OPEN list
-bool gam_AStarIsNodeInOpenList ( int whichPath, cpVect whichNode )
+bool gam_AStarIsNodeInOpenList ( int whichPath, b2Vec2 whichNode )
 //-----------------------------------------------------------------------------
 {
 	for ( int i = 0; i != (int)path[whichPath].openNodes.size(); i++ )
@@ -326,7 +326,7 @@ bool gam_AStarGenerateNewNode ( int whichPath, int whichDirection )
 //------------------------------------------------------------
 //
 // Draw debug graphic
-void gam_AStarDebugDraw ( cpVect lineStart, cpVect lineFinish, int whichPath, int count )
+void gam_AStarDebugDraw ( b2Vec2 lineStart, b2Vec2 lineFinish, int whichPath, int count )
 //------------------------------------------------------------
 {
 //	lineStart = sys_worldToScreen ( lineStart, 2 );
@@ -361,8 +361,8 @@ void gam_AStarDebugWayPoints ( int whichPath )
 	if (path[whichPath].wayPoints.empty())
 		return;
 
-	cpVect lineStart;
-	cpVect lineFinish;
+	b2Vec2 lineStart;
+	b2Vec2 lineFinish;
 
 	int		i;
 
@@ -503,7 +503,7 @@ void gam_AStarCompressWaypoints ( int whichPath )
 //-----------------------------------------------------------------------------
 {
 	int current = 1;
-	std::vector<cpVect>		newPoints;
+	std::vector<b2Vec2>		newPoints;
 
 	newPoints.push_back ( path[whichPath].wayPoints[0] );
 
@@ -542,7 +542,7 @@ void gam_AStarCompressWaypoints ( int whichPath )
 void gam_AStarConvertToCoords ( int whichPath )
 //-----------------------------------------------------------------------------
 {
-	cpVect tempWaypoint;
+	b2Vec2 tempWaypoint;
 
 	for ( int i = 0; i != (int)path[whichPath].foundPath.size(); i++ )
 		{
@@ -673,16 +673,16 @@ void gam_AStarStartPath ( int whichPath )
 //
 // Allocate new structure if required or reuse existing one
 // Start thread process
-int gam_AStarRequestNewPath ( cpVect start, cpVect destination, int whichDroid, const std::string whichLevel )
+int gam_AStarRequestNewPath ( b2Vec2 start, b2Vec2 destination, int whichDroid, const std::string whichLevel )
 //------------------------------------------------------------
 {
 	_nodeList 	        tempPath;
 	int 		        whichPathIndex;
-	cpFloat 		    distanceTest;
+	float 		    distanceTest;
 
 	static bool initDone = false;
 
-	distanceTest = cpvdist ( start, destination );
+	distanceTest = b2Distance ( start, destination );
 	if ( distanceTest < 2 )	// 2 Tiles
 		{
 			printf ( "ERROR: Start and destination are too close together.\n" );

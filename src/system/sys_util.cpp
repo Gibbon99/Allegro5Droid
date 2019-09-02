@@ -10,7 +10,7 @@ typedef struct
 } _memoryMap;
 
 std::map<std::string, _memoryMap> memoryMap;
-cpBB                              visibleScreenArea;
+b2AABB                            visibleScreenArea;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -87,13 +87,13 @@ void sys_freeMemory()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Heads towards destination
-cpVect sys_getDirection(cpVect sourcePoint, cpVect destPoint)
+b2Vec2 sys_getDirection(b2Vec2 sourcePoint, b2Vec2 destPoint)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	cpVect tempDirection;
+	b2Vec2 tempDirection;
 
-	tempDirection = cpvsub(sourcePoint, destPoint);
-	tempDirection = cpvnormalize(tempDirection);
+	tempDirection = sourcePoint - destPoint;
+	tempDirection.Normalize();
 
 	return tempDirection;
 }
@@ -104,44 +104,79 @@ cpVect sys_getDirection(cpVect sourcePoint, cpVect destPoint)
 void sys_updateVisibleScreenArea()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	visibleScreenArea.l = playerDroid.worldPos.x - (screenWidth * 0.5);
-	visibleScreenArea.b = playerDroid.worldPos.y + (screenHeight * 0.5);
-	visibleScreenArea.r = playerDroid.worldPos.x + (screenWidth * 0.5);
-	visibleScreenArea.t = playerDroid.worldPos.y - (screenHeight * 0.5);
+	visibleScreenArea.lowerBound.x = playerDroid.worldPos.x - (screenWidth * 0.5);
+	visibleScreenArea.lowerBound.y = playerDroid.worldPos.y + (screenHeight * 0.5);
+	visibleScreenArea.upperBound.x = playerDroid.worldPos.x + (screenWidth * 0.5);
+	visibleScreenArea.upperBound.y = playerDroid.worldPos.y - (screenHeight * 0.5);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Is an object visible on the screen
-cpBool sys_visibleOnScreen(cpVect worldCoord, int shapeSize)
+bool sys_visibleOnScreen(b2Vec2 worldCoord, int shapeSize)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	static int previousShapeSize = -1;
-	cpBB       tempVisibleScreenArea;
+	b2AABB     tempVisibleScreenArea;
 
 	if (previousShapeSize != shapeSize)
 	{
 		tempVisibleScreenArea = visibleScreenArea;
-		tempVisibleScreenArea.l -= shapeSize;
-		tempVisibleScreenArea.b += shapeSize;
-		tempVisibleScreenArea.r += shapeSize;
-		tempVisibleScreenArea.t -= shapeSize;
+		tempVisibleScreenArea.lowerBound.x -= shapeSize;
+		tempVisibleScreenArea.lowerBound.y -= shapeSize;
+		tempVisibleScreenArea.upperBound.x += shapeSize;
+		tempVisibleScreenArea.upperBound.x += shapeSize;
 		previousShapeSize = shapeSize;
-		return !cpBBContainsVect(tempVisibleScreenArea, worldCoord);
+
+		if (worldCoord.x < tempVisibleScreenArea.lowerBound.x)
+		{
+			return false;
+		}
+		if (worldCoord.x > tempVisibleScreenArea.upperBound.x)
+		{
+			return false;
+		}
+		if (worldCoord.y < tempVisibleScreenArea.lowerBound.y)
+		{
+			return false;
+		}
+		if (worldCoord.y > tempVisibleScreenArea.upperBound.y)
+		{
+			return false;
+		}
+
+		return true;
 	}
-	return !cpBBContainsVect(visibleScreenArea, worldCoord);
+	if (worldCoord.x < visibleScreenArea.lowerBound.x)
+	{
+		return false;
+	}
+	if (worldCoord.x > visibleScreenArea.upperBound.x)
+	{
+		return false;
+	}
+	if (worldCoord.y < visibleScreenArea.lowerBound.y)
+	{
+		return false;
+	}
+	if (worldCoord.y > visibleScreenArea.upperBound.y)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Convert worldPosition coords to screen coords
-cpVect sys_worldToScreen(cpVect worldPos, int shapeSize)
+b2Vec2 sys_worldToScreen(b2Vec2 worldPos, int shapeSize)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	cpVect screenCoords;
+	b2Vec2 screenCoords;
 
-	if (sys_visibleOnScreen(worldPos, shapeSize) != 0)
+	if (sys_visibleOnScreen(worldPos, shapeSize) != 0)      // TODO - check why it's returning -1 -1
 	{
 		screenCoords.x = worldPos.x - (playerDroid.worldPos.x - (screenWidth / 2));
 		screenCoords.y = worldPos.y - (playerDroid.worldPos.y - (screenHeight / 2));
@@ -150,6 +185,9 @@ cpVect sys_worldToScreen(cpVect worldPos, int shapeSize)
 	{
 		screenCoords.x = -1;
 		screenCoords.y = -1;
+
+		screenCoords.x = worldPos.x - (playerDroid.worldPos.x - (screenWidth / 2));
+		screenCoords.y = worldPos.y - (playerDroid.worldPos.y - (screenHeight / 2));
 	}
 	return screenCoords;
 }

@@ -172,7 +172,7 @@ void log_logMessage(int logLevel, std::string logText)
 	if (LOG_LEVEL_EXIT == logLevel)
 	{
 		printf("[ %f ] - ERROR : %s\n", PARA_getTime(), logText.c_str());
-		PARA_rest(1000);
+		PARA_rest(2);
 		sys_shutdownToSystem();
 	}
 

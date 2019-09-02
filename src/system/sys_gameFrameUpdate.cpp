@@ -20,12 +20,13 @@ void sys_gameTickRun()
 		case MODE_GAME:
 			io_testAnimateSprite();
 			gam_processPlayerMovement ();
-			cpBodySetForce (playerDroid.body, playerDroid.velocity);
+			playerDroid.body->ApplyForce(playerDroid.velocity, playerDroid.body->GetWorldCenter(), true);
 			sys_updateVisibleScreenArea();
-			drd_processDroidAI ( lvl_getCurrentLevelName() );
+			ai_processDroidAI(lvl_getCurrentLevelName());
 
-			//	cpSpaceStep (space, SKIP_TICKS);
-			cpSpaceStep (space, 1000.0f / TICKS_PER_SECOND);
+			sys_stepPhysicsWorld (1.0f / TICKS_PER_SECOND);
+
+			playerDroid.body->SetLinearVelocity({0,0});
 			break;
 
 		default:

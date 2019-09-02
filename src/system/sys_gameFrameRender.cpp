@@ -132,18 +132,15 @@ void sys_displayScreen (double interpolation)
 
 			case MODE_GAME:
 
-				gam_drawVisibleScreen (interpolation);
-//			lvl_showWayPoints (lvl_getCurrentLevelName());
-//			sys_debugPhysics(lvl_getCurrentLevelName());
-//				sys_debugPhysicsWalls(lvl_getCurrentLevelName());
+			gam_drawVisibleScreen (interpolation);
+			lvl_showWayPoints (lvl_getCurrentLevelName());
+			sys_debugPhysics(lvl_getCurrentLevelName());
+//			sys_debugPhysicsWalls(lvl_getCurrentLevelName());
 
 			gam_renderDroids (lvl_getCurrentLevelName(), interpolation);
 
 //			io_renderSpriteFrame("123", io_getFrame(), screenWidth / 2, screenHeight / 2);
 			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
-
-
-
 			hud_renderHUD ();
 			break;
 
@@ -156,7 +153,7 @@ void sys_displayScreen (double interpolation)
 	//
 	// Draw everything here
 	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
-	fnt_printSystemFont (5, 10, sys_getString ("thinkFPS [ %f ] frameTime [ %f ] ", printThinkFPS, frameTimePrint));
+	fnt_printSystemFont (5, 10, sys_getString ("worldPos [ %f %f ] ", playerDroid.worldPos.x, playerDroid.worldPos.y));
 	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
 	fnt_printSystemFont (5, 30, sys_getString ("Pos [ %f %f ]", playerDroid.worldPos.x, playerDroid.worldPos.y));
 
