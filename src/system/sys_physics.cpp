@@ -8,9 +8,10 @@
 typedef struct
 {
 	b2BodyDef    bodyDef;
-	b2Body       *body;
+	b2Body       *body = nullptr;
 	b2EdgeShape  shape;
 	b2FixtureDef fixture;
+	_userData    *userData;
 } __physicWall;
 
 float pixelsPerMeter;           // Set from startup script
@@ -28,9 +29,120 @@ float  wallRadius;               // Set from startup script
 
 bool physicsStarted;
 
-b2World *physicsWorld;
-int32   velocityIterations = 8;   //how strongly to correct velocity
-int32   positionIterations = 3;   //how strongly to correct position
+b2World       *physicsWorld;
+int32         velocityIterations = 8;   //how strongly to correct velocity
+int32         positionIterations = 3;   //how strongly to correct position
+paraDebugDraw g_paraDebugDraw;
+
+
+paraDebugDraw::paraDebugDraw()
+{
+}
+
+paraDebugDraw::~paraDebugDraw()
+{
+}
+
+void paraDebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
+{
+
+}
+
+void paraDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
+{
+	std::vector<ALLEGRO_VERTEX>     vertexes;
+	ALLEGRO_VERTEX  tempVertex;
+	b2Vec2 tempVert;
+
+	for (int i = 0; i != vertexCount; i++)
+	{
+		tempVertex.x = vertices[i].x;
+		tempVertex.y = vertices[i].y;
+		tempVertex.z = 0;
+
+		tempVertex.x  *= pixelsPerMeter;
+		tempVertex.y  *= pixelsPerMeter;
+
+		tempVert.x = tempVertex.x;
+		tempVert.y = tempVertex.y;
+
+		tempVert = sys_worldToScreen(tempVert, 100);
+
+		tempVertex.x = tempVert.x;
+		tempVertex.y = tempVert.y;
+
+		tempVertex.color = al_map_rgb(255, 255, 0);
+		vertexes.push_back(tempVertex);
+	}
+
+	al_draw_prim(&vertexes[0], nullptr, nullptr, 0, vertexCount, ALLEGRO_PRIM_TRIANGLE_FAN );
+
+}
+
+
+void paraDebugDraw::DrawTransform(const b2Transform& xf)
+{}
+
+void paraDebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
+{}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Render a debug line segment
+void paraDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	b2Vec2 startLine;
+	b2Vec2 endLine;
+
+	startLine = p1;
+	endLine = p2;
+
+	startLine.x *= pixelsPerMeter;
+	startLine.y *= pixelsPerMeter;
+
+	endLine.x *= pixelsPerMeter;
+	endLine.y *= pixelsPerMeter;
+
+	startLine = sys_worldToScreen(startLine, 100);
+	endLine = sys_worldToScreen(endLine, 100);
+
+	al_draw_line(startLine.x, startLine.y, endLine.x, endLine.y, al_map_rgb(50, 0, 255), 2);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Render a solid debug circle
+void paraDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	b2Vec2 tempPosition;
+
+	tempPosition = center;
+	tempPosition *= pixelsPerMeter;
+	radius *= pixelsPerMeter;
+
+	tempPosition = sys_worldToScreen(tempPosition, radius);
+
+	al_draw_filled_circle(tempPosition.x, tempPosition.y, radius, al_map_rgb(0, 250, 0));
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Debug function to show physics circle
+void paraDebugDraw::DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color)
+//----------------------------------------------------------------------------------------------------------------------
+{
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Return pointer to current physics world
+b2World *sys_getPhysicsWorld()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	return physicsWorld;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -82,13 +194,18 @@ void sys_setupPlayerPhysics()
 	playerDroid.bodyDef.angle = 0;
 	playerDroid.body          = physicsWorld->CreateBody(&playerDroid.bodyDef);
 
+	playerDroid.userData            = new _userData;
+	playerDroid.userData->userType  = PHYSIC_TYPE_PLAYER;
+	playerDroid.userData->dataValue = -1;
+	playerDroid.body->SetUserData(playerDroid.userData);
+
 	playerDroid.shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
 	playerDroid.shape.m_p.Set(0, 0);
 
 	playerDroid.fixtureDef.shape       = &playerDroid.shape;
 	playerDroid.fixtureDef.density     = 1;
 	playerDroid.fixtureDef.friction    = 0.3f;
-	playerDroid.fixtureDef.restitution = 0.1f;
+	playerDroid.fixtureDef.restitution = 1.0f;
 	playerDroid.body->CreateFixture(&playerDroid.fixtureDef);
 
 	playerDroid.velocity.x = 0.0f;
@@ -106,6 +223,10 @@ bool sys_setupPhysicsEngine()
 
 	// Construct a world object, which will hold and simulate the rigid bodies.
 	physicsWorld = new b2World(gravity);
+
+	physicsWorld->SetContactListener(&myContactListenerInstance);
+	g_paraDebugDraw.SetFlags(b2Draw::e_shapeBit);  // Draw shapes
+	physicsWorld->SetDebugDraw(&g_paraDebugDraw);
 
 	physicsStarted = true;
 
@@ -153,7 +274,7 @@ void sys_setupSolidWalls(const std::string levelName)
 {
 	b2Vec2              wallStart, wallFinish;
 	std::vector<b2Vec2> wallPositions;
-	__physicWall    tempWall;
+	__physicWall        tempWall;
 
 	if (0 == shipLevel.at(levelName).numLineSegments)
 	{
@@ -171,6 +292,11 @@ void sys_setupSolidWalls(const std::string levelName)
 		tempWall.bodyDef.type = b2_staticBody;
 		tempWall.bodyDef.position.Set(0, 0);
 		tempWall.body = physicsWorld->CreateBody(&tempWall.bodyDef);
+
+		tempWall.userData            = new _userData;
+		tempWall.userData->userType  = PHYSIC_TYPE_WALL;
+		tempWall.userData->dataValue = -2;
+		tempWall.body->SetUserData(tempWall.userData);
 
 		tempWall.shape.Set(wallStart, wallFinish);
 		tempWall.fixture.shape = &tempWall.shape;
@@ -218,48 +344,22 @@ void sys_setupEnemyPhysics(const std::string levelName)
 		shipLevel.at(levelName).droid[i].bodyDef.angle = 0;
 		shipLevel.at(levelName).droid[i].body          = physicsWorld->CreateBody(&shipLevel.at(levelName).droid[i].bodyDef);
 
+		shipLevel.at(levelName).droid[i].userData            = new _userData;
+		shipLevel.at(levelName).droid[i].userData->userType  = PHYSIC_TYPE_ENEMY;
+		shipLevel.at(levelName).droid[i].userData->dataValue = i;
+		shipLevel.at(levelName).droid[i].body->SetUserData(shipLevel.at(levelName).droid[i].userData);
+
 		shipLevel.at(levelName).droid[i].shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
 		shipLevel.at(levelName).droid[i].shape.m_p.Set(0, 0);
 
 		shipLevel.at(levelName).droid[i].fixtureDef.shape       = &shipLevel.at(levelName).droid[i].shape;
 		shipLevel.at(levelName).droid[i].fixtureDef.density     = 1;
 		shipLevel.at(levelName).droid[i].fixtureDef.friction    = 0.3f;
-		shipLevel.at(levelName).droid[i].fixtureDef.restitution = 0.1f;
+		shipLevel.at(levelName).droid[i].fixtureDef.restitution = 1.0f;
 		shipLevel.at(levelName).droid[i].body->CreateFixture(&shipLevel.at(levelName).droid[i].fixtureDef);
 	}
 
 	shipLevel.at(levelName).droidPhysicsCreated = true;
-}
-
-//-----------------------------------------------------------------------------
-//
-// Debug physics objects
-void sys_debugPhysics(std::string levelName)
-//-----------------------------------------------------------------------------
-{
-	b2Vec2 tempPosition;
-
-	for (int i = 0; i != shipLevel.at(levelName).numDroids; i++)
-	{
-		//
-		// Check body is valid
-		//
-//			if (cpTrue == cpSpaceContainsBody (space, shipLevel.at (levelName).droid[i].body))
-		{
-			tempPosition = shipLevel.at(levelName).droid[i].body->GetPosition();
-			tempPosition *= pixelsPerMeter;
-
-			tempPosition = sys_worldToScreen(tempPosition, SPRITE_SIZE);
-
-
-			al_draw_circle(tempPosition.x, tempPosition.y, 12, al_map_rgb(255, 255, 255), 2);
-		}
-	}
-
-	tempPosition = playerDroid.body->GetPosition();
-	tempPosition *= pixelsPerMeter;
-	tempPosition = sys_worldToScreen(tempPosition, SPRITE_SIZE);
-	al_draw_circle(tempPosition.x, tempPosition.y, 12, al_map_rgb(255, 255, 255), 2);
 }
 
 //---------------------------------------------------------------
@@ -286,16 +386,11 @@ void sys_updateDroidPosition(const std::string levelName, int whichDroid)
 	//
 	// Check body is valid
 	//
-//	if (cpTrue == cpSpaceContainsBody (space, shipLevel.at (levelName).droid[whichDroid].body))
+	if (nullptr != shipLevel.at(levelName).droid[whichDroid].body)
 	{
 		tempPosition = shipLevel.at(levelName).droid[whichDroid].body->GetPosition();      // Get position in meters
 		tempPosition.x *= pixelsPerMeter;           // Change to pixels
 		tempPosition.y *= pixelsPerMeter;
-
-		if (0 == whichDroid)
-		{
-			printf("Position [ %f %f ]\n", tempPosition.x, tempPosition.y);
-		}
 
 		if ((tempPosition.x < 0) || (tempPosition.y < 0) || (tempPosition.x > maxWorldSize.x) ||
 		    (tempPosition.y > maxWorldSize.y))
@@ -309,13 +404,11 @@ void sys_updateDroidPosition(const std::string levelName, int whichDroid)
 
 		shipLevel.at(levelName).droid[whichDroid].body->SetLinearVelocity({0, 0});
 	}
-/*
 	else
-		{
-			printf ("ERROR: Attempting to get position from invalid body - droid [ %i ]\n", whichDroid);
-			return;
-		}
-		*/
+	{
+		printf("ERROR: Attempting to get updateDroidPosition from invalid body - droid [ %i ]\n", whichDroid);
+		return;
+	}
 }
 
 

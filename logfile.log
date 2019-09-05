@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-02-09-2019	21:58:27
+05-09-2019	23:38:48
 Logfile started...
 INFO | Script [ english.sc ]
 INFO | Script [ german.sc ]
@@ -37,8 +37,8 @@ INFO | Section has been added [ italian.sc ]
 INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ resources.sc ]
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ -1401804528 ]
-INFO | Func ID for [ void script_initGUI() ] - [ -1401807472 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 159872656 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 159869712 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]

@@ -220,7 +220,7 @@ void sys_initAll ()
 	// Load resources from file system
 	sys_runScriptFunction("script_loadAllResources", "");
 
-	lvl_setCurrentLevelName("Research");
+	lvl_setCurrentLevelName("Bridge");
 
 	gam_calcTileTexCoords();
 
@@ -248,7 +248,7 @@ void sys_initAll ()
 //		    gam_doorTriggerSetup();
 	}
 
-	lvl_chengeToLevel("Research");
+	lvl_chengeToLevel("Bridge");
 
 	sys_changeMode(MODE_GAME, true);
 }

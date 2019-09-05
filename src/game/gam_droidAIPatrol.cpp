@@ -191,7 +191,6 @@ int ai_moveDroidToWaypoint(int whichDroid, const std::string levelName)
 	if (wayPointDistanceInMeters < wayPointDestinationSize + (TILE_SIZE / pixelsPerMeter))    // Distance in meters
 	{
 		shipLevel.at(levelName).droid[whichDroid].currentSpeed = playerMaxSpeed * 0.5f; //dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].maxSpeed * 0.5f;
-		printf("Droid [ %i ] near a waypoint\n", whichDroid);
 	}
 	else
 	{

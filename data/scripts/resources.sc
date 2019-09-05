@@ -127,7 +127,7 @@ void script_loadAllResources()
 	playerMass              = 10.5f;
 	playerFriction          = 0.5f;
 	playerElastic           = 0.8f;
-	playerAcceleration      = 120.101f;
-	playerMaxSpeed          = 200.00f;
-	gravity                 = 90.20f;
+	playerAcceleration      = 150.101f;
+	playerMaxSpeed          = 250.00f;
+	gravity                 = 190.20f;
 }

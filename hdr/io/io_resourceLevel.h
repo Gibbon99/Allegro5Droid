@@ -70,6 +70,7 @@ typedef struct
 	b2Vec2 destDirection;              // Which way is the droid heading
 	b2Vec2 velocity;                   // Current speed
 
+	_userData *userData;
 	int overTile;                   // which tile is the droid on
 
 	b2BodyDef     bodyDef;                      // Used for physics and collisions
@@ -170,7 +171,7 @@ bool resumeThreadStarted;    // Is the thread started and running
 typedef struct
 {
 	bool        isAlive;
-	float     angle;
+	float       angle;
 	b2Vec2      worldPos;
 	b2Vec2      previousWorldPos;
 	b2Vec2      travelDirection;

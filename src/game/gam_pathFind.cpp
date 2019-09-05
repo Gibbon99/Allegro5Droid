@@ -145,13 +145,13 @@ bool gam_AStarIsTileSolid ( int tileIndex, int whichPath )
 
 	switch ( whichTile )
 		{
-			case DOOR_ACROSS:
+			case DOOR_ACROSS_CLOSED:
 			case DOOR_ACROSS_OPEN_1:
 			case DOOR_ACROSS_OPEN_2:
 			case DOOR_ACROSS_CLOSING_1:
 			case DOOR_ACROSS_CLOSING_2:
 
-			case DOOR_UP:
+			case DOOR_UP_CLOSED:
 			case DOOR_UP_OPEN_1:
 			case DOOR_UP_OPEN_2:
 			case DOOR_UP_CLOSING_1:

@@ -3,6 +3,7 @@
 #include <hdr/io/io_fileSystem.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_render.h>
+#include <hdr/game/gam_doors.h>
 #include "hdr/io/io_resourceLevel.h"
 
 #define MAP_VERSION                116
@@ -359,6 +360,8 @@ void lvl_chengeToLevel(std::string newLevelName)
 
 	sys_setupEnemyPhysics(newLevelName);
 	sys_setupSolidWalls (newLevelName);
+
+	gam_doorTriggerSetup(newLevelName);
 
 	gam_drawAllTiles();
 }

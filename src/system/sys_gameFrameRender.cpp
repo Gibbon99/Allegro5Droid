@@ -10,6 +10,7 @@
 #include <hdr/io/io_resourceSprite.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_droids.h>
+#include <hdr/game/gam_doors.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -133,8 +134,7 @@ void sys_displayScreen (double interpolation)
 			case MODE_GAME:
 
 			gam_drawVisibleScreen (interpolation);
-			lvl_showWayPoints (lvl_getCurrentLevelName());
-			sys_debugPhysics(lvl_getCurrentLevelName());
+//			lvl_showWayPoints (lvl_getCurrentLevelName());
 //			sys_debugPhysicsWalls(lvl_getCurrentLevelName());
 
 			gam_renderDroids (lvl_getCurrentLevelName(), interpolation);
@@ -142,6 +142,9 @@ void sys_displayScreen (double interpolation)
 //			io_renderSpriteFrame("123", io_getFrame(), screenWidth / 2, screenHeight / 2);
 			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 			hud_renderHUD ();
+
+			sys_getPhysicsWorld()->DrawDebugData();
+
 			break;
 
 			default:

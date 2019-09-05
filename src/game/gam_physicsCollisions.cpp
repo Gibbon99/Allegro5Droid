@@ -5,16 +5,4 @@
 #include <hdr/game/gam_player.h>
 #include "hdr/game/gam_physicsCollisions.h"
 
-//-------------------------------------------------------------------
-//
-// Setup all the collision handlers
-void sys_setupCollisionHandlers ()
-//-------------------------------------------------------------------
-{
-	//
-	// Handle collision between ENEMY and ENEMY
-	//
-	//
-	// Handle collision between ENEMY and PLAYER
-	//
-}
+MyContactListener   myContactListenerInstance;
