@@ -28,3 +28,9 @@ void gam_getTunnelToUse ();
 
 // Get the positions of lifts
 void gam_findLiftPositions ( const std::string &levelName );
+
+// Activate the lift
+void gam_performLiftAction();
+
+// Put the player onto lift on new deck
+int gam_putPlayerOnLiftFromTunnel(int currentDeck);

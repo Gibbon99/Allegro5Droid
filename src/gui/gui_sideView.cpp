@@ -9,24 +9,24 @@ _sideviewBasicLevel sideviewLevels[MAX_LEVELS];
 _sideviewColors     sideviewColors[SIDEVIEW_NUM_COLORS];
 int                 drawOffsetX       = 0;
 float               sideviewDrawScale;      // From Script
-int currentDeckNumber = -1;
-int currentTunnel = 0;
+int                 currentDeckNumber = -1;
+int                 currentTunnel     = 0;
 
 // ----------------------------------------------------------------------------
 //
 // Wrap drawing a rectangle into our own function
-void gui_sideviewDrawRect(int x1, int y1, int x2, int y2, PARA_COLOR whichColor)
+void gui_sideviewDrawRect (int x1, int y1, int x2, int y2, PARA_COLOR whichColor)
 // ----------------------------------------------------------------------------
 {
-	al_draw_filled_rounded_rectangle(x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 1, 1, al_map_rgba(whichColor.r, whichColor.g, whichColor.b, whichColor.a));
+	al_draw_filled_rounded_rectangle (x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 1, 1, al_map_rgba (whichColor.r, whichColor.g, whichColor.b, whichColor.a));
 
-	al_draw_rounded_rectangle(x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 2, 2, al_map_rgba(0, 0, 0, 255), 1);
+	al_draw_rounded_rectangle (x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 2, 2, al_map_rgba (0, 0, 0, 255), 1);
 }
 
 //-----------------------------------------------------------------------------
 //
 // Create a color into the sideview array
-void gui_createSideViewColor(int index, int red, int green, int blue, int alpha)
+void gui_createSideViewColor (int index, int red, int green, int blue, int alpha)
 //-----------------------------------------------------------------------------
 {
 	if ((index < 0) || (index > SIDEVIEW_NUM_COLORS))
@@ -43,7 +43,7 @@ void gui_createSideViewColor(int index, int red, int green, int blue, int alpha)
 //-----------------------------------------------------------------------------
 //
 // setup the way the tunnels are linked to the levels
-void gui_setupTunnels()
+void gui_setupTunnels ()
 //-----------------------------------------------------------------------------
 {
 	tunnel[0].top    = 19;
@@ -120,7 +120,7 @@ void gui_setupTunnels()
 // ----------------------------------------------------------------------------
 //
 // load the sideview data from the external file
-bool gui_loadSideViewData(const std::string sideviewFileName)
+bool gui_loadSideViewData (const std::string sideviewFileName)
 // ----------------------------------------------------------------------------
 {
 	int           fileLength;
@@ -131,42 +131,42 @@ bool gui_loadSideViewData(const std::string sideviewFileName)
 	unsigned char levelCount[1];
 	PARA_MEM_FILE *fp;
 
-	int   smallX, largeX;
+	int smallX, largeX;
 
 	smallX = 1000;
 	largeX = 0;
 
-	fileLength = (int) io_getFileSize(sideviewFileName.c_str());
+	fileLength = (int) io_getFileSize (sideviewFileName.c_str ());
 	if (fileLength < 0)
 	{
-		log_logMessage(LOG_LEVEL_INFO, sys_getString("Fatal error getting level file size [ %s ].", sideviewFileName.c_str()));
+		log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", sideviewFileName.c_str ()));
 		return false;
 	}
 
-	fileBuffer = (char *) malloc(sizeof(char) * fileLength);
+	fileBuffer = (char *) malloc (sizeof (char) * fileLength);
 	if (nullptr == fileBuffer)
 	{
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Fatal memory allocation error when loading level file [ %s ].", sideviewFileName.c_str()));
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation error when loading level file [ %s ].", sideviewFileName.c_str ()));
 	}
 
-	if (-1 == io_getFileIntoMemory(sideviewFileName.c_str(), fileBuffer))
+	if (-1 == io_getFileIntoMemory (sideviewFileName.c_str (), fileBuffer))
 	{
-		free(fileBuffer);
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str()));
+		free (fileBuffer);
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str ()));
 	}
 
-	fp = para_openMemFile(fileBuffer, fileLength);
+	fp = para_openMemFile (fileBuffer, fileLength);
 	if (nullptr == fp)
 	{
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str()));
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str ()));
 	}
 
-	para_readFile(fp, &levelCount, sizeof(levelCount));
+	para_readFile (fp, &levelCount, sizeof (levelCount));
 	numberLevels = levelCount[0];
 
 	if (MAX_LEVELS != numberLevels)
 	{
-		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Bad format or date when reading file [ %s ]", sideviewFileName.c_str()));
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Bad format or date when reading file [ %s ]", sideviewFileName.c_str ()));
 	}
 
 	for (count = 0; count != numberLevels; count++)
@@ -175,7 +175,7 @@ bool gui_loadSideViewData(const std::string sideviewFileName)
 
 		sideviewDrawScale = 0.4f;
 
-		para_readFile(fp, (void *) &buf, sizeof(sideviewLevels[count].x1));
+		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
 		temp = buf[0] * sideviewDrawScale;
 		sideviewLevels[count].x1 = temp;
 
@@ -184,11 +184,11 @@ bool gui_loadSideViewData(const std::string sideviewFileName)
 			smallX = sideviewLevels[count].x1;
 		}
 
-		para_readFile(fp, (void *) &buf, sizeof(sideviewLevels[count].y1));
+		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
 		temp = (buf[0] - 100.0f) * sideviewDrawScale;
 		sideviewLevels[count].y1 = temp;
 
-		para_readFile(fp, (void *) &buf, sizeof(sideviewLevels[count].x2));
+		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
 		temp = buf[0] * sideviewDrawScale;
 		sideviewLevels[count].x2 = temp;
 
@@ -197,15 +197,15 @@ bool gui_loadSideViewData(const std::string sideviewFileName)
 			largeX = sideviewLevels[count].x2;
 		}
 
-		para_readFile(fp, (void *) &buf, sizeof(sideviewLevels[count].y2));
+		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
 		temp = (buf[0] - 100.0f) * sideviewDrawScale;
 		sideviewLevels[count].y2 = temp;
 	}
-	para_closeFile(fp);
+	para_closeFile (fp);
 
-	free(fileBuffer);
+	free (fileBuffer);
 
-	gui_setupTunnels();
+	gui_setupTunnels ();
 
 	drawOffsetX = (screenWidth - (largeX - smallX)) / 2;
 
@@ -217,7 +217,7 @@ bool gui_loadSideViewData(const std::string sideviewFileName)
 // ----------------------------------------------------------------------------
 //
 // Show the ship in its sideview on the screen
-void gui_drawSideView()
+void gui_drawSideView ()
 // ----------------------------------------------------------------------------
 {
 	int        count;
@@ -229,17 +229,17 @@ void gui_drawSideView()
 	b2Vec2     textPosition;
 	int        fontLineWidth, fontLineHeight;
 
-	currentDeckNumber = lvl_getDeckNumber(lvl_getCurrentLevelName());
+//	currentDeckNumber = lvl_getDeckNumber (lvl_getCurrentLevelName ());
 
 	count = 0;
-	x1 = sideviewLevels[count].x2;
-	y1 = sideviewLevels[count].y2;
-	gui_sideviewDrawRect(x1, y1, sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+	x1    = sideviewLevels[count].x2;
+	y1    = sideviewLevels[count].y2;
+	gui_sideviewDrawRect (x1, y1, sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 	toLifts++;
 
 	for (count = 1; count != MAX_LEVELS - lifts; count++)
 	{
-		gui_sideviewDrawRect(sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+		gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 		toLifts++;
 	}
 
@@ -249,11 +249,11 @@ void gui_drawSideView()
 		// highlite current level
 		if (0 == currentDeckNumber)
 		{
-			gui_sideviewDrawRect(sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
 		}
 		else
 		{
-			gui_sideviewDrawRect(sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
 		}
 	}
 	else
@@ -261,29 +261,29 @@ void gui_drawSideView()
 		switch (currentAlertLevel)
 		{
 			case ALERT_GREEN_TILE:
-				tempAlert = al_map_rgba(0, 255, 0, 255);
+				tempAlert = al_map_rgba (0, 255, 0, 255);
 				break;
 
 			case ALERT_YELLOW_TILE:
-				tempAlert = al_map_rgba(255, 255, 0, 255);
+				tempAlert = al_map_rgba (255, 255, 0, 255);
 				break;
 
 			case ALERT_RED_TILE:
-				tempAlert = al_map_rgba(255, 0, 0, 255);
+				tempAlert = al_map_rgba (255, 0, 0, 255);
 				break;
 
 			default:
-				tempAlert = al_map_rgba(255, 255, 255, 255);
+				tempAlert = al_map_rgba (255, 255, 255, 255);
 				break;
 		}
 
 		if (0 == currentDeckNumber)
 		{
-			gui_sideviewDrawRect(sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, tempAlert);
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, tempAlert);
 		}
 		else
 		{
-			gui_sideviewDrawRect(sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, tempAlert);
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, tempAlert);
 		}
 	}
 
@@ -291,7 +291,7 @@ void gui_drawSideView()
 	if ((currentTunnel != 3) && (currentTunnel != 6))
 	{
 		count = 13;
-		gui_sideviewDrawRect(sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+		gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 	}
 	else
 	{
@@ -299,19 +299,18 @@ void gui_drawSideView()
 		if (currentDeckNumber != 13)
 		{
 			count = 13;
-			gui_sideviewDrawRect(sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+			gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 		}
 	}
 
 	// fill in engine part
-	gui_sideviewDrawRect(sideviewLevels[7].x1, sideviewLevels[7].y1, sideviewLevels[7].x2, sideviewLevels[7].y2, sideviewColors[SIDEVIEW_ENGINE_COLOR].color);
+	gui_sideviewDrawRect (sideviewLevels[7].x1, sideviewLevels[7].y1, sideviewLevels[7].x2, sideviewLevels[7].y2, sideviewColors[SIDEVIEW_ENGINE_COLOR].color);
 	//
 	// draw the lifts
 	//
 	for (count = 0; count != lifts; count++)
 	{
-		gui_sideviewDrawRect(sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[
-				count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
+		gui_sideviewDrawRect (sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
 	}
 
 	/*
@@ -356,5 +355,5 @@ void gui_drawSideView()
 			                                                                                 255}, guiSurface, deckLocationString);
 		}
 		*/
-	}
+}
 

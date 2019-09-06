@@ -20,7 +20,7 @@ void sys_gameTickRun()
 
 		case MODE_GAME:
 			io_testAnimateSprite();
-			gam_processPlayerMovement ();
+			io_processKeyActions();
 			playerDroid.body->ApplyForce(playerDroid.velocity, playerDroid.body->GetWorldCenter(), true);
 			sys_updateVisibleScreenArea();
 			ai_processDroidAI(lvl_getCurrentLevelName());

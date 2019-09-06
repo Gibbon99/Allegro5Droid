@@ -221,8 +221,6 @@ void sys_initAll ()
 	// Load resources from file system
 	sys_runScriptFunction("script_loadAllResources", "");
 
-	lvl_setCurrentLevelName("Staterooms");
-
 	gam_calcTileTexCoords();
 
 	sys_runScriptFunction("script_initGUI", std::string());
@@ -242,12 +240,8 @@ void sys_initAll ()
 
 	for (auto &levelItr : shipLevel)
 	{
-//		sys_setupSolidWalls(levelItr.first);
 		gam_initDroidValues(levelItr.first);
-//		sys_setupEnemyPhysics(levelItr.first);
 //			gam_findHealingTiles    ( levelItr.first );
-//			gam_findLiftPositions   ( levelItr.first );
-//		    gam_doorTriggerSetup();
 	}
 
 	lvl_changeToLevel ("Staterooms", 0);

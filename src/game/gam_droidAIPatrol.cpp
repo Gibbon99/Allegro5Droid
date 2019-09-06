@@ -226,7 +226,7 @@ int ai_moveDroidToWaypoint(int whichDroid, const std::string levelName)
 	//
 	// Move the droid
 	//
-	shipLevel.at(levelName).droid[whichDroid].body->ApplyForce(shipLevel.at(levelName).droid[whichDroid].velocity, shipLevel.at(levelName).droid[whichDroid].body->GetWorldCenter(), true);
+	droidPhysics[whichDroid].body->ApplyForce(shipLevel.at(levelName).droid[whichDroid].velocity, droidPhysics[whichDroid].body->GetWorldCenter(), true);
 
 	//
 	// See if the droid has reached it's destination
@@ -239,7 +239,7 @@ int ai_moveDroidToWaypoint(int whichDroid, const std::string levelName)
 //			shipLevel.at (levelName).droid[whichDroid].currentSpeed *= 0.5f;
 //			shipLevel.at (levelName).droid[whichDroid].velocity = shipLevel.at (levelName).droid[whichDroid].destDirection;
 //			shipLevel.at (levelName).droid[whichDroid].velocity *= shipLevel.at (levelName).droid[whichDroid].currentSpeed;
-		shipLevel.at(levelName).droid[whichDroid].body->SetLinearVelocity(shipLevel.at(levelName).droid[whichDroid].velocity);
+		droidPhysics[whichDroid].body->SetLinearVelocity(shipLevel.at(levelName).droid[whichDroid].velocity);
 		return AI_RESULT_SUCCESS;
 	}
 	else

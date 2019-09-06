@@ -1,6 +1,7 @@
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/io/io_logFile.h>
 #include <hdr/io/io_keyboard.h>
+#include <hdr/game/gam_lifts.h>
 #include "hdr/game/gam_player.h"
 
 b2Vec2 previousPlayerWorldPos;
@@ -156,3 +157,14 @@ void gam_processPlayerMovement()
 	playerDroid.worldPos.y *= pixelsPerMeter;
 }
 
+//----------------------------------------------------------------------------
+//
+// Start all the actions resulting from pressing the action key
+void gam_processActionKey()
+//----------------------------------------------------------------------------
+{
+	if (playerDroid.overLiftTile)
+	{
+		gam_performLiftAction();
+	}
+}

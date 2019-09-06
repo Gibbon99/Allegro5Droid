@@ -165,6 +165,9 @@ void evt_handleEvents ()
 			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
 				keyBinding[gameUp].currentlyPressed = true;
 
+			if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
+				keyBinding[gameAction].currentlyPressed = true;
+
 			break;
 
 		case ALLEGRO_EVENT_KEY_UP:
@@ -179,6 +182,9 @@ void evt_handleEvents ()
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
 				keyBinding[gameUp].currentlyPressed = false;
+
+			if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
+				keyBinding[gameAction].currentlyPressed = false;
 
 			break;
 			//

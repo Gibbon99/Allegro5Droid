@@ -29,6 +29,7 @@ typedef struct _physicObject
 	b2CircleShape shape;
 	b2FixtureDef  fixtureDef;
 	b2Body        *body;
+	_userData *userData;
 } _physicObject;
 
 extern float pixelsPerMeter;           // Set from startup script
@@ -42,6 +43,8 @@ extern float  shipDamping;              // Set from startup script
 extern float  collisionSlop;            // Set from startup script
 extern float  wallFriction;             // Set from startup script
 extern float  wallRadius;               // Set from startup script
+
+extern std::vector<_physicObject> droidPhysics;
 
 class paraDebugDraw : public b2Draw
 {
@@ -103,3 +106,6 @@ void sys_stepPhysicsWorld (float stepAmount);
 
 // Return pointer to current physics world
 b2World *sys_getPhysicsWorld ();
+
+// Destroy physics as we leave the level
+void sys_destroyEnemyPhysics(const std::string levelName);

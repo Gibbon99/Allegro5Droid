@@ -1,5 +1,7 @@
 #include <hdr/gui/gui_text.h>
 #include <hdr/game/gam_lifts.h>
+#include <hdr/game/gam_player.h>
+#include <hdr/gui/gui_sideView.h>
 #include "hdr/io/io_keyboard.h"
 
 __KeyBindings keyBinding[NUMBER_ACTIONS];
@@ -46,12 +48,35 @@ void io_processKeyActions()
 {
 	switch (currentMode)
 	{
+		case MODE_GAME:
+			gam_processPlayerMovement ();
+			if (keyBinding[gameAction].currentlyPressed)
+			{
+				gam_processActionKey ();
+				keyBinding[gameAction].currentlyPressed = false;
+			}
+			break;
+
 		case MODE_LIFT_VIEW:
 			if (keyBinding[gameUp].currentlyPressed)
-				gam_moveLift(1);
+			{
+				gam_moveLift (1);
+				keyBinding[gameUp].currentlyPressed = false;
+			}
 
 			if (keyBinding[gameDown].currentlyPressed)
+			{
 				gam_moveLift (2);
+				keyBinding[gameDown].currentlyPressed = false;
+			}
+
+			if (keyBinding[gameAction].currentlyPressed)
+			{
+				keyBinding[gameAction].currentlyPressed = false;
+				lvl_changeToLevel (lvl_returnLevelNameFromDeck (currentDeckNumber), gam_putPlayerOnLiftFromTunnel(currentDeckNumber));
+
+				sys_changeMode (MODE_GAME, true);
+			}
 
 			break;
 	}

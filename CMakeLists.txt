@@ -203,19 +203,13 @@ set ( CXX_SRCS
         hdr/game/gam_physicsCollisions.h
         src/gui/gui_sideView.cpp hdr/gui/gui_sideView.h src/game/gam_lifts.cpp hdr/game/gam_lifts.h)
 
-# Define the C sources
-set(C_SRCS
-
-        )
-
-
 set_source_files_properties(
         ${CXX_SRCS} PROPERTIES COMPILE_FLAGS
         " -pg -g -O0")
 #        " -pg -g -O0 -fsanitize=address -fno-omit-frame-pointer")	# Address sanitizer - and memleak
 #        " -pg -g -O0 -fsanitize=thread -fno-omit-frame-pointer")	# Thread sanitizer
 
-add_executable(Allegro5Droid ${RC_SRCS} ${CXX_SRCS} ${C_SRCS})
+add_executable(Allegro5Droid ${RC_SRCS} ${CXX_SRCS})
 #target_link_libraries(Allegro5Droid ${LINK_OPTIONS})
 
 target_link_libraries(Allegro5Droid

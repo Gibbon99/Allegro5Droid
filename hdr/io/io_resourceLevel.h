@@ -48,7 +48,7 @@ typedef struct
 	int    currentFrame;       // which frame are we on
 	float  frameDelay;         // animation counter
 	b2Vec2 worldPos;           // Position in world coords
-}                   _basicHealing;
+} _basicHealing;
 
 typedef struct
 {
@@ -65,6 +65,13 @@ typedef struct
 	float currentSpeed;
 	float acceleration;
 
+	b2BodyDef     bodyDef;                      // Used for physics and collisions
+	b2CircleShape shape;
+	b2FixtureDef  fixtureDef;
+	b2Body        *body;
+	_userData *userData;
+
+
 	b2Vec2 worldPos;
 	b2Vec2 previousWorldPos;
 	b2Vec2 middlePosition;             // TODO set middle position for droids
@@ -73,13 +80,10 @@ typedef struct
 	b2Vec2 destDirection;              // Which way is the droid heading
 	b2Vec2 velocity;                   // Current speed
 
-	_userData *userData;
 	int       overTile;                   // which tile is the droid on
+	bool overLiftTile;
+	int liftIndex;                      // Which lift on the level are we over
 
-	b2BodyDef     bodyDef;                      // Used for physics and collisions
-	b2CircleShape shape;
-	b2FixtureDef  fixtureDef;
-	b2Body        *body;
 	float         mass;                       // Used for collision response
 
 	bool ignoreCollisions;           // Ignoring collisions for the time period
@@ -132,42 +136,6 @@ typedef struct
 
 	bool onHealingTile;
 	bool foundHealingTile;
-	/*
-b2Vec2 acceleration;
-
-b2Vec2 screenPos;
-
-
-//
-// States
-bool isStopped;
-bool isAlive;
-
-// Animation
-float currentFrameDelay;
-int currentFrame;
-
-
-
-// AI variables
-int ai_currentState;
-int ai_nextState;
-float ai_noActionCounter;
-float ai_noActionCount;
-
-b2Vec2 originPosition;     // Remember this to return to
-bool foundOriginPath;
-bool returnToOrigin;
-bool foundOriginPosition;
-
-float healingCount;
-bool foundWPTile;        // Go here after healing
-
-b2Vec2 destinationTile;        // Where is the droid heading
-bool resumeDestFound;        // Set from running thread - aStar found destination
-bool resumeThreadStarted;    // Is the thread started and running
-
-*/
 
 } _droid;
 

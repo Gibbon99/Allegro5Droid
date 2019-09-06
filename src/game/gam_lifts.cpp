@@ -6,7 +6,11 @@
 
 std::vector<__liftSensor> lifts;
 
+//----------------------------------------------------------------------------
+//
+// Activate the lift
 void gam_performLiftAction()
+//----------------------------------------------------------------------------
 {
 	currentDeckNumber = lvl_getDeckNumber (lvl_getCurrentLevelName ());
 	if (-1 == currentDeckNumber)
@@ -19,7 +23,7 @@ void gam_performLiftAction()
 	sys_changeMode (MODE_LIFT_VIEW, true);
 }
 
-// ----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
 //
 // Get the current deck we are on and are moving around on
 void gam_getCurrentDeck ( int checkLevel )
@@ -58,6 +62,11 @@ void gam_getTunnelToUse ()
 // ----------------------------------------------------------------------------
 {
 	auto levelIndexItr = lvl_getLevelIndex ( lvl_getCurrentLevelName ());
+
+	currentTunnel = levelIndexItr->second.lifts[playerDroid.liftIndex].tunnel;
+	gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
+
+	return;
 
 	switch ( levelIndexItr->second.numLifts )
 	{
@@ -107,8 +116,8 @@ void gam_getTunnelToUse ()
 			{
 				if ( levelIndexItr->second.deckNumber == 14 )
 				{
-					if (((playerDroid.middlePosition.x) > levelIndexItr->second.lifts[2].posX - TILE_SIZE) &&
-					    ((playerDroid.middlePosition.x) < levelIndexItr->second.lifts[2].posX + TILE_SIZE))
+					if (((playerDroid.middlePosition.x) > lifts[2].worldPosition.x - TILE_SIZE) &&
+					    ((playerDroid.middlePosition.x) < lifts[2].worldPosition.x + TILE_SIZE))
 					{
 						currentTunnel = levelIndexItr->second.lifts[2].tunnel;
 						gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
@@ -337,7 +346,7 @@ void gam_createLiftSensor(unsigned long whichLift, int index)
 
 	lifts[whichLift].userData            = new _userData;
 	lifts[whichLift].userData->userType  = PHYSIC_TYPE_LIFT;
-	lifts[whichLift].userData->dataValue = (int) whichLift;
+	lifts[whichLift].userData->dataValue = (int) index;
 	lifts[whichLift].body->SetUserData(lifts[whichLift].userData);
 
 	lifts[whichLift].shape.SetAsBox((lifts[whichLift].height) / pixelsPerMeter,	(lifts[whichLift].width) / pixelsPerMeter);
@@ -363,7 +372,14 @@ void gam_findLiftPositions ( const std::string &levelName )
 	countX = 0;
 	countY = 0;
 
-//	auto liftItr = shipLevel.at(levelName).lifts;
+	if (!lifts.empty())
+	{
+		for (auto liftItr : lifts)
+		{
+			sys_getPhysicsWorld ()->DestroyBody (liftItr.body);
+		}
+		lifts.clear();
+	}
 
 	for (int index = 0; index < shipLevel.at(levelName).levelDimensions.x * shipLevel.at(levelName).levelDimensions.y; index++)
 	{
@@ -371,9 +387,6 @@ void gam_findLiftPositions ( const std::string &levelName )
 
 		if ( LIFT_TILE == currentTile )
 		{
-//			shipLevel.at(levelName).lifts[countLift].posX = countX * TILE_SIZE;
-//			shipLevel.at(levelName).lifts[countLift].posY = countY * TILE_SIZE;
-
 			tempLift.worldPosition.x = (countX * TILE_SIZE) + (TILE_SIZE * 0.5f);
 			tempLift.worldPosition.y = (countY * TILE_SIZE) + (TILE_SIZE * 0.5f);
 

@@ -55,7 +55,7 @@ extern std::map<std::string, __sprite> sprites;
 //extern std::map<std::string, __tiles> tiles;
 
 // Called from script to load a resource
-void sys_loadResource (std::string key, std::string fileName, int type, int numFrames, int size);
+void sys_loadResource (const std::string& key, const std::string& fileName, int type, int numFrames, int size);
 
 // Draw a bitmap
-void sys_drawBitmap (std::string keyName, float posX, float posY, int drawMode);
+void sys_drawBitmap (const std::string& keyName, float posX, float posY, int drawMode);

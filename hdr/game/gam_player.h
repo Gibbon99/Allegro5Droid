@@ -15,3 +15,6 @@ b2Vec2 gam_getLiftWorldPosition (int whichLift, std::string whichLevel);
 
 // Process player movement
 void gam_processPlayerMovement ();
+
+// Start all the actions resulting from pressing the action key
+void gam_processActionKey();

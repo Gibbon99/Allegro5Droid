@@ -28,18 +28,19 @@ void contactListener::BeginContact (b2Contact *contact)
 				return;
 			}
 
-		case PHYSIC_TYPE_LIFT:
-			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
-			{
-				printf ("Player is on Lift tile.\n");
-				return;
-			}
-			break;
-
 		case PHYSIC_TYPE_DOOR:
 			if ((bodyUserData_B->userType == PHYSIC_TYPE_PLAYER) || (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY))
 			{
 				evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_DOOR, bodyUserData_A->dataValue, GAME_DOOR_STATE_ENTER, "");
+			}
+			break;
+
+		case PHYSIC_TYPE_LIFT:
+			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
+			{
+				playerDroid.overLiftTile = true;
+				playerDroid.liftIndex    = bodyUserData_A->dataValue;
+				return;
 			}
 			break;
 	}
@@ -55,7 +56,8 @@ void contactListener::BeginContact (b2Contact *contact)
 		case PHYSIC_TYPE_LIFT:
 			if (bodyUserData_A->userType == PHYSIC_TYPE_PLAYER)
 			{
-				printf ("Player is off lift tile.\n");
+				playerDroid.overLiftTile = true;
+				playerDroid.liftIndex    = bodyUserData_B->dataValue;
 				return;
 			}
 			break;
@@ -93,7 +95,8 @@ void contactListener::EndContact (b2Contact *contact)
 		case PHYSIC_TYPE_LIFT:
 			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
 			{
-				printf ("Player is OFF Lift tile.\n");
+				playerDroid.overLiftTile = false;
+				playerDroid.liftIndex    = -1;
 				return;
 			}
 			break;
@@ -111,7 +114,8 @@ void contactListener::EndContact (b2Contact *contact)
 		case PHYSIC_TYPE_LIFT:
 			if (bodyUserData_A->userType == PHYSIC_TYPE_PLAYER)
 			{
-				printf ("Player is OFF Lift tile.\n");
+				playerDroid.overLiftTile = false;
+				playerDroid.liftIndex    = -1;
 				return;
 			}
 			break;
