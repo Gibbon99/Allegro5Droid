@@ -5,6 +5,7 @@
 #include <hdr/io/io_resourceSprite.h>
 #include <hdr/game/gam_droidAIPatrol.h>
 #include <hdr/game/gam_player.h>
+#include <hdr/game/gam_doors.h>
 #include "hdr/system/sys_scriptConfig.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -26,6 +27,7 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable("float playerAcceleration", &playerAcceleration);
 	sys_scriptAddHostVariable("float playerMaxSpeed", &playerMaxSpeed);
 	sys_scriptAddHostVariable("float gravity", &gravity);
+	sys_scriptAddHostVariable("float doorAnimSpeed", &doorAnimSpeed);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

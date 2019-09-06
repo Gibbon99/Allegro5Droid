@@ -133,6 +133,8 @@ void sys_displayScreen (double interpolation)
 
 			case MODE_GAME:
 
+//				gam_drawAllTiles();
+				gam_renderDoorFrames();
 			gam_drawVisibleScreen (interpolation);
 //			lvl_showWayPoints (lvl_getCurrentLevelName());
 //			sys_debugPhysicsWalls(lvl_getCurrentLevelName());

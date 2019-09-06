@@ -71,7 +71,7 @@ void paraDebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, 
 		tempVertex.x = tempVert.x;
 		tempVertex.y = tempVert.y;
 
-		tempVertex.color = al_map_rgb(255, 255, 0);
+		tempVertex.color = al_map_rgba(155, 155, 0, 5);
 		vertexes.push_back(tempVertex);
 	}
 
@@ -107,7 +107,7 @@ void paraDebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Colo
 	startLine = sys_worldToScreen(startLine, 100);
 	endLine = sys_worldToScreen(endLine, 100);
 
-	al_draw_line(startLine.x, startLine.y, endLine.x, endLine.y, al_map_rgb(50, 0, 255), 2);
+	al_draw_line(startLine.x, startLine.y, endLine.x, endLine.y, al_map_rgba(50, 0, 155, 30), 2);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -124,7 +124,7 @@ void paraDebugDraw::DrawSolidCircle(const b2Vec2& center, float32 radius, const 
 
 	tempPosition = sys_worldToScreen(tempPosition, radius);
 
-	al_draw_filled_circle(tempPosition.x, tempPosition.y, radius, al_map_rgb(0, 250, 0));
+	al_draw_filled_circle(tempPosition.x, tempPosition.y, radius, al_map_rgba(0, 150, 0, 20));
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -14,6 +14,15 @@ struct _tileTexCoords {
 _tileTexCoords *tileTexCoords   = nullptr;
 int            numTileAcrossInTexture, numTilesDownInTexture;
 
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Return the backing bitmap to draw map onto
+PARA_BITMAP *gam_getCompleteLevel()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	return completeLevelBMP;
+}
+
 //-----------------------------------------------------------------------------
 //
 // Return texture coords for passed in tile

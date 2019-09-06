@@ -10,3 +10,9 @@ void gam_drawAllTiles();
 
 // Draw the visible screen
 void gam_drawVisibleScreen (float interpolation);
+
+// Draw a single tile from the tile sheet
+void inline gam_drawSingleTile (float destX, float destY, int whichTile);
+
+// Return the backing bitmap to draw map onto
+PARA_BITMAP *gam_getCompleteLevel();

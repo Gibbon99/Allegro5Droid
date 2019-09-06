@@ -13,15 +13,16 @@ typedef struct
 	int            tileIndex;
 	int            height;
 	int            width;
-	cpVect         topLeft;
-	cpVect         topRight;
-	cpVect         botLeft;
-	cpVect         botRight;
+//	cpVect         topLeft;
+//	cpVect         topRight;
+//	cpVect         botLeft;
+//	cpVect         botRight;
 	int            currentFrame;            // which frame are we on
 	float          frameDelay;                // speed to animate them at
-	float          nextFrame;                // counter for incrementing to next frame
-	bool           inUse;
-	b2Vec2         worldPosition = {0, 0};
+//	float          nextFrame;                // counter for incrementing to next frame
+	int            numberUsing;
+	b2Vec2         worldPosition  = {0, 0};
+	b2Vec2         renderPosition = {0, 0};
 	b2BodyDef      bodyDef;                      // Used for physics and collisions
 	b2PolygonShape shape;
 	b2FixtureDef   fixtureDef;
@@ -47,11 +48,16 @@ typedef struct
 #define DOOR_UP_CLOSING_2         18
 #define DOOR_UP_CLOSED            11
 
+extern float doorAnimSpeed;
+
 // Find the doors for this level and prepare a sensor objecty
 void gam_doorTriggerSetup(const std::string levelName);
 
 // Handle door sensor trigger
 void gam_handleDoorTrigger(int whichDoor, int state);
 
-// Debug door trigger sensors
-void gam_debugDoorTriggers();
+// Process the animation of a door
+void gam_animateDoor(int whichDoor, int state);
+
+// Render current door frames onto map
+void gam_renderDoorFrames();

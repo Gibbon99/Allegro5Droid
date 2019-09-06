@@ -118,8 +118,8 @@ void script_loadAllResources()
 	lvl_loadShipLevel("116-newDeck19.dat");
 	lvl_loadShipLevel("116-newDeck20.dat");
 
-	initResourcesAllDone = true;
-
+	initResourcesAllDone    = true;
+	doorAnimSpeed           = 1.1f;
 	pixelsPerMeter          = 12.0f;        // 12 pixels is 1 meter
 	wayPointDestinationSize = 1.0f;         // 1 meter
 	shipDamping             = 0.0f;

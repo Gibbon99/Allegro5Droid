@@ -1,8 +1,131 @@
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/io/io_logFile.h>
+#include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_render.h>
 #include "hdr/game/gam_doors.h"
 
 std::vector<_doorTrigger> doorTriggers;
+float                     doorAnimSpeed = 1.0f;         // From script
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Process the animation of a door
+void gam_animateDoor(int whichDoor, int state)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	int doorDelayTime = 0;
+
+	doorTriggers[whichDoor].frameDelay -= 5 * (1.0f / TICKS_PER_SECOND);
+	if (doorTriggers[whichDoor].frameDelay > 0.0f)
+	{
+		evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, state, "");
+		return;
+	}
+	doorTriggers[whichDoor].frameDelay = doorAnimSpeed;
+
+	if (state == GAME_DOOR_STATE_ENTER)
+	{
+		switch (doorTriggers[whichDoor].currentFrame)
+		{
+			case DOOR_ACROSS_CLOSED:
+				doorTriggers[whichDoor].currentFrame = DOOR_ACROSS_OPEN_1;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+				break;
+
+			case DOOR_ACROSS_OPEN_1:
+				doorTriggers[whichDoor].currentFrame = DOOR_ACROSS_OPEN_2;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+				break;
+
+			case DOOR_ACROSS_OPEN_2:
+				doorTriggers[whichDoor].currentFrame = DOOR_ACROSS_OPENED;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+				break;
+
+			case DOOR_UP_CLOSED:
+				doorTriggers[whichDoor].currentFrame = DOOR_UP_OPEN_1;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+				break;
+
+			case DOOR_UP_OPEN_1:
+				doorTriggers[whichDoor].currentFrame = DOOR_UP_OPEN_2;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+				break;
+
+			case DOOR_UP_OPEN_2:
+				doorTriggers[whichDoor].currentFrame = DOOR_UP_OPENED;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+				break;
+		}
+	}
+
+	if (state == GAME_DOOR_STATE_EXIT)
+	{
+		if (doorTriggers[whichDoor].numberUsing > 0)
+		{
+			return;
+		}
+
+		switch (doorTriggers[whichDoor].currentFrame)
+		{
+			case DOOR_ACROSS_OPENED:
+				doorTriggers[whichDoor].currentFrame = DOOR_ACROSS_CLOSING_1;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+				break;
+
+			case DOOR_ACROSS_CLOSING_1:
+				doorTriggers[whichDoor].currentFrame = DOOR_ACROSS_CLOSING_2;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+				break;
+
+			case DOOR_ACROSS_CLOSING_2:
+				doorTriggers[whichDoor].currentFrame = DOOR_ACROSS_CLOSED;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+				break;
+
+			case DOOR_UP_OPENED:
+				doorTriggers[whichDoor].currentFrame = DOOR_UP_CLOSING_1;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+				break;
+
+			case DOOR_UP_CLOSING_1:
+				doorTriggers[whichDoor].currentFrame = DOOR_UP_CLOSING_2;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+				break;
+
+			case DOOR_UP_CLOSING_2:
+				doorTriggers[whichDoor].currentFrame = DOOR_UP_CLOSED;
+				shipLevel.at(lvl_getCurrentLevelName()).tiles[doorTriggers[whichDoor].tileIndex] = doorTriggers[whichDoor].currentFrame;
+				evt_pushEvent(doorDelayTime, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+				break;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Render current door frames onto map
+void gam_renderDoorFrames()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	al_set_target_bitmap(gam_getCompleteLevel());
+
+	for (auto doorIndex : doorTriggers)
+	{
+		gam_drawSingleTile(doorIndex.renderPosition.x, doorIndex.renderPosition.y, doorIndex.currentFrame);
+	}
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -10,11 +133,21 @@ std::vector<_doorTrigger> doorTriggers;
 void gam_handleDoorTrigger(int whichDoor, int state)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	if (state == 0)
-		printf("Enter Trigger area for door [ %i ]\n", whichDoor);
+	switch (state)
+	{
+		case GAME_DOOR_STATE_ENTER:
+			doorTriggers[whichDoor].numberUsing++;
+			evt_pushEvent(0, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_ENTER, "");
+			// play door sound
+			break;
 
-	if (state == 1)
-		printf("Exit Trigger area for door [ %i ]\n", whichDoor);
+		case GAME_DOOR_STATE_EXIT:
+			doorTriggers[whichDoor].numberUsing--;
+			evt_pushEvent(0, PARA_EVENT_GAME, GAME_EVENT_DOOR_ANIMATE, whichDoor, GAME_DOOR_STATE_EXIT, "");
+			// play door sound
+			break;
+	}
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -29,13 +162,15 @@ void gam_createDoorSensor(unsigned long whichDoor, int index)
 			doorTriggers[whichDoor].worldPosition.y / pixelsPerMeter);
 	doorTriggers[whichDoor].body = sys_getPhysicsWorld()->CreateBody(&doorTriggers[whichDoor].bodyDef);
 
-	doorTriggers[whichDoor].userData = new _userData;
-	doorTriggers[whichDoor].userData->userType = PHYSIC_TYPE_DOOR;
-	doorTriggers[whichDoor].userData->dataValue = (int)whichDoor;
+	doorTriggers[whichDoor].userData            = new _userData;
+	doorTriggers[whichDoor].userData->userType  = PHYSIC_TYPE_DOOR;
+	doorTriggers[whichDoor].userData->dataValue = (int) whichDoor;
 	doorTriggers[whichDoor].body->SetUserData(doorTriggers[whichDoor].userData);
 
-	doorTriggers[whichDoor].shape.SetAsBox((doorTriggers[whichDoor].height  * 0.5f) / pixelsPerMeter, (doorTriggers[whichDoor].width * 0.5f) / pixelsPerMeter);
-	doorTriggers[whichDoor].fixtureDef.shape = &doorTriggers[whichDoor].shape;
+	doorTriggers[whichDoor].shape.SetAsBox(
+			(doorTriggers[whichDoor].height * 0.5f) / pixelsPerMeter,
+			(doorTriggers[whichDoor].width * 0.5f) / pixelsPerMeter);
+	doorTriggers[whichDoor].fixtureDef.shape    = &doorTriggers[whichDoor].shape;
 	doorTriggers[whichDoor].fixtureDef.isSensor = true;
 	doorTriggers[whichDoor].body->CreateFixture(&doorTriggers[whichDoor].fixtureDef);
 }
@@ -46,8 +181,8 @@ void gam_createDoorSensor(unsigned long whichDoor, int index)
 void gam_doorTriggerSetup(const std::string levelName)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	int   i           = 0;
-	int   currentTile = 0;
+	int i           = 0;
+	int currentTile = 0;
 	int sourceX     = 0;
 	int sourceY     = 0;
 
@@ -70,19 +205,24 @@ void gam_doorTriggerSetup(const std::string levelName)
 
 		switch (currentTile)
 		{
+			case DOOR_ACROSS_CLOSED:
 			case DOOR_ACROSS_OPEN_1:
 			case DOOR_ACROSS_OPEN_2:
 			case DOOR_ACROSS_OPENED:
 			case DOOR_ACROSS_CLOSING_1:
 			case DOOR_ACROSS_CLOSING_2:
-			case DOOR_ACROSS_CLOSED:
 			{
-				tempDoorTrigger.height          = TILE_SIZE;
-				tempDoorTrigger.width           = TILE_SIZE * 2;
-				tempDoorTrigger.worldPosition.x = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
-				tempDoorTrigger.worldPosition.y = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
-				tempDoorTrigger.currentFrame    = DOOR_ACROSS_CLOSED;
-				tempDoorTrigger.tileIndex       = i;
+				tempDoorTrigger.height           = TILE_SIZE;
+				tempDoorTrigger.width            = TILE_SIZE * 2;
+				tempDoorTrigger.worldPosition.x  = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.worldPosition.y  = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.renderPosition.x = sourceX * TILE_SIZE;
+				tempDoorTrigger.renderPosition.y = sourceY * TILE_SIZE;
+				tempDoorTrigger.tileIndex        = i;
+				tempDoorTrigger.numberUsing      = 0;
+				tempDoorTrigger.frameDelay       = doorAnimSpeed;
+
+				tempDoorTrigger.currentFrame = DOOR_ACROSS_CLOSED;
 
 				doorTriggers.push_back(tempDoorTrigger);
 
@@ -90,19 +230,24 @@ void gam_doorTriggerSetup(const std::string levelName)
 				break;
 			}
 
+			case DOOR_UP_CLOSED:
 			case DOOR_UP_OPEN_1:
 			case DOOR_UP_OPEN_2:
 			case DOOR_UP_OPENED:
 			case DOOR_UP_CLOSING_1:
 			case DOOR_UP_CLOSING_2:
-			case DOOR_UP_CLOSED:
 			{
-				tempDoorTrigger.height          = TILE_SIZE * 2;
-				tempDoorTrigger.width           = TILE_SIZE;
-				tempDoorTrigger.worldPosition.x = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
-				tempDoorTrigger.worldPosition.y = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
-				tempDoorTrigger.currentFrame    = DOOR_UP_CLOSED;
-				tempDoorTrigger.tileIndex       = i;
+				tempDoorTrigger.height           = TILE_SIZE * 2;
+				tempDoorTrigger.width            = TILE_SIZE;
+				tempDoorTrigger.worldPosition.x  = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.worldPosition.y  = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.renderPosition.x = sourceX * TILE_SIZE;
+				tempDoorTrigger.renderPosition.y = sourceY * TILE_SIZE;
+				tempDoorTrigger.tileIndex        = i;
+				tempDoorTrigger.numberUsing      = 0;
+				tempDoorTrigger.frameDelay       = doorAnimSpeed;
+
+				tempDoorTrigger.currentFrame = DOOR_UP_CLOSED;
 
 				doorTriggers.push_back(tempDoorTrigger);
 
