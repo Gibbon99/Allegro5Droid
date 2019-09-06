@@ -142,9 +142,8 @@ void gam_renderDroids(const std::string levelName, float interpolate)
 	{
 		if (shipLevel.at(levelName).droid[index].currentMode != DROID_MODE_DEAD)
 		{
-
 //					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
-//			if (sys_visibleOnScreen(shipLevel.at(levelName).droid[index].worldPos, SPRITE_SIZE))
+			if (sys_visibleOnScreen(shipLevel.at(levelName).droid[index].worldPos, SPRITE_SIZE))
 			{
 				drawPosition = shipLevel.at(levelName).droid[index].worldPos - shipLevel.at(levelName).droid[index].previousWorldPos;
 				drawPosition *= interpolate;
@@ -152,18 +151,10 @@ void gam_renderDroids(const std::string levelName, float interpolate)
 
 				drawPosition = sys_worldToScreen(drawPosition, SPRITE_SIZE);
 
-//							drawPosition = shipLevel.at (levelName).droid[index].worldPos;
-
-//							drawPosition.y = (int) drawPosition.y;   // Remove the fraction portion to stop blurring in Y direction
-
 				switch (shipLevel.at(levelName).droid[index].currentMode)
 				{
 					case DROID_MODE_NORMAL:
-
 						io_renderTintedSpriteFrame(shipLevel.at(levelName).droid[index].spriteName, io_getFrame(), drawPosition.x, drawPosition.y, 0, 0, 0);
-
-//										gl_renderSprite (shipLevel.at (levelName).droid[index].spriteName, SPRITE_TYPE_DROID, glm::vec2{drawPosition.x,drawPosition.y}, 0,
-//										                 shipLevel.at (levelName).droid[index].currentFrame, glm::vec3{ 1.0f, 1.0f, 0.0f});
 						break;
 
 					case DROID_MODE_EXPLODING:

@@ -201,7 +201,7 @@ set ( CXX_SRCS
         hdr/system/sys_audio.h
         src/game/gam_physicsCollisions.cpp
         hdr/game/gam_physicsCollisions.h
-        )
+        src/gui/gui_sideView.cpp hdr/gui/gui_sideView.h src/game/gam_lifts.cpp hdr/game/gam_lifts.h)
 
 # Define the C sources
 set(C_SRCS

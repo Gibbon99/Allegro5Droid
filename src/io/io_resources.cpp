@@ -1,5 +1,6 @@
 #include <map>
 #include <hdr/io/io_resourceSprite.h>
+#include <hdr/gui/gui_sideView.h>
 #include "hdr/io/io_logFile.h"
 #include "hdr/io/io_resources.h"
 
@@ -107,6 +108,7 @@ void sys_loadResource(std::string key, std::string fileName, int type, int numFr
 			break;
 
 		case RESOURCE_SHIP_VIEW:
+			gui_loadSideViewData(fileName);
 			break;
 
 		case RESOURCE_HIGH_SCORE:

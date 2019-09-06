@@ -105,9 +105,9 @@ void sys_updateVisibleScreenArea()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	visibleScreenArea.lowerBound.x = playerDroid.worldPos.x - (screenWidth * 0.5);
-	visibleScreenArea.lowerBound.y = playerDroid.worldPos.y + (screenHeight * 0.5);
+	visibleScreenArea.lowerBound.y = playerDroid.worldPos.y - (screenHeight * 0.5);
 	visibleScreenArea.upperBound.x = playerDroid.worldPos.x + (screenWidth * 0.5);
-	visibleScreenArea.upperBound.y = playerDroid.worldPos.y - (screenHeight * 0.5);
+	visibleScreenArea.upperBound.y = playerDroid.worldPos.y + (screenHeight * 0.5);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -147,19 +147,19 @@ bool sys_visibleOnScreen(b2Vec2 worldCoord, int shapeSize)
 
 		return true;
 	}
-	if (worldCoord.x < visibleScreenArea.lowerBound.x)
+	if (worldCoord.x < visibleScreenArea.lowerBound.x - shapeSize)
 	{
 		return false;
 	}
-	if (worldCoord.x > visibleScreenArea.upperBound.x)
+	if (worldCoord.x > visibleScreenArea.upperBound.x + shapeSize)
 	{
 		return false;
 	}
-	if (worldCoord.y < visibleScreenArea.lowerBound.y)
+	if (worldCoord.y < visibleScreenArea.lowerBound.y - shapeSize)
 	{
 		return false;
 	}
-	if (worldCoord.y > visibleScreenArea.upperBound.y)
+	if (worldCoord.y > visibleScreenArea.upperBound.y + shapeSize)
 	{
 		return false;
 	}

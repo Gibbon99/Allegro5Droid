@@ -10,6 +10,7 @@ typedef int (*functionPtr)( ... );
 #define PARA_BITMAP     ALLEGRO_BITMAP
 #define PARA_DISPLAY    ALLEGRO_DISPLAY
 #define PARA_MEM_FILE   ALLEGRO_FILE
+#define PARA_COLOR      ALLEGRO_COLOR
 
 // Lock a mutex
 void PARA_lockMutex(PARA_MUTEX *thisMutex);

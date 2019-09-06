@@ -6,6 +6,7 @@
 #include <hdr/game/gam_droidAIPatrol.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_doors.h>
+#include <hdr/gui/gui_sideView.h>
 #include "hdr/system/sys_scriptConfig.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -28,6 +29,7 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable("float playerMaxSpeed", &playerMaxSpeed);
 	sys_scriptAddHostVariable("float gravity", &gravity);
 	sys_scriptAddHostVariable("float doorAnimSpeed", &doorAnimSpeed);
+	sys_scriptAddHostVariable("float sideviewDrawScale", &sideviewDrawScale);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -42,6 +44,7 @@ void sys_scriptInitFunctions()
 	sys_scriptAddHostFunction("void gui_addKeyAndText(string &in, string &in)", (functionPtr) &gui_addKeyAndText);
 	sys_scriptAddHostFunction("string gui_getString(string &in)", (functionPtr) &gui_getString);
 	sys_scriptAddHostFunction("void io_spriteSetAlphaColor(string &in, int red, int green, int blue)", (functionPtr) &io_spriteSetAlphaColor);
+	sys_scriptAddHostFunction("void as_createSideViewColor  (int index, int red, int green, int blue, int alpha)",(functionPtr) &gui_createSideViewColor);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

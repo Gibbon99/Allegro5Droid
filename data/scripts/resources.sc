@@ -97,6 +97,8 @@ void script_loadAllResources()
 	sys_loadResource("999", "999.bmp", RESOURCE_SPRITE, 9, 0);
 	io_spriteSetAlphaColor("999", 255, 0, 255);
 
+	sys_loadResource("sideView", "sideview.dat", RESOURCE_SHIP_VIEW, 0, 0);
+
 	lvl_loadShipLevel("116-newDeck0.dat");
 	lvl_loadShipLevel("116-newDeck1.dat");
 	lvl_loadShipLevel("116-newDeck2.dat");
@@ -130,4 +132,5 @@ void script_loadAllResources()
 	playerAcceleration      = 150.101f;
 	playerMaxSpeed          = 250.00f;
 	gravity                 = 190.20f;
+	sideviewDrawScale       = 0.5f;
 }

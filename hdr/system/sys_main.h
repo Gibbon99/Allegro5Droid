@@ -40,7 +40,8 @@
 
 enum GAME_MODES {
 	MODE_CONSOLE = 0,
-	MODE_GAME
+	MODE_GAME,
+	MODE_LIFT_VIEW
 };
 
 typedef int (*functionPtr) (...);

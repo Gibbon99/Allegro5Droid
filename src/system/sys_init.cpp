@@ -15,6 +15,7 @@
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_droidAI.h>
 #include <hdr/game/gam_database.h>
+#include <hdr/game/gam_lifts.h>
 //#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
@@ -220,7 +221,7 @@ void sys_initAll ()
 	// Load resources from file system
 	sys_runScriptFunction("script_loadAllResources", "");
 
-	lvl_setCurrentLevelName("Bridge");
+	lvl_setCurrentLevelName("Staterooms");
 
 	gam_calcTileTexCoords();
 
@@ -231,6 +232,7 @@ void sys_initAll ()
 
 	sys_setupPhysicsEngine();
 	sys_setupPlayerPhysics();
+	gam_setupLifts ();
 
 	evt_initGameLoopQueue();
 
@@ -248,7 +250,7 @@ void sys_initAll ()
 //		    gam_doorTriggerSetup();
 	}
 
-	lvl_chengeToLevel("Bridge");
+	lvl_changeToLevel ("Staterooms", 0);
 
 	sys_changeMode(MODE_GAME, true);
 }

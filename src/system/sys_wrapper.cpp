@@ -97,7 +97,7 @@ void PARA_prepareFrame(ALLEGRO_BITMAP *thisBitmap)
 	//
 	// Set target bitmap to receive all drawing
 	al_set_target_bitmap(thisBitmap);
-	al_clear_to_color(al_map_rgb_f(1, 1, 1));
+	al_clear_to_color(al_map_rgb_f(0, 0, 0));
 }
 
 //----------------------------------------------------------------------------------------------------------------------

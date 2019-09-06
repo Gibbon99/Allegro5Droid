@@ -1,7 +1,14 @@
 -----------------------------------------------------------------------------
 Log file opened:
-06-09-2019	11:04:19
+06-09-2019	18:14:15
 Logfile started...
+INFO | Script [ english.sc ]
+INFO | Script [ german.sc ]
+INFO | Script [ gui.sc ]
+INFO | Script [ italian.sc ]
+INFO | Script [ language.sc ]
+INFO | Script [ resources.sc ]
+INFO | Script: Scriptengine started.
 INFO | Script: ScriptEngine version - [ 2.32.0 ]
 INFO | Script: Options - [  AS_64BIT_PTR AS_LINUX AS_X64_GCC  ]
 INFO | Script: Registered variable - [ int quitProgram ]
@@ -18,12 +25,14 @@ INFO | Script: Registered variable - [ float playerAcceleration ]
 INFO | Script: Registered variable - [ float playerMaxSpeed ]
 INFO | Script: Registered variable - [ float gravity ]
 INFO | Script: Registered variable - [ float doorAnimSpeed ]
+INFO | Script: Registered variable - [ float sideviewDrawScale ]
 INFO | Script: Registered function - [ void sys_printConInt(string &in, uint param) ]
 INFO | Script: Registered function - [ void sys_loadResource(string &in, string &in, int type, int numFrames, int size) ]
 INFO | Script: Registered function - [ bool lvl_loadShipLevel (string &in) ]
 INFO | Script: Registered function - [ void gui_addKeyAndText(string &in, string &in) ]
 INFO | Script: Registered function - [ string gui_getString(string &in) ]
 INFO | Script: Registered function - [ void io_spriteSetAlphaColor(string &in, int red, int green, int blue) ]
+INFO | Script: Registered function - [ void as_createSideViewColor  (int index, int red, int green, int blue, int alpha) ]
 INFO | Section has been added [ english.sc ]
 INFO | Section has been added [ german.sc ]
 INFO | Section has been added [ gui.sc ]
@@ -31,8 +40,8 @@ INFO | Section has been added [ italian.sc ]
 INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ resources.sc ]
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ -356449488 ]
-INFO | Func ID for [ void script_initGUI() ] - [ -356452432 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ -233578032 ]
+INFO | Func ID for [ void script_initGUI() ] - [ -233580976 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]

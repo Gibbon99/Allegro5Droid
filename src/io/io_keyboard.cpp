@@ -1,4 +1,5 @@
 #include <hdr/gui/gui_text.h>
+#include <hdr/game/gam_lifts.h>
 #include "hdr/io/io_keyboard.h"
 
 __KeyBindings keyBinding[NUMBER_ACTIONS];
@@ -35,4 +36,23 @@ void io_setDefaultKeybindings()
 	keyBinding[gameEscape].keyValue     = ALLEGRO_KEY_ESCAPE;
 	keyBinding[consoleAction].keyValue  = ALLEGRO_KEY_BACKQUOTE;
 	keyBinding[gameScreenShot].keyValue = ALLEGRO_KEY_S;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Process keyboard events
+void io_processKeyActions()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	switch (currentMode)
+	{
+		case MODE_LIFT_VIEW:
+			if (keyBinding[gameUp].currentlyPressed)
+				gam_moveLift(1);
+
+			if (keyBinding[gameDown].currentlyPressed)
+				gam_moveLift (2);
+
+			break;
+	}
 }

@@ -30,3 +30,6 @@ void io_setDefaultKeybindings();
 
 // Assign the text description for each key
 void io_setKeyDescription();
+
+// Process keyboard events
+void io_processKeyActions();

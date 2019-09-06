@@ -15,16 +15,16 @@ std::queue<PARA_EVENT> gameEventQueue;
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Init the Game Loop thread event queue
-void evt_initGameLoopQueue()
+void evt_initGameLoopQueue ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	//
 	// Start game loop thread
-	evt_registerMutex(GAME_MUTEX_NAME);
-	evt_registerThread((functionPtr) evt_processGameEventQueue, GAME_THREAD_NAME);
-	evt_setThreadState(true, GAME_THREAD_NAME);
+	evt_registerMutex (GAME_MUTEX_NAME);
+	evt_registerThread ((functionPtr) evt_processGameEventQueue, GAME_THREAD_NAME);
+	evt_setThreadState (true, GAME_THREAD_NAME);
 
-	while (!evt_isThreadReady(GAME_THREAD_NAME))
+	while (!evt_isThreadReady (GAME_THREAD_NAME))
 	{
 	}// Wait for thread to be ready to use
 }
@@ -32,7 +32,7 @@ void evt_initGameLoopQueue()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Process the events put onto the GameLoop queue - run by detached thread
-void *evt_processGameEventQueue()
+void *evt_processGameEventQueue ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	PARA_EVENT        gameLoopEvent{};
@@ -40,48 +40,48 @@ void *evt_processGameEventQueue()
 
 	while (runThreads)
 	{
-		evt_setThreadReady(GAME_THREAD_NAME);
+		evt_setThreadReady (GAME_THREAD_NAME);
 
-		if (evt_shouldThreadRun(GAME_THREAD_NAME))
+		if (evt_shouldThreadRun (GAME_THREAD_NAME))
 		{
-			PARA_rest(THREAD_DELAY_MS  / 10.0f);
+			PARA_rest (THREAD_DELAY_MS / 10.0f);
 
-			if (!gameEventQueue.empty())   // stuff in the queue to process
+			if (!gameEventQueue.empty ())   // stuff in the queue to process
 			{
 				if (nullptr == gameLoopMutex)
 				{
-					gameLoopMutex = evt_getMutex(GAME_MUTEX_NAME);    // Cache getting the mutex value
+					gameLoopMutex = evt_getMutex (GAME_MUTEX_NAME);    // Cache getting the mutex value
 					if (nullptr == gameLoopMutex)
 					{
-						log_logMessage(LOG_LEVEL_EXIT, sys_getString("Unable to locate gameloop mutex - [ %s ]", GAME_MUTEX_NAME));
+						log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to locate gameloop mutex - [ %s ]", GAME_MUTEX_NAME));
 					}
 				}
-				PARA_lockMutex(gameLoopMutex);   // Blocks if the mutex is locked by another thread
+				PARA_lockMutex (gameLoopMutex);   // Blocks if the mutex is locked by another thread
 
-				gameLoopEvent = gameEventQueue.front();
-				gameEventQueue.pop();
+				gameLoopEvent = gameEventQueue.front ();
+				gameEventQueue.pop ();
 
-				PARA_unlockMutex(gameLoopMutex);
+				PARA_unlockMutex (gameLoopMutex);
 
 				if (gameLoopEvent.game.eventCounter > 0)
 				{
 					gameLoopEvent.game.eventCounter--;
-					evt_pushEvent(gameLoopEvent.game.eventCounter, gameLoopEvent.game.eventType, gameLoopEvent.game.eventAction, gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2, gameLoopEvent.game.lineText);
+					evt_pushEvent (gameLoopEvent.game.eventCounter, gameLoopEvent.game.eventType, gameLoopEvent.game.eventAction, gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2, gameLoopEvent.game.lineText);
 				}
 				else
 				{
 					switch (gameLoopEvent.game.eventAction)
 					{
 						case GAME_EVENT_DOOR:
-							gam_handleDoorTrigger(gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
+							gam_handleDoorTrigger (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
 							break;
 
 						case GAME_EVENT_DOOR_ANIMATE:
-							gam_animateDoor(gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
+							gam_animateDoor (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
 							break;
 
 						default:
-							printf("ERROR: Unknown logfile action [ %i ]\n", gameLoopEvent.game.eventAction);
+							printf ("ERROR: Unknown logfile action [ %i ]\n", gameLoopEvent.game.eventAction);
 							break;
 					}
 				}
@@ -89,19 +89,19 @@ void *evt_processGameEventQueue()
 		}
 	}
 
-	printf("GAME LOOP thread stopped.\n");
+	printf ("GAME LOOP thread stopped.\n");
 	return nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Push an event onto the console queue
-void gam_pushNewEvent(union PARA_EVENT newEvent)
+void gam_pushNewEvent (union PARA_EVENT newEvent)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	PARA_MUTEX *tempMutex;
 
-	tempMutex = evt_getMutex(GAME_MUTEX_NAME);
+	tempMutex = evt_getMutex (GAME_MUTEX_NAME);
 
 	if (nullptr == tempMutex)
 	{
@@ -110,105 +110,85 @@ void gam_pushNewEvent(union PARA_EVENT newEvent)
 
 	//
 	// Put the new event onto the console queue
-	PARA_lockMutex(evt_getMutex(GAME_MUTEX_NAME));   // Blocks if the mutex is locked by another thread
-	gameEventQueue.push(newEvent);
-	PARA_unlockMutex(evt_getMutex(GAME_MUTEX_NAME));
+	PARA_lockMutex (evt_getMutex (GAME_MUTEX_NAME));   // Blocks if the mutex is locked by another thread
+	gameEventQueue.push (newEvent);
+	PARA_unlockMutex (evt_getMutex (GAME_MUTEX_NAME));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Init the event queues
-void evt_initEvents()
+void evt_initEvents ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	eventQueue = al_create_event_queue();
+	eventQueue = al_create_event_queue ();
 	if (nullptr == eventQueue)
 	{
 		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the event queue.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start the event queue.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Process input and game events from queue
-void evt_handleEvents()
+void evt_handleEvents ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	ALLEGRO_EVENT event;
 
-	al_get_next_event(eventQueue, &event);
+	al_get_next_event (eventQueue, &event);
 
 	switch (event.type)
 	{
-		/* Was the X button on the window pressed? */
+		//
+		// Was the close button on the window pressed
 		case ALLEGRO_EVENT_DISPLAY_CLOSE:
 			quitProgram = true;
 			return;
 
-			/* Was a key pressed? */
+		//
+		// Key pressed down - record state
 		case ALLEGRO_EVENT_KEY_DOWN:
 			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-			{
 				quitProgram = true;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT)
-			{
 				keyBinding[gameLeft].currentlyPressed = true;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
-			{
 				keyBinding[gameRight].currentlyPressed = true;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-			{
 				keyBinding[gameDown].currentlyPressed = true;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-			{
 				keyBinding[gameUp].currentlyPressed = true;
-			}
 
 			break;
 
 		case ALLEGRO_EVENT_KEY_UP:
 			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT)
-			{
 				keyBinding[gameLeft].currentlyPressed = false;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
-			{
 				keyBinding[gameRight].currentlyPressed = false;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-			{
 				keyBinding[gameDown].currentlyPressed = false;
-			}
 
 			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-			{
 				keyBinding[gameUp].currentlyPressed = false;
-			}
 
 			break;
 			//
 			// Process timer functions
 		case ALLEGRO_EVENT_TIMER:
 			if (timingTimer == event.timer.source)
-			{
-				tim_tickTimers(&event.timer);
-			}
+				tim_tickTimers (&event.timer);
 
 			if (fadeTimer == event.timer.source)
-			{
-				tim_runFadeProcess(&event.timer);
-			}
+				tim_runFadeProcess (&event.timer);
 			break;
 	}
 }
@@ -216,7 +196,7 @@ void evt_handleEvents()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Push an event onto the relevant queue for action
-void evt_pushEvent(int delayCount, int eventType, int eventAction, int data1, int data2, std::string eventString)
+void evt_pushEvent (int delayCount, int eventType, int eventAction, int data1, int data2, std::string eventString)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	PARA_EVENT newEvent{};
@@ -231,13 +211,13 @@ void evt_pushEvent(int delayCount, int eventType, int eventAction, int data1, in
 			newEvent.logFile.logLevel = data1;
 			newEvent.logFile.logType  = data2;
 
-			if (eventString.size() > LOGFILE_LINE_SIZE)
+			if (eventString.size () > LOGFILE_LINE_SIZE)
 			{
-				eventString.resize(LOGFILE_LINE_SIZE - 1);
+				eventString.resize (LOGFILE_LINE_SIZE - 1);
 			}
-			strcpy(newEvent.logFile.logText, eventString.c_str());
+			strcpy (newEvent.logFile.logText, eventString.c_str ());
 
-			log_pushNewEvent(newEvent);
+			log_pushNewEvent (newEvent);
 			break;
 
 		case PARA_EVENT_CONSOLE:
@@ -247,14 +227,14 @@ void evt_pushEvent(int delayCount, int eventType, int eventAction, int data1, in
 
 			newEvent.console.lineColor = data1;
 
-			if (eventString.size() > CONSOLE_LINE_SIZE)
+			if (eventString.size () > CONSOLE_LINE_SIZE)
 			{
-				eventString.resize(CONSOLE_LINE_SIZE - 1);
+				eventString.resize (CONSOLE_LINE_SIZE - 1);
 			}
 
-			strcpy(newEvent.console.lineText, eventString.c_str());
+			strcpy (newEvent.console.lineText, eventString.c_str ());
 
-			con_pushNewEvent(newEvent);
+			con_pushNewEvent (newEvent);
 			break;
 
 		case PARA_EVENT_GAME:
@@ -265,14 +245,14 @@ void evt_pushEvent(int delayCount, int eventType, int eventAction, int data1, in
 			newEvent.game.eventData1 = data1;
 			newEvent.game.eventData2 = data2;
 
-			if (eventString.size() > CLIENT_GAME_FILENAME_SIZE)
+			if (eventString.size () > CLIENT_GAME_FILENAME_SIZE)
 			{
-				eventString.resize(CLIENT_GAME_FILENAME_SIZE - 1);
+				eventString.resize (CLIENT_GAME_FILENAME_SIZE - 1);
 			}
 
-			strcpy(newEvent.game.lineText, eventString.c_str());
+			strcpy (newEvent.game.lineText, eventString.c_str ());
 
-			gam_pushNewEvent(newEvent);
+			gam_pushNewEvent (newEvent);
 			break;
 
 		case PARA_EVENT_AUDIO:
@@ -286,18 +266,18 @@ void evt_pushEvent(int delayCount, int eventType, int eventAction, int data1, in
 			newEvent.audio.eventData1 = data1;
 			newEvent.audio.eventData2 = data2;
 
-			if (eventString.size() > CLIENT_GAME_FILENAME_SIZE)
+			if (eventString.size () > CLIENT_GAME_FILENAME_SIZE)
 			{
-				eventString.reserve(CLIENT_GAME_FILENAME_SIZE - 1);
+				eventString.reserve (CLIENT_GAME_FILENAME_SIZE - 1);
 			}
 
-			strcpy(newEvent.audio.lineText, eventString.c_str());
+			strcpy (newEvent.audio.lineText, eventString.c_str ());
 
 //			aud_pushNewEvent(newEvent);
 			break;
 
 		default:
-			printf("Attempted to push unknown event type [ %i ].\n", eventType);
+			printf ("Attempted to push unknown event type [ %i ].\n", eventType);
 			break;
 	}
 }

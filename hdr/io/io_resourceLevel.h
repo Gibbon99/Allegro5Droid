@@ -4,9 +4,12 @@
 #include <hdr/system/sys_physics.h>
 #include "system/sys_main.h"
 
-extern b2Vec2 drawOffset;
-extern b2ChainShape     solidWallChain;
-typedef struct cpVect{float x,y;} cpVect;
+extern b2Vec2       drawOffset;
+extern b2ChainShape solidWallChain;
+typedef struct cpVect
+{
+	float x, y;
+}                   cpVect;
 
 //-----------------------------------------------------------------------------
 //
@@ -18,7 +21,7 @@ typedef struct
 {
 	cpVect start;
 	cpVect finish;
-}             _lineSegment;
+}                   _lineSegment;
 
 //-----------------------------------------------------------------------------
 //
@@ -28,10 +31,10 @@ typedef struct
 
 typedef struct
 {
-	int tunnel;
-	int posX;
-	int posY;
-}             _liftBasic;
+	int            tunnel;
+	int            posX;
+	int            posY;
+}                   _liftBasic;
 
 //-----------------------------------------------------------------------------
 //
@@ -45,7 +48,7 @@ typedef struct
 	int    currentFrame;       // which frame are we on
 	float  frameDelay;         // animation counter
 	b2Vec2 worldPos;           // Position in world coords
-}             _basicHealing;
+}                   _basicHealing;
 
 typedef struct
 {
@@ -71,7 +74,7 @@ typedef struct
 	b2Vec2 velocity;                   // Current speed
 
 	_userData *userData;
-	int overTile;                   // which tile is the droid on
+	int       overTile;                   // which tile is the droid on
 
 	b2BodyDef     bodyDef;                      // Used for physics and collisions
 	b2CircleShape shape;
@@ -213,29 +216,32 @@ typedef struct
 	std::vector<_basicHealing> healing;
 //	std::vector<_doorTrigger>  doorTrigger;        // pointer to memory to hold door trigger information
 
-	std::vector<_bullet>       bullet;
-	bool                       wallPhysicsCreated  = false;
-	bool                       droidPhysicsCreated = false;
+	std::vector<_bullet> bullet;
+	bool                 wallPhysicsCreated  = false;
+	bool                 droidPhysicsCreated = false;
 } _levelStruct;
 
 extern std::unordered_map<std::string, _levelStruct> shipLevel;
 
 // Populate the shipdeck structure from a file in memory
-bool lvl_loadShipLevel(const std::string fileName);
+bool lvl_loadShipLevel (const std::string fileName);
 
 // Return the levelName from the passed in deckNumber
-std::string lvl_returnLevelNameFromDeck(int deckNumber);
+std::string lvl_returnLevelNameFromDeck (int deckNumber);
 
-void lvl_showWayPoints(const std::string levelName);
+void lvl_showWayPoints (const std::string levelName);
 
 // Return the deckNumber for the passed in level string
-int lvl_getDeckNumber(const std::string levelName);
+int lvl_getDeckNumber (const std::string levelName);
 
 // Return the current level name
-std::string lvl_getCurrentLevelName();
+std::string lvl_getCurrentLevelName ();
 
 // Set the new level name - check it matches against the existing level names
-void lvl_setCurrentLevelName(std::string newName);
+void lvl_setCurrentLevelName (std::string newName);
 
 // Change to a new level
-void lvl_chengeToLevel(std::string newLevelName);
+void lvl_changeToLevel (const std::string &newLevelName, int whichLift);
+
+// Return the iterator for a level name
+std::unordered_map<std::string, _levelStruct>::const_iterator lvl_getLevelIndex (const std::string levelName);

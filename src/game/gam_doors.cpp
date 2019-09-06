@@ -121,9 +121,12 @@ void gam_renderDoorFrames()
 {
 	al_set_target_bitmap(gam_getCompleteLevel());
 
-	for (auto doorIndex : doorTriggers)
+	for (const auto& doorIndex : doorTriggers)
 	{
-		gam_drawSingleTile(doorIndex.renderPosition.x, doorIndex.renderPosition.y, doorIndex.currentFrame);
+		if (sys_visibleOnScreen(doorIndex.renderPosition, TILE_SIZE))
+		{
+			gam_drawSingleTile(doorIndex.renderPosition.x, doorIndex.renderPosition.y, doorIndex.currentFrame);
+		}
 	}
 }
 
@@ -177,7 +180,7 @@ void gam_createDoorSensor(unsigned long whichDoor, int index)
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Find the doors for this level and prepare a sensor objecty
+// Find the doors for this level and prepare a sensor object
 void gam_doorTriggerSetup(const std::string levelName)
 //----------------------------------------------------------------------------------------------------------------------
 {

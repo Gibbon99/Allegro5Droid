@@ -4,6 +4,7 @@
 #include <hdr/game/gam_render.h>
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/game/gam_player.h>
+#include <hdr/io/io_keyboard.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -27,6 +28,10 @@ void sys_gameTickRun()
 			sys_stepPhysicsWorld (1.0f / TICKS_PER_SECOND);
 
 			playerDroid.body->SetLinearVelocity({0,0});
+			break;
+
+		case MODE_LIFT_VIEW:
+			io_processKeyActions();
 			break;
 
 		default:
