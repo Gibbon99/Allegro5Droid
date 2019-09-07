@@ -5,12 +5,13 @@
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_keyboard.h>
+#include <hdr/game/gam_physicActions.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Run a frame once
-void sys_gameTickRun()
+void sys_gameTickRun (double tickTime)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	switch (currentMode)
@@ -19,15 +20,14 @@ void sys_gameTickRun()
 			break;
 
 		case MODE_GAME:
-			io_testAnimateSprite();
+			io_animateEnemySprites (lvl_getCurrentLevelName (), tickTime);
 			io_processKeyActions();
-			playerDroid.body->ApplyForce(playerDroid.velocity, playerDroid.body->GetWorldCenter(), true);
+
 			sys_updateVisibleScreenArea();
 			ai_processDroidAI(lvl_getCurrentLevelName());
 
-			sys_stepPhysicsWorld (1.0f / TICKS_PER_SECOND);
+			sys_processPhysics();
 
-			playerDroid.body->SetLinearVelocity({0,0});
 			break;
 
 		case MODE_LIFT_VIEW:

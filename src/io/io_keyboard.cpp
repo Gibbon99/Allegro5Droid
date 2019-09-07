@@ -53,7 +53,6 @@ void io_processKeyActions()
 			if (keyBinding[gameAction].currentlyPressed)
 			{
 				gam_processActionKey ();
-				keyBinding[gameAction].currentlyPressed = false;
 			}
 			break;
 

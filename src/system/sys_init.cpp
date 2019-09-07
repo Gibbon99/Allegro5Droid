@@ -246,5 +246,7 @@ void sys_initAll ()
 
 	lvl_changeToLevel ("Staterooms", 0);
 
+	gam_initPlayerValues ();
+
 	sys_changeMode(MODE_GAME, true);
 }

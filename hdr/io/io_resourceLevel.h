@@ -61,6 +61,7 @@ typedef struct
 	int         currentFrame;
 	int         numberOfFrames;
 	float       frameDelay;
+	float       frameAnimCounter;
 
 	float currentSpeed;
 	float acceleration;

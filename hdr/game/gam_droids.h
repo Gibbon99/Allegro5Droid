@@ -10,6 +10,9 @@ enum droidModes
 	DROID_MODE_TRANSFER
 };
 
+extern float droidAnimateSpeed;
+extern float explodeAnimateSpeed;
+
 //Setup initial values for enemy droids
 void gam_initDroidValues ( std::string levelName );
 
@@ -20,7 +23,7 @@ void gam_renderDroids (std::string levelName, float interpolate);
 void gam_animateThisLevel ( std::string levelName );
 
 // damageSource can be either a bullet, explosion or collision
-void gam_damageToDroid ( int whichLevel, int whichDroid, int damageSource, int sourceDroid );
+void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid);
 
 // process ignore collosions
 void gam_processIgnoreCollisions ( std::string whichLevel, int whichDroid );
@@ -33,3 +36,6 @@ void gl_setupDroidToSpriteLookup();
 
 // Return the sprite name for a droidType
 std::string gl_getSpriteName(int droidType);
+
+// This removes the droid from the current game - sets status to dead, and removes physics body
+void gam_removeDroid(int whichDroid);

@@ -4,6 +4,9 @@
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_physicsCollisions.h>
+#include <hdr/game/gam_physicActions.h>
+#include <hdr/game/gam_droids.h>
+#include <hdr/game/gam_bullet.h>
 
 typedef struct
 {
@@ -332,33 +335,38 @@ void sys_setupEnemyPhysics (const std::string levelName)
 	{
 		for (auto droidItr : droidPhysics)
 		{
-			sys_getPhysicsWorld ()->DestroyBody (droidItr.body);
+			if (droidItr.body != nullptr)
+				sys_getPhysicsWorld ()->DestroyBody (droidItr.body);
 		}
 		droidPhysics.clear();
 	}
 
 	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
 	{
-		tempDroid.bodyDef.type = b2_dynamicBody;
-		tempDroid.bodyDef.position.Set (shipLevel.at (levelName).droid[i].worldPos.x / pixelsPerMeter, shipLevel.at (levelName).droid[i].worldPos.y / pixelsPerMeter);
-		tempDroid.bodyDef.angle = 0;
-		tempDroid.body          = physicsWorld->CreateBody (&tempDroid.bodyDef);
+		if (shipLevel.at(levelName).droid[i].currentMode == DROID_MODE_NORMAL)
+		{
+			tempDroid.index = i;
+			tempDroid.bodyDef.type = b2_dynamicBody;
+			tempDroid.bodyDef.position.Set (shipLevel.at (levelName).droid[i].worldPos.x / pixelsPerMeter, shipLevel.at (levelName).droid[i].worldPos.y / pixelsPerMeter);
+			tempDroid.bodyDef.angle = 0;
+			tempDroid.body          = physicsWorld->CreateBody (&tempDroid.bodyDef);
 
-		tempDroid.userData            = new _userData;
-		tempDroid.userData->userType  = PHYSIC_TYPE_ENEMY;
-		tempDroid.userData->dataValue = i;
-		tempDroid.body->SetUserData (tempDroid.userData);
+			tempDroid.userData            = new _userData;
+			tempDroid.userData->userType  = PHYSIC_TYPE_ENEMY;
+			tempDroid.userData->dataValue = i;
+			tempDroid.body->SetUserData (tempDroid.userData);
 
-		tempDroid.shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
-		tempDroid.shape.m_p.Set (0, 0);
+			tempDroid.shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
+			tempDroid.shape.m_p.Set (0, 0);
 
-		tempDroid.fixtureDef.shape       = &tempDroid.shape;
-		tempDroid.fixtureDef.density     = 1;
-		tempDroid.fixtureDef.friction    = 0.3f;
-		tempDroid.fixtureDef.restitution = 1.0f;
-		tempDroid.body->CreateFixture (&tempDroid.fixtureDef);
+			tempDroid.fixtureDef.shape       = &tempDroid.shape;
+			tempDroid.fixtureDef.density     = 1;
+			tempDroid.fixtureDef.friction    = 0.3f;
+			tempDroid.fixtureDef.restitution = 1.0f;
+			tempDroid.body->CreateFixture (&tempDroid.fixtureDef);
 
-		droidPhysics.push_back(tempDroid);
+			droidPhysics.push_back (tempDroid);
+		}
 	}
 }
 
@@ -410,4 +418,15 @@ void sys_updateDroidPosition (const std::string levelName, int whichDroid)
 	}
 }
 
-
+//----------------------------------------------------------------------------------------------------------------
+//
+// Process a frame of physics - called from Fixed Update
+void sys_processPhysics()
+//----------------------------------------------------------------------------------------------------------------
+{
+	bul_applyPhysics();
+	playerDroid.body->ApplyForce (playerDroid.velocity, playerDroid.body->GetWorldCenter (), true);
+	sys_stepPhysicsWorld (1.0f / TICKS_PER_SECOND);
+	gam_processPhysicActions ();
+	playerDroid.body->SetLinearVelocity ({0, 0});
+}

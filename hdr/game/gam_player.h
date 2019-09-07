@@ -18,3 +18,6 @@ void gam_processPlayerMovement ();
 
 // Start all the actions resulting from pressing the action key
 void gam_processActionKey();
+
+// Setup player startup values
+void gam_initPlayerValues ();

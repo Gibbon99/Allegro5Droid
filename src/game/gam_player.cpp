@@ -2,6 +2,11 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/io/io_keyboard.h>
 #include <hdr/game/gam_lifts.h>
+#include <hdr/game/gam_database.h>
+#include <hdr/game/gam_droids.h>
+#include <hdr/io/io_resources.h>
+#include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_physicActions.h>
 #include "hdr/game/gam_player.h"
 
 b2Vec2 previousPlayerWorldPos;
@@ -12,8 +17,25 @@ _droid playerDroid;
 
 // ----------------------------------------------------------------------------
 //
+// Setup player startup values
+void gam_initPlayerValues ()
+// ----------------------------------------------------------------------------
+{
+	playerDroid.droidType        = shipLevel.at (lvl_getCurrentLevelName ()).droidTypes[0];
+	playerDroid.currentHealth    = dataBaseEntry[playerDroid.droidType].maxHealth;
+	playerDroid.spriteName       = gl_getSpriteName (playerDroid.droidType);
+	playerDroid.currentFrame     = 0;
+	playerDroid.numberOfFrames   = sprites.at ("001").numFrames;
+	playerDroid.frameDelay       = 1.0f;
+	playerDroid.frameAnimCounter = 1.0f;
+	playerDroid.currentSpeed     = 0.0f;
+	playerDroid.acceleration     = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;	
+}
+
+// ----------------------------------------------------------------------------
+//
 // Position the player on the requested lift on the new level
-b2Vec2 gam_getLiftWorldPosition(int whichLift, std::string whichLevel)
+b2Vec2 gam_getLiftWorldPosition (int whichLift, std::string whichLevel)
 // ----------------------------------------------------------------------------
 {
 	int   whichTile, countY, countX, liftCounter;
@@ -24,11 +46,11 @@ b2Vec2 gam_getLiftWorldPosition(int whichLift, std::string whichLevel)
 
 	liftCounter = 0;
 
-	for (countY = 0; countY != shipLevel.at(whichLevel).levelDimensions.y; countY++)
+	for (countY = 0; countY != shipLevel.at (whichLevel).levelDimensions.y; countY++)
 	{
-		for (countX = 0; countX != shipLevel.at(whichLevel).levelDimensions.x; countX++)
+		for (countX = 0; countX != shipLevel.at (whichLevel).levelDimensions.x; countX++)
 		{
-			whichTile = shipLevel.at(whichLevel).tiles[(countY * shipLevel.at(whichLevel).levelDimensions.x) + countX];
+			whichTile = shipLevel.at (whichLevel).tiles[(countY * shipLevel.at (whichLevel).levelDimensions.x) + countX];
 
 			if (LIFT_TILE == whichTile)
 			{
@@ -54,14 +76,14 @@ b2Vec2 gam_getLiftWorldPosition(int whichLift, std::string whichLevel)
 		}
 	}
 
-	log_logMessage(LOG_LEVEL_EXIT, sys_getString("Unable to find lift tile on level [ %s ]", whichLevel.c_str()));
+	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to find lift tile on level [ %s ]", whichLevel.c_str ()));
 	return returnPosition;
 }
 
 //-----------------------------------------------------------------------------
 //
 // Process player movement
-void gam_processPlayerMovement()
+void gam_processPlayerMovement ()
 //-----------------------------------------------------------------------------
 {
 	if (keyBinding[gameLeft].currentlyPressed)
@@ -152,7 +174,7 @@ void gam_processPlayerMovement()
 	}
 
 	previousPlayerWorldPos = playerDroid.worldPos;
-	playerDroid.worldPos = playerDroid.body->GetPosition();     // GetPosition is in meters
+	playerDroid.worldPos = playerDroid.body->GetPosition ();     // GetPosition is in meters
 	playerDroid.worldPos.x *= pixelsPerMeter;                   // Change to pixels
 	playerDroid.worldPos.y *= pixelsPerMeter;
 }
@@ -160,11 +182,21 @@ void gam_processPlayerMovement()
 //----------------------------------------------------------------------------
 //
 // Start all the actions resulting from pressing the action key
-void gam_processActionKey()
+void gam_processActionKey ()
 //----------------------------------------------------------------------------
 {
 	if (playerDroid.overLiftTile)
 	{
-		gam_performLiftAction();
+		gam_performLiftAction ();
+		keyBinding[gameAction].currentlyPressed = false;
+		return;
+	}
+
+	if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
+	{
+		gam_addPhysicAction(PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
+//		evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_NEW_BULLET, -1, 0, "");   // -1 is player source
+		keyBinding[gameAction].currentlyPressed = false;
+		return;
 	}
 }

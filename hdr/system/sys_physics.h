@@ -12,11 +12,6 @@
 #define PHYSIC_TYPE_PARTICLE      0x32
 #define PHYSIC_TYPE_LIFT          0x64
 
-#define BYTE_ZERO           0
-#define BYTE_ONE            1
-#define BYTE_TWO            2
-#define BYTE_THREE          3
-
 typedef struct
 {
 	int userType;
@@ -25,11 +20,12 @@ typedef struct
 
 typedef struct _physicObject
 {
+	int           index;              // index into shipLevel.droid array
 	b2BodyDef     bodyDef;                      // Used for physics and collisions
 	b2CircleShape shape;
 	b2FixtureDef  fixtureDef;
 	b2Body        *body;
-	_userData *userData;
+	_userData     *userData;
 } _physicObject;
 
 extern float pixelsPerMeter;           // Set from startup script
@@ -108,4 +104,7 @@ void sys_stepPhysicsWorld (float stepAmount);
 b2World *sys_getPhysicsWorld ();
 
 // Destroy physics as we leave the level
-void sys_destroyEnemyPhysics(const std::string levelName);
+void sys_destroyEnemyPhysics (const std::string levelName);
+
+// Process a frame of physics - called from Fixed Update
+void sys_processPhysics ();

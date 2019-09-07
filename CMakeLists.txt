@@ -201,7 +201,7 @@ set ( CXX_SRCS
         hdr/system/sys_audio.h
         src/game/gam_physicsCollisions.cpp
         hdr/game/gam_physicsCollisions.h
-        src/gui/gui_sideView.cpp hdr/gui/gui_sideView.h src/game/gam_lifts.cpp hdr/game/gam_lifts.h)
+        src/gui/gui_sideView.cpp hdr/gui/gui_sideView.h src/game/gam_lifts.cpp hdr/game/gam_lifts.h src/game/gam_physicActions.cpp hdr/game/gam_physicActions.h src/game/gam_bullet.cpp hdr/game/gam_bullet.h)
 
 set_source_files_properties(
         ${CXX_SRCS} PROPERTIES COMPILE_FLAGS

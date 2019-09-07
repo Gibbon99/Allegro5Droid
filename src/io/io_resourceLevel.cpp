@@ -5,6 +5,7 @@
 #include <hdr/game/gam_render.h>
 #include <hdr/game/gam_doors.h>
 #include <hdr/game/gam_lifts.h>
+#include <hdr/game/gam_bullet.h>
 #include "hdr/io/io_resourceLevel.h"
 
 #define MAP_VERSION                116
@@ -390,5 +391,7 @@ void lvl_changeToLevel (const std::string& newLevelName, int whichLift)
 	gam_doorTriggerSetup (newLevelName);
 	gam_findLiftPositions (newLevelName);
 
+	bul_initBullets();
+	
 	gam_drawAllTiles ();
 }

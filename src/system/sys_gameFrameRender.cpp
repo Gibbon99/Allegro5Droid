@@ -12,6 +12,7 @@
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_doors.h>
 #include <hdr/gui/gui_sideView.h>
+#include <hdr/game/gam_bullet.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -137,11 +138,11 @@ void sys_displayScreen(double interpolation)
 			gam_renderDoorFrames();
 			gam_drawVisibleScreen(interpolation);
 //			lvl_showWayPoints (lvl_getCurrentLevelName());
-//			sys_debugPhysicsWalls(lvl_getCurrentLevelName());
 
 			gam_renderDroids(lvl_getCurrentLevelName(), interpolation);
 
-			io_renderSpriteFrame("123", io_getFrame(), screenWidth / 2, screenHeight / 2);
+			io_renderSpriteFrame("001", playerDroid.currentFrame, screenWidth / 2, screenHeight / 2);
+			bul_renderBullets();
 //			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 			hud_renderHUD();
 
@@ -164,7 +165,7 @@ void sys_displayScreen(double interpolation)
 	//
 	// Draw everything here
 	fnt_printSystemFont(5, 0, sys_getString("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
-	fnt_printSystemFont(5, 10, sys_getString("worldPos [ %f %f ] ", playerDroid.worldPos.x, playerDroid.worldPos.y));
+	fnt_printSystemFont(5, 10, sys_getString("Anim [ %f ]", shipLevel.at(lvl_getCurrentLevelName ()).droid[1].frameDelay));
 	fnt_printSystemFont(5, 20, sys_getString("inter [ %f ]", interpolation));
 	fnt_printSystemFont(5, 30, sys_getString("Pos [ %f %f ]", playerDroid.worldPos.x, playerDroid.worldPos.y));
 

@@ -8,5 +8,5 @@ extern float circlePosX;
 extern float circlePosY;
 
 // Run a frame once
-void sys_gameTickRun();
+void sys_gameTickRun(double tickTime);
 

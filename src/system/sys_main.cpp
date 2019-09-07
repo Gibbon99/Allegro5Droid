@@ -23,34 +23,35 @@ int  screenType         = 0;
 int  displayRefreshRate = 0;
 int  currentMode        = 0;
 
-std::vector<double>    deltaArray;
+std::vector<double> deltaArray;
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Smooth delta two
-double sys_smoothDelta2(double delta)
+double sys_smoothDelta2 (double delta)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	static int numFramesToSmooth = 100;
-	double totalDelta;
+	double     totalDelta;
 
-	if (deltaArray.size() < numFramesToSmooth)
-		{
-			deltaArray.push_back (delta);
-		}
+	if (deltaArray.size () < numFramesToSmooth)
+	{
+		deltaArray.push_back (delta);
+	}
 	else
+	{
+		for (int i                         = 0; i != deltaArray.size () - 1; i++)
 		{
-			for (int i = 0; i != deltaArray.size () - 1; i++)
-				{
-					deltaArray[i] = deltaArray[i + 1];
-				}
-			deltaArray[deltaArray.size() - 1] = delta;
+			deltaArray[i] = deltaArray[i + 1];
 		}
+		deltaArray[deltaArray.size () - 1] = delta;
+	}
 
 	for (auto index : deltaArray)
-		{
-			totalDelta += index;
-		}
-	return totalDelta / deltaArray.size();
+	{
+		totalDelta += index;
+	}
+	return totalDelta / deltaArray.size ();
 
 }
 
@@ -60,7 +61,7 @@ double sys_smoothDelta2(double delta)
 //
 // Fixed update frames
 // Render as fast as possible
-int main(int argc, char *argv[])
+int main (int argc, char *argv[])
 //----------------------------------------------------------------------------------------------------------------------
 {
 	double tickTime       = 1.0f / TICKS_PER_SECOND;
@@ -70,19 +71,17 @@ int main(int argc, char *argv[])
 	double frameTime      = 0;
 	double percentInFrame = 0;
 
-	sys_initAll();
+	sys_initAll ();
 
-	currentTime = PARA_getTime();
+	currentTime = PARA_getTime ();
 
 	while (!quitProgram)
 	{
-		newTime   = PARA_getTime();
+		newTime   = PARA_getTime ();
 		frameTime = newTime - currentTime;
 
 		if (frameTime > 0.25)
-		{
 			frameTime = 0.25;
-		}
 
 		currentTime = newTime;
 
@@ -91,11 +90,11 @@ int main(int argc, char *argv[])
 		while (accumulator >= tickTime)
 		{
 			accumulator -= tickTime;
-			sys_gameTickRun();
+			sys_gameTickRun (tickTime);
 			thinkFPS++;
 		}
 
-		evt_handleEvents();
+		evt_handleEvents ();
 
 		percentInFrame = accumulator / tickTime;
 
@@ -107,39 +106,39 @@ int main(int argc, char *argv[])
 
 		double smoothedDelta = percentInFrame;
 
-		sys_displayScreen(smoothedDelta);
+		sys_displayScreen (smoothedDelta);
 		fps++;
 
-		sys_pushFrameTimeIntoQueue(accumulator, 500.00f);
+		sys_pushFrameTimeIntoQueue (accumulator, 500.00f);
 
-		frameTimePrint = (PARA_getTime() - newTime) * 1000.0f;
+		frameTimePrint = (PARA_getTime () - newTime) * 1000.0f;
 
 		if (accumulator < 0.0f)
 			accumulator = 0.0f;
 	}
-	sys_shutdownToSystem();
+	sys_shutdownToSystem ();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Change to a new mode
-void sys_changeMode(int newMode, bool fade)
+void sys_changeMode (int newMode, bool fade)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	currentMode = newMode;
-	printf("Changing mode\n");
+	printf ("Changing mode\n");
 
 	if (fade)
-		{
-			previousScreen = al_clone_bitmap(backingBitmap);
+	{
+		previousScreen = al_clone_bitmap (backingBitmap);
 
-			fadeAlphaValue = 255;
-			fadeInProgress = FADE_ON;
-			if (nullptr != fadeTimer)
-				al_start_timer(fadeTimer);
-		}
+		fadeAlphaValue = 255;
+		fadeInProgress = FADE_ON;
+		if (nullptr != fadeTimer)
+			al_start_timer (fadeTimer);
+	}
 	else
-		{
-			fadeInProgress = FADE_NONE;
-		}
+	{
+		fadeInProgress = FADE_NONE;
+	}
 }

@@ -7,6 +7,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/io/io_console.h>
 #include <hdr/game/gam_doors.h>
+#include <hdr/game/gam_bullet.h>
 #include "hdr/system/sys_gameEvents.h"
 
 ALLEGRO_EVENT_QUEUE    *eventQueue;

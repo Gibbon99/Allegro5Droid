@@ -7,6 +7,8 @@
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_doors.h>
 #include <hdr/gui/gui_sideView.h>
+#include <hdr/game/gam_droids.h>
+#include <hdr/game/gam_droidAI.h>
 #include "hdr/system/sys_scriptConfig.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -30,6 +32,11 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable("float gravity", &gravity);
 	sys_scriptAddHostVariable("float doorAnimSpeed", &doorAnimSpeed);
 	sys_scriptAddHostVariable("float sideviewDrawScale", &sideviewDrawScale);
+	sys_scriptAddHostVariable ("float droidAnimateSpeed", &droidAnimateSpeed);
+	sys_scriptAddHostVariable ("float badHealthFactor", &badHealthFactor);
+	sys_scriptAddHostVariable ("int collisionExplosionDamage", &collisionExplosionDamage);
+	sys_scriptAddHostVariable ("int collisionDamageInflicted", &collisionDamageInflicted);
+	sys_scriptAddHostVariable ("float explodeAnimateSpeed", &explodeAnimateSpeed);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
