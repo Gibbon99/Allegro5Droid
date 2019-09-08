@@ -3,12 +3,14 @@
 #include "system/sys_main.h"
 #include <hdr/system/sys_font.h>
 
-enum fadeValues {
+enum fadeValues
+{
 	FADE_ON = 0,
 	FADE_OFF,
 	FADE_NONE
 };
 
+extern bool           showDebugPhysics;
 extern float          scaleW;
 extern float          scaleH;
 extern float          scaleX;

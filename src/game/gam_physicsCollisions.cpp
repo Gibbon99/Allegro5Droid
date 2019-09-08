@@ -58,6 +58,19 @@ void contactListener::BeginContact (b2Contact *contact)
 			}
 			break;
 
+		case PHYSIC_TYPE_HEALING:
+			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
+			{
+				evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_START, -1, bodyUserData_A->dataValue, "");
+				return;
+			}
+			if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
+			{
+				evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_START, bodyUserData_B->dataValue, bodyUserData_A->dataValue, "");
+				return;
+			}
+			break;
+
 		case PHYSIC_TYPE_BULLET:
 			if (bodyUserData_B->userType == PHYSIC_TYPE_WALL)
 			{
@@ -120,6 +133,19 @@ void contactListener::BeginContact (b2Contact *contact)
 			{
 				playerDroid.overLiftTile = true;
 				playerDroid.liftIndex    = bodyUserData_B->dataValue;
+				return;
+			}
+			break;
+
+		case PHYSIC_TYPE_HEALING:
+			if (bodyUserData_A->userType == PHYSIC_TYPE_PLAYER)
+			{
+				evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_START, -1, bodyUserData_B->dataValue, "");
+				return;
+			}
+			if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
+			{
+				evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_START, bodyUserData_A->dataValue, bodyUserData_B->dataValue, "");
 				return;
 			}
 			break;
@@ -193,6 +219,11 @@ void contactListener::EndContact (b2Contact *contact)
 				return;
 			}
 			break;
+
+		case PHYSIC_TYPE_HEALING:
+			evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_STOP, bodyUserData_A->dataValue, 0, "");
+			return;
+			break;
 	}
 
 	switch (bodyUserData_B->userType)
@@ -218,6 +249,11 @@ void contactListener::EndContact (b2Contact *contact)
 				playerDroid.liftIndex    = -1;
 				return;
 			}
+			break;
+
+		case PHYSIC_TYPE_HEALING:
+			evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_STOP, bodyUserData_B->dataValue, 0, "");
+			return;
 			break;
 	}
 }

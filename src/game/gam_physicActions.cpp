@@ -1,35 +1,8 @@
 #include <queue>
-#include <hdr/io/io_resourceLevel.h>
 #include <hdr/game/gam_game.h>
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_bullet.h>
 #include "hdr/game/gam_physicActions.h"
-
-/*
-* Remove a Droid ( by index number ) - mark it as not alive so it's not recreated on level change ( physics )
-*
-* Have a queue that is processed after physics step to process damage to droids - and remove if required
-* Also have bullets and particles in that queue as well for removal
-*
-* eventType
-* - Droid
-* - Bullet
-* - Particle
-*
-* Damage from
-* - Other droid bullet
-* - Player bullet
-* - Explosion
-* - Bump Damage from other Droid
-* - Bump damage from player
-*
-* Bullet
-* - Remove bullet
-*
-* Particle
-* - Remove particle
-* - Remove emitter (?)
-*/
 
 std::queue<__physicAction> physicActionQueue;
 

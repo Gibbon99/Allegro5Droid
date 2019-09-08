@@ -48,7 +48,8 @@ typedef struct
 	int    currentFrame;       // which frame are we on
 	float  frameDelay;         // animation counter
 	b2Vec2 worldPos;           // Position in world coords
-}                   _basicHealing;
+	b2Vec2 renderPosition;      // Position on the map to update image
+} _basicHealing;
 
 typedef struct
 {

@@ -13,11 +13,14 @@
 #include <hdr/game/gam_doors.h>
 #include <hdr/gui/gui_sideView.h>
 #include <hdr/game/gam_bullet.h>
+#include <hdr/game/gam_healing.h>
+#include <hdr/game/gam_pathFind.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
 ALLEGRO_BITMAP *previousScreen;
 
+bool  showDebugPhysics;
 float frameTimeArray[800];
 float scaleW         = 0;
 float scaleH         = 0;
@@ -31,49 +34,49 @@ double renderCirclePosX, renderCirclePosY;
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Process if we need to do a screen fade or not
-void sys_screenFade()
+void sys_screenFade ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (fadeInProgress == FADE_NONE)
 	{
-		PARA_presentFrame(display, backingBitmap);
+		PARA_presentFrame (display, backingBitmap);
 		return;
 	}
 
 	if (fadeInProgress == FADE_ON)
 	{
-		al_draw_filled_rectangle(0, 0, screenWidth, screenHeight, al_map_rgba(0, 0, 0, fadeAlphaValue));
+		al_draw_filled_rectangle (0, 0, screenWidth, screenHeight, al_map_rgba (0, 0, 0, fadeAlphaValue));
 
-		PARA_presentFrame(display, backingBitmap);
+		PARA_presentFrame (display, backingBitmap);
 	}
 	else if (fadeInProgress == FADE_OFF)
 	{
-		al_draw_filled_rectangle(0, 0, screenWidth, screenHeight, al_map_rgba(0, 0, 0, fadeAlphaValue));
+		al_draw_filled_rectangle (0, 0, screenWidth, screenHeight, al_map_rgba (0, 0, 0, fadeAlphaValue));
 
-		PARA_presentFrame(display, previousScreen);
+		PARA_presentFrame (display, previousScreen);
 	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Init render variables
-bool sys_initRenderVariables()
+bool sys_initRenderVariables ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	int sx, sy;
+	int   sx, sy;
 	float renderDrawScale;
 
-	backingBitmap = al_create_bitmap(screenWidth, screenHeight);
+	backingBitmap = al_create_bitmap (screenWidth, screenHeight);
 	if (nullptr == backingBitmap)
 	{
 		quitProgram = true;
-		al_show_native_message_box(nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create backing bitmap.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create backing bitmap.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 		return false;
 	}
 
 	sx              = windowWidth / screenWidth;
 	sy              = windowHeight / screenHeight;
-	renderDrawScale = std::min(sx, sy);
+	renderDrawScale = std::min (sx, sy);
 
 	// calculate how much the buffer should be scaled
 	scaleW = (float) screenWidth * renderDrawScale;
@@ -87,7 +90,7 @@ bool sys_initRenderVariables()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Push a value onto the frametime Queue
-void sys_pushFrameTimeIntoQueue(double thisFrameTime, float factor)
+void sys_pushFrameTimeIntoQueue (double thisFrameTime, float factor)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	float renderFrameTime = 0;
@@ -106,7 +109,7 @@ void sys_pushFrameTimeIntoQueue(double thisFrameTime, float factor)
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Render the frametime queue
-void sys_renderFrameTimeQueue()
+void sys_renderFrameTimeQueue ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	float startX = screenWidth;
@@ -114,7 +117,7 @@ void sys_renderFrameTimeQueue()
 
 	for (int i = 0; i != screenWidth - 1; i++)
 	{
-		al_draw_line(startX, startY, startX, startY - frameTimeArray[i], al_map_rgba_f(0, 0, 0, 0.4), 1);
+		al_draw_line (startX, startY, startX, startY - frameTimeArray[i], al_map_rgba_f (0, 0, 0, 0.4), 1);
 		startX--;
 	}
 }
@@ -122,52 +125,53 @@ void sys_renderFrameTimeQueue()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Render a frame once
-void sys_displayScreen(double interpolation)
+void sys_displayScreen (double interpolation)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	PARA_prepareFrame(backingBitmap);
+	PARA_prepareFrame (backingBitmap);
 
 	switch (currentMode)
 	{
 		case MODE_CONSOLE:
-			con_renderConsole();
+			con_renderConsole ();
 			break;
 
 		case MODE_GAME:
 
-			gam_renderDoorFrames();
-			gam_drawVisibleScreen(interpolation);
-//			lvl_showWayPoints (lvl_getCurrentLevelName());
+			gam_renderDoorFrames ();
+			gam_renderHealingFrames (lvl_getCurrentLevelName ());
+			gam_drawVisibleScreen (interpolation);
 
-			gam_renderDroids(lvl_getCurrentLevelName(), interpolation);
+			gam_renderDroids (lvl_getCurrentLevelName (), interpolation);
 
-			io_renderSpriteFrame("001", playerDroid.currentFrame, screenWidth / 2, screenHeight / 2);
-			bul_renderBullets();
+			io_renderSpriteFrame ("001", playerDroid.currentFrame, screenWidth / 2, screenHeight / 2);
+			bul_renderBullets ();
 //			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
-			hud_renderHUD();
+			hud_renderHUD ();
 
-//			sys_getPhysicsWorld()->DrawDebugData();
+			gam_AStarDebugWayPoints (0);
+//			lvl_showWayPoints (lvl_getCurrentLevelName());
+			if (showDebugPhysics)
+				sys_getPhysicsWorld()->DrawDebugData();
 
 			break;
 
 		case MODE_LIFT_VIEW:
 			al_set_target_bitmap (backingBitmap);
-			gui_drawSideView();
-			hud_renderHUD();
+			gui_drawSideView ();
+			hud_renderHUD ();
 			break;
 
 		default:
 			break;
 	}
 
-	sys_renderFrameTimeQueue();
+	sys_renderFrameTimeQueue ();
 
 	//
 	// Draw everything here
-	fnt_printSystemFont(5, 0, sys_getString("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
-	fnt_printSystemFont(5, 10, sys_getString("Anim [ %f ]", shipLevel.at(lvl_getCurrentLevelName ()).droid[1].frameDelay));
-	fnt_printSystemFont(5, 20, sys_getString("inter [ %f ]", interpolation));
-	fnt_printSystemFont(5, 30, sys_getString("Pos [ %f %f ]", playerDroid.worldPos.x, playerDroid.worldPos.y));
+	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
+	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
 
-	sys_screenFade();
+	sys_screenFade ();
 }

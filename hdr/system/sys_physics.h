@@ -3,16 +3,18 @@
 #include "system/sys_main.h"
 
 #define DEBUG_PHYSICS    1
-
-#define PHYSIC_TYPE_WALL          0x01
-#define PHYSIC_TYPE_ENEMY         0x02
-#define PHYSIC_TYPE_PLAYER        0x04
-#define PHYSIC_TYPE_BULLET        0x08
-#define PHYSIC_TYPE_DOOR          0x16
-#define PHYSIC_TYPE_PARTICLE      0x32
-#define PHYSIC_TYPE_LIFT          0x64
-#define PHYSIC_TYPE_DOOR_BULLET     0x128
-
+enum physicObjects
+{
+	PHYSIC_TYPE_WALL = 0,
+	PHYSIC_TYPE_ENEMY,
+	PHYSIC_TYPE_PLAYER,
+	PHYSIC_TYPE_BULLET,
+	PHYSIC_TYPE_DOOR,
+	PHYSIC_TYPE_PARTICLE,
+	PHYSIC_TYPE_LIFT,
+	PHYSIC_TYPE_DOOR_BULLET,
+	PHYSIC_TYPE_HEALING
+};
 typedef struct
 {
 	int userType;
@@ -111,7 +113,7 @@ void sys_destroyEnemyPhysics (const std::string levelName);
 void sys_processPhysics (double tickTime);
 
 // Free memory and destroy bodies for droids
-void sys_clearDroids();
+void sys_clearDroids ();
 
 // Free memory for solid walls and free bodies
-void sys_clearSolidWalls();
+void sys_clearSolidWalls ();

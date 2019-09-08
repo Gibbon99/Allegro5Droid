@@ -8,6 +8,8 @@
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_bullet.h>
 #include <hdr/game/gam_lifts.h>
+#include <hdr/game/gam_healing.h>
+#include <hdr/system/sys_gameFrameRender.h>
 
 typedef struct
 {
@@ -236,8 +238,11 @@ bool sys_setupPhysicsEngine ()
 	physicsWorld = new b2World (gravity);
 
 	physicsWorld->SetContactListener (&myContactListenerInstance);
-	g_paraDebugDraw.SetFlags (b2Draw::e_shapeBit);  // Draw shapes
-	physicsWorld->SetDebugDraw (&g_paraDebugDraw);
+	if (showDebugPhysics)
+	{
+		g_paraDebugDraw.SetFlags (b2Draw::e_shapeBit);  // Draw shapes
+		physicsWorld->SetDebugDraw (&g_paraDebugDraw);
+	}
 
 	physicsStarted = true;
 
@@ -250,18 +255,19 @@ bool sys_setupPhysicsEngine ()
 void sys_freePhysicsEngine ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	gam_clearLifts();
-	sys_clearSolidWalls();
-	sys_clearDroids();
-	bul_clearAllBullets();
-	gam_clearAllDoors();
+	gam_clearHealing();
+	gam_clearLifts ();
+	sys_clearSolidWalls ();
+	sys_clearDroids ();
+	bul_clearAllBullets ();
+	gam_clearAllDoors ();
 	delete physicsWorld;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Free memory for solid walls and free bodies
-void sys_clearSolidWalls()
+void sys_clearSolidWalls ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	for (auto &wallItr : solidWalls)
@@ -295,7 +301,7 @@ void sys_setupSolidWalls (const std::string levelName)
 
 	if (!solidWalls.empty ())
 	{
-		sys_clearSolidWalls();
+		sys_clearSolidWalls ();
 	}
 
 	for (int i = 0; i != shipLevel.at (levelName).numLineSegments; i++)
@@ -337,7 +343,7 @@ void sys_setupSolidWalls (const std::string levelName)
 //-------------------------------------------------------------------
 //
 // Free memory and destroy bodies for droids
-void sys_clearDroids()
+void sys_clearDroids ()
 //-------------------------------------------------------------------
 {
 	for (auto &droidItr : droidPhysics)
@@ -348,8 +354,9 @@ void sys_clearDroids()
 		if (droidItr.body != nullptr)
 			sys_getPhysicsWorld ()->DestroyBody (droidItr.body);
 	}
-	droidPhysics.clear();
+	droidPhysics.clear ();
 }
+
 //-------------------------------------------------------------------
 //
 // Create the physics bodies and shapes for the enemy droids
@@ -364,16 +371,16 @@ void sys_setupEnemyPhysics (const std::string levelName)
 		return;
 	}
 
-	if (!droidPhysics.empty())
+	if (!droidPhysics.empty ())
 	{
-		sys_clearDroids();
+		sys_clearDroids ();
 	}
 
 	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
 	{
-		if (shipLevel.at(levelName).droid[i].currentMode == DROID_MODE_NORMAL)
+		if (shipLevel.at (levelName).droid[i].currentMode == DROID_MODE_NORMAL)
 		{
-			tempDroid.index = i;
+			tempDroid.index        = i;
 			tempDroid.bodyDef.type = b2_dynamicBody;
 			tempDroid.bodyDef.position.Set (shipLevel.at (levelName).droid[i].worldPos.x / pixelsPerMeter, shipLevel.at (levelName).droid[i].worldPos.y / pixelsPerMeter);
 			tempDroid.bodyDef.angle = 0;

@@ -65,90 +65,7 @@ void gam_getTunnelToUse ()
 
 	currentTunnel = levelIndexItr->second.lifts[playerDroid.liftIndex].tunnel;
 	gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-
-	return;
-
-	switch ( levelIndexItr->second.numLifts )
-	{
-		case 1: // only one lift on these levels
-			currentTunnel = levelIndexItr->second.lifts[0].tunnel;
-			break;
-
-		case 2: // two lifts on these levels
-			if (((playerDroid.middlePosition.x) > levelIndexItr->second.lifts[0].posX - TILE_SIZE) &&
-			    ((playerDroid.middlePosition.x) < levelIndexItr->second.lifts[0].posX + TILE_SIZE))
-			{
-				currentTunnel = levelIndexItr->second.lifts[0].tunnel;
-			}
-			else
-			{
-				currentTunnel = levelIndexItr->second.lifts[1].tunnel;
-			}
-
-			break;
-
-		case 3: // only two levels with three lifts on them
-			if ( levelIndexItr->second.deckNumber == 12 )
-			{
-				if ((playerDroid.middlePosition.x) > levelIndexItr->second.lifts[0].posX - TILE_SIZE )
-				{
-					currentTunnel = levelIndexItr->second.lifts[0].tunnel;
-					gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-					return;
-				}
-
-				if (((playerDroid.middlePosition.y) > levelIndexItr->second.lifts[1].posY - TILE_SIZE) &&
-				    ((playerDroid.middlePosition.y) < levelIndexItr->second.lifts[1].posY + TILE_SIZE))
-				{
-					currentTunnel = levelIndexItr->second.lifts[1].tunnel;
-					gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-					return;
-				}
-
-				if ((playerDroid.middlePosition.y) > levelIndexItr->second.lifts[2].posY - TILE_SIZE )
-				{
-					currentTunnel = levelIndexItr->second.lifts[2].tunnel;
-					gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-					return;
-				}
-			} // end of if level is 12 test
-			else
-			{
-				if ( levelIndexItr->second.deckNumber == 14 )
-				{
-					if (((playerDroid.middlePosition.x) > lifts[2].worldPosition.x - TILE_SIZE) &&
-					    ((playerDroid.middlePosition.x) < lifts[2].worldPosition.x + TILE_SIZE))
-					{
-						currentTunnel = levelIndexItr->second.lifts[2].tunnel;
-						gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-						return;
-					}
-
-					if (((playerDroid.middlePosition.x) > levelIndexItr->second.lifts[1].posX - TILE_SIZE) &&
-					    ((playerDroid.middlePosition.x) < levelIndexItr->second.lifts[1].posX + TILE_SIZE))
-					{
-						currentTunnel = levelIndexItr->second.lifts[1].tunnel;
-						gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-						return;
-					}
-
-					if (((playerDroid.middlePosition.x) > levelIndexItr->second.lifts[0].posX - TILE_SIZE) &&
-					    ((playerDroid.middlePosition.x) < levelIndexItr->second.lifts[0].posX + TILE_SIZE))
-					{
-						currentTunnel = levelIndexItr->second.lifts[0].tunnel;
-						gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-						return;
-					}
-				} // end of is level 14 test
-			} // end of else statement
-	} // end of switch statement
-
-	printf("Tunnel in use [ %i ]\n", currentTunnel );
-
-	//
-	// Get the current deck pointer
-	gam_getCurrentDeck ( levelIndexItr->second.deckNumber );
-} // end of function
+}
 
 //----------------------------------------------------------------------------
 //
@@ -336,7 +253,7 @@ void gam_moveLift(int direction)
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Create a door sensor
+// Create a lift sensor
 void gam_createLiftSensor(unsigned long whichLift, int index)
 //----------------------------------------------------------------------------------------------------------------------
 {

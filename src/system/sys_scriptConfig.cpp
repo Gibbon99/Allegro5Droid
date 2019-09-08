@@ -11,6 +11,8 @@
 #include <hdr/game/gam_droidAI.h>
 #include <hdr/game/gam_bullet.h>
 #include "hdr/system/sys_scriptConfig.h"
+#include <hdr/game/gam_healing.h>
+#include <hdr/system/sys_gameFrameRender.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -41,6 +43,8 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable ("float bulletAnimSpeed", &bulletAnimSpeed);
 	sys_scriptAddHostVariable ("float bulletMoveSpeed", &bulletMoveSpeed);
 	sys_scriptAddHostVariable ("float bulletDensity", &bulletDensity);
+	sys_scriptAddHostVariable ("float healingAnimSpeed", &healingAnimSpeed);
+	sys_scriptAddHostVariable ("bool showDebugPhysics", &showDebugPhysics);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

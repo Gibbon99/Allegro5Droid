@@ -6,7 +6,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_droidAIPatrol.h>
 
-//#define AI_HEALTH_DEBUG 1
+#define AI_HEALTH_DEBUG 1
 
 /*stayHealthy (SELECTOR - stop on success)
 
@@ -70,7 +70,7 @@ int ai_onHealingTile ( int whichDroid, const std::string levelName )
 	if ( shipLevel.at( levelName ).droid[whichDroid].onHealingTile )
 		{
 #ifdef AI_HEALTH_DEBUG
-			con_print ( CON_INFO, false, "Droid [ %i ] fully healed", whichDroid );
+			log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Droid [ %i ] fully healed", whichDroid ));
 #endif
 			shipLevel.at( levelName ).droid[whichDroid].currentHealth = dataBaseEntry[shipLevel.at( levelName ).droid[whichDroid].droidType].maxHealth;
 			//
@@ -116,7 +116,7 @@ int ai_reachedHealingTile ( int whichDroid, const std::string levelName )
 					healingTileLocation.y = healingTileLocation.y / (float)TILE_SIZE;
 
 #ifdef AI_HEALTH_DEBUG
-					con_print ( true, false, "[ %i ] - Starting AStar to find nearest healing tile", whichDroid );
+				log_logMessage(LOG_LEVEL_DEBUG, sys_getString("[ %i ] - Starting AStar to find nearest healing tile", whichDroid ));
 #endif
 					droidWorldPosTiles.x = ( int ) shipLevel.at( levelName ).droid[whichDroid].worldPos.x / TILE_SIZE;
 					droidWorldPosTiles.y = ( ( int ) shipLevel.at( levelName ).droid[whichDroid].worldPos.y + ( SPRITE_SIZE / 2 ) ) / TILE_SIZE;
@@ -136,7 +136,7 @@ int ai_reachedHealingTile ( int whichDroid, const std::string levelName )
 			if ( gam_AStarIsPathReady ( shipLevel.at( levelName ).droid[whichDroid].aStarPathIndex ))
 				{
 #ifdef AI_HEALTH_DEBUG
-					con_print ( true, false, "[ %i ] - Have not found the AStar destination", whichDroid );
+				log_logMessage(LOG_LEVEL_DEBUG, sys_getString("[ %i ] - Have not found the AStar destination", whichDroid ));
 #endif
 					shipLevel.at( levelName ).droid[whichDroid].foundHealingTile = true;
 					shipLevel.at( levelName ).droid[whichDroid].currentAStarIndex = gam_AStarGetNumWaypoints ( shipLevel.at( levelName ).droid[whichDroid].aStarPathIndex );
@@ -159,7 +159,7 @@ int ai_reachedHealingTile ( int whichDroid, const std::string levelName )
 	if ( shipLevel.at( levelName ).droid[whichDroid].ai_moveMode == AI_PATHFIND_END )
 		{
 #ifdef AI_HEALTH_DEBUG
-			con_print ( true, true, "[ %i ] - Droid has reached healing tile.", whichDroid );
+		log_logMessage(LOG_LEVEL_DEBUG, sys_getString("[ %i ] - Droid has reached healing tile.", whichDroid ));
 #endif
 			if (debugAStarIndex == whichDroid)
 				debugAStarIndex = -1;

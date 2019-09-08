@@ -134,6 +134,7 @@ void script_loadAllResources ()
 	lvl_loadShipLevel ("116-newDeck20.dat");
 
 	initResourcesAllDone     = true;
+	showDebugPhysics         = false;
 	doorAnimSpeed            = 4.5f;
 	pixelsPerMeter           = 12.0f;        // 12 pixels is 1 meter
 	wayPointDestinationSize  = 1.0f;         // 1 meter
@@ -148,10 +149,11 @@ void script_loadAllResources ()
 	sideviewDrawScale        = 0.5f;
 	droidAnimateSpeed        = 60.0f;
 	explodeAnimateSpeed      = 120.0f;
-	badHealthFactor          = 0.20f;        // Percent of health before it's considered bad
+	badHealthFactor          = 0.80f;        // Percent of health before it's considered bad CHANGE ME
 	collisionDamageInflicted = 3;
 	collisionExplosionDamage = 10;
 	bulletAnimSpeed          = 10.0f;
-	bulletMoveSpeed          = 0.02f;
+	bulletMoveSpeed          = 0.8f;
 	bulletDensity            = 0.2f;
+	healingAnimSpeed         = 10.0f;
 }

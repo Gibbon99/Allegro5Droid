@@ -92,10 +92,9 @@ int main (int argc, char *argv[])
 			accumulator -= tickTime;
 			sys_gameTickRun (tickTime);
 			thinkFPS++;
-			evt_handleEvents ();
 		}
 
-
+		evt_handleEvents ();
 
 		percentInFrame = accumulator / tickTime;
 

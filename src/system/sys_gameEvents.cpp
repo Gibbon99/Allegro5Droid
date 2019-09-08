@@ -8,6 +8,7 @@
 #include <hdr/io/io_console.h>
 #include <hdr/game/gam_doors.h>
 #include <hdr/game/gam_bullet.h>
+#include <hdr/game/gam_healing.h>
 #include "hdr/system/sys_gameEvents.h"
 
 ALLEGRO_EVENT_QUEUE    *eventQueue;
@@ -79,6 +80,14 @@ void *evt_processGameEventQueue ()
 
 						case GAME_EVENT_DOOR_ANIMATE:
 							gam_animateDoor (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
+							break;
+
+						case GAME_EVENT_HEALING_START:
+							gam_startHealing(gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
+							break;
+
+						case GAME_EVENT_HEALING_STOP:
+							gam_stopHealing (gameLoopEvent.game.eventData1);
 							break;
 
 						default:

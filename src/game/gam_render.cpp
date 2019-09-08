@@ -72,7 +72,7 @@ void gam_calcTileTexCoords ()
 //-----------------------------------------------------------------------------
 //
 // Draw a single tile from the tile sheet
-void inline gam_drawSingleTile (float destX, float destY, int whichTile)
+void gam_drawSingleTile (float destX, float destY, int whichTile)
 //-----------------------------------------------------------------------------
 {
 	static int    previousTile = -1;

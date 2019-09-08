@@ -6,6 +6,8 @@
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_keyboard.h>
 #include <hdr/game/gam_physicActions.h>
+#include <hdr/game/gam_healing.h>
+#include <hdr/game/gam_pathFind.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -21,7 +23,10 @@ void sys_gameTickRun (double tickTime)
 
 		case MODE_GAME:
 			io_animateEnemySprites (lvl_getCurrentLevelName (), tickTime);
+			gam_animateHealing (lvl_getCurrentLevelName (), tickTime);
 			io_processKeyActions();
+			gam_processHealingTiles();
+			gam_AStarProcessPaths (lvl_getCurrentLevelName());
 
 			sys_updateVisibleScreenArea();
 			ai_processDroidAI(lvl_getCurrentLevelName());
