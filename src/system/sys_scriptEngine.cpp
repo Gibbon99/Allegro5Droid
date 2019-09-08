@@ -269,7 +269,7 @@ bool sys_loadAndCompileScripts()
 		if (fileSize < 0)
 			log_logMessage(LOG_LEVEL_INFO, sys_getString("Fatal error getting script file size [ %s ].", scriptItr.c_str()));
 
-		memoryBuffer = (char *) malloc(sizeof(char) * fileSize);
+		memoryBuffer = (char *) malloc(sizeof(char) * fileSize);    // memleak
 		if (nullptr == memoryBuffer)
 		{
 			log_logMessage(LOG_LEVEL_INFO, sys_getString("Fatal memory allocation error when loading script."));
@@ -293,7 +293,7 @@ bool sys_loadAndCompileScripts()
 				log_logMessage(LOG_LEVEL_INFO, sys_getString("Failed to add script section [ %s ].", scriptItr.c_str()));
 				break;
 		}
-//		free(memoryBuffer);
+		free(memoryBuffer);
 
 	}
 	//

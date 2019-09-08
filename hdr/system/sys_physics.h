@@ -11,6 +11,7 @@
 #define PHYSIC_TYPE_DOOR          0x16
 #define PHYSIC_TYPE_PARTICLE      0x32
 #define PHYSIC_TYPE_LIFT          0x64
+#define PHYSIC_TYPE_DOOR_BULLET     0x128
 
 typedef struct
 {
@@ -107,4 +108,10 @@ b2World *sys_getPhysicsWorld ();
 void sys_destroyEnemyPhysics (const std::string levelName);
 
 // Process a frame of physics - called from Fixed Update
-void sys_processPhysics ();
+void sys_processPhysics (double tickTime);
+
+// Free memory and destroy bodies for droids
+void sys_clearDroids();
+
+// Free memory for solid walls and free bodies
+void sys_clearSolidWalls();

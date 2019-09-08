@@ -2,6 +2,12 @@
 
 #include "system/sys_main.h"
 
+enum doorBulletDirection
+{
+	DIRECTION_UP = 0,
+	DIRECTION_ACROSS
+};
+
 //-----------------------------------------------------------------------------
 //
 // structure used for doors
@@ -11,16 +17,12 @@
 typedef struct
 {
 	int            tileIndex;
-	int            height;
-	int            width;
-//	cpVect         topLeft;
-//	cpVect         topRight;
-//	cpVect         botLeft;
-//	cpVect         botRight;
+	float          height;
+	float          width;
 	int            currentFrame;            // which frame are we on
 	float          frameDelay;                // speed to animate them at
-//	float          nextFrame;                // counter for incrementing to next frame
 	int            numberUsing;
+	int            direction;
 	b2Vec2         worldPosition  = {0, 0};
 	b2Vec2         renderPosition = {0, 0};
 	b2BodyDef      bodyDef;                      // Used for physics and collisions
@@ -48,16 +50,20 @@ typedef struct
 #define DOOR_UP_CLOSING_2         18
 #define DOOR_UP_CLOSED            11
 
-extern float doorAnimSpeed;
+extern float                     doorAnimSpeed;
+extern std::vector<_doorTrigger> doorBulletSensor;
 
 // Find the doors for this level and prepare a sensor objecty
-void gam_doorTriggerSetup(const std::string levelName);
+void gam_doorTriggerSetup (const std::string levelName);
 
 // Handle door sensor trigger
-void gam_handleDoorTrigger(int whichDoor, int state);
+void gam_handleDoorTrigger (int whichDoor, int state);
 
 // Process the animation of a door
-void gam_animateDoor(int whichDoor, int state);
+void gam_animateDoor (int whichDoor, int state);
 
 // Render current door frames onto map
-void gam_renderDoorFrames();
+void gam_renderDoorFrames ();
+
+// Clear out memory for door triggers
+void gam_clearAllDoors();

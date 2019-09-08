@@ -4,6 +4,7 @@
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_physicActions.h>
+#include <hdr/game/gam_bullet.h>
 #include "hdr/game/gam_physicsCollisions.h"
 
 contactListener myContactListenerInstance;
@@ -25,8 +26,9 @@ void contactListener::BeginContact (b2Contact *contact)
 		case PHYSIC_TYPE_PLAYER:
 			if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
 			{
-				gam_addPhysicAction(PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, -1, {0, 0});
-				gam_addPhysicAction(PHYSIC_EVENT_TYPE_PLAYER, PHYSIC_DAMAGE_BUMP, -1, -1, bodyUserData_B->dataValue, {0, 0});
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, -1, {0, 0});
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_PLAYER, PHYSIC_DAMAGE_BUMP, -1, -1, bodyUserData_B->dataValue, {0, 0});
+				return;
 			}
 			break;
 
@@ -35,6 +37,7 @@ void contactListener::BeginContact (b2Contact *contact)
 			{
 				gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
 				gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, bodyUserData_A->dataValue, {0, 0});
+				return;
 			}
 			break;
 
@@ -42,6 +45,7 @@ void contactListener::BeginContact (b2Contact *contact)
 			if ((bodyUserData_B->userType == PHYSIC_TYPE_PLAYER) || (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY))
 			{
 				evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_DOOR, bodyUserData_A->dataValue, GAME_DOOR_STATE_ENTER, "");
+				return;
 			}
 			break;
 
@@ -56,7 +60,33 @@ void contactListener::BeginContact (b2Contact *contact)
 
 		case PHYSIC_TYPE_BULLET:
 			if (bodyUserData_B->userType == PHYSIC_TYPE_WALL)
-				gam_addPhysicAction(PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
+			{
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
+				return;
+			}
+
+			if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
+			{
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, -1, bodyUserData_B->dataValue, bullets[bodyUserData_A->dataValue].sourceIndex, {0, 0});
+				return;
+			}
+
+			if (bodyUserData_B->userType == PHYSIC_TYPE_DOOR_BULLET)
+			{
+				switch (doorBulletSensor[bodyUserData_B->dataValue].direction)
+				{
+					case DIRECTION_UP:
+						if (doorBulletSensor[bodyUserData_B->dataValue].currentFrame != DOOR_UP_OPENED)
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
+						break;
+
+					case DIRECTION_ACROSS:
+						if (doorBulletSensor[bodyUserData_B->dataValue].currentFrame != DOOR_ACROSS_OPENED)
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
+						break;
+				}
+			}
 			break;
 	}
 
@@ -65,8 +95,8 @@ void contactListener::BeginContact (b2Contact *contact)
 		case PHYSIC_TYPE_PLAYER:
 			if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
 			{
-				gam_addPhysicAction(PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, -1, bodyUserData_B->dataValue, {0, 0});
-				gam_addPhysicAction(PHYSIC_EVENT_TYPE_PLAYER, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, -1, {0, 0});
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, -1, bodyUserData_B->dataValue, {0, 0});
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_PLAYER, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, -1, {0, 0});
 			}
 			break;
 
@@ -96,7 +126,33 @@ void contactListener::BeginContact (b2Contact *contact)
 
 		case PHYSIC_TYPE_BULLET:
 			if (bodyUserData_A->userType == PHYSIC_TYPE_WALL)
-				gam_addPhysicAction(PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
+			{
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
+				return;
+			}
+
+			if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
+			{
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, -1, bodyUserData_A->dataValue, bullets[bodyUserData_A->dataValue].sourceIndex, {0, 0});
+				return;
+			}
+
+			if (bodyUserData_A->userType == PHYSIC_TYPE_DOOR_BULLET)
+			{
+				switch (doorBulletSensor[bodyUserData_A->dataValue].direction)
+				{
+					case DIRECTION_UP:
+						if (doorBulletSensor[bodyUserData_A->dataValue].currentFrame != DOOR_UP_OPENED)
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
+						break;
+
+					case DIRECTION_ACROSS:
+						if (doorBulletSensor[bodyUserData_A->dataValue].currentFrame != DOOR_ACROSS_OPENED)
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
+						break;
+				}
+			}
 			break;
 	}
 }
@@ -186,10 +242,10 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 				contact->SetEnabled (false);
 			}
 
-			if (bodyUserData_B->userType == PHYSIC_TYPE_BULLET)
+			if (bodyUserData_B->userType == PHYSIC_TYPE_BULLET)     // Let bullet pass through player when it starts - need a type for ENEMY_BULLET
 			{
 				//if (bodyUserData_B->dataValue == -1)
-					contact->SetEnabled (false);
+				contact->SetEnabled (false);
 			}
 			break;
 	}
@@ -205,7 +261,7 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 			if (bodyUserData_A->userType == PHYSIC_TYPE_BULLET)
 			{
 				//if (bodyUserData_A->dataValue == -1)
-					contact->SetEnabled (false);
+				contact->SetEnabled (false);
 			}
 			break;
 	}

@@ -16,7 +16,7 @@ typedef struct
 	std::string name = "";
 } _registeredMutexes;
 
-std::vector<_registeredThreads> registeredThreads;
+std::vector<_registeredThreads> registeredThreads{};
 std::vector<_registeredMutexes> registeredMutexes;
 
 bool runThreads = true;     // Master flag to control state of detached threads
@@ -138,7 +138,7 @@ void evt_registerThread(functionPtr threadFunction, const std::string threadName
 	// Create vector element first
 	// Thread was being created too fast and running before the vector element was created
 	// resulting in no elements being available when size() was tested
-	registeredThreads[registeredThreads.size()].thread = PARA_createThread(*threadFunction, threadName);
+	registeredThreads[registeredThreads.size() - 1].thread = PARA_createThread(*threadFunction, threadName);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

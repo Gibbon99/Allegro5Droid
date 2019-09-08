@@ -129,6 +129,9 @@ void gam_initDroidValues (const std::string levelName)
 		tempDroid.wayPointDirection = WAYPOINT_DOWN;
 		tempDroid.spriteName        = gl_getSpriteName (tempDroid.droidType);
 		tempDroid.currentFrame      = 0;
+
+//		tempDroid.body = nullptr;
+/*
 		if (sprites.empty ())
 		{
 			tempDroid.numberOfFrames = 9;
@@ -137,7 +140,7 @@ void gam_initDroidValues (const std::string levelName)
 		{
 			tempDroid.numberOfFrames = sprites.at ("001").numFrames;
 		}
-
+*/
 		tempDroid.frameDelay       = 1.0f;
 		tempDroid.frameAnimCounter = 1.0f;
 		tempDroid.currentSpeed     = 0.0f;
@@ -228,6 +231,8 @@ void gam_removeDroid (int whichDroid)
 {
 	shipLevel.at (lvl_getCurrentLevelName ()).droid[whichDroid].currentMode = DROID_MODE_DEAD;
 
+	free(droidPhysics[whichDroid].userData);
+	droidPhysics[whichDroid].userData = nullptr;
 	droidPhysics[whichDroid].body->SetLinearVelocity ({0, 0});
 	sys_getPhysicsWorld ()->DestroyBody (droidPhysics[whichDroid].body);
 	droidPhysics[whichDroid].body = nullptr;
@@ -260,7 +265,7 @@ void gam_destroyDroid (int whichDroid)
 */
 			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentFrame   = 0;
 			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode    = DROID_MODE_EXPLODING;
-			shipLevel.at (tempCurrentLevel).droid[whichDroid].numberOfFrames = sprites.at ("explosion").numFrames;
+//			shipLevel.at (tempCurrentLevel).droid[whichDroid].numberOfFrames = sprites.at ("explosion").numFrames;
 			droidPhysics[whichDroid].body->SetLinearVelocity ({0, 0});
 			droidPhysics[whichDroid].body->SetType (b2_staticBody);
 
@@ -341,9 +346,9 @@ void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
 				// Need to work out bullet damage when using non firing droid
 				//
 				if (dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[whichDroid].droidType].canShoot)
-					shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= dataBaseEntry[playerDroid.droidType].bulletDamage;
+					shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= 20; //dataBaseEntry[playerDroid.droidType].bulletDamage;
 				else
-					shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= dataBaseEntry[0].bulletDamage;
+					shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= 20; //dataBaseEntry[0].bulletDamage;
 
 				if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth <= 0)
 				{
@@ -363,7 +368,7 @@ void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
 
 				shipLevel.at (tempCurrentLevel).droid[whichDroid].targetIndex      = sourceDroid;    // Set this droid as the target
 				shipLevel.at (tempCurrentLevel).droid[whichDroid].beenShotByPlayer = false;
-				shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
+				shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= 20; // TODO dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
 //						evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_DAMAGE, 0, 0, glm::vec2 (), glm::vec2 (), "" );
 
 				if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth <= 0)

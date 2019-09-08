@@ -213,7 +213,7 @@ add_executable(Allegro5Droid ${RC_SRCS} ${CXX_SRCS})
 #target_link_libraries(Allegro5Droid ${LINK_OPTIONS})
 
 target_link_libraries(Allegro5Droid
-        # asan		# Used for address sanitizer
+#        asan		# Used for address sanitizer
         #		tsan		# Used for thread sanitizer
         allegro
         allegro_dialog

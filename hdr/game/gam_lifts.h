@@ -34,3 +34,6 @@ void gam_performLiftAction();
 
 // Put the player onto lift on new deck
 int gam_putPlayerOnLiftFromTunnel(int currentDeck);
+
+// Clear out memory and free bodies
+void gam_clearLifts();

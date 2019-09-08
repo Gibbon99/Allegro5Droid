@@ -1,6 +1,7 @@
 #include <map>
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_player.h>
+#include <hdr/game/gam_doors.h>
 #include "hdr/system/sys_util.h"
 
 typedef struct

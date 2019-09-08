@@ -26,7 +26,7 @@ void sys_gameTickRun (double tickTime)
 			sys_updateVisibleScreenArea();
 			ai_processDroidAI(lvl_getCurrentLevelName());
 
-			sys_processPhysics();
+			sys_processPhysics (tickTime);
 
 			break;
 

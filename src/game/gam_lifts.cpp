@@ -357,6 +357,22 @@ void gam_createLiftSensor(unsigned long whichLift, int index)
 
 //---------------------------------------------------------
 //
+// Clear out memory and free bodies
+void gam_clearLifts()
+//---------------------------------------------------------
+{
+	for (auto &liftItr : lifts)
+	{
+		if (liftItr.userData != nullptr)
+			delete(liftItr.userData);
+		if (liftItr.body != nullptr)
+			sys_getPhysicsWorld ()->DestroyBody (liftItr.body);
+	}
+	lifts.clear();
+}
+
+//---------------------------------------------------------
+//
 // Get the positions of lifts
 void gam_findLiftPositions ( const std::string &levelName )
 //---------------------------------------------------------
@@ -374,11 +390,7 @@ void gam_findLiftPositions ( const std::string &levelName )
 
 	if (!lifts.empty())
 	{
-		for (auto liftItr : lifts)
-		{
-			sys_getPhysicsWorld ()->DestroyBody (liftItr.body);
-		}
-		lifts.clear();
+		gam_clearLifts();
 	}
 
 	for (int index = 0; index < shipLevel.at(levelName).levelDimensions.x * shipLevel.at(levelName).levelDimensions.y; index++)
@@ -464,27 +476,4 @@ void gam_setupLifts ()
 	gam_setupLiftsStore ( lvl_returnLevelNameFromDeck ( 18 ), 7 );
 	gam_setupLiftsStore ( lvl_returnLevelNameFromDeck ( 19 ), 0 );
 	gam_setupLiftsStore ( lvl_returnLevelNameFromDeck ( 20 ), 3 );
-
-	/*
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 0 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 1 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 2 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 3 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 4 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 5 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 6 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 8 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 9 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 10 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 11 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 12 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 13 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 14 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 15 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 16 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 17 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 18 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 19 ));
-	gam_findLiftPositions ( lvl_returnLevelNameFromDeck ( 20 ));
-	*/
 }

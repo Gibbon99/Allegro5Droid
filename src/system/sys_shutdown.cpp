@@ -14,7 +14,7 @@ void sys_shutdownToSystem()
 {
 	evt_stopThreads();
 
-	sys_freePhysicsEngine();
+
 	fnt_destroySystemFont();
 	if (eventQueue != nullptr)
 		al_destroy_event_queue(eventQueue);
@@ -26,4 +26,5 @@ void sys_shutdownToSystem()
 	con_stopConsole();
 
 	sys_freeMemory();
+	sys_freePhysicsEngine();
 }

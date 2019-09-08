@@ -7,6 +7,7 @@
 #include <hdr/io/io_resources.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_physicActions.h>
+#include <hdr/game/gam_bullet.h>
 #include "hdr/game/gam_player.h"
 
 b2Vec2 previousPlayerWorldPos;
@@ -21,15 +22,16 @@ _droid playerDroid;
 void gam_initPlayerValues ()
 // ----------------------------------------------------------------------------
 {
-	playerDroid.droidType        = shipLevel.at (lvl_getCurrentLevelName ()).droidTypes[0];
+	playerDroid.droidType        = 9; //shipLevel.at (lvl_getCurrentLevelName ()).droidTypes[0];
 	playerDroid.currentHealth    = dataBaseEntry[playerDroid.droidType].maxHealth;
 	playerDroid.spriteName       = gl_getSpriteName (playerDroid.droidType);
 	playerDroid.currentFrame     = 0;
-	playerDroid.numberOfFrames   = sprites.at ("001").numFrames;
+//	playerDroid.numberOfFrames   = sprites.at ("001").numFrames;
 	playerDroid.frameDelay       = 1.0f;
 	playerDroid.frameAnimCounter = 1.0f;
 	playerDroid.currentSpeed     = 0.0f;
-	playerDroid.acceleration     = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;	
+	playerDroid.acceleration     = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
+	playerDroid.bulletName       = bul_getBulletName (playerDroid.droidType);
 }
 
 // ----------------------------------------------------------------------------
@@ -187,15 +189,17 @@ void gam_processActionKey ()
 {
 	if (playerDroid.overLiftTile)
 	{
-		gam_performLiftAction ();
-		keyBinding[gameAction].currentlyPressed = false;
-		return;
+		if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
+		{
+			gam_performLiftAction ();
+			keyBinding[gameAction].currentlyPressed = false;
+		}
+//		return;
 	}
 
 	if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
 	{
-		gam_addPhysicAction(PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
-//		evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_NEW_BULLET, -1, 0, "");   // -1 is player source
+		gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
 		keyBinding[gameAction].currentlyPressed = false;
 		return;
 	}

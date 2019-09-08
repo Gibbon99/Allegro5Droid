@@ -9,6 +9,7 @@
 #include <hdr/gui/gui_sideView.h>
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_droidAI.h>
+#include <hdr/game/gam_bullet.h>
 #include "hdr/system/sys_scriptConfig.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -37,6 +38,9 @@ void sys_scriptInitVariables()
 	sys_scriptAddHostVariable ("int collisionExplosionDamage", &collisionExplosionDamage);
 	sys_scriptAddHostVariable ("int collisionDamageInflicted", &collisionDamageInflicted);
 	sys_scriptAddHostVariable ("float explodeAnimateSpeed", &explodeAnimateSpeed);
+	sys_scriptAddHostVariable ("float bulletAnimSpeed", &bulletAnimSpeed);
+	sys_scriptAddHostVariable ("float bulletMoveSpeed", &bulletMoveSpeed);
+	sys_scriptAddHostVariable ("float bulletDensity", &bulletDensity);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

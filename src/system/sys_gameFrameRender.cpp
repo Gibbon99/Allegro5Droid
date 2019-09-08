@@ -146,7 +146,7 @@ void sys_displayScreen(double interpolation)
 //			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 			hud_renderHUD();
 
-			sys_getPhysicsWorld()->DrawDebugData();
+//			sys_getPhysicsWorld()->DrawDebugData();
 
 			break;
 

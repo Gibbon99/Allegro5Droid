@@ -59,8 +59,8 @@ void script_loadAllResources ()
 	io_spriteSetAlphaColor ("bullet_476", 255, 0, 255);
 	sys_loadResource ("bullet_821", "bullet_821.bmp", RESOURCE_SPRITE, 8, 0);
 	io_spriteSetAlphaColor ("bullet_821", 255, 0, 255);
-
-
+	//
+	// Sprite imaages
 	sys_loadResource ("001", "001.bmp", RESOURCE_SPRITE, 9, 0);
 	io_spriteSetAlphaColor ("001", 0, 0, 0);
 	sys_loadResource ("123", "123.bmp", RESOURCE_SPRITE, 9, 0);
@@ -134,7 +134,7 @@ void script_loadAllResources ()
 	lvl_loadShipLevel ("116-newDeck20.dat");
 
 	initResourcesAllDone     = true;
-	doorAnimSpeed            = 1.1f;
+	doorAnimSpeed            = 4.5f;
 	pixelsPerMeter           = 12.0f;        // 12 pixels is 1 meter
 	wayPointDestinationSize  = 1.0f;         // 1 meter
 	shipDamping              = 0.0f;
@@ -151,4 +151,7 @@ void script_loadAllResources ()
 	badHealthFactor          = 0.20f;        // Percent of health before it's considered bad
 	collisionDamageInflicted = 3;
 	collisionExplosionDamage = 10;
+	bulletAnimSpeed          = 10.0f;
+	bulletMoveSpeed          = 0.02f;
+	bulletDensity            = 0.2f;
 }

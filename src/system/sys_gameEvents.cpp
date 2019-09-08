@@ -136,7 +136,7 @@ void evt_initEvents ()
 void evt_handleEvents ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	ALLEGRO_EVENT event;
+	ALLEGRO_EVENT event{};
 
 	al_get_next_event (eventQueue, &event);
 

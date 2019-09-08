@@ -152,7 +152,7 @@ bool lvl_loadShipLevel (const std::string fileName)
 		return false;
 	}
 
-	memoryBuffer = (char *) malloc (sizeof (char) * fileSize);
+	memoryBuffer = (char *) malloc (sizeof (char) * fileSize);  //memleak
 	if (nullptr == memoryBuffer)
 	{
 		log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal memory allocation error when loading level file."));
@@ -251,6 +251,7 @@ bool lvl_loadShipLevel (const std::string fileName)
 	//
 	// Finished - close the file
 	para_closeFile (fp);
+	free(memoryBuffer);
 
 	//
 	// Extract the deck number from the filename
@@ -392,6 +393,6 @@ void lvl_changeToLevel (const std::string& newLevelName, int whichLift)
 	gam_findLiftPositions (newLevelName);
 
 	bul_initBullets();
-	
+
 	gam_drawAllTiles ();
 }

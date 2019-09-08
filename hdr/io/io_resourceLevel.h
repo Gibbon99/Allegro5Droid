@@ -31,9 +31,9 @@ typedef struct
 
 typedef struct
 {
-	int            tunnel;
-	int            posX;
-	int            posY;
+	int tunnel;
+	int posX;
+	int posY;
 }                   _liftBasic;
 
 //-----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ typedef struct
 	int    currentFrame;       // which frame are we on
 	float  frameDelay;         // animation counter
 	b2Vec2 worldPos;           // Position in world coords
-} _basicHealing;
+}                   _basicHealing;
 
 typedef struct
 {
@@ -57,21 +57,19 @@ typedef struct
 	int         currentHealth;
 	int         wayPointIndex;
 	int         wayPointDirection;
-	std::string spriteName;
 	int         currentFrame;
-	int         numberOfFrames;
 	float       frameDelay;
 	float       frameAnimCounter;
-
-	float currentSpeed;
-	float acceleration;
+	float       currentSpeed;
+	float       acceleration;
+	std::string spriteName;
+	std::string bulletName;
 
 	b2BodyDef     bodyDef;                      // Used for physics and collisions
 	b2CircleShape shape;
 	b2FixtureDef  fixtureDef;
 	b2Body        *body;
-	_userData *userData;
-
+	_userData     *userData;
 
 	b2Vec2 worldPos;
 	b2Vec2 previousWorldPos;
@@ -81,14 +79,12 @@ typedef struct
 	b2Vec2 destDirection;              // Which way is the droid heading
 	b2Vec2 velocity;                   // Current speed
 
-	int       overTile;                   // which tile is the droid on
 	bool overLiftTile;
-	int liftIndex;                      // Which lift on the level are we over
+	int  liftIndex;                      // Which lift on the level are we over
 
-	float         mass;                       // Used for collision response
+	float mass;                       // Used for collision response
 
 	bool ignoreCollisions;           // Ignoring collisions for the time period
-//	bool            isExploding;
 
 	int   targetIndex;                // Which droid shot this droid
 	bool  beenShotByPlayer;
@@ -142,25 +138,6 @@ typedef struct
 
 typedef struct
 {
-	bool        isAlive;
-	float       angle;
-	b2Vec2      worldPos;
-	b2Vec2      previousWorldPos;
-	b2Vec2      travelDirection;
-	b2Vec2      size;
-	int         type;
-	int         currentAnimFrame;
-	float       animDelayCount;
-	float       speed;
-	int         sourceDroid;
-	bool        damageDone;        // Use for disrupter to only damage once
-	int         particleIndex;    // Used to remove a particle emitter
-	std::string bitmapName;
-//  _physicObject	bulletPhysicsObject;
-} _bullet;
-
-typedef struct
-{
 	int                       mapVersion;
 	int                       numLineSegments;
 	int                       numWaypoints;
@@ -185,9 +162,8 @@ typedef struct
 	std::vector<_basicHealing> healing;
 //	std::vector<_doorTrigger>  doorTrigger;        // pointer to memory to hold door trigger information
 
-	std::vector<_bullet> bullet;
-	bool                 wallPhysicsCreated  = false;
-	bool                 droidPhysicsCreated = false;
+	bool wallPhysicsCreated  = false;
+	bool droidPhysicsCreated = false;
 } _levelStruct;
 
 extern std::unordered_map<std::string, _levelStruct> shipLevel;

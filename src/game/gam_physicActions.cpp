@@ -93,7 +93,7 @@ void gam_processPhysicActions()
 				break;
 
 			case PHYSIC_EVENT_TYPE_NEW_BULLET:                  // Needs to be created outside of PhysicWorld Step
-				bul_createNewBullet(physicEvent.sourceIndex);     // Pass source of bullet -1 is player
+				bul_createNewBullet(physicEvent.sourceIndex);   // Pass source of bullet -1 is player
 				break;
 
 			case PHYSIC_EVENT_TYPE_REMOVE_BULLET:
