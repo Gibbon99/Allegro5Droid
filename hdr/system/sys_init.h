@@ -7,6 +7,7 @@ extern ALLEGRO_TIMER   *timingTimer;
 extern ALLEGRO_TIMER   *fadeTimer;
 
 extern bool initResourcesAllDone;
+extern int fullScreen; // Set for checkbox in GUI script
 
 // Run init for system startup
 void sys_initAll ();

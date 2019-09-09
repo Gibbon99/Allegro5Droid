@@ -1,9 +1,7 @@
 -----------------------------------------------------------------------------
 Log file opened:
-09-09-2019	12:45:34
+09-09-2019	16:04:20
 Logfile started...
-INFO | Compiled against PhysFS version 3.0.2.
-INFO | Linked against PhysFS version 3.0.2.
 INFO | Packfile: Supported archive types.
 INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
 INFO | Packfile: [ 7Z ] : [ 7zip archives ]
@@ -50,6 +48,10 @@ INFO | Script: Registered variable - [ float healingAnimSpeed ]
 INFO | Script: Registered variable - [ bool showDebugPhysics ]
 INFO | Script: Registered variable - [ int logicalWidth ]
 INFO | Script: Registered variable - [ int logicalHeight ]
+INFO | Script: Registered variable - [ int currentGUIScreen ]
+INFO | Script: Registered variable - [ int currentObjectSelected ]
+INFO | Script: Registered variable - [ bool isGUIStarted ]
+INFO | Script: Registered variable - [ bool fullScreen ]
 INFO | Script: Registered variable - [ float introScrollBoxStartX ]
 INFO | Script: Registered variable - [ float introScrollBoxStartY ]
 INFO | Script: Registered variable - [ float introScrollBoxWidth ]
@@ -85,6 +87,12 @@ INFO | Script: Registered function - [ void as_guiSetObjectFocus    (string &in)
 ERROR | Function [ void gui_addKeyAndText(string &in, string &in) ] has already been added.
 INFO | Script: Registered function - [ void as_guiChangeCurrentScreen(int newScreen) ]
 INFO | Script: Registered function - [ void as_guiSetupScrollBox(int whichScrollBox, string &in) ]
+INFO | Script: Registered function - [ int gam_getTextureWidth(string &in) ]
+INFO | Script: Registered function - [ int gam_getTextureHeight(string &in) ]
+INFO | Script: Registered function - [ void as_guiSetCheckboxGroup  (string &in, int whichGroup) ]
+INFO | Script: Registered function - [ void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked) ]
+INFO | Script: Registered function - [ void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal) ]
+INFO | Script: Registered function - [ void sys_changeCurrentMode(int newMode, bool fade) ]
 INFO | Section has been added [ english.sc ]
 INFO | Section has been added [ german.sc ]
 INFO | Section has been added [ gui.sc ]
@@ -92,8 +100,9 @@ INFO | Section has been added [ italian.sc ]
 INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ resources.sc ]
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 95621376 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 95618432 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 2143211472 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 2143208688 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 2143200512 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -155,6 +164,16 @@ INFO | Loaded ship level [ Observation ] - index [ 20 ]
 INFO | TTF loaded [ console.ttf ]
 INFO | TTF loaded [ intro.ttf ]
 INFO | TTF loaded [ gui.ttf ]
+Screen [ mainGUIScreen ] created.
+Screen [ guiOptionsMain ] created.
+Screen [ optionsVideo ] created.
+Screen [ scrTutorial ] created.
+Screen [ scrTutTransfer ] created.
+Screen [ scrTutTransGame ] created.
+Screen [ scrTutLifts ] created.
+Screen [ scrTutTerminals ] created.
+Screen [ scrTutHealing ] created.
+Screen [ scrTutTips ] created.
 INFO | Created mutex [ gameMutex ]
 INFO | Created thread [ gameLoopThread ]
 DEBUG | Node [ AI_SHOOT ] added. Num Children for [ ROOT_NODE ] now [ 1 ]

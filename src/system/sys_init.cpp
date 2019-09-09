@@ -26,6 +26,8 @@ ALLEGRO_BITMAP  *windowIcon;
 
 bool initResourcesAllDone = false;
 
+int fullScreen = 1; // Set for checkbox in GUI script
+
 #define VSYNC_WAIT 1
 #define VSYNC_FORCE_OFF 2
 
@@ -259,5 +261,5 @@ void sys_initAll ()
 
 	gam_initPlayerValues ();
 
-	sys_changeMode (MODE_GUI_INTRO, true);
+	sys_changeMode (MODE_GUI, true);
 }

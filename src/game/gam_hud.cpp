@@ -1,4 +1,5 @@
 #include <hdr/io/io_resources.h>
+#include <hdr/io/io_resourceImage.h>
 #include "hdr/game/gam_hud.h"
 
 //---------------------------------------------------------------------------------

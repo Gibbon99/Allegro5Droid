@@ -38,11 +38,10 @@
 
 #define SPRITE_SIZE   24
 
+#define ERROR_REPEAT_NUMBER 3
+
 enum GAME_MODES {
-	MODE_CONSOLE = 0,
-	MODE_GAME,
-	MODE_LIFT_VIEW,
-	MODE_GUI_INTRO
+
 };
 
 typedef int (*functionPtr) (...);

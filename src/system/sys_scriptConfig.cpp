@@ -14,6 +14,9 @@
 #include <hdr/game/gam_healing.h>
 #include <hdr/system/sys_gameFrameRender.h>
 #include <hdr/gui/gui_scrollBox.h>
+#include <hdr/gui/gui_checkBox.h>
+#include <hdr/io/io_resourceImage.h>
+#include <hdr/gui/gui_dialogBox.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -47,6 +50,11 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("bool showDebugPhysics", &showDebugPhysics);
 	sys_scriptAddHostVariable ("int logicalWidth", &screenWidth);
 	sys_scriptAddHostVariable ("int logicalHeight", &screenHeight);
+
+	sys_scriptAddHostVariable ("int currentGUIScreen", &currentGUIScreen);
+	sys_scriptAddHostVariable ("int currentObjectSelected", &currentObjectSelected);
+	sys_scriptAddHostVariable ("bool isGUIStarted", &isGUIStarted);
+	sys_scriptAddHostVariable ("bool fullScreen", &fullScreen);
 
 	sys_scriptAddHostVariable("float introScrollBoxStartX", &introScrollBoxStartX);
 	sys_scriptAddHostVariable("float introScrollBoxStartY", &introScrollBoxStartY);
@@ -95,16 +103,14 @@ void sys_scriptInitFunctions ()
 
 	sys_scriptAddHostFunction("void as_guiSetupScrollBox(int whichScrollBox, string &in)", (functionPtr) &gui_setupScrollBox);
 
-//	sys_scriptAddHostFunction("void as_guiSetCheckboxGroup  (string &in, int whichGroup)", (functionPtr) &gui_hostSetCheckboxGroup);
-//	sys_scriptAddHostFunction("void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked)", (functionPtr)&gui_hostSetCheckboxTick);
-//	sys_scriptAddHostFunction("void as_guiSetImageName(string &in, string &in)", (functionPtr)&gui_setImageName);
-//	sys_scriptAddHostFunction("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
-//	sys_scriptAddHostFunction("void gam_setupFont(string &in, int fontSize)", (functionPtr) &gam_setupFont);
+	sys_scriptAddHostFunction("int gam_getTextureWidth(string &in)", (functionPtr)&sys_getImageWidth);
+	sys_scriptAddHostFunction("int gam_getTextureHeight(string &in)", (functionPtr)&sys_getImageHeight);
 
-//	sys_scriptAddHostFunction("int gam_getTextureWidth(string &in)", (functionPtr)&gam_getTextureWidth);
-//	sys_scriptAddHostFunction("int gam_getTextureHeight(string &in)", (functionPtr)&gam_getTextureHeight);
-//	sys_scriptAddHostFunction("void sys_changeCurrentMode(int newMode, bool returnPrevious, string &in)", (functionPtr)&sys_changeCurrentMode);
+	sys_scriptAddHostFunction("void as_guiSetCheckboxGroup  (string &in, int whichGroup)", (functionPtr) &gui_hostSetCheckboxGroup);
+	sys_scriptAddHostFunction("void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked)", (functionPtr)&gui_hostSetCheckboxTick);
+	sys_scriptAddHostFunction("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
 
+	sys_scriptAddHostFunction("void sys_changeCurrentMode(int newMode, bool fade)", (functionPtr)&sys_changeMode);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -115,4 +121,5 @@ void sys_scriptInitScriptFunctions ()
 {
 	sys_scriptAddScriptFunction ("void script_loadAllResources()", "script_loadAllResources");
 	sys_scriptAddScriptFunction ("void script_initGUI()", "script_initGUI");
+	sys_scriptAddScriptFunction ("void as_guiHandleElementAction(string &in objectID)", "as_guiHandleElementAction");
 }

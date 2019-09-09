@@ -48,6 +48,47 @@ void io_processKeyActions()
 {
 	switch (currentMode)
 	{
+		case MODE_GUI:
+		case MODE_GUI_OPTIONS:
+		case MODE_GUI_OPTIONS_VIDEO:
+		case MODE_GUI_TUT_MOVE:
+		case MODE_GUI_TUT_TRANSFER_GAME:
+		case MODE_GUI_TUT_TRANSFER_START:
+		case MODE_GUI_TUT_LIFTS:
+		case MODE_GUI_TUT_TERMINALS:
+		case MODE_GUI_TUT_HEALING:
+		case MODE_GUI_TUT_TIPS:
+				if (keyBinding[gameUp].currentlyPressed)
+				{
+					keyBinding[gameUp].currentlyPressed = false;
+					gui_handleFocusMove(GUI_MOVE_UP, false, false);
+				}
+
+				if (keyBinding[gameDown].currentlyPressed)
+				{
+					keyBinding[gameDown].currentlyPressed = false;
+					gui_handleFocusMove(GUI_MOVE_DOWN, false, false);
+				}
+
+				if (keyBinding[gameLeft].currentlyPressed)
+				{
+					keyBinding[gameLeft].currentlyPressed = false;
+					gui_handleFocusMove(GUI_MOVE_LEFT, false, false);
+				}
+
+				if (keyBinding[gameRight].currentlyPressed)
+				{
+					keyBinding[gameRight].currentlyPressed = false;
+					gui_handleFocusMove(GUI_MOVE_RIGHT, false, false);
+				}
+
+				if (keyBinding[gameAction].currentlyPressed)
+				{
+					keyBinding[gameAction].currentlyPressed = false;
+					gui_handleFocusMove(GUI_ACTION, true, false);
+				}
+			break;
+
 		case MODE_GAME:
 			gam_processPlayerMovement ();
 			if (keyBinding[gameAction].currentlyPressed)

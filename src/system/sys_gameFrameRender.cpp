@@ -16,6 +16,7 @@
 #include <hdr/game/gam_healing.h>
 #include <hdr/game/gam_pathFind.h>
 #include <hdr/gui/gui_scrollBox.h>
+#include <hdr/gui/gui_render.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -140,6 +141,20 @@ void sys_displayScreen (double interpolation)
 		case MODE_GUI_INTRO:
 			hud_renderHUD ();
 			gui_renderScrollBox(&introScrollBox, interpolation);
+			break;
+
+		case MODE_GUI:
+		case MODE_GUI_OPTIONS:
+		case MODE_GUI_OPTIONS_VIDEO:
+		case MODE_GUI_TUT_MOVE:
+		case MODE_GUI_TUT_TRANSFER_GAME:
+		case MODE_GUI_TUT_TRANSFER_START:
+		case MODE_GUI_TUT_LIFTS:
+		case MODE_GUI_TUT_TERMINALS:
+		case MODE_GUI_TUT_HEALING:
+		case MODE_GUI_TUT_TIPS:
+			hud_renderHUD ();
+			gui_drawGUI ();
 			break;
 
 		case MODE_GAME:

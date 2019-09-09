@@ -26,6 +26,19 @@ void sys_gameTickRun (double tickTime)
 		case MODE_CONSOLE:
 			break;
 
+		case MODE_GUI:
+		case MODE_GUI_OPTIONS:
+		case MODE_GUI_OPTIONS_VIDEO:
+		case MODE_GUI_TUT_MOVE:
+		case MODE_GUI_TUT_TRANSFER_GAME:
+		case MODE_GUI_TUT_TRANSFER_START:
+		case MODE_GUI_TUT_LIFTS:
+		case MODE_GUI_TUT_TERMINALS:
+		case MODE_GUI_TUT_HEALING:
+		case MODE_GUI_TUT_TIPS:
+			io_processKeyActions();
+			break;
+
 		case MODE_GUI_INTRO:
 			gui_scrollScrollBox (&introScrollBox, tickTime);
 			break;
