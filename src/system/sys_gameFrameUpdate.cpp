@@ -8,6 +8,7 @@
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_healing.h>
 #include <hdr/game/gam_pathFind.h>
+#include <hdr/gui/gui_scrollBox.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -16,23 +17,30 @@
 void sys_gameTickRun (double tickTime)
 //----------------------------------------------------------------------------------------------------------------------
 {
+	std::string cachedCurrentLevelName;
+
+	cachedCurrentLevelName = lvl_getCurrentLevelName ();
+
 	switch (currentMode)
 	{
 		case MODE_CONSOLE:
 			break;
 
+		case MODE_GUI_INTRO:
+			gui_scrollScrollBox (&introScrollBox, tickTime);
+			break;
+
 		case MODE_GAME:
-			io_animateEnemySprites (lvl_getCurrentLevelName (), tickTime);
-			gam_animateHealing (lvl_getCurrentLevelName (), tickTime);
+			io_animateEnemySprites (cachedCurrentLevelName, tickTime);
+			gam_animateHealing (cachedCurrentLevelName, tickTime);
 			io_processKeyActions();
 			gam_processHealingTiles();
-			gam_AStarProcessPaths (lvl_getCurrentLevelName());
+			gam_AStarProcessPaths (cachedCurrentLevelName);
 
 			sys_updateVisibleScreenArea();
-			ai_processDroidAI(lvl_getCurrentLevelName());
+			ai_processDroidAI(cachedCurrentLevelName);
 
 			sys_processPhysics (tickTime);
-
 			break;
 
 		case MODE_LIFT_VIEW:

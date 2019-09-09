@@ -12,6 +12,7 @@ enum LOG_LEVEL
 	LOG_LEVEL_ERROR,
 	LOG_LEVEL_DEBUG,
 	LOG_LEVEL_CONSOLE,
+	LOG_LEVEL_GUI
 };
 
 // Push an event onto the logging queue

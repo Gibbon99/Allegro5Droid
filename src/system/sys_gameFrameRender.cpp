@@ -15,6 +15,7 @@
 #include <hdr/game/gam_bullet.h>
 #include <hdr/game/gam_healing.h>
 #include <hdr/game/gam_pathFind.h>
+#include <hdr/gui/gui_scrollBox.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -136,6 +137,11 @@ void sys_displayScreen (double interpolation)
 			con_renderConsole ();
 			break;
 
+		case MODE_GUI_INTRO:
+			hud_renderHUD ();
+			gui_renderScrollBox(&introScrollBox, interpolation);
+			break;
+
 		case MODE_GAME:
 
 			gam_renderDoorFrames ();
@@ -170,6 +176,7 @@ void sys_displayScreen (double interpolation)
 
 	//
 	// Draw everything here
+	fnt_setColor_f (0, 0, 0, 1);
 	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
 	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
 

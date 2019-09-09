@@ -41,7 +41,8 @@
 enum GAME_MODES {
 	MODE_CONSOLE = 0,
 	MODE_GAME,
-	MODE_LIFT_VIEW
+	MODE_LIFT_VIEW,
+	MODE_GUI_INTRO
 };
 
 typedef int (*functionPtr) (...);
@@ -69,3 +70,9 @@ typedef struct {
 
 // Change to a new mode
 void sys_changeMode (int newMode, bool fade);
+
+// Return logical screen width
+float sys_getLogicalWidth();
+
+// Return the logical screen height
+float sys_getLogicalHeight();

@@ -80,6 +80,7 @@ void sys_loadResourceFont (const std::string &key, const std::string &fileName, 
 	}
 	tempFont.common.loaded   = true;
 	fonts.insert (std::pair<std::string, __font> (key, tempFont));
+	log_logMessage(LOG_LEVEL_INFO, sys_getString("TTF loaded [ %s ]", fileName.c_str()));
 }
 
 //---------------------------------------------------------------------------------------------------------------------------

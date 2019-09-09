@@ -385,7 +385,6 @@ void lvl_changeToLevel (const std::string& newLevelName, int whichLift)
 	playerDroid.worldPos = gam_getLiftWorldPosition (whichLift, lvl_getCurrentLevelName ());
 
 	sys_setPlayerPhysicsPosition (playerDroid.worldPos);
-	sys_changePlayerPhysicsFilter ();
 
 	sys_setupEnemyPhysics (newLevelName);
 	sys_setupSolidWalls (newLevelName);

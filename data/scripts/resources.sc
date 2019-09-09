@@ -133,6 +133,10 @@ void script_loadAllResources ()
 	lvl_loadShipLevel ("116-newDeck19.dat");
 	lvl_loadShipLevel ("116-newDeck20.dat");
 
+	sys_loadResource ("console", "console.ttf", RESOURCE_FONT, 0, 12);
+	sys_loadResource ("intro", "intro.ttf", RESOURCE_FONT, 0, 14);
+	sys_loadResource ("gui", "gui.ttf", RESOURCE_FONT, 0, 14);
+
 	initResourcesAllDone     = true;
 	showDebugPhysics         = false;
 	doorAnimSpeed            = 4.5f;
@@ -140,7 +144,6 @@ void script_loadAllResources ()
 	wayPointDestinationSize  = 1.0f;         // 1 meter
 	shipDamping              = 0.0f;
 	playerRadius             = 12.0f;
-	playerMass               = 10.5f;
 	playerFriction           = 0.5f;
 	playerElastic            = 0.8f;
 	playerAcceleration       = 150.0f;
@@ -153,7 +156,7 @@ void script_loadAllResources ()
 	collisionDamageInflicted = 3;
 	collisionExplosionDamage = 10;
 	bulletAnimSpeed          = 10.0f;
-	bulletMoveSpeed          = 0.8f;
+	bulletMoveSpeed          = 0.5f;
 	bulletDensity            = 0.2f;
 	healingAnimSpeed         = 10.0f;
 }

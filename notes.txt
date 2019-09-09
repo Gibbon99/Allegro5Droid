@@ -1,0 +1,9 @@
+Change working directory
+--------------------------
+
+ALLEGRO_PATH* p = al_get_standard_path(ALLEGRO_EXENAME_PATH);
+al_change_directory(al_path_cstr(p) , ALLEGRO_NATIVE_PATH_SEP);
+al_destroy_path(p);
+p = 0;
+
+

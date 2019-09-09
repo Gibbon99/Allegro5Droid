@@ -14,7 +14,7 @@ void sys_shutdownToSystem()
 {
 	evt_stopThreads();
 
-
+	fnt_destroyFonts();
 	fnt_destroySystemFont();
 	if (eventQueue != nullptr)
 		al_destroy_event_queue(eventQueue);

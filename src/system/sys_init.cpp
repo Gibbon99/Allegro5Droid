@@ -217,6 +217,14 @@ void sys_initAll ()
 	{
 		return;
 	}
+	//
+	// Start TTF addon
+	if (!al_init_ttf_addon())
+	{
+		quitProgram = true;
+		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start True Type Font addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return;
+	}
 
 	gl_setupDroidToSpriteLookup ();
 
@@ -251,5 +259,5 @@ void sys_initAll ()
 
 	gam_initPlayerValues ();
 
-	sys_changeMode (MODE_GAME, true);
+	sys_changeMode (MODE_GUI_INTRO, true);
 }

@@ -2,6 +2,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_doors.h>
+#include <hdr/gui/gui_main.h>
 #include "hdr/system/sys_util.h"
 
 typedef struct
@@ -12,6 +13,24 @@ typedef struct
 
 std::map<std::string, _memoryMap> memoryMap;
 b2AABB                            visibleScreenArea;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Test if a point is inside a rectangle
+bool sys_isPointInRect(b2Vec2 testPoint, __BOUNDING_BOX testRectangle)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (testPoint.x < testRectangle.x)
+		return false;
+	if (testPoint.y < testRectangle.y)
+		return false;
+	if (testPoint.x > testRectangle.x + testRectangle.w)
+		return false;
+	if (testPoint.y > testRectangle.y + testRectangle.h)
+		return false;
+
+	return true;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -168,7 +187,6 @@ bool sys_visibleOnScreen(b2Vec2 worldCoord, int shapeSize)
 	return true;
 }
 
-
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Convert worldPosition coords to screen coords
@@ -191,37 +209,4 @@ b2Vec2 sys_worldToScreen(b2Vec2 worldPos, int shapeSize)
 		screenCoords.y = worldPos.y - (playerDroid.worldPos.y - (screenHeight / 2));
 	}
 	return screenCoords;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Put four bytes ( chars ) into one int value
-int sys_pack4Bytes(char one, char two, char three, char four)
-//----------------------------------------------------------------------------------------------------------------------
-{
-	int returnValue = 0;
-
-	returnValue <<= 8;
-	returnValue |= one;
-	returnValue <<= 8;
-	returnValue |= two;
-	returnValue <<= 8;
-	returnValue |= three;
-	returnValue <<= 8;
-	returnValue |= four;
-
-	return returnValue;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Returns 4 char bytes into passed in array from INT parameter
-void sys_getPackedBytes(int sourceNumber, unsigned char *returnArray)
-//----------------------------------------------------------------------------------------------------------------------
-{
-	returnArray[0] = static_cast<unsigned char>((sourceNumber >> 24) & 0xff);
-	returnArray[1] = static_cast<unsigned char>((sourceNumber >> 16) & 0xff);
-	returnArray[2] = static_cast<unsigned char>((sourceNumber >> 8) & 0xff);
-	returnArray[3] = static_cast<unsigned char>(sourceNumber & 0xff);
 }

@@ -24,7 +24,6 @@ std::vector<__physicWall>  solidWalls;
 std::vector<_physicObject> droidPhysics;
 
 float pixelsPerMeter;           // Set from startup script
-float playerMass;                // Set from startup script
 
 float playerRadius;            // Set from startup script
 float playerFriction;          // Set from startup script
@@ -182,28 +181,13 @@ void sys_setPlayerPhysicsPosition (b2Vec2 newPosition)
 
 //-------------------------------------------------------------------
 //
-// Change the physics shape filter for the player on level change
-void sys_changePlayerPhysicsFilter ()
-//-------------------------------------------------------------------
-{
-
-}
-
-//-------------------------------------------------------------------
-//
 // Setup client player droid physics information
 void sys_setupPlayerPhysics ()
 //-------------------------------------------------------------------
 {
-	if (playerDroid.body != nullptr)
-	{
-		return;
-	}
-
-//	playerDroid.worldPos = gam_getLiftWorldPosition(0, lvl_getCurrentLevelName());
-
 	playerDroid.bodyDef.type = b2_dynamicBody;
-	playerDroid.bodyDef.position.Set (playerDroid.worldPos.x / pixelsPerMeter, playerDroid.worldPos.y / pixelsPerMeter);
+//	playerDroid.bodyDef.position.Set (playerDroid.worldPos.x / pixelsPerMeter, playerDroid.worldPos.y / pixelsPerMeter);
+	playerDroid.bodyDef.position.Set (2, 3);
 	playerDroid.bodyDef.angle = 0;
 	playerDroid.body          = physicsWorld->CreateBody (&playerDroid.bodyDef);
 
@@ -216,8 +200,8 @@ void sys_setupPlayerPhysics ()
 	playerDroid.shape.m_p.Set (0, 0);
 
 	playerDroid.fixtureDef.shape       = &playerDroid.shape;
-	playerDroid.fixtureDef.density     = 1;
-	playerDroid.fixtureDef.friction    = 0.3f;
+	playerDroid.fixtureDef.density     = 1.0f;
+	playerDroid.fixtureDef.friction    = playerFriction;
 	playerDroid.fixtureDef.restitution = 1.0f;
 	playerDroid.body->CreateFixture (&playerDroid.fixtureDef);
 

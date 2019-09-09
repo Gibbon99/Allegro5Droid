@@ -249,7 +249,7 @@ void *io_processLoggingEventQueue()
 
 		if (evt_shouldThreadRun(LOGGING_THREAD_NAME))
 		{
-			PARA_rest(THREAD_DELAY_MS);
+			PARA_rest(THREAD_DELAY_MS / 10.0f);
 
 			if (!loggingEventQueue.empty())   // stuff in the queue to process
 			{

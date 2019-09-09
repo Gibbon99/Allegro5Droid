@@ -1,6 +1,7 @@
 #pragma once
 
 #include <hdr/Box2D/Common/b2Math.h>
+#include <hdr/gui/gui_main.h>
 #include "system/sys_main.h"
 
 // Pass in string and parameters to format and return a string
@@ -24,8 +25,5 @@ void sys_updateVisibleScreenArea();
 // Is an object visible on the screen
 bool sys_visibleOnScreen (b2Vec2 worldCoord, int shapeSize);
 
-// Put four bytes ( chars ) into one int value
-int sys_pack4Bytes(char one, char two, char three, char four);
-
-// Returns 4 char bytes into passed in array from INT parameter
-void sys_getPackedBytes(int sourceNumber, unsigned char *returnArray);
+// Test if a point is inside a rectangle
+bool sys_isPointInRect(b2Vec2 testPoint, __BOUNDING_BOX testRectangle);

@@ -58,6 +58,15 @@ void sys_scriptAddScriptFunction(std::string funcName, std::string hostCallName)
 {
 	_scriptFunctionName tempFunctionName;
 
+	for (auto funcItr : scriptFunctionName)
+	{
+		if (funcItr.functionName == funcName)
+		{
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("Function name [ %s ] has already been added.", funcName.c_str()));
+			return;
+		}
+	}
+
 	tempFunctionName.fromScript   = true;
 	tempFunctionName.funcID       = nullptr;
 	tempFunctionName.functionName = funcName;
@@ -200,6 +209,15 @@ void sys_scriptAddHostVariable(const std::string varName, void *varPtr)
 	tempVar.scriptFunctionName = varName;
 	tempVar.hostFunctionPtr    = varPtr;
 
+	for (const auto& varItr : hostVariables)
+	{
+		if (varItr.scriptFunctionName == varName)
+		{
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("Variable [ %s ] has already been added.", varName.c_str()));
+			return;
+		}
+	}
+
 	if (scriptEngine->RegisterGlobalProperty(varName.c_str(), (void *) varPtr) < 0)
 	{
 		log_logMessage(LOG_LEVEL_INFO, sys_getString("Script: Error: Couldn't register variable - [ %s ]", varName.c_str()));
@@ -219,6 +237,16 @@ void sys_scriptAddHostFunction(const std::string funcName, functionPtr funcPtr)
 	static asDWORD callType = -1;
 
 	_hostScriptFunctions tempFunc;
+
+	for (const auto& scriptItr : hostScriptFunctions)
+	{
+		if (scriptItr.scriptFunctionName == funcName)
+		{
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("Function [ %s ] has already been added.", funcName.c_str()));
+			return;
+		}
+	}
+
 
 	if (callType < 0)
 	{
@@ -302,7 +330,7 @@ bool sys_loadAndCompileScripts()
 	retCode = builder.BuildModule();
 	if (retCode < 0)
 	{
-		log_logMessage(LOG_LEVEL_INFO, sys_getString("Failed to build the script module."));
+		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Failed to build the script module."));
 		return false;
 	}
 
