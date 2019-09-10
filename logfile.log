@@ -1,7 +1,9 @@
 -----------------------------------------------------------------------------
 Log file opened:
-09-09-2019	16:04:20
+10-09-2019	21:45:30
 Logfile started...
+INFO | Compiled against PhysFS version 3.0.2.
+INFO | Linked against PhysFS version 3.0.2.
 INFO | Packfile: Supported archive types.
 INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
 INFO | Packfile: [ 7Z ] : [ 7zip archives ]
@@ -92,6 +94,7 @@ INFO | Script: Registered function - [ int gam_getTextureHeight(string &in) ]
 INFO | Script: Registered function - [ void as_guiSetCheckboxGroup  (string &in, int whichGroup) ]
 INFO | Script: Registered function - [ void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked) ]
 INFO | Script: Registered function - [ void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal) ]
+INFO | Script: Registered function - [ void as_guiSetImageKeyName(string &in, string &in) ]
 INFO | Script: Registered function - [ void sys_changeCurrentMode(int newMode, bool fade) ]
 INFO | Section has been added [ english.sc ]
 INFO | Section has been added [ german.sc ]
@@ -100,9 +103,9 @@ INFO | Section has been added [ italian.sc ]
 INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ resources.sc ]
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 2143211472 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 2143208688 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 2143200512 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 411682704 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 411679920 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 411671744 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]

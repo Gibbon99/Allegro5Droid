@@ -110,6 +110,7 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction("void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked)", (functionPtr)&gui_hostSetCheckboxTick);
 	sys_scriptAddHostFunction("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
 
+	sys_scriptAddHostFunction ("void as_guiSetImageKeyName(string &in, string &in)", (functionPtr) &gui_setImageKeyName);
 	sys_scriptAddHostFunction("void sys_changeCurrentMode(int newMode, bool fade)", (functionPtr)&sys_changeMode);
 }
 

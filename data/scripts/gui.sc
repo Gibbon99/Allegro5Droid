@@ -475,7 +475,7 @@ void as_guiSetupTutorial()
 	as_guiCreateObject(GUI_OBJECT_IMAGE, "tutImageLift");
 	as_guiAddObjectToScreen(GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
 	as_guiSetObjectPosition(GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth("tut_lift"), gam_getTextureHeight("tut_lift"));
-//	as_guiSetImageName("tut_lift", "tut_lift.bmp");
+	as_guiSetImageKeyName("tutImageLift", "tut_lift");
 	as_guiSetReadyState(GUI_OBJECT_IMAGE, "tutImageLift", true);
 
 	as_guiCreateObject(GUI_OBJECT_BUTTON, "buttonTutLiftNext");
@@ -512,7 +512,7 @@ void as_guiSetupTutorial()
 	as_guiCreateObject(GUI_OBJECT_IMAGE, "tutImageTerminal");
 	as_guiAddObjectToScreen(GUI_OBJECT_IMAGE, "tutImageTerminal", "scrTutTerminals");
 	as_guiSetObjectPosition(GUI_OBJECT_IMAGE, "tutImageTerminal", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth("tut_terminal"), gam_getTextureHeight("tut_terminal"));
-//	as_guiSetImageName("tut_terminal", "tut_terminal.bmp");
+	as_guiSetImageKeyName("tutImageTerminal", "tut_terminal");
 	as_guiSetReadyState(GUI_OBJECT_IMAGE, "tutImageTerminal", true);
 
 	as_guiCreateObject(GUI_OBJECT_BUTTON, "buttonTutTerminalNext");
@@ -549,7 +549,7 @@ void as_guiSetupTutorial()
 	as_guiCreateObject(GUI_OBJECT_IMAGE, "tutImageHealing");
 	as_guiAddObjectToScreen(GUI_OBJECT_IMAGE, "tutImageHealing", "scrTutHealing");
 	as_guiSetObjectPosition(GUI_OBJECT_IMAGE, "tutImageHealing", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth("tut_healing"), gam_getTextureHeight("tut_healing"));
-//	as_guiSetImageName("tut_healing", "tut_healing.bmp");
+	as_guiSetImageKeyName("tutImageHealing", "tut_healing");
 	as_guiSetReadyState(GUI_OBJECT_IMAGE, "tutImageHealing", true);
 
 	as_guiCreateObject(GUI_OBJECT_BUTTON, "buttonTutHealinglNext");

@@ -42,7 +42,7 @@ struct __GUI_checkBox
 
 struct __GUI_image
 {
-	char fileName[64];
+	char keyName[32];
 };
 
 struct __BOUNDING_BOX
@@ -122,7 +122,7 @@ void gui_hostCreateNewScreen (std::string screenID);
 void gui_hostAddObjectToScreen (int guiObjectType, std::string objectID, std::string whichScreen);
 
 // Add a gui object to it's relevant vector array
-void gui_hostCreateObject (int guiObjectType, const std::string objectID);
+void gui_hostCreateObject (int guiObjectType, std::string objectID);
 
 // Host function called by script to set position values
 void gui_hostSetObjectPosition (int guiObjectType, const std::string &objectID, int coordType, int startX, int startY, int width, int height);
@@ -131,7 +131,7 @@ void gui_hostSetObjectPosition (int guiObjectType, const std::string &objectID, 
 void gui_hostSetObjectLabel (int guiObjectType, const std::string &objectID, int labelPos, std::string newLabel);
 
 // Set the script function to run when actioned
-void gui_hostSetObjectFunctions (int guiObjectType, std::string objectID, const std::string actionFunction);
+void gui_hostSetObjectFunctions (int guiObjectType, std::string objectID, std::string actionFunction);
 
 // Host function called by script to set object colors
 void gui_hostSetObjectColor (int guiObjectType, std::string objectID, int whichColor, char red, char green, char blue, char alpha);
@@ -149,4 +149,7 @@ void gui_hostSetObjectFocus (std::string objectID);
 void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource);
 
 // returns index value, or -1 if not found
-int gui_findIndex (int guiObjectType, const std::string objectID);
+int gui_findIndex (int guiObjectType, std::string objectID);
+
+// Set an image keyName to the relevant resource image loaded
+void gui_setImageKeyName(std::string objectID, std::string keyName);

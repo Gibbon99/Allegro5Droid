@@ -32,6 +32,6 @@ void gui_drawImage(int whichObject)
 	startX = guiImages[whichObject].startX;
 	startY = guiImages[whichObject].startY;
 
-	sys_drawBitmap (guiImages[whichObject].__GUI_element.image.fileName, startX, startY, RENDER_SOURCE);
+	sys_drawBitmap (guiImages[whichObject].__GUI_element.image.keyName, startX, startY, RENDER_SOURCE);
 }
 

@@ -347,7 +347,7 @@ void gui_hostCreateObject(int guiObjectType, const std::string objectID)
 			tmpObject.isHighlited    = false;
 			tmpObject.text           = "";
 			tmpObject.ready          = false;
-			strcpy(tmpObject.__GUI_element.image.fileName, "");
+			strcpy(tmpObject.__GUI_element.image.keyName, "");
 
 			if (guiImages.empty())      // WHY ? TODO
 			{
@@ -1085,3 +1085,25 @@ void gui_handleFocusMove(int moveDirection, bool takeAction, int eventSource)
 	}
 }
 
+//-----------------------------------------------------------------------------
+//
+// Set an image keyName to the relevant resource image loaded
+void gui_setImageKeyName(const std::string objectID, const std::string keyName)
+//-----------------------------------------------------------------------------
+{
+#ifdef DEBUG_GUI_SETUP
+	log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Setting image keyName [ %s ] for - [ %s ]", keyName.c_str(), objectID.c_str()));
+#endif // DEBUG_GUI_SETUP
+
+	int objectIndex = 0;
+	//
+	// Find the index for this object
+	objectIndex = gui_findIndex(GUI_OBJECT_IMAGE, objectID);
+	if (-1 == objectIndex)
+		{
+			log_logMessage(LOG_LEVEL_ERROR, sys_getString("ERROR: Couldn't find GUI object index [ %s ]", objectID.c_str()));
+			return;
+		}
+
+	strcpy(guiImages[objectIndex].__GUI_element.image.keyName, keyName.c_str());
+}
