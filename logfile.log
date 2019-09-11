@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-10-09-2019	21:45:30
+12-09-2019	01:06:41
 Logfile started...
 INFO | Compiled against PhysFS version 3.0.2.
 INFO | Linked against PhysFS version 3.0.2.
@@ -81,7 +81,7 @@ INFO | Script: Registered function - [ void as_guiSetObjectPosition (int guiObje
 INFO | Script: Registered function - [ void as_guiSetObjectLabel    (int guiObjectType, string &in, int labelPos, string &in) ]
 INFO | Script: Registered function - [ void as_guiAddObjectToScreen (int guiObjectType, string &in, string &in) ]
 INFO | Script: Registered function - [ void as_guiSetObjectFunction (int guiObjectType, string &in, string &in) ]
-INFO | Script: Registered function - [ void as_guiSetObjectColor    (int guiObjectType, string &in, int whichColor, int red, int green, int blue, int alpha) ]
+INFO | Script: Registered function - [ void as_guiSetObjectColor    (int guiObjectType, string &in, int whichColor, float red, float green, float blue, float alpha) ]
 INFO | Script: Registered function - [ void as_guiSetReadyState     (int guiObjectType, string &in, bool newState) ]
 INFO | Script: Registered function - [ int as_guiFindIndex		    (int guiObjectType, string &in) ]
 INFO | Script: Registered function - [ void as_guiCreateNewScreen   (string &in) ]
@@ -102,10 +102,16 @@ INFO | Section has been added [ gui.sc ]
 INFO | Section has been added [ italian.sc ]
 INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ resources.sc ]
+INFO | gui.sc (587, 1) : INFO : Compiling void as_setupMainScreen()
+INFO | gui.sc (603, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (611, 91) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (619, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (627, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (635, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 411682704 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 411679920 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 411671744 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ -329122336 ]
+INFO | Func ID for [ void script_initGUI() ] - [ -329125120 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ -329133296 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]

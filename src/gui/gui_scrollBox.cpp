@@ -21,7 +21,6 @@ float introScrollBoxFontBlue;
 float introScrollBoxFontAlpha;
 float introScrollBoxRadius;
 
-
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Render a scrollbox
@@ -29,13 +28,13 @@ void gui_renderScrollBox (__GUI_object *thisScrollBox, double interpolation)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	int    lineCount = 0;
-	float drawPositionY;
+	float  drawPositionY;
 	b2Vec2 renderPosition;
 
 	std::string currentLineText;
 
 	al_draw_filled_rounded_rectangle (thisScrollBox->startX, thisScrollBox->startY, thisScrollBox->startX + thisScrollBox->width, thisScrollBox->startY + thisScrollBox->height,
-			thisScrollBox->radius, thisScrollBox->radius, thisScrollBox->__GUI_element.scrollBox.backgroundColor);
+	                                  thisScrollBox->radius, thisScrollBox->radius, thisScrollBox->__GUI_element.scrollBox.backgroundColor);
 
 	fnt_setTTF (thisScrollBox->__GUI_element.scrollBox.fontName);
 
@@ -44,51 +43,51 @@ void gui_renderScrollBox (__GUI_object *thisScrollBox, double interpolation)
 
 	lineCount = 0;
 	if (thisScrollBox->__GUI_element.scrollBox.scrollDelay > 0)
-	{
-		drawPositionY = thisScrollBox->__GUI_element.scrollBox.scrollY;
-	}
+		{
+			drawPositionY = thisScrollBox->__GUI_element.scrollBox.scrollY;
+		}
 	else
-	{
-		drawPositionY = thisScrollBox->__GUI_element.scrollBox.scrollY - thisScrollBox->__GUI_element.scrollBox.previousScrollY;
-		drawPositionY *= interpolation;
-		drawPositionY += thisScrollBox->__GUI_element.scrollBox.previousScrollY;
-	}
+		{
+			drawPositionY = thisScrollBox->__GUI_element.scrollBox.scrollY - thisScrollBox->__GUI_element.scrollBox.previousScrollY;
+			drawPositionY *= interpolation;
+			drawPositionY += thisScrollBox->__GUI_element.scrollBox.previousScrollY;
+		}
 	for (auto lineItr = thisScrollBox->scrollBoxLineText.rbegin (); lineItr != thisScrollBox->scrollBoxLineText.rend (); ++lineItr)
-	{
-		lineAlpha = thisScrollBox->labelHasFocusColor.a;
-
-		if (lineCount == 0)
 		{
-			thisScrollBox->__GUI_element.scrollBox.lineFade += alphaStep;
-			if (thisScrollBox->__GUI_element.scrollBox.lineFade > thisScrollBox->labelHasFocusColor.a)
-			{
-				thisScrollBox->__GUI_element.scrollBox.lineFade = thisScrollBox->labelHasFocusColor.a;
-			}
-			lineAlpha = thisScrollBox->__GUI_element.scrollBox.lineFade;
-		}
+			lineAlpha = thisScrollBox->labelHasFocusColor.a;
 
-		else if (lineCount == thisScrollBox->__GUI_element.scrollBox.numLinesToPrint - 2)
-		{
-			lineAlpha = 1.0f - (alphaStep * thisScrollBox->__GUI_element.scrollBox.scrollY);
-		}
+			if (lineCount == 0)
+				{
+					thisScrollBox->__GUI_element.scrollBox.lineFade += alphaStep;
+					if (thisScrollBox->__GUI_element.scrollBox.lineFade > thisScrollBox->labelHasFocusColor.a)
+						{
+							thisScrollBox->__GUI_element.scrollBox.lineFade = thisScrollBox->labelHasFocusColor.a;
+						}
+					lineAlpha = thisScrollBox->__GUI_element.scrollBox.lineFade;
+				}
 
-		renderPosition.x = thisScrollBox->startX + (thisScrollBox->gapSize / 2.0f);
+			else if (lineCount == thisScrollBox->__GUI_element.scrollBox.numLinesToPrint - 2)
+				{
+					lineAlpha = 1.0f - (alphaStep * thisScrollBox->__GUI_element.scrollBox.scrollY);
+				}
 
-		renderPosition.y = (((thisScrollBox->startY + (thisScrollBox->height - fnt_getHeight ())) - (lineCount * fnt_getHeight ())) - drawPositionY); // - thisScrollBox->__GUI_element.scrollBox.previousScrollY;
+			renderPosition.x = thisScrollBox->startX + (thisScrollBox->gapSize / 2.0f);
+
+			renderPosition.y = (((thisScrollBox->startY + (thisScrollBox->height - fnt_getHeight ())) - (lineCount * fnt_getHeight ())) - drawPositionY); // - thisScrollBox->__GUI_element.scrollBox.previousScrollY;
 //		renderPosition.y *= percentWithinTick;
 //		renderPosition.y += thisScrollBox->__GUI_element.scrollBox.previousScrollY;
 
 //renderPosition.y = drawPositionY;
 
-		fnt_setColor_f (thisScrollBox->labelHasFocusColor.r, thisScrollBox->labelHasFocusColor.g, thisScrollBox->labelHasFocusColor.b, lineAlpha);
-		fnt_render (renderPosition, sys_getString ("%s", lineItr->c_str ()));
+			fnt_setColor_f (thisScrollBox->labelHasFocusColor.r, thisScrollBox->labelHasFocusColor.g, thisScrollBox->labelHasFocusColor.b, lineAlpha);
+			fnt_render (renderPosition, sys_getString ("%s", lineItr->c_str ()));
 
-		lineCount++;
-		if (lineCount == thisScrollBox->__GUI_element.scrollBox.numLinesToPrint - 1)
-		{
-			break;
+			lineCount++;
+			if (lineCount == thisScrollBox->__GUI_element.scrollBox.numLinesToPrint - 1)
+				{
+					break;
+				}
 		}
-	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -98,16 +97,16 @@ void gui_setupScrollBox (int whichScrollBox, const std::string &sourceText)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	switch (whichScrollBox)
-	{
-		case SCROLLBOX_INTRO:
-			introScrollBox.startX                                  = introScrollBoxStartX;
+		{
+			case SCROLLBOX_INTRO:
+				introScrollBox.startX                                = introScrollBoxStartX;
 			introScrollBox.startY                                  = introScrollBoxStartY;
 			introScrollBox.width                                   = introScrollBoxWidth;
 			introScrollBox.height                                  = introScrollBoxHeight;
 			introScrollBox.text                                    = sourceText;
 			introScrollBox.gapSize                                 = introScrollBoxGapSize;
 			introScrollBox.__GUI_element.scrollBox.scrollSpeed     = introScrollBoxSpeed;
-			introScrollBox.__GUI_element.scrollBox.backgroundColor = al_map_rgba (introScrollBoxBackRed, introScrollBoxBackGreen, introScrollBoxBackBlue, introScrollBoxBackAlpha);
+			introScrollBox.__GUI_element.scrollBox.backgroundColor = al_map_rgba_f (introScrollBoxBackRed, introScrollBoxBackGreen, introScrollBoxBackBlue, introScrollBoxBackAlpha);
 			introScrollBox.labelHasFocusColor                      = al_map_rgba_f (introScrollBoxFontRed, introScrollBoxFontGreen, introScrollBoxFontBlue, introScrollBoxFontAlpha);
 			introScrollBox.radius                                  = introScrollBoxRadius;
 			introScrollBox.__GUI_element.scrollBox.currentChar     = 0;
@@ -121,13 +120,13 @@ void gui_setupScrollBox (int whichScrollBox, const std::string &sourceText)
 
 			break;
 
-		case SCROLLBOX_DB:
-			break;
+			case SCROLLBOX_DB:
+				break;
 
-		default:
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unknown value passed to gui_setupScrollBox [ %i ]", whichScrollBox));
+			default:
+				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unknown value passed to gui_setupScrollBox [ %i ]", whichScrollBox));
 			break;
-	}
+		}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -153,60 +152,60 @@ void gui_getNextLineOfText (__GUI_object *thisScrollBox)
 	fnt_setTTF (thisScrollBox->__GUI_element.scrollBox.fontName);    // Need current font size and width
 
 	while (!foundLine)
-	{
-		nextChar = thisScrollBox->text[thisScrollBox->__GUI_element.scrollBox.currentChar];
-		switch (nextChar.back ())
 		{
-			case ' ':
-				lineTextWidth = fnt_getWidth (nextLine + " " + nextChar + nextWord);
-				if (lineTextWidth < thisScrollBox->width - thisScrollBox->gapSize)
+			nextChar = thisScrollBox->text[thisScrollBox->__GUI_element.scrollBox.currentChar];
+			switch (nextChar.back ())
 				{
-					previousSpace = thisScrollBox->__GUI_element.scrollBox.currentChar;
-					nextLine.append (" ");
-					nextLine.append (nextWord);
+					case ' ':
+						lineTextWidth = fnt_getWidth (nextLine + " " + nextChar + nextWord);
+					if (lineTextWidth < thisScrollBox->width - thisScrollBox->gapSize)
+						{
+							previousSpace = thisScrollBox->__GUI_element.scrollBox.currentChar;
+							nextLine.append (" ");
+							nextLine.append (nextWord);
+							nextWord.clear ();
+						}
+					else
+						{
+							thisScrollBox->__GUI_element.scrollBox.currentChar = previousSpace;
+							foundLine = true;
+						}
+					break;
+
+					case '!':
+						nextLine += nextWord;
 					nextWord.clear ();
+					foundLine = true;
+					thisScrollBox->__GUI_element.scrollBox.currentChar++;
+					break;
+
+					case '#':
+						nextLine += nextWord;
+					nextWord.clear ();
+					foundLine = true;
+					thisScrollBox->__GUI_element.scrollBox.currentChar = 0;
+					break;
+
+					case '^':
+						nextLine += nextWord;
+					nextWord.clear ();
+					foundLine = true;
+					thisScrollBox->__GUI_element.scrollBox.currentChar++;
+					thisScrollBox->__GUI_element.scrollBox.scrollDelay = 40;
+					break;
+
+					default:
+						nextWord += nextChar;
+					break;
 				}
-				else
+
+			thisScrollBox->__GUI_element.scrollBox.currentChar++;
+			if (thisScrollBox->__GUI_element.scrollBox.currentChar > (int) thisScrollBox->text.size ())
 				{
-					thisScrollBox->__GUI_element.scrollBox.currentChar = previousSpace;
+					nextLine += nextWord;
 					foundLine = true;
 				}
-				break;
-
-			case '!':
-				nextLine += nextWord;
-				nextWord.clear ();
-				foundLine = true;
-				thisScrollBox->__GUI_element.scrollBox.currentChar++;
-				break;
-
-			case '#':
-				nextLine += nextWord;
-				nextWord.clear ();
-				foundLine = true;
-				thisScrollBox->__GUI_element.scrollBox.currentChar = 0;
-				break;
-
-			case '^':
-				nextLine += nextWord;
-				nextWord.clear ();
-				foundLine = true;
-				thisScrollBox->__GUI_element.scrollBox.currentChar++;
-				thisScrollBox->__GUI_element.scrollBox.scrollDelay = 40;
-				break;
-
-			default:
-				nextWord += nextChar;
-				break;
 		}
-
-		thisScrollBox->__GUI_element.scrollBox.currentChar++;
-		if (thisScrollBox->__GUI_element.scrollBox.currentChar > (int) thisScrollBox->text.size ())
-		{
-			nextLine += nextWord;
-			foundLine = true;
-		}
-	}
 	thisScrollBox->scrollBoxLineText.push_back (nextLine);
 	thisScrollBox->__GUI_element.scrollBox.lineFade = 0;
 }
@@ -221,19 +220,19 @@ void gui_scrollOnePixel (__GUI_object *thisScrollBox, double tickTime)
 
 	thisScrollBox->__GUI_element.scrollBox.previousScrollY = thisScrollBox->__GUI_element.scrollBox.scrollY;
 
-	thisScrollBox->__GUI_element.scrollBox.scrollY += thisScrollBox->__GUI_element.scrollBox.scrollSpeed * (float)tickTime;
+	thisScrollBox->__GUI_element.scrollBox.scrollY += thisScrollBox->__GUI_element.scrollBox.scrollSpeed * (float) tickTime;
 
 	if (thisScrollBox->__GUI_element.scrollBox.scrollY > (float) fnt_getHeight () - 1)
-	{
-		thisScrollBox->__GUI_element.scrollBox.scrollY = 0.0f;
-		thisScrollBox->__GUI_element.scrollBox.previousScrollY = -1.0f;
-		gui_getNextLineOfText (thisScrollBox);
-		thisScrollBox->__GUI_element.scrollBox.numLinesToPrint++;
-		if (thisScrollBox->__GUI_element.scrollBox.numLinesToPrint > (thisScrollBox->height) / fnt_getHeight ())
 		{
-			thisScrollBox->__GUI_element.scrollBox.numLinesToPrint = (thisScrollBox->height) / fnt_getHeight ();
+			thisScrollBox->__GUI_element.scrollBox.scrollY         = 0.0f;
+			thisScrollBox->__GUI_element.scrollBox.previousScrollY = -1.0f;
+			gui_getNextLineOfText (thisScrollBox);
+			thisScrollBox->__GUI_element.scrollBox.numLinesToPrint++;
+			if (thisScrollBox->__GUI_element.scrollBox.numLinesToPrint > (thisScrollBox->height) / fnt_getHeight ())
+				{
+					thisScrollBox->__GUI_element.scrollBox.numLinesToPrint = (thisScrollBox->height) / fnt_getHeight ();
+				}
 		}
-	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -243,16 +242,16 @@ void gui_scrollScrollBox (__GUI_object *thisScrollBox, double tickTime)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (thisScrollBox->__GUI_element.scrollBox.scrollDelay > 0)
-	{
-		thisScrollBox->__GUI_element.scrollBox.scrollDelay--;
-		if (thisScrollBox->__GUI_element.scrollBox.scrollDelay < 0)
 		{
-			thisScrollBox->__GUI_element.scrollBox.scrollDelay = 0;
+			thisScrollBox->__GUI_element.scrollBox.scrollDelay--;
+			if (thisScrollBox->__GUI_element.scrollBox.scrollDelay < 0)
+				{
+					thisScrollBox->__GUI_element.scrollBox.scrollDelay = 0;
 //			gui_scrollOnePixel (thisScrollBox, tickTime);
+				}
 		}
-	}
 	else
-	{
-		gui_scrollOnePixel (thisScrollBox, tickTime);
-	}
+		{
+			gui_scrollOnePixel (thisScrollBox, tickTime);
+		}
 }

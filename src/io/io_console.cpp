@@ -52,9 +52,9 @@ void con_initConsole()
 	evt_registerThread((functionPtr) con_processConsoleEventQueue, CONSOLE_THREAD_NAME);
 	evt_setThreadState(true, CONSOLE_THREAD_NAME);
 
-	while (!evt_isThreadReady(CONSOLE_THREAD_NAME))
-	{
-	};    // Wait for thread to be ready to use
+	while (!evt_isThreadReady(CONSOLE_THREAD_NAME));
+
+	   // Wait for thread to be ready to use
 
 	evt_pushEvent(0, PARA_EVENT_CONSOLE, CONSOLE_EVENT_START, 0, 0, "");
 }
@@ -73,7 +73,7 @@ void con_stopConsole()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Put an entry into the console - just printf if the server
-void con_write(int lineColor, const std::string lineText)
+void con_write(int lineColor, const std::string& lineText)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (!isDoneConsole)
@@ -87,31 +87,31 @@ void con_write(int lineColor, const std::string lineText)
 	switch (lineColor)
 	{
 		case WHITE:
-			newLineColor.red   = 255;
-			newLineColor.green = 255;
-			newLineColor.blue  = 255;
-			newLineColor.alpha = 255;
+			newLineColor.red   = 1.0f;
+			newLineColor.green = 1.0f;
+			newLineColor.blue  = 1.0f;
+			newLineColor.alpha = 1.0f;
 			break;
 
 		case RED:
-			newLineColor.red   = 255;
+			newLineColor.red   = 1.0f;
 			newLineColor.green = 0;
 			newLineColor.blue  = 0;
-			newLineColor.alpha = 255;
+			newLineColor.alpha = 1.0f;
 			break;
 
 		case GREEN:
 			newLineColor.red   = 0;
-			newLineColor.green = 255;
+			newLineColor.green = 1.0f;
 			newLineColor.blue  = 0;
-			newLineColor.alpha = 255;
+			newLineColor.alpha = 1.0f;
 			break;
 
 		case BLUE:
 			newLineColor.red   = 0;
 			newLineColor.green = 0;
-			newLineColor.blue  = 255;
-			newLineColor.alpha = 255;
+			newLineColor.blue  = 1.0f;
+			newLineColor.alpha = 1.0f;
 			break;
 
 		case BLACK:
@@ -122,10 +122,10 @@ void con_write(int lineColor, const std::string lineText)
 			break;
 
 		default:
-			newLineColor.red   = 255;
-			newLineColor.green = 255;
-			newLineColor.blue  = 255;
-			newLineColor.alpha = 255;
+			newLineColor.red   = 1.0f;
+			newLineColor.green = 1.0f;
+			newLineColor.blue  = 1.0f;
+			newLineColor.alpha = 1.0f;
 			break;
 	}
 
@@ -234,25 +234,26 @@ void gam_setVisibleConLines (int fontHeight)
 void con_renderConsole()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	int positionY = 0;
-	int positionX = 1;
+	float positionY = 0;
+	float positionX = 1;
 	int lineCount = 0;
 
 	if (conLines.empty())
 		return;
 
-	positionY = screenHeight - 8;
-
 	// Set the current font to use when drawing text
-//	ttf_setCurrentFont("console.ttf");
+	fnt_setTTF ("console");
+	positionY = (float)screenHeight - fnt_getHeight ();
 
+	lineCount = 0;
 	for (auto consoleItr = conLines.rbegin(); consoleItr != conLines.rend(); ++consoleItr)
 	{
-		fnt_printSystemFont(positionX, positionY, consoleItr->conLine);
+		fnt_setColor_f (consoleItr->conLineColor.red, consoleItr->conLineColor.green, consoleItr->conLineColor.blue, consoleItr->conLineColor.alpha);
+		fnt_render(b2Vec2{positionX, positionY}, consoleItr->conLine);
 
 		lineCount++;
-		positionY -= 8;
-		if ( lineCount == conLines.size())
+		positionY -= fnt_getHeight();
+		if (positionY < 0)
 			break;
 	}
 }

@@ -261,5 +261,5 @@ void sys_initAll ()
 
 	gam_initPlayerValues ();
 
-	sys_changeMode (MODE_GUI, true);
+	sys_changeMode (MODE_CONSOLE, true);
 }

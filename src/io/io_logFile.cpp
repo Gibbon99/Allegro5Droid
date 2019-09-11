@@ -183,17 +183,21 @@ void log_logMessage(int logLevel, std::string logText)
 
 		case LOG_LEVEL_INFO:
 			logText.insert(0, "INFO | ");
+			lineColor = WHITE;
 			break;
 
 		case LOG_LEVEL_ERROR:
+			lineColor = RED;
 			logText.insert(0, "ERROR | ");
 			break;
 
 		case LOG_LEVEL_DEBUG:
+			lineColor = BLUE;
 			logText.insert(0, "DEBUG | ");
 			break;
 
 		case LOG_LEVEL_CONSOLE:
+			lineColor = GREEN;
 			logText.insert(0, "CONSOLE | ");
 			break;
 

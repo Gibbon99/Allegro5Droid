@@ -41,13 +41,13 @@ void gui_drawCheckbox(int whichObject, bool hasFocus)
 
 		al_draw_filled_rounded_rectangle(guiCheckBoxes[whichObject].boundingBox.x, guiCheckBoxes[whichObject].boundingBox.y,
 		                                 guiCheckBoxes[whichObject].boundingBox.x + boxSize, guiCheckBoxes[whichObject].boundingBox.y + boxSize,
-		                                 radius, radius, al_map_rgba(guiCheckBoxes[whichObject].hasFocusColor.r, guiCheckBoxes[whichObject].hasFocusColor.g, guiCheckBoxes[whichObject].hasFocusColor.b, guiCheckBoxes[whichObject].hasFocusColor.a));
+		                                 radius, radius, al_map_rgba_f(guiCheckBoxes[whichObject].hasFocusColor.r, guiCheckBoxes[whichObject].hasFocusColor.g, guiCheckBoxes[whichObject].hasFocusColor.b, guiCheckBoxes[whichObject].hasFocusColor.a));
 
 
 		if ( !guiCheckBoxes[whichObject].__GUI_element.checkBox.isChecked )
 			al_draw_filled_rounded_rectangle( guiCheckBoxes[whichObject].boundingBox.x + (insideSize / 2), guiCheckBoxes[whichObject].boundingBox.y + (insideSize / 2),
 					guiCheckBoxes[whichObject].boundingBox.x + (boxSize - (insideSize / 2)), guiCheckBoxes[whichObject].boundingBox.y + (boxSize - (insideSize / 2)),
-					radius, radius, al_map_rgba(0x00, 0x00, 0x00, 0xff ));
+					radius, radius, al_map_rgba_f(0.0f, 0.0f, 0.0f, 1.0f ));
 
 		fnt_setColor_f (guiCheckBoxes[whichObject].hasFocusColor.r, guiCheckBoxes[whichObject].hasFocusColor.g, guiCheckBoxes[whichObject].hasFocusColor.b, guiCheckBoxes[whichObject].hasFocusColor.a);
 		fnt_render(b2Vec2{textStartX, textStartY}, guiCheckBoxes[whichObject].text);
@@ -56,12 +56,12 @@ void gui_drawCheckbox(int whichObject, bool hasFocus)
 	{
 		al_draw_filled_rounded_rectangle( guiCheckBoxes[whichObject].boundingBox.x, guiCheckBoxes[whichObject].boundingBox.y,
 				guiCheckBoxes[whichObject].boundingBox.x + boxSize, guiCheckBoxes[whichObject].boundingBox.y + boxSize,
-				radius, radius, al_map_rgba(guiCheckBoxes[whichObject].noFocusColor.r, guiCheckBoxes[whichObject].noFocusColor.g, guiCheckBoxes[whichObject].noFocusColor.b, guiCheckBoxes[whichObject].noFocusColor.a ));
+				radius, radius, al_map_rgba_f(guiCheckBoxes[whichObject].noFocusColor.r, guiCheckBoxes[whichObject].noFocusColor.g, guiCheckBoxes[whichObject].noFocusColor.b, guiCheckBoxes[whichObject].noFocusColor.a ));
 
 		if ( !guiCheckBoxes[whichObject].__GUI_element.checkBox.isChecked )
 			al_draw_filled_rounded_rectangle( guiCheckBoxes[whichObject].boundingBox.x + (insideSize / 2), guiCheckBoxes[whichObject].boundingBox.y + (insideSize / 2),
 					guiCheckBoxes[whichObject].boundingBox.x + (boxSize - (insideSize / 2)), guiCheckBoxes[whichObject].boundingBox.y + (boxSize - (insideSize / 2)),
-					radius, radius, al_map_rgba(0x00, 0x00, 0x00, 0xff ));
+					radius, radius, al_map_rgba_f(0.0f, 0.0f, 0.0f, 1.0f ));
 
 		fnt_setColor_f(guiCheckBoxes[whichObject].noFocusColor.r, guiCheckBoxes[whichObject].noFocusColor.g, guiCheckBoxes[whichObject].noFocusColor.b, guiCheckBoxes[whichObject].noFocusColor.a);
 		fnt_render(b2Vec2{textStartX, textStartY}, guiCheckBoxes[whichObject].text);

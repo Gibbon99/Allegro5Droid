@@ -51,10 +51,10 @@ void gui_renderMessageBox(int objectID)
 
 	al_draw_filled_rounded_rectangle(tempPosX, tempPosY,
 	                                 tempPosX + messageBox[objectID].width, tempPosY + messageBox[objectID].height,
-			radius, radius, al_map_rgba(0xff, 0xff, 0xff, 0xff));
+			radius, radius, al_map_rgba_f(1.0f, 1.0f, 1.0f, 1.0f));
 
 	al_draw_line(tempPosX, tempPosY + fnt_getHeight(), tempPosX + messageBox[objectID].width, tempPosY + fnt_getHeight(),
-	                  al_map_rgba(255, 20, 20, 255), 3);
+	                  al_map_rgba_f(1.0f, 0.2f, 0.2f, 1.0f), 3);
 
 	fnt_render(b2Vec2{tempPosX + gapSize, tempPosY + gapSize}, messageBox[objectID].title);
 

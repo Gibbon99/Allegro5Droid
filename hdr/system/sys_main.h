@@ -61,10 +61,10 @@ extern int    screenType;
 extern int    currentMode;
 
 typedef struct {
-	int red;
-	int green;
-	int blue;
-	int alpha;
+	float red;
+	float green;
+	float blue;
+	float alpha;
 }             __paraColor;
 
 // Change to a new mode

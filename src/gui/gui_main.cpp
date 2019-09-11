@@ -625,7 +625,7 @@ void gui_hostSetObjectFunctions(int guiObjectType, const std::string objectID, c
 // Set the color for the passed in element for this object
 //
 // Colors are in range 0..255
-void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColor, char red, char green, char blue, char alpha)
+void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColor, float red, float green, float blue, float alpha)
 //-----------------------------------------------------------------------------
 {
 	switch (guiObjectType)
@@ -643,27 +643,27 @@ void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColo
 			switch (whichColor)
 			{
 				case GUI_ACTIVE_COL:
-					guiButtons[objectIndex].hasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiButtons[objectIndex].hasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_COL:
-					guiButtons[objectIndex].noFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiButtons[objectIndex].noFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_CORNER_COL:
-					guiButtons[objectIndex].cornerFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiButtons[objectIndex].cornerFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_CORNER_COL:
-					guiButtons[objectIndex].cornerNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiButtons[objectIndex].cornerNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_LABEL_COL:
-					guiButtons[objectIndex].labelHasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiButtons[objectIndex].labelHasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_LABEL_COL:
-					guiButtons[objectIndex].labelNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiButtons[objectIndex].labelNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				default:
@@ -683,27 +683,27 @@ void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColo
 			switch (whichColor)
 			{
 				case GUI_ACTIVE_COL:
-					guiCheckBoxes[objectIndex].hasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiCheckBoxes[objectIndex].hasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_COL:
-					guiCheckBoxes[objectIndex].noFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiCheckBoxes[objectIndex].noFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_CORNER_COL:
-					guiCheckBoxes[objectIndex].cornerFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiCheckBoxes[objectIndex].cornerFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_CORNER_COL:
-					guiCheckBoxes[objectIndex].cornerNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiCheckBoxes[objectIndex].cornerNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_LABEL_COL:
-					guiCheckBoxes[objectIndex].labelHasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiCheckBoxes[objectIndex].labelHasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_LABEL_COL:
-					guiCheckBoxes[objectIndex].labelNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiCheckBoxes[objectIndex].labelNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				default:
@@ -723,27 +723,27 @@ void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColo
 			switch (whichColor)
 			{
 				case GUI_ACTIVE_COL:
-					guiTextBoxes[objectIndex].hasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiTextBoxes[objectIndex].hasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_COL:
-					guiTextBoxes[objectIndex].noFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiTextBoxes[objectIndex].noFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_CORNER_COL:
-					guiTextBoxes[objectIndex].cornerFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiTextBoxes[objectIndex].cornerFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_CORNER_COL:
-					guiTextBoxes[objectIndex].cornerNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiTextBoxes[objectIndex].cornerNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_LABEL_COL:
-					guiTextBoxes[objectIndex].labelHasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiTextBoxes[objectIndex].labelHasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_LABEL_COL:
-					guiTextBoxes[objectIndex].labelNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiTextBoxes[objectIndex].labelNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				default:
@@ -763,19 +763,19 @@ void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColo
 			switch (whichColor)
 			{
 				case GUI_ACTIVE_COL:
-					guiLabels[objectIndex].hasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiLabels[objectIndex].hasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_COL:
-					guiLabels[objectIndex].noFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiLabels[objectIndex].noFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_ACTIVE_LABEL_COL:
-					guiLabels[objectIndex].labelHasFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiLabels[objectIndex].labelHasFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				case GUI_INACTIVE_LABEL_COL:
-					guiLabels[objectIndex].labelNoFocusColor = al_map_rgba(red, green, blue, alpha);
+					guiLabels[objectIndex].labelNoFocusColor = al_map_rgba_f(red, green, blue, alpha);
 					break;
 
 				default:
@@ -792,7 +792,7 @@ void gui_setObjectColorByIndex(int guiObjectType, int objectIndex, int whichColo
 //-----------------------------------------------------------------------------
 //
 // Host function called by script to set object colors
-void gui_hostSetObjectColor(int guiObjectType, const std::string objectID, int whichColor, char red, char green, char blue, char alpha)
+void gui_hostSetObjectColor(int guiObjectType, const std::string objectID, int whichColor, float red, float green, float blue, float alpha)
 //-----------------------------------------------------------------------------
 {
 #ifdef DEBUG_GUI_SETUP

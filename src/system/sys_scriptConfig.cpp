@@ -93,7 +93,7 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void as_guiAddObjectToScreen (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostAddObjectToScreen);
 	sys_scriptAddHostFunction ("void as_guiSetObjectFunction (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostSetObjectFunctions);
 
-	sys_scriptAddHostFunction ("void as_guiSetObjectColor    (int guiObjectType, string &in, int whichColor, int red, int green, int blue, int alpha)", (functionPtr) &gui_hostSetObjectColor);
+	sys_scriptAddHostFunction ("void as_guiSetObjectColor    (int guiObjectType, string &in, int whichColor, float red, float green, float blue, float alpha)", (functionPtr) &gui_hostSetObjectColor);
 	sys_scriptAddHostFunction ("void as_guiSetReadyState     (int guiObjectType, string &in, bool newState)", (functionPtr) &gui_hostSetReadyState);
 	sys_scriptAddHostFunction ("int as_guiFindIndex		    (int guiObjectType, string &in)", (functionPtr) &gui_findIndex);
 	sys_scriptAddHostFunction ("void as_guiCreateNewScreen   (string &in)", (functionPtr) &gui_hostCreateNewScreen);

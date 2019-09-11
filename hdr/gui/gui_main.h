@@ -134,10 +134,10 @@ void gui_hostSetObjectLabel (int guiObjectType, const std::string &objectID, int
 void gui_hostSetObjectFunctions (int guiObjectType, std::string objectID, std::string actionFunction);
 
 // Host function called by script to set object colors
-void gui_hostSetObjectColor (int guiObjectType, std::string objectID, int whichColor, char red, char green, char blue, char alpha);
+void gui_hostSetObjectColor (int guiObjectType, std::string objectID, int whichColor, float red, float green, float blue, float alpha);
 
 // Colors are in range 0..255
-void gui_setObjectColorByIndex (int guiObjectType, int objectIndex, int whichColor, char red, char green, char blue, char alpha);
+void gui_setObjectColorByIndex (int guiObjectType, int objectIndex, int whichColor, float red, float green, float blue, float alpha);
 
 // Host function called by script to set whether the element is ready to use or not
 void gui_hostSetReadyState (int guiObjectType, const std::string &objectID, bool newState);

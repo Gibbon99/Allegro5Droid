@@ -11,7 +11,7 @@ void gui_drawButton(int whichButton, bool hasFocus)
 	static int positionNotCalledCount = 0;
 
 	float startX, startY, width, height;
-	float radius = 16;
+	float radius = 4;
 	float red, green, blue, alpha;
 
 	float textStartX, textStartY;
@@ -61,7 +61,7 @@ void gui_drawButton(int whichButton, bool hasFocus)
 		alpha = guiButtons[whichButton].hasFocusColor.a;
 	}
 
-	al_draw_filled_rounded_rectangle(startX, startY, startX + width, startY + height, radius, radius, al_map_rgba(red, green, blue, alpha));
+	al_draw_filled_rounded_rectangle(startX, startY, startX + width, startY + height, radius, radius, al_map_rgba_f(red, green, blue, alpha));
 
 //	al_draw_filled_rounded_rectangle(startX, startY, startX + width, startY + height, radius, radius, al_map_rgba(255, green, blue, 255));
 
@@ -87,6 +87,23 @@ void gui_drawButton(int whichButton, bool hasFocus)
 			return;
 			break;
 	}
+
+	textStartY += 2;
+
+	if (!hasFocus)
+		{
+			red   = guiButtons[whichButton].labelNoFocusColor.r;
+			blue  = guiButtons[whichButton].labelNoFocusColor.b;
+			green = guiButtons[whichButton].labelNoFocusColor.g;
+			alpha = guiButtons[whichButton].labelNoFocusColor.a;
+		}
+	else
+		{
+			red   = guiButtons[whichButton].labelHasFocusColor.r;
+			blue  = guiButtons[whichButton].labelHasFocusColor.b;
+			green = guiButtons[whichButton].labelHasFocusColor.g;
+			alpha = guiButtons[whichButton].labelHasFocusColor.a;
+		}
 
 	fnt_setColor_f (red, green, blue, alpha);
 	fnt_render(b2Vec2{textStartX + startX, textStartY + startY}, guiButtons[whichButton].text);
