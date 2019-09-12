@@ -6,8 +6,7 @@
 
 extern b2Vec2       drawOffset;
 extern b2ChainShape solidWallChain;
-typedef struct cpVect
-{
+typedef struct cpVect {
 	float x, y;
 }                   cpVect;
 
@@ -17,8 +16,7 @@ typedef struct cpVect
 //
 //-----------------------------------------------------------------------------
 
-typedef struct
-{
+typedef struct {
 	cpVect start;
 	cpVect finish;
 }                   _lineSegment;
@@ -29,8 +27,7 @@ typedef struct
 //
 //-----------------------------------------------------------------------------
 
-typedef struct
-{
+typedef struct {
 	int tunnel;
 	int posX;
 	int posY;
@@ -42,17 +39,15 @@ typedef struct
 //
 //-----------------------------------------------------------------------------
 
-typedef struct
-{
+typedef struct {
 	int    pos;                // position in array
 	int    currentFrame;       // which frame are we on
 	float  frameDelay;         // animation counter
 	b2Vec2 worldPos;           // Position in world coords
 	b2Vec2 renderPosition;      // Position on the map to update image
-} _basicHealing;
+}                   _basicHealing;
 
-typedef struct
-{
+typedef struct {
 	int         currentMode;                // What is the droid doing; transfer, healing, terminal etc
 	int         droidType;
 	int         currentHealth;
@@ -79,6 +74,10 @@ typedef struct
 	b2Vec2 destinationCoords;          // This is the line segment end point
 	b2Vec2 destDirection;              // Which way is the droid heading
 	b2Vec2 velocity;                   // Current speed
+
+	float visibleValue;
+	int  visibleStatus;
+
 
 	bool overLiftTile;
 	int  liftIndex;                      // Which lift on the level are we over
@@ -134,11 +133,9 @@ typedef struct
 
 	bool onHealingTile;
 	bool foundHealingTile;
-
 } _droid;
 
-typedef struct
-{
+typedef struct {
 	int                       mapVersion;
 	int                       numLineSegments;
 	int                       numWaypoints;

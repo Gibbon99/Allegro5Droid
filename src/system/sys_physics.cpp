@@ -413,7 +413,7 @@ void sys_updateDroidPosition (const std::string levelName, int whichDroid)
 	//
 	// Check body is valid
 	//
-	if (nullptr != shipLevel.at (levelName).droid[whichDroid].body)
+	if (nullptr != droidPhysics[whichDroid].body)
 	{
 		tempPosition = droidPhysics[whichDroid].body->GetPosition ();      // Get position in meters
 		tempPosition.x *= pixelsPerMeter;           // Change to pixels

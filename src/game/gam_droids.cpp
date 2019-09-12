@@ -80,7 +80,7 @@ void gam_renderDroids (const std::string levelName, float interpolate)
 		{
 			if (shipLevel.at (levelName).droid[index].currentMode != DROID_MODE_DEAD)
 				{
-					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
+//					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
 						{
 							if (sys_visibleOnScreen (shipLevel.at (levelName).droid[index].worldPos, SPRITE_SIZE))
 								{
@@ -93,7 +93,8 @@ void gam_renderDroids (const std::string levelName, float interpolate)
 									switch (shipLevel.at (levelName).droid[index].currentMode)
 										{
 											case DROID_MODE_NORMAL:
-												io_renderTintedSpriteFrame (shipLevel.at (levelName).droid[index].spriteName, shipLevel.at (levelName).droid[index].currentFrame, drawPosition.x, drawPosition.y, 0, 0, 0);
+												io_renderTintedSpriteFrame (shipLevel.at (levelName).droid[index].spriteName, shipLevel.at (levelName).droid[index].currentFrame, drawPosition.x, drawPosition.y,
+														0.0f, 0.0f, 0.0f, shipLevel.at (levelName).droid[index].visibleValue);
 											break;
 
 											case DROID_MODE_EXPLODING:
@@ -288,7 +289,7 @@ void gam_destroyDroid (int whichDroid)
 
 			for (int i = 0; i != shipLevel.at (tempCurrentLevel).numDroids; i++)
 				{
-					if (!shipLevel.at (tempCurrentLevel).droid[i].currentMode == DROID_MODE_NORMAL || shipLevel.at (tempCurrentLevel).droid[i].currentMode == DROID_MODE_EXPLODING)
+					if (!(shipLevel.at (tempCurrentLevel).droid[i].currentMode == DROID_MODE_NORMAL) || (shipLevel.at (tempCurrentLevel).droid[i].currentMode == DROID_MODE_EXPLODING))
 						{
 							shipLevel.at (tempCurrentLevel).numEnemiesAlive--;
 						}

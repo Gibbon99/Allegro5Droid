@@ -10,7 +10,7 @@ void io_renderSpriteFrame(const std::string& key, int whichFrame, float posX, fl
 
 // Render a sprite tinting to a different color
 // Position is the center of the sprite - offset by frame width and height
-void io_renderTintedSpriteFrame(const std::string& key, int whichFrame, float posX, float posY, int red, int green, int blue);
+void io_renderTintedSpriteFrame (const std::string &key, int whichFrame, float posX, float posY, float red, float green, float blue, float alpha);
 
 // Render a rotated sprite
 void io_renderRotatedSpriteFrame(const std::string &key, int whichFrame, float posX, float posY, float angle);

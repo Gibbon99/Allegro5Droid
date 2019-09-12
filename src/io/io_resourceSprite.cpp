@@ -81,7 +81,7 @@ void io_renderRotatedSpriteFrame (const std::string &key, int whichFrame, float 
 // Render a sprite tinting to a different color
 // Position is the center of the sprite - offset by frame width and height
 // Position is in world space pixels
-void io_renderTintedSpriteFrame (const std::string &key, int whichFrame, float posX, float posY, int red, int green, int blue)
+void io_renderTintedSpriteFrame (const std::string &key, int whichFrame, float posX, float posY, float red, float green, float blue, float alpha)
 //---------------------------------------------------------------------------------------------------------------------------
 {
 	float newPosX, newPosY;
@@ -91,7 +91,7 @@ void io_renderTintedSpriteFrame (const std::string &key, int whichFrame, float p
 		newPosX = posX - sprites.at (key).renderOffsetX;
 		newPosY = posY - sprites.at (key).renderOffsetY;
 
-		al_draw_tinted_bitmap_region (sprites.at (key).bitmap, al_map_rgb (red, green, blue), sprites.at (key).frameWidth * whichFrame, 0, sprites.at (key).frameWidth, sprites.at (key).frameHeight, newPosX, newPosY, 0);
+		al_draw_tinted_bitmap_region (sprites.at (key).bitmap, al_map_rgba_f (red, green, blue, alpha), sprites.at (key).frameWidth * whichFrame, 0, sprites.at (key).frameWidth, sprites.at (key).frameHeight, newPosX, newPosY, 0);
 	}
 
 	catch (const std::out_of_range &oor)

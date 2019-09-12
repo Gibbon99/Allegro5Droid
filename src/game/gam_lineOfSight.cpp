@@ -3,6 +3,8 @@
 #include <hdr/game/gam_doors.h>
 #include "hdr/game/gam_lineOfSight.h"
 
+float visibleFadeValue = 3.0f;
+
 // This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
 // just checking for obstruction, so the actual fixture and hit point are irrelevant.
 class RayCastAnyCallback : public b2RayCastCallback {
@@ -69,13 +71,42 @@ void gam_doLineOfSight ()
 	sourcePosition.x /= pixelsPerMeter;
 	sourcePosition.y /= pixelsPerMeter;
 
-	for (int i = 0; i != shipLevel.at (cacheLevelName).droid.size (); i++)
+	for (int i = 0; i != shipLevel.at (cacheLevelName).droid.size (); ++i)
 		{
 			destPosition.x = shipLevel.at (cacheLevelName).droid[i].worldPos.x / pixelsPerMeter;
 			destPosition.y = shipLevel.at (cacheLevelName).droid[i].worldPos.y / pixelsPerMeter;
 
 			sys_getPhysicsWorld ()->RayCast (&callback, sourcePosition, destPosition);
 
-			shipLevel.at (cacheLevelName).droid[i].visibleToPlayer = !callback.m_hit;
+			if (callback.m_hit)
+				{
+					shipLevel.at (cacheLevelName).droid[i].visibleToPlayer = false;
+					shipLevel.at (cacheLevelName).droid[i].visibleStatus   = VISIBLE_STATE_GO_NOT_VISIBLE;
+				}
+				else
+				{
+					shipLevel.at(cacheLevelName).droid[i].visibleToPlayer = true;
+					shipLevel.at(cacheLevelName).droid[i].visibleStatus = VISIBLE_STATE_GO_VISIBLE;
+				}
+
+			if (shipLevel.at(cacheLevelName).droid[i].visibleStatus == VISIBLE_STATE_GO_VISIBLE)
+				{
+					if (shipLevel.at(cacheLevelName).droid[i].visibleValue < 1.0f)
+						{
+							shipLevel.at(cacheLevelName).droid[i].visibleValue += visibleFadeValue * sys_getTickTime ();
+							if (shipLevel.at(cacheLevelName).droid[i].visibleValue > 1.0f)
+								shipLevel.at(cacheLevelName).droid[i].visibleValue = 1.0f;
+						}
+				}
+
+			if (shipLevel.at(cacheLevelName).droid[i].visibleStatus == VISIBLE_STATE_GO_NOT_VISIBLE)
+				{
+					//if (shipLevel.at (cacheLevelName).droid[i].visibleValue > 0.0f)
+						{
+							shipLevel.at (cacheLevelName).droid[i].visibleValue -= visibleFadeValue * sys_getTickTime ();
+							if (shipLevel.at (cacheLevelName).droid[i].visibleValue < 0.0f)
+								shipLevel.at (cacheLevelName).droid[i].visibleValue = 0.0f;
+						}
+				}
 		}
 }

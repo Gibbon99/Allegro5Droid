@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-12-09-2019	11:02:35
+12-09-2019	19:31:42
 Logfile started...
 INFO | Compiled against PhysFS version 3.0.2.
 INFO | Linked against PhysFS version 3.0.2.
@@ -109,9 +109,9 @@ INFO | gui.sc (619, 92) : WARN : Float value truncated in implicit conversion to
 INFO | gui.sc (627, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | gui.sc (635, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 377781904 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 377779120 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 377770944 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 1911984208 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 1911981424 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 1911973248 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
