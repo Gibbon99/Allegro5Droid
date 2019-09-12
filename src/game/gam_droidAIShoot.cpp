@@ -22,8 +22,6 @@ float ai_greenFactor;
 float ai_yellowFactor;
 float ai_redFactor;
 
-float thinkInterval = 1.0f / 30.f;
-
 //-----------------------------------------------------------------------------
 //
 // Should the Droid shoot or not
@@ -139,7 +137,7 @@ void gam_findChanceToShoot (int whichDroid, const std::string levelName)
 	//
 	if (shipLevel.at (levelName).droid[whichDroid].beenShotByPlayer)
 		{
-			shipLevel.at (levelName).droid[whichDroid].beenShotCountdown -= 1.0f * thinkInterval;
+			shipLevel.at (levelName).droid[whichDroid].beenShotCountdown -= 1.0f * sys_getTickTime();
 			if (shipLevel.at (levelName).droid[whichDroid].beenShotCountdown < 0.0f)
 				shipLevel.at (levelName).droid[whichDroid].beenShotByPlayer = false;
 		}
@@ -154,7 +152,7 @@ void gam_findChanceToShoot (int whichDroid, const std::string levelName)
 	//
 	if (shipLevel.at (levelName).droid[whichDroid].witnessShooting)
 		{
-			shipLevel.at (levelName).droid[whichDroid].witnessShootingCountDown -= 1.0f * thinkInterval;
+			shipLevel.at (levelName).droid[whichDroid].witnessShootingCountDown -= 1.0f * sys_getTickTime();
 			if (shipLevel.at (levelName).droid[whichDroid].witnessShootingCountDown < 0.0f)
 				shipLevel.at (levelName).droid[whichDroid].witnessShooting = false;
 
@@ -169,7 +167,7 @@ void gam_findChanceToShoot (int whichDroid, const std::string levelName)
 	//
 	if (shipLevel.at (levelName).droid[whichDroid].witnessTransfer)
 		{
-			shipLevel.at (levelName).droid[whichDroid].witnessTransferCountDown -= 1.0f * thinkInterval;
+			shipLevel.at (levelName).droid[whichDroid].witnessTransferCountDown -= 1.0f * sys_getTickTime ();
 			if (shipLevel.at (levelName).droid[whichDroid].witnessTransferCountDown < 0.0f)
 				shipLevel.at (levelName).droid[whichDroid].witnessTransfer = false;
 

@@ -133,7 +133,7 @@ void script_loadAllResources ()
 	lvl_loadShipLevel ("116-newDeck19.dat");
 	lvl_loadShipLevel ("116-newDeck20.dat");
 
-	sys_loadResource ("console", "console.ttf", RESOURCE_FONT, 0, 12);
+	sys_loadResource ("console", "console.ttf", RESOURCE_FONT, 0, 8);
 	sys_loadResource ("intro", "intro.ttf", RESOURCE_FONT, 0, 14);
 	sys_loadResource ("gui", "gui.ttf", RESOURCE_FONT, 0, 14);
 

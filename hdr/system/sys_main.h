@@ -75,3 +75,6 @@ float sys_getLogicalWidth();
 
 // Return the logical screen height
 float sys_getLogicalHeight();
+
+// Return current tickTime
+double sys_getTickTime();

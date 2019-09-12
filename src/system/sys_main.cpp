@@ -23,6 +23,8 @@ int  screenType         = 0;
 int  displayRefreshRate = 0;
 int  currentMode        = 0;
 
+double tickTime       = 1.0f / TICKS_PER_SECOND;
+
 std::vector<double> deltaArray;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -42,6 +44,16 @@ float sys_getLogicalHeight()
 {
 	return screenHeight;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Return current tickTime
+double sys_getTickTime()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	return tickTime;
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Smooth delta two
@@ -81,7 +93,6 @@ double sys_smoothDelta2 (double delta)
 int main (int argc, char *argv[])
 //----------------------------------------------------------------------------------------------------------------------
 {
-	double tickTime       = 1.0f / TICKS_PER_SECOND;
 	double currentTime    = 0;
 	double accumulator    = 0;
 	double newTime        = 0;

@@ -201,7 +201,7 @@ set ( CXX_SRCS
         hdr/system/sys_audio.h
         src/game/gam_physicsCollisions.cpp
         hdr/game/gam_physicsCollisions.h
-        src/gui/gui_sideView.cpp hdr/gui/gui_sideView.h src/game/gam_lifts.cpp hdr/game/gam_lifts.h src/game/gam_physicActions.cpp hdr/game/gam_physicActions.h src/game/gam_bullet.cpp hdr/game/gam_bullet.h src/game/gam_healing.cpp hdr/game/gam_healing.h src/gui/gui_main.cpp hdr/gui/gui_main.h src/gui/gui_scrollBox.cpp hdr/gui/gui_scrollBox.h src/gui/gui_textBox.cpp hdr/gui/gui_textBox.h src/gui/gui_render.cpp hdr/gui/gui_render.h src/gui/gui_label.cpp hdr/gui/gui_label.h src/gui/gui_image.cpp hdr/gui/gui_image.h src/gui/gui_button.cpp hdr/gui/gui_button.h src/gui/gui_checkBox.cpp hdr/gui/gui_checkBox.h src/gui/gui_dialogBox.cpp hdr/gui/gui_dialogBox.h src/io/io_resourceImage.cpp hdr/io/io_resourceImage.h)
+        src/gui/gui_sideView.cpp hdr/gui/gui_sideView.h src/game/gam_lifts.cpp hdr/game/gam_lifts.h src/game/gam_physicActions.cpp hdr/game/gam_physicActions.h src/game/gam_bullet.cpp hdr/game/gam_bullet.h src/game/gam_healing.cpp hdr/game/gam_healing.h src/gui/gui_main.cpp hdr/gui/gui_main.h src/gui/gui_scrollBox.cpp hdr/gui/gui_scrollBox.h src/gui/gui_textBox.cpp hdr/gui/gui_textBox.h src/gui/gui_render.cpp hdr/gui/gui_render.h src/gui/gui_label.cpp hdr/gui/gui_label.h src/gui/gui_image.cpp hdr/gui/gui_image.h src/gui/gui_button.cpp hdr/gui/gui_button.h src/gui/gui_checkBox.cpp hdr/gui/gui_checkBox.h src/gui/gui_dialogBox.cpp hdr/gui/gui_dialogBox.h src/io/io_resourceImage.cpp hdr/io/io_resourceImage.h src/game/gam_lineOfSight.cpp hdr/game/gam_lineOfSight.h)
 
 set_source_files_properties(
         ${CXX_SRCS} PROPERTIES COMPILE_FLAGS

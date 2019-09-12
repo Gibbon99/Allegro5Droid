@@ -18,7 +18,7 @@ typedef struct
 } _conLine;
 
 extern std::vector<_conLine> conLines;
-extern _conLine              conCurrentLine;
+//extern _conLine              conCurrentLine;
 
 extern bool isDoneConsole;
 
@@ -36,6 +36,3 @@ void con_stopConsole();
 
 // Draw the contents of the console
 void con_renderConsole();
-
-// Set the number of visible console lines to render on one screen
-void gam_setVisibleConLines (int fontHeight);

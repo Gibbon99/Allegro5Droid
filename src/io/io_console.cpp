@@ -7,7 +7,6 @@
 std::vector<_conLine> conLines;
 std::queue<PARA_EVENT> consoleEventQueue;
 bool isDoneConsole = false;
-int numVisibleConLines = 0;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -38,7 +37,6 @@ void con_startConsole()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	conLines.reserve(100);
-	gam_setVisibleConLines(0);
 	isDoneConsole = true;
 }
 
@@ -137,7 +135,7 @@ void con_write(int lineColor, const std::string& lineText)
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Add an event to the console queue
-void con_print(int lineColor, bool logToFile, const std::string lineText)
+void con_print(int lineColor, bool logToFile, const std::string& lineText)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	evt_pushEvent(0, PARA_EVENT_CONSOLE, CONSOLE_EVENT_LOG, lineColor, 0, lineText);
@@ -214,18 +212,6 @@ void *con_processConsoleEventQueue()
 
 	printf("CONSOLE thread stopped.\n");
 	return nullptr;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-//
-// Set the number of visible console lines to render on one screen
-void gam_setVisibleConLines (int fontHeight)
-//----------------------------------------------------------------------------------------------------------------------
-{
-	if (fontHeight == 0)
-		fontHeight = 8;
-
-	numVisibleConLines = screenHeight / fontHeight;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
