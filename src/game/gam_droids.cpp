@@ -189,7 +189,7 @@ void gam_initDroidValues (const std::string levelName)
 			tempDroid.visibleToPlayer = true;
 			//
 // Weapon
-			tempDroid.weaponCanFire   = false;
+			tempDroid.weaponCanFire   = true;
 			tempDroid.weaponDelay     = 0.0f;
 
 			tempDroid.witnessShooting = false;

@@ -18,6 +18,22 @@ extern float introScrollBoxFontBlue;
 extern float introScrollBoxFontAlpha;
 extern float introScrollBoxRadius;
 
+extern float databaseScrollBoxStartX;
+extern float databaseScrollBoxStartY;
+extern float databaseScrollBoxWidth;
+extern float databaseScrollBoxHeight;
+extern float databaseScrollBoxSpeed;
+extern float databaseScrollBoxGapSize;
+extern float databaseScrollBoxBackRed;
+extern float databaseScrollBoxBackGreen;
+extern float databaseScrollBoxBackBlue;
+extern float databaseScrollBoxBackAlpha;
+extern float databaseScrollBoxFontRed;
+extern float databaseScrollBoxFontGreen;
+extern float databaseScrollBoxFontBlue;
+extern float databaseScrollBoxFontAlpha;
+extern float databaseScrollBoxRadius;
+
 // Setup a scrollbox with initial values
 void gui_setupScrollBox(int whichScrollBox, const std::string& sourceText);
 

@@ -33,18 +33,18 @@ double bul_getBulletAngle (b2Vec2 sourcePos, b2Vec2 destPos)
 //---------------------------------------------------------------------------------------------------------------
 //
 // Clear memory for bullets
-void bul_clearAllBullets()
+void bul_clearAllBullets ()
 //---------------------------------------------------------------------------------------------------------------
 {
 	for (auto &bulletItr : bullets)
-	{
-		if (bulletItr.userData != nullptr)
-			delete (bulletItr.userData);
+		{
+			if (bulletItr.userData != nullptr)
+				delete (bulletItr.userData);
 
-		if (bulletItr.body != nullptr)
-			sys_getPhysicsWorld ()->DestroyBody (bulletItr.body);
-	}
-	bullets.clear();
+			if (bulletItr.body != nullptr)
+				sys_getPhysicsWorld ()->DestroyBody (bulletItr.body);
+		}
+	bullets.clear ();
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ void bul_clearAllBullets()
 void bul_initBullets ()
 //---------------------------------------------------------------------------------------------------------------
 {
-	bul_clearAllBullets();
+	bul_clearAllBullets ();
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -63,10 +63,10 @@ void bul_removeBullet (int whichBullet)
 //---------------------------------------------------------------------------------------------------------------
 {
 	if (bullets.at (whichBullet).body != nullptr)
-	{
-		sys_getPhysicsWorld ()->DestroyBody (bullets.at (whichBullet).body);
-		bullets.at (whichBullet).body = nullptr;
-	}
+		{
+			sys_getPhysicsWorld ()->DestroyBody (bullets.at (whichBullet).body);
+			bullets.at (whichBullet).body = nullptr;
+		}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -78,72 +78,77 @@ void bul_createNewBullet (int bulletSourceIndex)
 	__bulletObject tempBullet;
 
 	if (bulletSourceIndex == -1)        // Player bullet
-	{
-		tempBullet.worldPos = playerDroid.worldPos;
-		tempBullet.velocity = playerDroid.velocity;
+		{
+			tempBullet.worldPos = playerDroid.worldPos;
+			tempBullet.velocity = playerDroid.velocity;
 
-		tempBullet.velocity.operator*= (2.0f);
-		tempBullet.destPos = tempBullet.worldPos + tempBullet.velocity;
+			tempBullet.velocity.operator*= (2.0f);
+			tempBullet.destPos = tempBullet.worldPos + tempBullet.velocity;
+		}
+	else
+		{
+			tempBullet.worldPos = shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].worldPos;
+			tempBullet.destPos  = playerDroid.worldPos;
+		}
 
-		tempBullet.angle = bul_getBulletAngle (tempBullet.worldPos, tempBullet.destPos);
+	tempBullet.angle = bul_getBulletAngle (tempBullet.worldPos, tempBullet.destPos);
 
+	tempBullet.bodyDef.type = b2_dynamicBody;
+	tempBullet.bodyDef.position.Set (tempBullet.worldPos.x / pixelsPerMeter, tempBullet.worldPos.y / pixelsPerMeter);
+	tempBullet.bodyDef.angle  = 0;
+	tempBullet.bodyDef.bullet = true;
+	tempBullet.body           = sys_getPhysicsWorld ()->CreateBody (&tempBullet.bodyDef);
+	if (tempBullet.body == nullptr)
+		return;
 
-		tempBullet.bodyDef.type = b2_dynamicBody;
-		tempBullet.bodyDef.position.Set (tempBullet.worldPos.x / pixelsPerMeter, tempBullet.worldPos.y / pixelsPerMeter);
-		tempBullet.bodyDef.angle  = 0;
-		tempBullet.bodyDef.bullet = true;
-		tempBullet.body           = sys_getPhysicsWorld ()->CreateBody (&tempBullet.bodyDef);
-		if (tempBullet.body == nullptr)
-			return;
+	tempBullet.userData            = new _userData;
+	tempBullet.userData->userType  = PHYSIC_TYPE_BULLET;
+	tempBullet.userData->dataValue = bullets.size ();
+	tempBullet.body->SetUserData (tempBullet.userData);
 
-		tempBullet.userData            = new _userData;
-		tempBullet.userData->userType  = PHYSIC_TYPE_BULLET;
-		tempBullet.userData->dataValue = bullets.size ();
-		tempBullet.body->SetUserData (tempBullet.userData);
-
-		switch (dataBaseEntry[playerDroid.droidType].bulletType)
+	switch (dataBaseEntry[playerDroid.droidType].bulletType)
 		{
 			case BULLET_TYPE_NORMAL: // small double laser
 				tempBullet.shape.m_radius = (float) (sprites.at ("bullet_001").frameHeight * 0.5f) / pixelsPerMeter;
-				tempBullet.shape.m_p.Set (0, 0);
-				tempBullet.fixtureDef.shape = &tempBullet.shape;
-				break;
+			tempBullet.shape.m_p.Set (0, 0);
+			tempBullet.fixtureDef.shape = &tempBullet.shape;
+			break;
 
 			case BULLET_TYPE_SINGLE: // Large single laser
 				tempBullet.boxShape.SetAsBox ((sprites.at ("bullet_476").frameWidth / 2) / pixelsPerMeter, (sprites.at ("bullet_476").frameHeight / 2) / pixelsPerMeter);
-				tempBullet.fixtureDef.shape = &tempBullet.boxShape;
-				break;
+			tempBullet.fixtureDef.shape = &tempBullet.boxShape;
+			break;
 
 			case BULLET_TYPE_DOUBLE: // Large double laser
 				tempBullet.shape.m_radius = (float) (sprites.at ("bullet_821").frameHeight * 0.5f) / pixelsPerMeter;
-				tempBullet.shape.m_p.Set (0, 0);
-				tempBullet.fixtureDef.shape = &tempBullet.shape;
-				break;
+			tempBullet.shape.m_p.Set (0, 0);
+			tempBullet.fixtureDef.shape = &tempBullet.shape;
+			break;
 
 			case BULLET_TYPE_DISRUPTER: // Disrupter
 				break;
 
 			default:
 				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used."));
-				break;
+			break;
 		}
 
-		tempBullet.fixtureDef.density     = bulletDensity;
-		tempBullet.fixtureDef.friction    = 0.3f;
-		tempBullet.fixtureDef.restitution = 0.0f;
-		tempBullet.body->CreateFixture (&tempBullet.fixtureDef);
+	tempBullet.fixtureDef.density     = bulletDensity;
+	tempBullet.fixtureDef.friction    = 0.3f;
+	tempBullet.fixtureDef.restitution = 0.0f;
+	tempBullet.body->CreateFixture (&tempBullet.fixtureDef);
 
-		if (dataBaseEntry[playerDroid.droidType].bulletType == BULLET_TYPE_SINGLE)
-			tempBullet.body->SetTransform (tempBullet.body->GetPosition (), tempBullet.angle);
+	if (dataBaseEntry[playerDroid.droidType].bulletType == BULLET_TYPE_SINGLE)
+		tempBullet.body->SetTransform (tempBullet.body->GetPosition (), tempBullet.angle);
 
-		tempBullet.currentFrame     = 0;
-		tempBullet.frameAnimCounter = 1.0f;
-		tempBullet.sourceIndex      = bulletSourceIndex;
-		bullets.push_back (tempBullet);
+	tempBullet.currentFrame     = 0;
+	tempBullet.frameAnimCounter = 1.0f;
+	tempBullet.sourceIndex      = bulletSourceIndex;
+	bullets.push_back (tempBullet);
 
-		printf ("New bullet from player [ %f ] Start [ %f %f ]\n", tempBullet.angle, tempBullet.destPos.x, tempBullet.destPos.y);
-	}
+	printf ("New bullet [ %f ] Source [ %i ] Start [ %f %f ]\n", tempBullet.angle, bulletSourceIndex, tempBullet.destPos.x, tempBullet.destPos.y);
 }
+
 
 //---------------------------------------------------------------------------------------------------------------------------
 //
@@ -153,12 +158,12 @@ void bul_animateBullets (__bulletObject &bulletItr, double tickTime)
 {
 	bulletItr.frameAnimCounter -= bulletAnimSpeed * (float) tickTime;
 	if (bulletItr.frameAnimCounter < 0.0f)
-	{
-		bulletItr.frameAnimCounter = 1.0f;
-		bulletItr.currentFrame++;
-		if (bulletItr.currentFrame == sprites.at ("bullet_001").numFrames)
-			bulletItr.currentFrame = 0;
-	}
+		{
+			bulletItr.frameAnimCounter = 1.0f;
+			bulletItr.currentFrame++;
+			if (bulletItr.currentFrame == sprites.at ("bullet_001").numFrames)
+				bulletItr.currentFrame = 0;
+		}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -168,16 +173,16 @@ void bul_applyPhysics (double tickTime)
 //---------------------------------------------------------------------------------------------------------------
 {
 	for (auto &bulletItr : bullets)
-	{
-		if (bulletItr.body != nullptr)
 		{
-			bulletItr.velocity.Normalize ();
-			bulletItr.velocity.operator*= (bulletMoveSpeed);
-			bulletItr.body->ApplyLinearImpulseToCenter (bulletItr.velocity, true);
+			if (bulletItr.body != nullptr)
+				{
+					bulletItr.velocity.Normalize ();
+					bulletItr.velocity.operator*= (bulletMoveSpeed);
+					bulletItr.body->ApplyLinearImpulseToCenter (bulletItr.velocity, true);
 
-			bul_animateBullets (bulletItr, tickTime);
+					bul_animateBullets (bulletItr, tickTime);
+				}
 		}
-	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -189,18 +194,18 @@ void bul_renderBullets ()
 	b2Vec2 tempPosition;
 
 	for (auto bulletItr : bullets)
-	{
-		if (bulletItr.body != nullptr)
 		{
-			tempPosition = bulletItr.body->GetPosition ();      // Get position in meters
-			tempPosition.x *= pixelsPerMeter;                   // Change to pixels
-			tempPosition.y *= pixelsPerMeter;
+			if (bulletItr.body != nullptr)
+				{
+					tempPosition = bulletItr.body->GetPosition ();      // Get position in meters
+					tempPosition.x *= pixelsPerMeter;                   // Change to pixels
+					tempPosition.y *= pixelsPerMeter;
 
-			tempPosition = sys_worldToScreen (tempPosition, SPRITE_SIZE);
+					tempPosition = sys_worldToScreen (tempPosition, SPRITE_SIZE);
 
-			io_renderRotatedSpriteFrame (playerDroid.bulletName, bulletItr.currentFrame, tempPosition.x, tempPosition.y, bulletItr.angle);
+					io_renderRotatedSpriteFrame (playerDroid.bulletName, bulletItr.currentFrame, tempPosition.x, tempPosition.y, bulletItr.angle);
+				}
 		}
-	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -210,25 +215,25 @@ std::string bul_getBulletName (int droidType)
 //---------------------------------------------------------------------------------------------------------------
 {
 	switch (dataBaseEntry[droidType].bulletType)
-	{
-		case BULLET_TYPE_NORMAL: // small double laser
-			return "bullet_001";
+		{
+			case BULLET_TYPE_NORMAL: // small double laser
+				return "bullet_001";
 			break;
 
-		case BULLET_TYPE_SINGLE: // Large single laser
-			return "bullet_476";
+			case BULLET_TYPE_SINGLE: // Large single laser
+				return "bullet_476";
 			break;
 
-		case BULLET_TYPE_DOUBLE: // Large double laser
-			return "bullet_821";
+			case BULLET_TYPE_DOUBLE: // Large double laser
+				return "bullet_821";
 			break;
 
-		case BULLET_TYPE_DISRUPTER: // Disrupter
-			break;
+			case BULLET_TYPE_DISRUPTER: // Disrupter
+				break;
 
-		default:
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used in bul_getBulletName."));
+			default:
+				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used in bul_getBulletName."));
 			break;
-	}
+		}
 	return "Never get here";
 }

@@ -20,7 +20,7 @@ void gui_sideviewDrawRect (int x1, int y1, int x2, int y2, PARA_COLOR whichColor
 {
 	al_draw_filled_rounded_rectangle (x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 1, 1, al_map_rgba (whichColor.r, whichColor.g, whichColor.b, whichColor.a));
 
-	al_draw_rounded_rectangle (x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 2, 2, al_map_rgba (0, 0, 0, 255), 1);
+	al_draw_rounded_rectangle (x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 1, 1, al_map_rgba (0, 0, 0, 255), 1);
 }
 
 //-----------------------------------------------------------------------------
@@ -245,7 +245,7 @@ void gui_drawSideView ()
 
 	if (currentMode == MODE_LIFT_VIEW)
 	{
-		//currentLevel = tunnel[currentTunnel].current;
+//		currentLevel = tunnel[currentTunnel].current;
 		// highlite current level
 		if (0 == currentDeckNumber)
 		{

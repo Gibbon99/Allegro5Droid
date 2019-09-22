@@ -4,6 +4,7 @@
 #include "hdr/gui/gui_scrollBox.h"
 
 __GUI_object introScrollBox;
+__GUI_object databaseScrollBox;
 
 float introScrollBoxStartX;
 float introScrollBoxStartY;
@@ -20,6 +21,22 @@ float introScrollBoxFontGreen;
 float introScrollBoxFontBlue;
 float introScrollBoxFontAlpha;
 float introScrollBoxRadius;
+
+float databaseScrollBoxStartX;
+float databaseScrollBoxStartY;
+float databaseScrollBoxWidth;
+float databaseScrollBoxHeight;
+float databaseScrollBoxSpeed;
+float databaseScrollBoxGapSize;
+float databaseScrollBoxBackRed;
+float databaseScrollBoxBackGreen;
+float databaseScrollBoxBackBlue;
+float databaseScrollBoxBackAlpha;
+float databaseScrollBoxFontRed;
+float databaseScrollBoxFontGreen;
+float databaseScrollBoxFontBlue;
+float databaseScrollBoxFontAlpha;
+float databaseScrollBoxRadius;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -74,10 +91,6 @@ void gui_renderScrollBox (__GUI_object *thisScrollBox, double interpolation)
 			renderPosition.x = thisScrollBox->startX + (thisScrollBox->gapSize / 2.0f);
 
 			renderPosition.y = (((thisScrollBox->startY + (thisScrollBox->height - fnt_getHeight ())) - (lineCount * fnt_getHeight ())) - drawPositionY); // - thisScrollBox->__GUI_element.scrollBox.previousScrollY;
-//		renderPosition.y *= percentWithinTick;
-//		renderPosition.y += thisScrollBox->__GUI_element.scrollBox.previousScrollY;
-
-//renderPosition.y = drawPositionY;
 
 			fnt_setColor_f (thisScrollBox->labelHasFocusColor.r, thisScrollBox->labelHasFocusColor.g, thisScrollBox->labelHasFocusColor.b, lineAlpha);
 			fnt_render (renderPosition, sys_getString ("%s", lineItr->c_str ()));
@@ -121,7 +134,25 @@ void gui_setupScrollBox (int whichScrollBox, const std::string &sourceText)
 			break;
 
 			case SCROLLBOX_DB:
-				break;
+				databaseScrollBox.startX                                = databaseScrollBoxStartX;
+			databaseScrollBox.startY                                  = databaseScrollBoxStartY;
+			databaseScrollBox.width                                   = databaseScrollBoxWidth;
+			databaseScrollBox.height                                  = databaseScrollBoxHeight;
+			databaseScrollBox.text                                    = sourceText;
+			databaseScrollBox.gapSize                                 = databaseScrollBoxGapSize;
+			databaseScrollBox.__GUI_element.scrollBox.scrollSpeed     = databaseScrollBoxSpeed;
+			databaseScrollBox.__GUI_element.scrollBox.backgroundColor = al_map_rgba_f (databaseScrollBoxBackRed, databaseScrollBoxBackGreen, databaseScrollBoxBackBlue, databaseScrollBoxBackAlpha);
+			databaseScrollBox.labelHasFocusColor                      = al_map_rgba_f (databaseScrollBoxFontRed, databaseScrollBoxFontGreen, databaseScrollBoxFontBlue, databaseScrollBoxFontAlpha);
+			databaseScrollBox.radius                                  = databaseScrollBoxRadius;
+			databaseScrollBox.__GUI_element.scrollBox.currentChar     = 0;
+			databaseScrollBox.__GUI_element.scrollBox.scrollDelay     = 0;
+			databaseScrollBox.__GUI_element.scrollBox.scrollY         = 0.0f;
+			databaseScrollBox.__GUI_element.scrollBox.previousScrollY = 0.0f;
+			databaseScrollBox.__GUI_element.scrollBox.numLinesToPrint = 0;
+			databaseScrollBox.__GUI_element.scrollBox.lineFade        = 0;
+			databaseScrollBox.scrollBoxLineText.clear ();
+			strcpy (databaseScrollBox.__GUI_element.scrollBox.fontName, "intro");
+			break;
 
 			default:
 				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unknown value passed to gui_setupScrollBox [ %i ]", whichScrollBox));
@@ -140,13 +171,14 @@ void gui_getNextLineOfText (__GUI_object *thisScrollBox)
 	std::string nextChar;
 
 	int  previousSpace = 0;
-	bool foundLine;
+	bool foundLine = false;
 
 	int lineTextWidth;
 
-	foundLine     = false;
-	nextWord      = "";
-	nextLine      = "";
+	foundLine = false;
+	nextWord.clear ();
+	nextLine.clear ();
+	nextChar.clear ();
 	previousSpace = 0;
 
 	fnt_setTTF (thisScrollBox->__GUI_element.scrollBox.fontName);    // Need current font size and width
@@ -204,6 +236,7 @@ void gui_getNextLineOfText (__GUI_object *thisScrollBox)
 				{
 					nextLine += nextWord;
 					foundLine = true;
+					thisScrollBox->__GUI_element.scrollBox.currentChar = 0;
 				}
 		}
 	thisScrollBox->scrollBoxLineText.push_back (nextLine);
@@ -247,7 +280,6 @@ void gui_scrollScrollBox (__GUI_object *thisScrollBox, double tickTime)
 			if (thisScrollBox->__GUI_element.scrollBox.scrollDelay < 0)
 				{
 					thisScrollBox->__GUI_element.scrollBox.scrollDelay = 0;
-//			gui_scrollOnePixel (thisScrollBox, tickTime);
 				}
 		}
 	else

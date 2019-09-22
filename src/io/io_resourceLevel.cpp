@@ -7,6 +7,7 @@
 #include <hdr/game/gam_lifts.h>
 #include <hdr/game/gam_bullet.h>
 #include <hdr/game/gam_healing.h>
+#include <src/game/gam_terminal.h>
 #include "hdr/io/io_resourceLevel.h"
 
 #define MAP_VERSION                116
@@ -23,13 +24,13 @@ void lvl_setCurrentLevelName (std::string newName)
 //---------------------------------------------------------
 {
 	for (auto shipItr : shipLevel)
-	{
-		if (newName == shipItr.first)
 		{
-			currentLevelName = newName;
-			return;
+			if (newName == shipItr.first)
+				{
+					currentLevelName = newName;
+					return;
+				}
 		}
-	}
 	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Attemping to chenge to unknown level [ %s ]", newName.c_str ()));
 }
 
@@ -56,14 +57,14 @@ std::unordered_map<std::string, _levelStruct>::const_iterator lvl_getLevelIndex 
 	levelItr = shipLevel.find (levelName);
 
 	if (levelItr != shipLevel.end ())
-	{
-		if (levelItr->second.mapVersion == -1)  // Not loaded properly
 		{
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString("Trying to access invalid level [ %s ]", levelName.c_str ()));
+			if (levelItr->second.mapVersion == -1)  // Not loaded properly
+				{
+					log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Trying to access invalid level [ %s ]", levelName.c_str ()));
+				}
+			return levelItr;
 		}
-		return levelItr;
-	}
-	log_logMessage (LOG_LEVEL_EXIT, sys_getString("Unable to find levelName [ %s ] - [ %s ]", levelName.c_str (), __func__));
+	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to find levelName [ %s ] - [ %s ]", levelName.c_str (), __func__));
 
 	return shipLevel.end ();   // Not found
 }
@@ -95,17 +96,17 @@ void lvl_addPaddingToLevel (const std::string fileName)
 	tempLevel.assign ((shipLevel.at (fileName).levelDimensions.x + drawOffset.x) * (shipLevel.at (fileName).levelDimensions.y + drawOffset.y), 0);
 
 	for (countY = 0; countY != shipLevel.at (fileName).levelDimensions.y; countY++)
-	{
-		destX = (drawOffset.x / 2);
-
-		for (countX = 0; countX != shipLevel.at (fileName).levelDimensions.x; countX++)
 		{
-			whichTile = shipLevel.at (fileName).tiles[(countY * shipLevel.at (fileName).levelDimensions.x) + countX];
-			tempLevel[(destY * (tempDimensions.x + drawOffset.x)) + destX] = whichTile;
-			destX++;
+			destX = (drawOffset.x / 2);
+
+			for (countX = 0; countX != shipLevel.at (fileName).levelDimensions.x; countX++)
+				{
+					whichTile = shipLevel.at (fileName).tiles[(countY * shipLevel.at (fileName).levelDimensions.x) + countX];
+					tempLevel[(destY * (tempDimensions.x + drawOffset.x)) + destX] = whichTile;
+					destX++;
+				}
+			destY++;
 		}
-		destY++;
-	}
 
 	tempDimensions.x += drawOffset.x;
 	tempDimensions.y += drawOffset.y;
@@ -120,9 +121,9 @@ void lvl_addPaddingToLevel (const std::string fileName)
 	shipLevel.at (fileName).tiles.assign (tempDimensions.x * tempDimensions.y, 0);
 
 	for (int i = 0; i != tempDimensions.x * tempDimensions.y; i++)
-	{
-		shipLevel.at (fileName).tiles[i] = tempLevel[i];
-	}
+		{
+			shipLevel.at (fileName).tiles[i] = tempLevel[i];
+		}
 	tempLevel.clear ();
 }
 
@@ -148,33 +149,33 @@ bool lvl_loadShipLevel (const std::string fileName)
 
 	fileSize = io_getFileSize (fileName.c_str ());
 	if (fileSize < 0)
-	{
-		log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", fileName.c_str ()));
-		return false;
-	}
+		{
+			log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", fileName.c_str ()));
+			return false;
+		}
 
 	memoryBuffer = (char *) malloc (sizeof (char) * fileSize);  //memleak
 	if (nullptr == memoryBuffer)
-	{
-		log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal memory allocation error when loading level file."));
-	}
+		{
+			log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal memory allocation error when loading level file."));
+		}
 
 	io_getFileIntoMemory (fileName.c_str (), memoryBuffer);
 	//
 	// Open the block of memory and read like a file
 	fp = para_openMemFile (memoryBuffer, fileSize);
 	if (nullptr == fp)
-	{
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", fileName.c_str ()));
-	}
+		{
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", fileName.c_str ()));
+		}
 	//
 	// Check this version is ok to use
 	para_readFile (fp, &checkVersion, sizeof (checkVersion));
 	if (checkVersion != MAP_VERSION)
-	{
-		log_logMessage (LOG_LEVEL_ERROR, sys_getString ("MAP_VERSION wrong for file [ %s ]", fileName.c_str ()));
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("MAP_VERSION wrong for file. Wanted [ %i ] got from file [ %i ]", MAP_VERSION, checkVersion));
-	}
+		{
+			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("MAP_VERSION wrong for file [ %s ]", fileName.c_str ()));
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("MAP_VERSION wrong for file. Wanted [ %i ] got from file [ %i ]", MAP_VERSION, checkVersion));
+		}
 	//
 	// Read number variables
 	para_readFile (fp, (void *) &tempLevel.numLineSegments, sizeof (tempLevel.numLineSegments));
@@ -191,68 +192,68 @@ bool lvl_loadShipLevel (const std::string fileName)
 	//
 	// Line segments for physics collisions
 	for (int i = 0; i != tempLevel.numLineSegments; i++)
-	{
-		para_readFile (fp, &tempFloat, sizeof (tempFloat));
-		tempSegment.start.x = tempFloat;
+		{
+			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			tempSegment.start.x = tempFloat;
 
-		para_readFile (fp, &tempFloat, sizeof (tempFloat));
-		tempSegment.start.y = tempFloat;
+			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			tempSegment.start.y = tempFloat;
 
-		para_readFile (fp, &tempFloat, sizeof (tempFloat));
-		tempSegment.finish.x = tempFloat;
+			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			tempSegment.finish.x = tempFloat;
 
-		para_readFile (fp, &tempFloat, sizeof (tempFloat));
-		tempSegment.finish.y = tempFloat;
+			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			tempSegment.finish.y = tempFloat;
 
-		tempSegment.start.x += drawOffset.x;
-		tempSegment.start.y += drawOffset.y;
+			tempSegment.start.x += drawOffset.x;
+			tempSegment.start.y += drawOffset.y;
 
-		tempSegment.finish.x += drawOffset.x;
-		tempSegment.finish.y += drawOffset.y;
+			tempSegment.finish.x += drawOffset.x;
+			tempSegment.finish.y += drawOffset.y;
 
-		tempLevel.lineSegments.push_back (tempSegment);
-	}
+			tempLevel.lineSegments.push_back (tempSegment);
+		}
 	//
 	// Waypoints for Droid patrol
 	for (int i = 0; i != tempLevel.numWaypoints; i++)
-	{
-		para_readFile (fp, &tempFloat, sizeof (tempFloat));
-		tempWaypoint.x = tempFloat;
+		{
+			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			tempWaypoint.x = tempFloat;
 
-		para_readFile (fp, &tempFloat, sizeof (tempFloat));
-		tempWaypoint.y = tempFloat;
+			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			tempWaypoint.y = tempFloat;
 
-		tempWaypoint.x += drawOffset.x;
-		tempWaypoint.y += drawOffset.y;
+			tempWaypoint.x += drawOffset.x;
+			tempWaypoint.y += drawOffset.y;
 
-		b2Vec2 tempVec2;
+			b2Vec2 tempVec2;
 
-		tempVec2.x = tempWaypoint.x;
-		tempVec2.y = tempWaypoint.y;
+			tempVec2.x = tempWaypoint.x;
+			tempVec2.y = tempWaypoint.y;
 
-		tempLevel.wayPoints.push_back (tempVec2);
-	}
+			tempLevel.wayPoints.push_back (tempVec2);
+		}
 
 	//
 	// Load each droid type on the current level
 	for (int i = 0; i != tempLevel.numDroids; i++)
-	{
-		para_readFile (fp, &tempDroidType, sizeof (tempDroidType));
-		tempLevel.droidTypes.push_back (tempDroidType);
-	}
+		{
+			para_readFile (fp, &tempDroidType, sizeof (tempDroidType));
+			tempLevel.droidTypes.push_back (tempDroidType);
+		}
 	//
 	// Array holding tile types
 	for (int i = 0; i != tempLevel.levelDimensions.x * tempLevel.levelDimensions.y; i++)
-	{
-		para_readFile (fp, &tempTile, sizeof (tempTile));
-		tempLevel.tiles.push_back (tempTile);
-	}
+		{
+			para_readFile (fp, &tempTile, sizeof (tempTile));
+			tempLevel.tiles.push_back (tempTile);
+		}
 	para_readFile (fp, &tempLevel.levelName, sizeof (tempLevel.levelName));
 
 	//
 	// Finished - close the file
 	para_closeFile (fp);
-	free(memoryBuffer);
+	free (memoryBuffer);
 
 	//
 	// Extract the deck number from the filename
@@ -263,15 +264,15 @@ bool lvl_loadShipLevel (const std::string fileName)
 	std::string::size_type idx = output.rfind ('.');
 
 	if (idx != std::string::npos)
-	{
-		output.erase (idx, 4);
-		tempLevel.deckNumber = std::stoi (output, nullptr, 10);
-	}
+		{
+			output.erase (idx, 4);
+			tempLevel.deckNumber = std::stoi (output, nullptr, 10);
+		}
 	else
-	{
-		tempLevel.deckNumber = -1;
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to parse deck filename for index [ %s ]", fileName.c_str ()));
-	}
+		{
+			tempLevel.deckNumber = -1;
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to parse deck filename for index [ %s ]", fileName.c_str ()));
+		}
 
 	// Generate physics masks and categories
 	tempLevel.wallPhysicsCreated  = false;
@@ -286,7 +287,6 @@ bool lvl_loadShipLevel (const std::string fileName)
 	return true;
 }
 
-
 //-----------------------------------------------------------------------------------------------------
 //
 // Return the levelName from the passed in deckNumber
@@ -298,12 +298,12 @@ std::string lvl_returnLevelNameFromDeck (int deckNumber)
 // Results in massive FPS drop
 //
 	for (auto const &levelItr : shipLevel)
-	{
-		if (deckNumber == levelItr.second.deckNumber)
 		{
-			return levelItr.second.levelName;
+			if (deckNumber == levelItr.second.deckNumber)
+				{
+					return levelItr.second.levelName;
+				}
 		}
-	}
 	return "Not Found";
 }
 
@@ -316,14 +316,14 @@ int lvl_getDeckNumber (const std::string levelName)
 	auto levelItr = shipLevel.find (levelName);
 
 	if (levelItr != shipLevel.end ())
-	{
-		if (levelItr->second.mapVersion == -1)  // Not loaded properly
 		{
-			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Trying to access invalid level [ %s ]", levelName.c_str ()));
-			return -1;
+			if (levelItr->second.mapVersion == -1)  // Not loaded properly
+				{
+					log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Trying to access invalid level [ %s ]", levelName.c_str ()));
+					return -1;
+				}
+			return levelItr->second.deckNumber;
 		}
-		return levelItr->second.deckNumber;
-	}
 	log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Unable to find levelName [ %s ] - [ %s ]", levelName.c_str (), __func__));
 
 	return -1;   // Not found
@@ -344,40 +344,40 @@ void lvl_showWayPoints (const std::string levelName)
 	indexCount = 0;
 
 	for (auto it: shipLevel.at (levelName).wayPoints)
-	{
-		tempLine.start.x = shipLevel.at (levelName).wayPoints[indexCount].x;
-		tempLine.start.y = shipLevel.at (levelName).wayPoints[indexCount].y;
-
-		if (indexCount + 1 < shipLevel.at (levelName).numWaypoints)
 		{
-			tempLine.finish.x = shipLevel.at (levelName).wayPoints[indexCount + 1].x;
-			tempLine.finish.y = shipLevel.at (levelName).wayPoints[indexCount + 1].y;
+			tempLine.start.x = shipLevel.at (levelName).wayPoints[indexCount].x;
+			tempLine.start.y = shipLevel.at (levelName).wayPoints[indexCount].y;
+
+			if (indexCount + 1 < shipLevel.at (levelName).numWaypoints)
+				{
+					tempLine.finish.x = shipLevel.at (levelName).wayPoints[indexCount + 1].x;
+					tempLine.finish.y = shipLevel.at (levelName).wayPoints[indexCount + 1].y;
+				}
+			else
+				{
+					tempLine.finish.x = shipLevel.at (levelName).wayPoints[0].x;
+					tempLine.finish.y = shipLevel.at (levelName).wayPoints[0].y;
+				}
+
+			lineStart.x = static_cast<float>(tempLine.start.x);
+			lineStart.y = static_cast<float>(tempLine.start.y);
+
+			lineFinish.x = static_cast<float>(tempLine.finish.x);
+			lineFinish.y = static_cast<float>(tempLine.finish.y);
+
+			wallStartDraw  = sys_worldToScreen (lineStart, 50);
+			wallFinishDraw = sys_worldToScreen (lineFinish, 50);
+
+			al_draw_line (wallStartDraw.x, wallStartDraw.y, wallFinishDraw.x, wallFinishDraw.y, al_map_rgb (255, 100, 255), 2);
+
+			indexCount++;
 		}
-		else
-		{
-			tempLine.finish.x = shipLevel.at (levelName).wayPoints[0].x;
-			tempLine.finish.y = shipLevel.at (levelName).wayPoints[0].y;
-		}
-
-		lineStart.x = static_cast<float>(tempLine.start.x);
-		lineStart.y = static_cast<float>(tempLine.start.y);
-
-		lineFinish.x = static_cast<float>(tempLine.finish.x);
-		lineFinish.y = static_cast<float>(tempLine.finish.y);
-
-		wallStartDraw  = sys_worldToScreen (lineStart, 50);
-		wallFinishDraw = sys_worldToScreen (lineFinish, 50);
-
-		al_draw_line (wallStartDraw.x, wallStartDraw.y, wallFinishDraw.x, wallFinishDraw.y, al_map_rgb (255, 100, 255), 2);
-
-		indexCount++;
-	}
 }
 
 //---------------------------------------------------------
 //
 // Change to a new level
-void lvl_changeToLevel (const std::string& newLevelName, int whichLift)
+void lvl_changeToLevel (const std::string &newLevelName, int whichLift)
 //---------------------------------------------------------
 {
 	lvl_setCurrentLevelName (newLevelName);
@@ -392,8 +392,9 @@ void lvl_changeToLevel (const std::string& newLevelName, int whichLift)
 	gam_doorTriggerSetup (newLevelName);
 	gam_findLiftPositions (newLevelName);
 	gam_createHealingSensors (newLevelName);
+	gam_findTerminalPositions (newLevelName);
 
-	bul_initBullets();
+	bul_initBullets ();
 
 	gam_drawAllTiles ();
 }

@@ -18,8 +18,8 @@ void as_setEnglishText()
 	gui_addKeyAndText("consoleAction", "Invoke the console");
 	gui_addKeyAndText("gameScreenShot", "Take a screenshot");
 
-    gui_addKeyAndText("startGameButton", "Start Game");
-    gui_addKeyAndText("optionsButton", "Options");
+	gui_addKeyAndText("startGameButton", "Start Game");
+   gui_addKeyAndText("optionsButton", "Options");
 	gui_addKeyAndText("tutorialButton", "Tutorial");
 	gui_addKeyAndText("briefingButton", "Briefing");
 	gui_addKeyAndText("exitGameButton", "Exit Game");
@@ -49,13 +49,46 @@ void as_setEnglishText()
 	gui_addKeyAndText("tutHealingText",		"All droids have a health indicator which spins on them. The slower this spins, the lower the health level of the droid. To repair damage stop over a repair tile. Your score is automatically subtracted as you repair.");
 	gui_addKeyAndText("tutTipsText",		" - Colliding with another droid will damage both. ! - Some droids are immune to the disrupter weapons. ! - Your control over a droid weakens with time. ! - The first number on a droid indicates its ranking.");
 
+	gui_addKeyAndText("previousButton", "Previous");
 	gui_addKeyAndText("cancelButton", "Cancel");
 	gui_addKeyAndText("nextButton", "Next");
 
-	gui_addKeyAndText("networkLost", "Network lost");
-	gui_addKeyAndText("serverLost", "The connection to the server is down.");
 	gui_addKeyAndText("pausedTitle", "Paused");
 	gui_addKeyAndText("pausedText", "Game Paused");
+
+	gui_addKeyAndText("terminalScreenLabel", "Terminal - Select your option");
+	gui_addKeyAndText("terminalLogoffButton", "Logoff Terminal");
+	gui_addKeyAndText("terminalDatabaseButton", "Droid Database");
+	gui_addKeyAndText("terminalDeckviewButton", "Deck View");
+	gui_addKeyAndText("terminalShipviewButton", "Ship View");
+
+	gui_addKeyAndText("databaseScrollBoxText", "Droid database text");
+	gui_addKeyAndText("imageLoading", "Image is loading");
+
+	gui_addKeyAndText("db_001", "! ! Description : 001 - Influence Device ! ClassName : Influence ! Drive  : None ! Brain : None ! Weapon : Lasers ! Sensor 1 : ~ ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Robot activity influence device. This helmet is self-powered and will control any robot for a short time. Lasers are turret mounted. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_123", "! ! Description : 123 - Disposal Droid ! ClassName : Disposal ! Drive  : Tracks ! Brain : None ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : Infra-red ! Sensor 3 : ~ ! Notes : Simple rubbish disposal robot. Common device in most space craft to maintain a clean ship. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_139", "! ! Description : 139 - Disposal Droid ! ClassName : Disposal ! Drive  : Anti-grav ! Brain : None ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Created by Dr. Masternak to clean up large heaps of rubbish. Its scoop is used to collect rubbish. It is then crushed internally. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_247", "! ! Description : 247 - Servant Droid ! ClassName : Servant ! Drive  : Anti-grav ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Light duty servant robot. One of the first to use the anti-grav system. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_249", "! ! Description : 249 - Servant Droid ! ClassName : Servant ! Drive  : Tripedal ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Cheaper version of the anti-grav servant robot. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_296", "! ! Description : 296 - Servant Droid ! ClassName : Servant ! Drive  : Tracks ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : This robot is mainly used for serving drinks. A tray is mounted on the head. Built by Orchard and Marsden Enterprises. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_302", "! ! Description : 302 - Messenger Droid ! ClassName : Messenger ! Drive  : Anti-grav ! Brain : None ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Common device for moving small packages. Clamp is mounted on the lower body. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_329", "! ! Description : 329 - Messenger Droid ! ClassName : Messenger ! Drive  : Wheels ! Brain : None ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Early type messenger robot. Large wheels impede motion on small craft. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_420", "! ! Description : 420 - Maintenance Droid ! ClassName : Maintenance ! Drive  : Tracks ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Slow maintenance robot. Confined to drive maintenance during flight. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_476", "! ! Description : 476 - Maintenance Droid ! ClassName : Maintenance ! Drive  : Anti-grav ! Brain : Neutronic ! Weapon : Lasers ! Sensor 1 : Spectral ! Sensor 2 : Infra-red ! Sensor 3 : ~ ! Notes : Ship maintenance robot. Fitted with multiple arms to carry out repairs to the ship efficiently. All craft built after the Jupiter Incident are supplied with a team of these. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_493", "! ! Description : 493 - Maintenance Droid ! ClassName : Maintenance ! Drive  : Anti-grav ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Slave maintenance droid. Standard version will carry its own toolbox. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_516", "! ! Description : 516 - Crew Droid ! ClassName : Crew ! Drive  : Bipedal ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Early crew droid. Able to carry out simple flight checks only. No longer supplied. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_571", "! ! Description : 571 - Crew Droid ! ClassName : Crew ! Drive  : Bipedal ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Standard crew droid. Supplied with the ship. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_598", "! ! Description : 598 - Crew Droid ! ClassName : Crew ! Drive  : Bipedal ! Brain : Neutronic ! Weapon : None ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : A highly sophisticated device. Able to control the Robo-Freighter on its own. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_614", "! ! Description : 614 - Sentinel Droid ! ClassName : Sentinel ! Drive  : Bipedal ! Brain : Neutronic ! Weapon : Laser Rifle ! Sensor 1 : Spectral ! Sensor 2 : Subsonic ! Sensor 3 : ~ ! Notes : Low security sentinel droid. Used to protect areas of the ship from intruders. A slow but sure device. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_615", "! ! Description : 615 - Sentinel Droid ! ClassName : Sentinel ! Drive  : Anti-grav ! Brain : Neutronic ! Weapon : Lasers ! Sensor 1 : Spectral ! Sensor 2 : Infra-red ! Sensor 3 : ~ ! Notes : Sophisticated sentinel droid. Only 2000 built by the Nicholson corporation. These are now very rare. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_629", "! ! Description : 629 - Sentinel Droid ! ClassName : Sentinel ! Drive  : Tracks ! Brain : Neutronic ! Weapon : Lasers ! Sensor 1 : Spectral ! Sensor 2 : Subsonic ! Sensor 3 : ~ ! Notes : Slow sentinel droid. Lasers are built into the turret. These are mounted on a small tank body. May be fitted with an auto-cannon on the Gillen version. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_711", "! ! Description : 711 - Battle Droid ! ClassName : Battle ! Drive  : Bipdeal ! Brain : Neutronic ! Weapon : Disrupter ! Sensor 1 : Ultra-sonic ! Sensor 2 : Radar ! Sensor 3 : ~ ! Notes : Heavy duty battle droid. Disruptor is built into the head. One of the first in service with the Military. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_742", "! ! Description : 742 - Battle Droid ! ClassName : Battle ! Drive  : Bipedeal ! Brain : Neutronic ! Weapon : Disrupter ! Sensor 1 : Spectral ! Sensor 2 : Radar ! Sensor 3 : ~ ! Notes : This version is the one mainly used by the Military. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_751", "! ! Description : 751 - Battle Droid ! ClassName : Battle ! Drive  : Bipedal ! Brain : Neutronic ! Weapon : Lasers ! Sensor 1 : Spectral ! Sensor 2 : ~ ! Sensor 3 : ~ ! Notes : Very heavy duty battle droid. Only a few have so far entered service. These are the most powerful battle units ever built. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_821", "! ! Description : 821 - Security Droid ! ClassName : Security ! Drive  : Anti-grav ! Brain : Neutronic ! Weapon : Lasers ! Sensor 1 : Spectral ! Sensor 2 : Radar ! Sensor 3 : Infra-red ! Notes : A very reliable anti-grav unit is fitted onto this droid. It will patrol the ship and eliminate intruders as soon as detected by powerful sensors. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_834", "! ! Description : 834 - Security Droid ! ClassName : Security ! Drive  : Anti-grav ! Brain : Neutronic ! Weapon : Lasers ! Sensor 1 : Spectral ! Sensor 2 : Radar ! Sensor 3 : ~ ! Notes : Early type anti-grav security droid. Fitted with an over-driven anti-grav unit. This droid is very fast but is not reliable. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_883", "! ! Description : 883 - Security Droid ! ClassName : Security ! Drive  : Wheels ! Brain : Neutronic ! Weapon : Exterminator ! Sensor 1 : Spectral ! Sensor 2 : Radar ! Sensor 3 : ~ ! Notes : This droid was designed from archive data. For some unknown reason it instills great fear in Human adversaries. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
+	gui_addKeyAndText("db_999", "! ! Description : 999 - Command cyborg ! ClassName : Command ! Drive  : Anti-grav ! Brain : Primode ! Weapon : Lasers ! Sensor 1 : Infra-red ! Sensor 2 : Radar ! Sensor 3 : Subsonic ! Notes : Experimental command cyborg. Fitted with a new type of brain. Mounted on a Security Droid anti-grav unit for convenience. Warning: the influence device may not control a primode brain for long. ! ! ! ! ! ! Information Repeats ! ! ! ! ! ");
 }
 
 

@@ -108,6 +108,7 @@ extern std::vector<__GUI_object> guiImages;
 extern std::vector<_screenObject> guiScreens;
 
 extern __GUI_object introScrollBox;
+extern __GUI_object databaseScrollBox;
 
 // Change to a new GUI screen
 void gui_changeToGUIScreen (int newScreen);

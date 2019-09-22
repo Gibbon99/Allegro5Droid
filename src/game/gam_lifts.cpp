@@ -339,7 +339,6 @@ void gam_findLiftPositions ( const std::string &levelName )
 	}
 }
 
-
 //---------------------------------------------------------
 //
 // Store the lift linking information into vector array

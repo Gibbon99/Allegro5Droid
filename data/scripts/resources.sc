@@ -47,6 +47,7 @@ void script_loadAllResources ()
 	sys_loadResource ("tut_lift", "tut_lift.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("tut_terminal", "tut_terminal.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("alltiles", "alltiles.bmp", RESOURCE_BITMAP, 0, 0);
+	sys_loadResource ("alltiles_128", "alltiles_128.bmp", RESOURCE_BITMAP, 0, 0);
 	//
 	// Explosion
 	sys_loadResource ("explosion", "explosion.bmp", RESOURCE_SPRITE, 25, 0);
@@ -110,6 +111,9 @@ void script_loadAllResources ()
 	sys_loadResource ("999", "999.bmp", RESOURCE_SPRITE, 9, 0);
 	io_spriteSetAlphaColor ("999", 255, 0, 255);
 
+	sys_loadResource ("db_sprite", "db_001.bmp", RESOURCE_SPRITE, 32, 0);
+	io_spriteSetAlphaColor ("db_sprite", 0, 0, 0);
+
 	sys_loadResource ("sideView", "sideview.dat", RESOURCE_SHIP_VIEW, 0, 0);
 
 	lvl_loadShipLevel ("116-newDeck0.dat");
@@ -152,11 +156,30 @@ void script_loadAllResources ()
 	sideviewDrawScale        = 0.5f;
 	droidAnimateSpeed        = 60.0f;
 	explodeAnimateSpeed      = 120.0f;
-	badHealthFactor          = 0.80f;        // Percent of health before it's considered bad CHANGE ME
+	badHealthFactor          = 0.10f;        // Percent of health before it's considered bad CHANGE ME
 	collisionDamageInflicted = 3;
 	collisionExplosionDamage = 10;
 	bulletAnimSpeed          = 10.0f;
 	bulletMoveSpeed          = 0.5f;
 	bulletDensity            = 0.2f;
 	healingAnimSpeed         = 10.0f;
+	droidBeenShotValue       = 90.0f;
+	splashTimeout            = 5;
+	databaseAnimTime         = 10.0f;
+	//
+	// Counter for how long droid remembers being shot
+	droidBeenShotValue   = 3.0f;
+	witnessShootValue    = 1.5f;
+	witnessTransferValue = 1.5f;
+	//
+	// Amounts to influence chance to shoot
+	ai_beenShot          = 0.7f;
+	ai_healthAmount      = 0.3f;
+	ai_playerVisible     = 0.2f;
+	ai_witnessShoot      = 0.0f;    // 0.4f
+	ai_witnessTransfer   = 0.0f;    // 0.6f
+	ai_greenFactor       = 0.1f;
+	ai_yellowFactor      = 0.2f;
+	ai_redFactor         = 0.4f;
+	deckViewRatio        = 0.8f;
 }

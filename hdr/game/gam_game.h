@@ -1,5 +1,7 @@
 #pragma once
 
+#include "system/sys_main.h"
+
 enum BULLET_TYPES
 {
 	BULLET_TYPE_NORMAL = 0,
@@ -17,5 +19,6 @@ enum DAMAGE_TYPES
 
 extern int currentAlertLevel;
 
-#include "system/sys_main.h"
+// Start a new game
+void gam_startNewGame();
 

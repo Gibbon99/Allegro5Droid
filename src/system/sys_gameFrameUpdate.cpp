@@ -10,6 +10,7 @@
 #include <hdr/game/gam_pathFind.h>
 #include <hdr/gui/gui_scrollBox.h>
 #include <hdr/game/gam_lineOfSight.h>
+#include <hdr/gui/gui_database.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -37,7 +38,16 @@ void sys_gameTickRun (double tickTime)
 		case MODE_GUI_TUT_TERMINALS:
 		case MODE_GUI_TUT_HEALING:
 		case MODE_GUI_TUT_TIPS:
+		case MODE_GUI_TERMINAL:
+		case MODE_GUI_TERMINAL_SHIPVIEW:
+		case MODE_GUI_TERMINAL_DECKVIEW:
 			io_processKeyActions();
+			break;
+
+		case MODE_GUI_DATABASE:
+			gui_animateDroidSprite(tickTime);
+			gui_scrollScrollBox (&databaseScrollBox, tickTime);
+			io_processKeyActions ();
 			break;
 
 		case MODE_GUI_INTRO:

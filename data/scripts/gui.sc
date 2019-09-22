@@ -1,4 +1,104 @@
-int buttonHeight = 7;
+float buttonHeight = 7.0f;
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Handle the actions for the database screen
+void as_guiHandleDatabaseAction (string &in objectID)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "databaseScreen"))
+		{
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databasePrevButton"))
+				{
+					gam_previousDatabaseDroid();
+					// Go to previous droid
+					return;
+				}
+
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseCancelButton"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
+					as_guiSetObjectFocus ("terminalDatabaseButton");
+					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+					return;
+				}
+
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseNextButton"))
+				{
+					gam_nextDatabaseDroid();
+					// Go to next droid
+					return;
+				}
+		}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Handle the actions for the terminal
+void as_guiHandleTerminalAction (string &in objectID)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	//
+	// Main terminal screen
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"))
+		{
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalLogoffButton"))
+				{
+					sys_changeCurrentMode (MODE_GAME, true);
+					return;
+				}
+
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDatabaseButton"))
+				{
+					gam_setLocalDroidType();
+					gam_enterDatabaseMode();
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "databaseScreen"));
+					as_guiSetObjectFocus ("databaseCancelButton");
+					sys_changeCurrentMode (MODE_GUI_DATABASE, true);
+					return;
+				}
+
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDeckviewButton"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalDeckviewScreen"));
+					as_guiSetObjectFocus ("deckviewCancelButton");
+					sys_changeCurrentMode (MODE_GUI_TERMINAL_DECKVIEW, true);
+//					sys_changeCurrentMode(MODE_GUI_SHIPVIEW, true);
+					return;
+				}
+
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalShipviewButton"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalShipviewScreen"));
+					as_guiSetObjectFocus ("shipviewCancelButton");
+					sys_changeCurrentMode (MODE_GUI_TERMINAL_SHIPVIEW, true);
+					return;
+				}
+		}
+	//
+	// For each display screen - shipview and deckview
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalShipviewScreen"))
+		{
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "shipviewCancelButton"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
+					as_guiSetObjectFocus ("terminalShipviewButton");
+					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+					return;
+				}
+		}
+
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalDeckviewScreen"))
+		{
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "deckviewCancelButton"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
+					as_guiSetObjectFocus ("terminalDeckviewButton");
+					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+					return;
+				}
+		}
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -232,6 +332,61 @@ void as_guiHandleElementAction (string &in objectID)
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Setup the values for the database scrollbox
+void script_setupDatabaseScreen ()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	float buttonStartY                 = 95; //logicalHeight - (buttonHeight * 2);
+	int   databaseScrollBoxBorderWidth = 10;
+
+	databaseScrollBoxWidth  = logicalWidth - databaseScrollBoxBorderWidth;
+	databaseScrollBoxHeight = (logicalHeight - 54) - (logicalHeight * (buttonHeight / 100.0f));
+
+	databaseScrollBoxStartX = databaseScrollBoxBorderWidth / 2;
+	databaseScrollBoxStartY = (logicalHeight - databaseScrollBoxHeight) - (databaseScrollBoxBorderWidth / 2) - (logicalHeight * (buttonHeight / 100.0f));
+
+	databaseScrollBoxSpeed   = 15.0f;
+	databaseScrollBoxGapSize = 6;
+	databaseScrollBoxRadius  = 12;
+
+	databaseScrollBoxBackRed   = 0.39f;
+	databaseScrollBoxBackGreen = 0.39f;
+	databaseScrollBoxBackBlue  = 0.03f;
+	databaseScrollBoxBackAlpha = 0.79f;
+	//
+	// Font colors are floats to use alpha properly
+	databaseScrollBoxFontRed   = 0.07f; //20;
+	databaseScrollBoxFontGreen = 0.59f; //150;
+	databaseScrollBoxFontBlue  = 0.39f; //100;
+	databaseScrollBoxFontAlpha = 0.99f; //240;
+
+	as_guiSetupScrollBox (SCROLLBOX_DB, gui_getString ("db_476"));
+
+	as_guiCreateNewScreen ("databaseScreen");
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "databasePrevButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "databasePrevButton", "databaseScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "databasePrevButton", GUI_COORD_TYPE_PERCENT, 15, buttonStartY, 30, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "databasePrevButton", GUI_LABEL_CENTER, gui_getString ("previousButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "databasePrevButton", "as_guiHandleDatabaseAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databasePrevButton", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "databaseCancelButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "databaseCancelButton", "databaseScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "databaseCancelButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 30, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "databaseCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "databaseCancelButton", "as_guiHandleDatabaseAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databaseCancelButton", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "databaseNextButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "databaseNextButton", "databaseScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "databaseNextButton", GUI_COORD_TYPE_PERCENT, 85, buttonStartY, 30, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "databaseNextButton", GUI_LABEL_CENTER, gui_getString ("nextButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "databaseNextButton", "as_guiHandleDatabaseAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databaseNextButton", true);
+}
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup the values for the intro scrollbox
@@ -583,11 +738,97 @@ void as_guiSetupTutorial ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Setup the screen to display the current sideview from the terminal
+void as_setupTerminalDeckviewScreen ()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	float buttonStartY = 80; //logicalHeight - (buttonHeight * 2);
+
+	as_guiCreateNewScreen ("terminalDeckviewScreen");
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "deckviewCancelButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "deckviewCancelButton", "terminalDeckviewScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "deckviewCancelButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "deckviewCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "deckviewCancelButton", "as_guiHandleTerminalAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "deckviewCancelButton", true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Setup the screen to display the current shipview from the terminal
+void as_setupTerminalShipviewScreen ()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	float buttonStartY = 80; //logicalHeight - (buttonHeight * 2);
+
+	as_guiCreateNewScreen ("terminalShipviewScreen");
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "shipviewCancelButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "shipviewCancelButton", "terminalShipviewScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "shipviewCancelButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "shipviewCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "shipviewCancelButton", "as_guiHandleTerminalAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "shipviewCancelButton", true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Setup the main terminal screen with buttons
+void as_setupMainTerminalScreen ()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	float buttonStartY  = 40;
+	float buttonSpacing = 13;
+
+	as_guiCreateNewScreen ("mainTerminalScreen");
+
+	as_guiCreateObject (GUI_OBJECT_LABEL, "terminalScreenLabel");
+	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "terminalScreenLabel", "mainTerminalScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "terminalScreenLabel", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "terminalScreenLabel", GUI_LABEL_CENTER, gui_getString ("terminalScreenLabel"));
+	as_guiSetReadyState (GUI_OBJECT_LABEL, "terminalScreenLabel", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalLogoffButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalLogoffButton", "mainTerminalScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "terminalLogoffButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
+	buttonStartY += buttonSpacing;
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalLogoffButton", GUI_LABEL_CENTER, gui_getString ("terminalLogoffButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalLogoffButton", "as_guiHandleTerminalAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalLogoffButton", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalDatabaseButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalDatabaseButton", "mainTerminalScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "terminalDatabaseButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
+	buttonStartY += buttonSpacing;
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalDatabaseButton", GUI_LABEL_CENTER, gui_getString ("terminalDatabaseButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalDatabaseButton", "as_guiHandleTerminalAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalDatabaseButton", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalDeckviewButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalDeckviewButton", "mainTerminalScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "terminalDeckviewButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
+	buttonStartY += buttonSpacing;
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalDeckviewButton", GUI_LABEL_CENTER, gui_getString ("terminalDeckviewButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalDeckviewButton", "as_guiHandleTerminalAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalDeckviewButton", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalShipviewButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalShipviewButton", "mainTerminalScreen");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "terminalShipviewButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
+	buttonStartY += buttonSpacing;
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalShipviewButton", GUI_LABEL_CENTER, gui_getString ("terminalShipviewButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalShipviewButton", "as_guiHandleTerminalAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalShipviewButton", true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Setup the main GUI screen with buttons
 void as_setupMainScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	float buttonStartY = 40;
+	float buttonStartY  = 40;
 	float buttonSpacing = 13;
 
 	as_guiCreateNewScreen ("mainGUIScreen");
@@ -676,6 +917,10 @@ void script_initGUI ()
 	as_setupOptionsScreen ();
 	as_setupOptionsVideoScreen ();
 	as_guiSetupTutorial ();
+	as_setupMainTerminalScreen ();
+	as_setupTerminalDeckviewScreen ();
+	as_setupTerminalShipviewScreen ();
+	script_setupDatabaseScreen ();
 //	as_setupMessageBoxes();
 
 	currentGUIScreen      = as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen");

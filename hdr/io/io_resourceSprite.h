@@ -3,7 +3,7 @@
 #include "system/sys_main.h"
 
 // Load a sprite
-void io_loadResourceSprite(const std::string& key, const std::string& fileName, int numFrames);
+void io_loadResourceSprite (const std::string &key, const std::string &fileName, int numFrames, bool reload);
 
 // Render a frame of a sprite
 void io_renderSpriteFrame(const std::string& key, int whichFrame, float posX, float posY);

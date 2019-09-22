@@ -6,7 +6,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_droidAIPatrol.h>
 
-#define AI_HEALTH_DEBUG 1
+//#define AI_HEALTH_DEBUG 1
 
 /*stayHealthy (SELECTOR - stop on success)
 

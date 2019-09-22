@@ -58,6 +58,10 @@ void io_processKeyActions()
 		case MODE_GUI_TUT_TERMINALS:
 		case MODE_GUI_TUT_HEALING:
 		case MODE_GUI_TUT_TIPS:
+		case MODE_GUI_TERMINAL:
+		case MODE_GUI_TERMINAL_SHIPVIEW:
+		case MODE_GUI_TERMINAL_DECKVIEW:
+		case MODE_GUI_DATABASE:
 				if (keyBinding[gameUp].currentlyPressed)
 				{
 					keyBinding[gameUp].currentlyPressed = false;

@@ -89,7 +89,10 @@ void sys_loadResource (const std::string &key, const std::string &fileName, int 
 			break;
 
 		case RESOURCE_SPRITE:
-			io_loadResourceSprite (key, fileName, numFrames);
+			if (-1 == size)
+				io_loadResourceSprite (key, fileName, numFrames, true);
+			else
+				io_loadResourceSprite (key, fileName, numFrames, false);
 			break;
 
 		case RESOURCE_TILES:

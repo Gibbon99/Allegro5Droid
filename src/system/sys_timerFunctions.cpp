@@ -4,6 +4,8 @@
 #include <hdr/game/gam_pathFind.h>
 #include "hdr/system/sys_timerFunctions.h"
 
+int splashTimeout;
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup all the timers and add to event source
@@ -39,6 +41,16 @@ bool tim_initAllTimers ()
 			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Timers. Exiting", "Could not init fade timer.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 			return false;
 		}
+
+	splashTimer = al_create_timer (5);
+	if (nullptr == splashTimer)
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Timers. Exiting", "Could not start timer for splash countdown.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return false;
+		}
+	al_register_event_source (eventQueue, al_get_timer_event_source (splashTimer));
+
 	return true;
 }
 
@@ -88,4 +100,15 @@ void tim_runFadeProcess (ALLEGRO_TIMER_EVENT *timer_event)
 			default:
 				break;
 		}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Function that is called when the splash screen timeout is reached
+void tim_changeToGUI(ALLEGRO_TIMER_EVENT *timer_event)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	al_stop_timer(splashTimer);
+	al_destroy_timer(splashTimer);
+	sys_changeMode (MODE_GUI, true);
 }

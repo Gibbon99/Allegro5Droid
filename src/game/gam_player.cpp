@@ -9,6 +9,7 @@
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_bullet.h>
 #include "hdr/game/gam_player.h"
+#include "gam_terminal.h"
 
 b2Vec2 previousPlayerWorldPos;
 float  playerAcceleration;      // From script
@@ -22,16 +23,17 @@ _droid playerDroid;
 void gam_initPlayerValues ()
 // ----------------------------------------------------------------------------
 {
-	playerDroid.droidType        = 9; //shipLevel.at (lvl_getCurrentLevelName ()).droidTypes[0];
-	playerDroid.currentHealth    = dataBaseEntry[playerDroid.droidType].maxHealth;
-	playerDroid.spriteName       = gl_getSpriteName (playerDroid.droidType);
-	playerDroid.currentFrame     = 0;
+	playerDroid.droidType              = 0;
+	playerDroid.currentHealth          = dataBaseEntry[playerDroid.droidType].maxHealth;
+	playerDroid.spriteName             = gl_getSpriteName (playerDroid.droidType);
+	playerDroid.currentFrame           = 0;
 //	playerDroid.numberOfFrames   = sprites.at ("001").numFrames;
-	playerDroid.frameDelay       = 1.0f;
-	playerDroid.frameAnimCounter = 1.0f;
-	playerDroid.currentSpeed     = 0.0f;
-	playerDroid.acceleration     = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
-	playerDroid.bulletName       = bul_getBulletName (playerDroid.droidType);
+	playerDroid.frameDelay             = 1.0f;
+	playerDroid.frameAnimCounter       = 1.0f;
+	playerDroid.currentSpeed           = 0.0f;
+	playerDroid.acceleration           = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
+	playerDroid.bulletName             = bul_getBulletName (playerDroid.droidType);
+	playerDroid.playerDroidTypeDBIndex = "db_" + gl_getSpriteName (playerDroid.droidType);
 }
 
 // ----------------------------------------------------------------------------
@@ -49,34 +51,34 @@ b2Vec2 gam_getLiftWorldPosition (int whichLift, std::string whichLevel)
 	liftCounter = 0;
 
 	for (countY = 0; countY != shipLevel.at (whichLevel).levelDimensions.y; countY++)
-	{
-		for (countX = 0; countX != shipLevel.at (whichLevel).levelDimensions.x; countX++)
 		{
-			whichTile = shipLevel.at (whichLevel).tiles[(countY * shipLevel.at (whichLevel).levelDimensions.x) + countX];
-
-			if (LIFT_TILE == whichTile)
-			{
-				if (liftCounter == whichLift)
+			for (countX = 0; countX != shipLevel.at (whichLevel).levelDimensions.x; countX++)
 				{
-					tilePosX = countX * TILE_SIZE; //countX - ((screenWidth / TILE_SIZE) / 2);
-					tilePosY = countY * TILE_SIZE; //countY - ((screenHeight / TILE_SIZE) / 2);
-					tilePosY += TILE_SIZE;
+					whichTile = shipLevel.at (whichLevel).tiles[(countY * shipLevel.at (whichLevel).levelDimensions.x) + countX];
 
-					pixelX = TILE_SIZE / 2;
-					pixelY = -TILE_SIZE / 2;
+					if (LIFT_TILE == whichTile)
+						{
+							if (liftCounter == whichLift)
+								{
+									tilePosX = countX * TILE_SIZE; //countX - ((screenWidth / TILE_SIZE) / 2);
+									tilePosY = countY * TILE_SIZE; //countY - ((screenHeight / TILE_SIZE) / 2);
+									tilePosY += TILE_SIZE;
 
-					returnPosition.x = tilePosX + pixelX;
-					returnPosition.y = tilePosY + pixelY;
+									pixelX = TILE_SIZE / 2;
+									pixelY = -TILE_SIZE / 2;
 
-					return returnPosition;
+									returnPosition.x = tilePosX + pixelX;
+									returnPosition.y = tilePosY + pixelY;
+
+									return returnPosition;
+								}
+							else
+								{
+									liftCounter++;
+								}
+						}
 				}
-				else
-				{
-					liftCounter++;
-				}
-			}
 		}
-	}
 
 	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to find lift tile on level [ %s ]", whichLevel.c_str ()));
 	return returnPosition;
@@ -89,91 +91,91 @@ void gam_processPlayerMovement ()
 //-----------------------------------------------------------------------------
 {
 	if (keyBinding[gameLeft].currentlyPressed)
-	{
-
-		playerDroid.velocity.x -= playerAcceleration;
-		if (playerDroid.velocity.x < -playerMaxSpeed)
 		{
-			playerDroid.velocity.x = -playerMaxSpeed;
+
+			playerDroid.velocity.x -= playerAcceleration;
+			if (playerDroid.velocity.x < -playerMaxSpeed)
+				{
+					playerDroid.velocity.x = -playerMaxSpeed;
+				}
 		}
-	}
 
 	else if (keyBinding[gameRight].currentlyPressed)
-	{
-		playerDroid.velocity.x += playerAcceleration;
-		if (playerDroid.velocity.x > playerMaxSpeed)
 		{
-			playerDroid.velocity.x = playerMaxSpeed;
+			playerDroid.velocity.x += playerAcceleration;
+			if (playerDroid.velocity.x > playerMaxSpeed)
+				{
+					playerDroid.velocity.x = playerMaxSpeed;
+				}
 		}
-	}
 
 	if (keyBinding[gameUp].currentlyPressed)
-	{
-		playerDroid.velocity.y -= playerAcceleration;
-		if (playerDroid.velocity.y < -playerMaxSpeed)
 		{
-			playerDroid.velocity.y = -playerMaxSpeed;
+			playerDroid.velocity.y -= playerAcceleration;
+			if (playerDroid.velocity.y < -playerMaxSpeed)
+				{
+					playerDroid.velocity.y = -playerMaxSpeed;
+				}
 		}
-	}
 
 	else if (keyBinding[gameDown].currentlyPressed)
-	{
-		playerDroid.velocity.y += playerAcceleration;
-		if (playerDroid.velocity.y > playerMaxSpeed)
 		{
-			playerDroid.velocity.y = playerMaxSpeed;
+			playerDroid.velocity.y += playerAcceleration;
+			if (playerDroid.velocity.y > playerMaxSpeed)
+				{
+					playerDroid.velocity.y = playerMaxSpeed;
+				}
 		}
-	}
 
 //
 // Do gravity slowdown when no key is pressed
 	if (!keyBinding[gameLeft].currentlyPressed)
-	{
-		if (playerDroid.velocity.x < 0.0f)
 		{
-			playerDroid.velocity.x += gravity;
-			if (playerDroid.velocity.x > 0.0f)
-			{
-				playerDroid.velocity.x = 0.0f;
-			}
+			if (playerDroid.velocity.x < 0.0f)
+				{
+					playerDroid.velocity.x += gravity;
+					if (playerDroid.velocity.x > 0.0f)
+						{
+							playerDroid.velocity.x = 0.0f;
+						}
+				}
 		}
-	}
 
 	if (!keyBinding[gameRight].currentlyPressed)
-	{
-		if (playerDroid.velocity.x > 0.0f)
 		{
-			playerDroid.velocity.x -= gravity;
-			if (playerDroid.velocity.x < 0.0f)
-			{
-				playerDroid.velocity.x = 0.0f;
-			}
+			if (playerDroid.velocity.x > 0.0f)
+				{
+					playerDroid.velocity.x -= gravity;
+					if (playerDroid.velocity.x < 0.0f)
+						{
+							playerDroid.velocity.x = 0.0f;
+						}
+				}
 		}
-	}
 
 	if (!keyBinding[gameUp].currentlyPressed)
-	{
-		if (playerDroid.velocity.y < 0.0f)
 		{
-			playerDroid.velocity.y += gravity;
-			if (playerDroid.velocity.y > 0.0f)
-			{
-				playerDroid.velocity.y = 0.0f;
-			}
+			if (playerDroid.velocity.y < 0.0f)
+				{
+					playerDroid.velocity.y += gravity;
+					if (playerDroid.velocity.y > 0.0f)
+						{
+							playerDroid.velocity.y = 0.0f;
+						}
+				}
 		}
-	}
 
 	if (!keyBinding[gameDown].currentlyPressed)
-	{
-		if (playerDroid.velocity.y > 0.0f)
 		{
-			playerDroid.velocity.y -= gravity;
-			if (playerDroid.velocity.y < 0.0f)
-			{
-				playerDroid.velocity.y = 0.0f;
-			}
+			if (playerDroid.velocity.y > 0.0f)
+				{
+					playerDroid.velocity.y -= gravity;
+					if (playerDroid.velocity.y < 0.0f)
+						{
+							playerDroid.velocity.y = 0.0f;
+						}
+				}
 		}
-	}
 
 	previousPlayerWorldPos = playerDroid.worldPos;
 	playerDroid.worldPos = playerDroid.body->GetPosition ();     // GetPosition is in meters
@@ -188,19 +190,28 @@ void gam_processActionKey ()
 //----------------------------------------------------------------------------
 {
 	if (playerDroid.overLiftTile)
-	{
-		if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
 		{
-			gam_performLiftAction ();
-			keyBinding[gameAction].currentlyPressed = false;
-		}
+			if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
+				{
+					gam_performLiftAction ();
+					keyBinding[gameAction].currentlyPressed = false;
+				}
 //		return;
-	}
+		}
+
+	if (playerDroid.overTerminalTile)
+		{
+			if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
+				{
+					gam_performTerminalAction ();
+					keyBinding[gameAction].currentlyPressed = false;
+				}
+		}
 
 	if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
-	{
-		gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
-		keyBinding[gameAction].currentlyPressed = false;
-		return;
-	}
+		{
+			gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
+			keyBinding[gameAction].currentlyPressed = false;
+			return;
+		}
 }

@@ -40,6 +40,8 @@
 
 #define ERROR_REPEAT_NUMBER 3
 
+#define MAX_DROID_TYPES 23
+
 enum GAME_MODES {
 
 };
@@ -71,10 +73,10 @@ typedef struct {
 void sys_changeMode (int newMode, bool fade);
 
 // Return logical screen width
-float sys_getLogicalWidth();
+float sys_getLogicalWidth ();
 
 // Return the logical screen height
-float sys_getLogicalHeight();
+float sys_getLogicalHeight ();
 
 // Return current tickTime
-double sys_getTickTime();
+double sys_getTickTime ();

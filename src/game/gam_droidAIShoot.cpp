@@ -5,9 +5,10 @@
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_game.h>
+#include <hdr/game/gam_physicActions.h>
 #include "hdr/game/gam_droidAIShoot.h"
 
-//#define DEBUG_SHOOT 1
+#define DEBUG_SHOOT 1
 //#define USE_LEADING_SHOT 1
 
 // ----------- Values set from script ------------
@@ -35,7 +36,7 @@ int ai_notShoot (int whichDroid, const std::string levelName)
 		return AI_RESULT_SUCCESS;
 
 #ifdef DEBUG_SHOOT
-	printf ("Droid [ %i ] can shoot\n", whichDroid);
+//	printf ("Droid [ %i ] can shoot\n", whichDroid);
 #endif
 
 	if (!shipLevel.at (levelName).droid[whichDroid].weaponCanFire)
@@ -108,7 +109,8 @@ int ai_shootBullet (int whichDroid, const std::string levelName)
 
 //	bulletDestPos.y += TILE_SIZE / 2;
 
-	evt_pushEvent (-1, MAIN_LOOP_EVENT, MAIN_LOOP_EVENT_ADD_BULLET, dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].bulletType, whichDroid, levelName);
+	gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, whichDroid, {0, 0});
+//	evt_pushEvent (-1, MAIN_LOOP_EVENT, MAIN_LOOP_EVENT_ADD_BULLET, dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].bulletType, whichDroid, levelName);
 
 	shipLevel.at (levelName).droid[whichDroid].chanceToShoot = 0.0f;
 	shipLevel.at (levelName).droid[whichDroid].weaponCanFire = false;
@@ -213,7 +215,7 @@ void gam_findChanceToShoot (int whichDroid, const std::string levelName)
 	if (shipLevel.at (levelName).droid[whichDroid].chanceToShoot < 0.0f)
 		shipLevel.at (levelName).droid[whichDroid].chanceToShoot = 0.0f;
 
-	if (shipLevel.at (levelName).droid[whichDroid].chanceToShoot > 0.0f)
+	if (shipLevel.at (levelName).droid[whichDroid].chanceToShoot > 10.0f)
 		printf ("Shoot [ %3.3f ]\n", shipLevel.at (levelName).droid[whichDroid].chanceToShoot);
 }
 

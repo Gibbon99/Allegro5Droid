@@ -58,6 +58,14 @@ void contactListener::BeginContact (b2Contact *contact)
 			}
 			break;
 
+		case PHYSIC_TYPE_TERMINAL:
+			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
+				{
+					playerDroid.overTerminalTile = true;
+					return;
+				}
+				break;
+
 		case PHYSIC_TYPE_HEALING:
 			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
 			{
@@ -84,6 +92,11 @@ void contactListener::BeginContact (b2Contact *contact)
 				gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, -1, bodyUserData_B->dataValue, bullets[bodyUserData_A->dataValue].sourceIndex, {0, 0});
 				return;
 			}
+
+			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
+				{
+
+				}
 
 			if (bodyUserData_B->userType == PHYSIC_TYPE_DOOR_BULLET)
 			{
@@ -134,6 +147,16 @@ void contactListener::BeginContact (b2Contact *contact)
 				playerDroid.overLiftTile = true;
 				playerDroid.liftIndex    = bodyUserData_B->dataValue;
 				return;
+			}
+			break;
+
+		case PHYSIC_TYPE_TERMINAL:
+			{
+				if (bodyUserData_A->userType == PHYSIC_TYPE_TERMINAL)
+					{
+						playerDroid.overTerminalTile = true;
+						return;
+					}
 			}
 			break;
 
@@ -220,6 +243,14 @@ void contactListener::EndContact (b2Contact *contact)
 			}
 			break;
 
+		case PHYSIC_TYPE_TERMINAL:
+			if (bodyUserData_B->userType == PHYSIC_TYPE_PLAYER)
+				{
+					playerDroid.overTerminalTile = false;
+					return;
+				}
+				break;
+
 		case PHYSIC_TYPE_HEALING:
 			evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_STOP, bodyUserData_A->dataValue, 0, "");
 			return;
@@ -251,6 +282,14 @@ void contactListener::EndContact (b2Contact *contact)
 			}
 			break;
 
+		case PHYSIC_TYPE_TERMINAL:
+			if (bodyUserData_A->userType == PHYSIC_TYPE_PLAYER)
+				{
+					playerDroid.overTerminalTile = false;
+					return;
+				}
+				break;
+
 		case PHYSIC_TYPE_HEALING:
 			evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_HEALING_STOP, bodyUserData_B->dataValue, 0, "");
 			return;
@@ -280,6 +319,7 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 
 			if (bodyUserData_B->userType == PHYSIC_TYPE_BULLET)     // Let bullet pass through player when it starts - need a type for ENEMY_BULLET
 			{
+				if (bodyUserData_A->dataValue == bullets[bodyUserData_B->dataValue].sourceIndex)   // Droid needs to ignore collision with it's own bullet
 				//if (bodyUserData_B->dataValue == -1)
 				contact->SetEnabled (false);
 			}
@@ -291,7 +331,7 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 		case PHYSIC_TYPE_PLAYER:
 			if (bodyUserData_A->userType == PHYSIC_TYPE_WALL)
 			{
-				contact->SetEnabled (false);
+//				contact->SetEnabled (false);
 			}
 
 			if (bodyUserData_A->userType == PHYSIC_TYPE_BULLET)

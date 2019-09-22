@@ -17,6 +17,10 @@
 #include <hdr/game/gam_pathFind.h>
 #include <hdr/gui/gui_scrollBox.h>
 #include <hdr/gui/gui_render.h>
+#include <hdr/io/io_resourceImage.h>
+#include <src/game/gam_terminal.h>
+#include <hdr/gui/gui_database.h>
+#include <hdr/gui/gui_deckView.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -134,6 +138,10 @@ void sys_displayScreen (double interpolation)
 
 	switch (currentMode)
 	{
+		case MODE_SPLASH:
+			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN);
+			break;
+
 		case MODE_CONSOLE:
 			con_renderConsole ();
 			break;
@@ -153,6 +161,26 @@ void sys_displayScreen (double interpolation)
 		case MODE_GUI_TUT_TERMINALS:
 		case MODE_GUI_TUT_HEALING:
 		case MODE_GUI_TUT_TIPS:
+		case MODE_GUI_TERMINAL:
+			hud_renderHUD ();
+			gui_drawGUI ();
+			break;
+
+		case MODE_GUI_TERMINAL_DECKVIEW:
+			gam_showCurrentLevel(deckViewRatio);
+			hud_renderHUD ();
+			gui_drawGUI ();
+			break;
+
+		case MODE_GUI_TERMINAL_SHIPVIEW:
+			gui_drawSideView ();
+			hud_renderHUD();
+			gui_drawGUI();
+			break;
+
+		case MODE_GUI_DATABASE:
+			gui_renderDatabaseScreen();
+			gui_renderScrollBox(&databaseScrollBox, interpolation);
 			hud_renderHUD ();
 			gui_drawGUI ();
 			break;

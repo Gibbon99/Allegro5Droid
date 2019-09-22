@@ -672,7 +672,7 @@ void ai_processDroidAI (const std::string levelName)
 	{
 		if (shipLevel.at (levelName).droid[i].currentMode == DROID_MODE_NORMAL)
 		{
-//					gam_findChanceToShoot ( i, levelName );
+					gam_findChanceToShoot ( i, levelName );
 
 			backToAIRoot = false;
 			ai_walkTree ("ROOT_NODE", i, levelName);

@@ -35,3 +35,15 @@ extern std::vector<_dataBaseEntry> dataBaseEntry;
 
 // Get and build up information for droid database files
 bool gam_getDBInformation ();
+
+// Enter the database mode
+void gam_enterDatabaseMode();
+
+// Get the previous database droid record
+void gam_previousDatabaseDroid();
+
+// Get the next database droid information
+void gam_nextDatabaseDroid();
+
+// Set the local player droid type variable for moving through the database list
+void gam_setLocalDroidType();

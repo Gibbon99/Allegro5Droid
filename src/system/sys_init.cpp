@@ -17,10 +17,13 @@
 #include <hdr/game/gam_database.h>
 #include <hdr/game/gam_lifts.h>
 #include <hdr/game/gam_healing.h>
+#include <hdr/system/sys_init.h>
+#include <hdr/game/gam_game.h>
 //#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
 ALLEGRO_TIMER   *fadeTimer;
+ALLEGRO_TIMER   *splashTimer;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_BITMAP  *windowIcon;
 
@@ -261,5 +264,9 @@ void sys_initAll ()
 
 	gam_initPlayerValues ();
 
+//	al_start_timer(splashTimer);
 	sys_changeMode (MODE_GAME, true);
+
+	gam_startNewGame();
+
 }

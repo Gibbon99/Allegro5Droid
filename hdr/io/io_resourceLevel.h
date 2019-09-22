@@ -76,9 +76,9 @@ typedef struct {
 	b2Vec2 velocity;                   // Current speed
 
 	float visibleValue;
-	int  visibleStatus;
+	int   visibleStatus;
 
-
+	bool overTerminalTile;
 	bool overLiftTile;
 	int  liftIndex;                      // Which lift on the level are we over
 
@@ -133,7 +133,7 @@ typedef struct {
 
 	bool onHealingTile;
 	bool foundHealingTile;
-} _droid;
+}                   _droid;
 
 typedef struct {
 	int                       mapVersion;
@@ -162,7 +162,7 @@ typedef struct {
 
 	bool wallPhysicsCreated  = false;
 	bool droidPhysicsCreated = false;
-} _levelStruct;
+}                   _levelStruct;
 
 extern std::unordered_map<std::string, _levelStruct> shipLevel;
 
