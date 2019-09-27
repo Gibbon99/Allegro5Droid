@@ -203,6 +203,8 @@ void sys_setupPlayerPhysics ()
 	playerDroid.fixtureDef.density     = 1.0f;
 	playerDroid.fixtureDef.friction    = playerFriction;
 	playerDroid.fixtureDef.restitution = 1.0f;
+	playerDroid.fixtureDef.filter.categoryBits = PHYSIC_TYPE_PLAYER;
+	playerDroid.fixtureDef.filter.maskBits = PHYSIC_TYPE_WALL | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED | PHYSIC_TYPE_ENEMY;
 	playerDroid.body->CreateFixture (&playerDroid.fixtureDef);
 
 	playerDroid.velocity.x = 0.0f;
@@ -307,6 +309,8 @@ void sys_setupSolidWalls (const std::string levelName)
 
 		tempWall.shape.Set (wallStart, wallFinish);
 		tempWall.fixture.shape = &tempWall.shape;
+		tempWall.fixture.filter.categoryBits = PHYSIC_TYPE_WALL;
+		tempWall.fixture.filter.maskBits = PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_BULLET_PLAYER;
 		tempWall.body->CreateFixture (&tempWall.fixture);
 
 		solidWalls.push_back (tempWall);
@@ -382,6 +386,8 @@ void sys_setupEnemyPhysics (const std::string levelName)
 			tempDroid.fixtureDef.density     = 1;
 			tempDroid.fixtureDef.friction    = 0.3f;
 			tempDroid.fixtureDef.restitution = 1.0f;
+			tempDroid.fixtureDef.filter.categoryBits = PHYSIC_TYPE_ENEMY;
+			tempDroid.fixtureDef.filter.maskBits = PHYSIC_TYPE_WALL | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
 			tempDroid.body->CreateFixture (&tempDroid.fixtureDef);
 
 			droidPhysics.push_back (tempDroid);

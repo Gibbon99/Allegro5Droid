@@ -21,3 +21,6 @@ void gam_processActionKey();
 
 // Setup player startup values
 void gam_initPlayerValues ();
+
+// Recharge player weapon
+void gam_weaponRechargePlayer(float tickTime);

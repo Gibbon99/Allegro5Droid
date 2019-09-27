@@ -19,6 +19,7 @@
 #include <hdr/game/gam_healing.h>
 #include <hdr/system/sys_init.h>
 #include <hdr/game/gam_game.h>
+#include <hdr/game/gam_bullet.h>
 //#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
@@ -263,6 +264,8 @@ void sys_initAll ()
 	lvl_changeToLevel ("Staterooms", 0);
 
 	gam_initPlayerValues ();
+
+	bul_initBulletArraySize ();
 
 //	al_start_timer(splashTimer);
 	sys_changeMode (MODE_GAME, true);

@@ -168,18 +168,21 @@ void script_loadAllResources ()
 	databaseAnimTime         = 10.0f;
 	//
 	// Counter for how long droid remembers being shot
-	droidBeenShotValue   = 3.0f;
-	witnessShootValue    = 1.5f;
-	witnessTransferValue = 1.5f;
+	droidBeenShotValue       = 3.0f;
+	witnessShootValue        = 1.5f;
+	witnessTransferValue     = 1.5f;
 	//
 	// Amounts to influence chance to shoot
-	ai_beenShot          = 0.7f;
-	ai_healthAmount      = 0.3f;
-	ai_playerVisible     = 0.2f;
-	ai_witnessShoot      = 0.0f;    // 0.4f
-	ai_witnessTransfer   = 0.0f;    // 0.6f
-	ai_greenFactor       = 0.1f;
-	ai_yellowFactor      = 0.2f;
-	ai_redFactor         = 0.4f;
-	deckViewRatio        = 0.8f;
+	ai_beenShot              = 0.7f;
+	ai_healthAmount          = 0.3f;
+	ai_playerVisible         = 0.2f;
+	ai_witnessShoot          = 0.0f;    // 0.4f
+	ai_witnessTransfer       = 0.0f;    // 0.6f
+	ai_greenFactor           = 0.1f;
+	ai_yellowFactor          = 0.2f;
+	ai_redFactor             = 0.4f;
+	deckViewRatio            = 0.8f;
+	//
+	// Array starting size
+	numStartingBullets       = 10;
 }

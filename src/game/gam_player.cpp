@@ -17,6 +17,27 @@ float  playerMaxSpeed;          // From script
 float  gravity;                 // From script
 _droid playerDroid;
 
+//-----------------------------------------------------------------------------
+//
+// Recharge player weapon
+void gam_weaponRechargePlayer (float tickTime)
+//-----------------------------------------------------------------------------
+{
+	if (!playerDroid.weaponCanFire)
+		{
+			if (dataBaseEntry[playerDroid.droidType].canShoot)
+				playerDroid.weaponDelay += dataBaseEntry[playerDroid.droidType].rechargeTime * tickTime;
+			else
+				playerDroid.weaponDelay += dataBaseEntry[0].rechargeTime * tickTime;
+
+			if (playerDroid.weaponDelay > 1.0f)
+				{
+					playerDroid.weaponDelay   = 0.0f;
+					playerDroid.weaponCanFire = true;
+				}
+		}
+}
+
 // ----------------------------------------------------------------------------
 //
 // Setup player startup values
@@ -34,6 +55,8 @@ void gam_initPlayerValues ()
 	playerDroid.acceleration           = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
 	playerDroid.bulletName             = bul_getBulletName (playerDroid.droidType);
 	playerDroid.playerDroidTypeDBIndex = "db_" + gl_getSpriteName (playerDroid.droidType);
+	playerDroid.weaponCanFire          = true;
+	playerDroid.weaponDelay            = 0.0f;
 }
 
 // ----------------------------------------------------------------------------
@@ -210,8 +233,12 @@ void gam_processActionKey ()
 
 	if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
 		{
-			gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
-			keyBinding[gameAction].currentlyPressed = false;
-			return;
+			if (playerDroid.weaponCanFire)
+				{
+					gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
+					keyBinding[gameAction].currentlyPressed = false;
+					playerDroid.weaponCanFire               = false;
+					return;
+				}
 		}
 }

@@ -62,52 +62,53 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("bool isGUIStarted", &isGUIStarted);
 	sys_scriptAddHostVariable ("bool fullScreen", &fullScreen);
 
-	sys_scriptAddHostVariable("float introScrollBoxStartX", &introScrollBoxStartX);
-	sys_scriptAddHostVariable("float introScrollBoxStartY", &introScrollBoxStartY);
-	sys_scriptAddHostVariable("float introScrollBoxWidth", &introScrollBoxWidth);
-	sys_scriptAddHostVariable("float introScrollBoxHeight", &introScrollBoxHeight);
-	sys_scriptAddHostVariable("float introScrollBoxSpeed", &introScrollBoxSpeed);
-	sys_scriptAddHostVariable("float introScrollBoxGapSize", &introScrollBoxGapSize);
-	sys_scriptAddHostVariable("float introScrollBoxBackRed", &introScrollBoxBackRed);
-	sys_scriptAddHostVariable("float introScrollBoxBackGreen", &introScrollBoxBackGreen);
-	sys_scriptAddHostVariable("float introScrollBoxBackBlue",  &introScrollBoxBackBlue);
-	sys_scriptAddHostVariable("float introScrollBoxBackAlpha", &introScrollBoxBackAlpha);
-	sys_scriptAddHostVariable("float introScrollBoxRadius", &introScrollBoxRadius);
-	sys_scriptAddHostVariable("float introScrollBoxFontRed", &introScrollBoxFontRed );
-	sys_scriptAddHostVariable("float introScrollBoxFontGreen", &introScrollBoxFontGreen );
-	sys_scriptAddHostVariable("float introScrollBoxFontBlue", &introScrollBoxFontBlue );
-	sys_scriptAddHostVariable("float introScrollBoxFontAlpha", &introScrollBoxFontAlpha );
+	sys_scriptAddHostVariable ("float introScrollBoxStartX", &introScrollBoxStartX);
+	sys_scriptAddHostVariable ("float introScrollBoxStartY", &introScrollBoxStartY);
+	sys_scriptAddHostVariable ("float introScrollBoxWidth", &introScrollBoxWidth);
+	sys_scriptAddHostVariable ("float introScrollBoxHeight", &introScrollBoxHeight);
+	sys_scriptAddHostVariable ("float introScrollBoxSpeed", &introScrollBoxSpeed);
+	sys_scriptAddHostVariable ("float introScrollBoxGapSize", &introScrollBoxGapSize);
+	sys_scriptAddHostVariable ("float introScrollBoxBackRed", &introScrollBoxBackRed);
+	sys_scriptAddHostVariable ("float introScrollBoxBackGreen", &introScrollBoxBackGreen);
+	sys_scriptAddHostVariable ("float introScrollBoxBackBlue", &introScrollBoxBackBlue);
+	sys_scriptAddHostVariable ("float introScrollBoxBackAlpha", &introScrollBoxBackAlpha);
+	sys_scriptAddHostVariable ("float introScrollBoxRadius", &introScrollBoxRadius);
+	sys_scriptAddHostVariable ("float introScrollBoxFontRed", &introScrollBoxFontRed);
+	sys_scriptAddHostVariable ("float introScrollBoxFontGreen", &introScrollBoxFontGreen);
+	sys_scriptAddHostVariable ("float introScrollBoxFontBlue", &introScrollBoxFontBlue);
+	sys_scriptAddHostVariable ("float introScrollBoxFontAlpha", &introScrollBoxFontAlpha);
 
-	sys_scriptAddHostVariable("float databaseScrollBoxStartX", &databaseScrollBoxStartX);
-	sys_scriptAddHostVariable("float databaseScrollBoxStartY", &databaseScrollBoxStartY);
-	sys_scriptAddHostVariable("float databaseScrollBoxWidth", &databaseScrollBoxWidth);
-	sys_scriptAddHostVariable("float databaseScrollBoxHeight", &databaseScrollBoxHeight);
-	sys_scriptAddHostVariable("float databaseScrollBoxSpeed", &databaseScrollBoxSpeed);
-	sys_scriptAddHostVariable("float databaseScrollBoxGapSize", &databaseScrollBoxGapSize);
-	sys_scriptAddHostVariable("float databaseScrollBoxBackRed", &databaseScrollBoxBackRed);
-	sys_scriptAddHostVariable("float databaseScrollBoxBackGreen", &databaseScrollBoxBackGreen);
-	sys_scriptAddHostVariable("float databaseScrollBoxBackBlue",  &databaseScrollBoxBackBlue);
-	sys_scriptAddHostVariable("float databaseScrollBoxBackAlpha", &databaseScrollBoxBackAlpha);
-	sys_scriptAddHostVariable("float databaseScrollBoxRadius", &databaseScrollBoxRadius);
-	sys_scriptAddHostVariable("float databaseScrollBoxFontRed", &databaseScrollBoxFontRed );
-	sys_scriptAddHostVariable("float databaseScrollBoxFontGreen", &databaseScrollBoxFontGreen );
-	sys_scriptAddHostVariable("float databaseScrollBoxFontBlue", &databaseScrollBoxFontBlue );
-	sys_scriptAddHostVariable("float databaseScrollBoxFontAlpha", &databaseScrollBoxFontAlpha );
-	sys_scriptAddHostVariable("float databaseAnimTime", &databaseAnimTime);
+	sys_scriptAddHostVariable ("float databaseScrollBoxStartX", &databaseScrollBoxStartX);
+	sys_scriptAddHostVariable ("float databaseScrollBoxStartY", &databaseScrollBoxStartY);
+	sys_scriptAddHostVariable ("float databaseScrollBoxWidth", &databaseScrollBoxWidth);
+	sys_scriptAddHostVariable ("float databaseScrollBoxHeight", &databaseScrollBoxHeight);
+	sys_scriptAddHostVariable ("float databaseScrollBoxSpeed", &databaseScrollBoxSpeed);
+	sys_scriptAddHostVariable ("float databaseScrollBoxGapSize", &databaseScrollBoxGapSize);
+	sys_scriptAddHostVariable ("float databaseScrollBoxBackRed", &databaseScrollBoxBackRed);
+	sys_scriptAddHostVariable ("float databaseScrollBoxBackGreen", &databaseScrollBoxBackGreen);
+	sys_scriptAddHostVariable ("float databaseScrollBoxBackBlue", &databaseScrollBoxBackBlue);
+	sys_scriptAddHostVariable ("float databaseScrollBoxBackAlpha", &databaseScrollBoxBackAlpha);
+	sys_scriptAddHostVariable ("float databaseScrollBoxRadius", &databaseScrollBoxRadius);
+	sys_scriptAddHostVariable ("float databaseScrollBoxFontRed", &databaseScrollBoxFontRed);
+	sys_scriptAddHostVariable ("float databaseScrollBoxFontGreen", &databaseScrollBoxFontGreen);
+	sys_scriptAddHostVariable ("float databaseScrollBoxFontBlue", &databaseScrollBoxFontBlue);
+	sys_scriptAddHostVariable ("float databaseScrollBoxFontAlpha", &databaseScrollBoxFontAlpha);
+	sys_scriptAddHostVariable ("float databaseAnimTime", &databaseAnimTime);
 
-	sys_scriptAddHostVariable("float droidBeenShotValue", &droidBeenShotValue );
-	sys_scriptAddHostVariable("float witnessShootValue", &witnessShootValue );
-	sys_scriptAddHostVariable("float witnessTransferValue", &witnessTransferValue );
-	sys_scriptAddHostVariable("float ai_beenShot", &ai_beenShot );
-	sys_scriptAddHostVariable("float ai_healthAmount", &ai_healthAmount );
-	sys_scriptAddHostVariable("float ai_playerVisible", &ai_playerVisible );
-	sys_scriptAddHostVariable("float ai_witnessShoot", &ai_witnessShoot );
-	sys_scriptAddHostVariable("float ai_witnessTransfer", &ai_witnessTransfer );
-	sys_scriptAddHostVariable("float ai_greenFactor", &ai_greenFactor );
-	sys_scriptAddHostVariable("float ai_yellowFactor", &ai_yellowFactor );
-	sys_scriptAddHostVariable("float ai_redFactor", &ai_redFactor );
+	sys_scriptAddHostVariable ("float droidBeenShotValue", &droidBeenShotValue);
+	sys_scriptAddHostVariable ("float witnessShootValue", &witnessShootValue);
+	sys_scriptAddHostVariable ("float witnessTransferValue", &witnessTransferValue);
+	sys_scriptAddHostVariable ("float ai_beenShot", &ai_beenShot);
+	sys_scriptAddHostVariable ("float ai_healthAmount", &ai_healthAmount);
+	sys_scriptAddHostVariable ("float ai_playerVisible", &ai_playerVisible);
+	sys_scriptAddHostVariable ("float ai_witnessShoot", &ai_witnessShoot);
+	sys_scriptAddHostVariable ("float ai_witnessTransfer", &ai_witnessTransfer);
+	sys_scriptAddHostVariable ("float ai_greenFactor", &ai_greenFactor);
+	sys_scriptAddHostVariable ("float ai_yellowFactor", &ai_yellowFactor);
+	sys_scriptAddHostVariable ("float ai_redFactor", &ai_redFactor);
 
 	sys_scriptAddHostVariable ("float deckViewRatio", &deckViewRatio);
+	sys_scriptAddHostVariable ("int numStartingBullets", &numStartingBullets);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -138,22 +139,22 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void gui_addKeyAndText(string &in, string &in)", (functionPtr) &gui_addKeyAndText);
 	sys_scriptAddHostFunction ("void as_guiChangeCurrentScreen(int newScreen)", (functionPtr) &gui_changeToGUIScreen);
 
-	sys_scriptAddHostFunction("void as_guiSetupScrollBox(int whichScrollBox, string &in)", (functionPtr) &gui_setupScrollBox);
+	sys_scriptAddHostFunction ("void as_guiSetupScrollBox(int whichScrollBox, string &in)", (functionPtr) &gui_setupScrollBox);
 
-	sys_scriptAddHostFunction("int gam_getTextureWidth(string &in)", (functionPtr)&sys_getImageWidth);
-	sys_scriptAddHostFunction("int gam_getTextureHeight(string &in)", (functionPtr)&sys_getImageHeight);
+	sys_scriptAddHostFunction ("int gam_getTextureWidth(string &in)", (functionPtr) &sys_getImageWidth);
+	sys_scriptAddHostFunction ("int gam_getTextureHeight(string &in)", (functionPtr) &sys_getImageHeight);
 
-	sys_scriptAddHostFunction("void as_guiSetCheckboxGroup  (string &in, int whichGroup)", (functionPtr) &gui_hostSetCheckboxGroup);
-	sys_scriptAddHostFunction("void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked)", (functionPtr)&gui_hostSetCheckboxTick);
-	sys_scriptAddHostFunction("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
+	sys_scriptAddHostFunction ("void as_guiSetCheckboxGroup  (string &in, int whichGroup)", (functionPtr) &gui_hostSetCheckboxGroup);
+	sys_scriptAddHostFunction ("void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked)", (functionPtr) &gui_hostSetCheckboxTick);
+	sys_scriptAddHostFunction ("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
 
 	sys_scriptAddHostFunction ("void as_guiSetImageKeyName(string &in, string &in)", (functionPtr) &gui_setImageKeyName);
-	sys_scriptAddHostFunction("void sys_changeCurrentMode(int newMode, bool fade)", (functionPtr)&sys_changeMode);
+	sys_scriptAddHostFunction ("void sys_changeCurrentMode(int newMode, bool fade)", (functionPtr) &sys_changeMode);
 
-	sys_scriptAddHostFunction("void gam_enterDatabaseMode()", (functionPtr)&gam_enterDatabaseMode);
-	sys_scriptAddHostFunction ("void gam_previousDatabaseDroid()", (functionPtr)&gam_previousDatabaseDroid);
-	sys_scriptAddHostFunction ("void gam_nextDatabaseDroid()", (functionPtr)&gam_nextDatabaseDroid);
-	sys_scriptAddHostFunction ("void gam_setLocalDroidType()", (functionPtr)&gam_setLocalDroidType);
+	sys_scriptAddHostFunction ("void gam_enterDatabaseMode()", (functionPtr) &gam_enterDatabaseMode);
+	sys_scriptAddHostFunction ("void gam_previousDatabaseDroid()", (functionPtr) &gam_previousDatabaseDroid);
+	sys_scriptAddHostFunction ("void gam_nextDatabaseDroid()", (functionPtr) &gam_nextDatabaseDroid);
+	sys_scriptAddHostFunction ("void gam_setLocalDroidType()", (functionPtr) &gam_setLocalDroidType);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

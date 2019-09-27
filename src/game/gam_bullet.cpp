@@ -13,6 +13,7 @@ std::vector<__bulletObject> bullets;
 float                       bulletAnimSpeed;          // From script
 float                       bulletMoveSpeed;          // From script
 float                       bulletDensity;            // From script
+int                         numStartingBullets;
 
 //-----------------------------------------------------------------------------
 //
@@ -38,6 +39,8 @@ void bul_clearAllBullets ()
 {
 	for (auto &bulletItr : bullets)
 		{
+			bulletItr.inUse = false;
+
 			if (bulletItr.userData != nullptr)
 				delete (bulletItr.userData);
 
@@ -62,33 +65,67 @@ void bul_initBullets ()
 void bul_removeBullet (int whichBullet)
 //---------------------------------------------------------------------------------------------------------------
 {
+	printf ("Remove bullet [ %i ]\n", whichBullet);
+
 	if (bullets.at (whichBullet).body != nullptr)
 		{
 			sys_getPhysicsWorld ()->DestroyBody (bullets.at (whichBullet).body);
 			bullets.at (whichBullet).body = nullptr;
 		}
+	bullets.at (whichBullet).inUse = false;
 }
 
 //---------------------------------------------------------------------------------------------------------------
 //
-// Create a new bullet - pass in the source of the bullet
-void bul_createNewBullet (int bulletSourceIndex)
+// Init the bullet array size
+void bul_initBulletArraySize ()
 //---------------------------------------------------------------------------------------------------------------
 {
 	__bulletObject tempBullet;
 
-	if (bulletSourceIndex == -1)        // Player bullet
+	bullets.reserve (numStartingBullets);
+
+	for (int i = 0; i != numStartingBullets; i++)
+		{
+			tempBullet.inUse = false;
+			bullets.push_back (tempBullet);
+		}
+}
+
+//---------------------------------------------------------------------------------------------------------------
+//
+// Setup information for new bullet
+__bulletObject bul_setupNewBullet (int bulletSourceIndex, int arrayIndex)
+//---------------------------------------------------------------------------------------------------------------
+{
+	__bulletObject tempBullet;
+	b2Vec2         tempPos;
+
+	if (bulletSourceIndex == -1)        // Bullet came from player
 		{
 			tempBullet.worldPos = playerDroid.worldPos;
 			tempBullet.velocity = playerDroid.velocity;
 
+			tempPos = playerDroid.velocity;
+			tempPos.Normalize ();
+			tempPos.operator*= (12.0f);
+			tempBullet.worldPos += tempPos;
+
 			tempBullet.velocity.operator*= (2.0f);
 			tempBullet.destPos = tempBullet.worldPos + tempBullet.velocity;
 		}
-	else
+	else                                // Bullet came from enemy droid - index on level used
 		{
 			tempBullet.worldPos = shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].worldPos;
 			tempBullet.destPos  = playerDroid.worldPos;
+			tempBullet.velocity = tempBullet.destPos - tempBullet.worldPos;
+			tempBullet.velocity.Normalize ();
+			tempBullet.velocity *= bulletMoveSpeed;
+
+			tempPos = tempBullet.velocity;
+			tempPos.Normalize ();
+			tempPos.operator*= (24.0f);
+			tempBullet.worldPos += tempPos;
 		}
 
 	tempBullet.angle = bul_getBulletAngle (tempBullet.worldPos, tempBullet.destPos);
@@ -99,11 +136,18 @@ void bul_createNewBullet (int bulletSourceIndex)
 	tempBullet.bodyDef.bullet = true;
 	tempBullet.body           = sys_getPhysicsWorld ()->CreateBody (&tempBullet.bodyDef);
 	if (tempBullet.body == nullptr)
-		return;
+		{
+			tempBullet.inUse = false;
+			return tempBullet;
+		}
 
-	tempBullet.userData            = new _userData;
-	tempBullet.userData->userType  = PHYSIC_TYPE_BULLET;
-	tempBullet.userData->dataValue = bullets.size ();
+	tempBullet.userData             = new _userData;
+	if (bulletSourceIndex == -1)
+		tempBullet.userData->userType = PHYSIC_TYPE_BULLET_PLAYER;
+	else
+		tempBullet.userData->userType = PHYSIC_TYPE_BULLET_ENEMY;
+
+	tempBullet.userData->dataValue = arrayIndex;
 	tempBullet.body->SetUserData (tempBullet.userData);
 
 	switch (dataBaseEntry[playerDroid.droidType].bulletType)
@@ -133,6 +177,17 @@ void bul_createNewBullet (int bulletSourceIndex)
 			break;
 		}
 
+	if (bulletSourceIndex == -1)
+		{
+			tempBullet.fixtureDef.filter.categoryBits = PHYSIC_TYPE_BULLET_PLAYER;
+			tempBullet.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
+		}
+	else
+		{
+			tempBullet.fixtureDef.filter.categoryBits = PHYSIC_TYPE_BULLET_ENEMY;
+			tempBullet.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
+		}
+
 	tempBullet.fixtureDef.density     = bulletDensity;
 	tempBullet.fixtureDef.friction    = 0.3f;
 	tempBullet.fixtureDef.restitution = 0.0f;
@@ -144,11 +199,32 @@ void bul_createNewBullet (int bulletSourceIndex)
 	tempBullet.currentFrame     = 0;
 	tempBullet.frameAnimCounter = 1.0f;
 	tempBullet.sourceIndex      = bulletSourceIndex;
-	bullets.push_back (tempBullet);
+	tempBullet.inUse            = true;
+
+	return tempBullet;
+}
+
+//---------------------------------------------------------------------------------------------------------------
+//
+// Create a new bullet - pass in the source of the bullet
+void bul_createNewBullet (int bulletSourceIndex)
+//---------------------------------------------------------------------------------------------------------------
+{
+	__bulletObject tempBullet;
+
+	for (int i = 0; i != bullets.size (); i++)
+		{
+			if (!bullets.at (i).inUse)
+				{
+					bullets.at (i) = bul_setupNewBullet (bulletSourceIndex, i);
+					return;
+				}
+		}
+
+	bullets.push_back (bul_setupNewBullet (bulletSourceIndex, bullets.size () - 1));
 
 	printf ("New bullet [ %f ] Source [ %i ] Start [ %f %f ]\n", tempBullet.angle, bulletSourceIndex, tempBullet.destPos.x, tempBullet.destPos.y);
 }
-
 
 //---------------------------------------------------------------------------------------------------------------------------
 //
@@ -174,7 +250,7 @@ void bul_applyPhysics (double tickTime)
 {
 	for (auto &bulletItr : bullets)
 		{
-			if (bulletItr.body != nullptr)
+			if ((bulletItr.body != nullptr) && (bulletItr.inUse))
 				{
 					bulletItr.velocity.Normalize ();
 					bulletItr.velocity.operator*= (bulletMoveSpeed);
@@ -195,7 +271,7 @@ void bul_renderBullets ()
 
 	for (auto bulletItr : bullets)
 		{
-			if (bulletItr.body != nullptr)
+			if ((bulletItr.body != nullptr) && (bulletItr.inUse))
 				{
 					tempPosition = bulletItr.body->GetPosition ();      // Get position in meters
 					tempPosition.x *= pixelsPerMeter;                   // Change to pixels

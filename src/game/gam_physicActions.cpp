@@ -58,11 +58,11 @@ void gam_processPhysicActions()
 		switch (physicEvent.eventType)
 		{
 			case PHYSIC_EVENT_TYPE_DROID:
-				gam_damageToDroid (physicEvent.targetIndex, DAMAGE_COLLISION, physicEvent.sourceIndex);
+				gam_damageToDroid (physicEvent.targetIndex, DAMAGE_COLLISION, physicEvent.sourceIndex, 0);
 				break;
 
 			case PHYSIC_EVENT_TYPE_BULLET:
-				gam_damageToDroid (physicEvent.targetIndex, DAMAGE_BULLET, physicEvent.sourceIndex);
+				gam_damageToDroid (physicEvent.targetIndex, DAMAGE_BULLET, physicEvent.sourceIndex, physicEvent.eventAction);
 				break;
 
 			case PHYSIC_EVENT_TYPE_NEW_BULLET:                  // Needs to be created outside of PhysicWorld Step

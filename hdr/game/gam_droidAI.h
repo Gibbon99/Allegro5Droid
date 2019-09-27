@@ -98,7 +98,7 @@ extern int          collisionDamageInflicted;
 extern float        badHealthFactor;
 
 // Process the AI for each enemy droid
-void ai_processDroidAI (const std::string levelName);
+void ai_processDroidAI (const std::string levelName, float tickTime);
 
 // Clear the hasCollided flag before running physics
 void drd_clearHadCollidedFlag();

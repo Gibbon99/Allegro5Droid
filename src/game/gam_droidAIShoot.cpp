@@ -36,7 +36,7 @@ int ai_notShoot (int whichDroid, const std::string levelName)
 		return AI_RESULT_SUCCESS;
 
 #ifdef DEBUG_SHOOT
-//	printf ("Droid [ %i ] can shoot\n", whichDroid);
+	printf ("Droid [ %i ] can shoot\n", whichDroid);
 #endif
 
 	if (!shipLevel.at (levelName).droid[whichDroid].weaponCanFire)
@@ -58,7 +58,7 @@ int ai_findBulletDest (int whichDroid, const std::string levelName)
 	if (shipLevel.at (levelName).droid[whichDroid].visibleToPlayer)
 		{
 #ifdef DEBUG_SHOOT
-			printf ("Droid has a destination to shoot at [ %i ]\n", whichDroid);
+			printf ("Droid has a destination to shoot at [ %i ] - [ %f %f ]\n", whichDroid, playerDroid.worldPos.x, playerDroid.worldPos.y);
 #endif
 			return AI_RESULT_FAILED;
 		}
@@ -97,6 +97,8 @@ int ai_shootBullet (int whichDroid, const std::string levelName)
 				// Default to player position
 				bulletDestPos = playerDroid.worldPos;
 
+				printf("Droid [ %i ] is targetting player\n", whichDroid);
+
 #ifdef USE_LEADING_SHOT
 				printf ("DID NOT find solution to leading shot.\n");
 #endif
@@ -110,7 +112,6 @@ int ai_shootBullet (int whichDroid, const std::string levelName)
 //	bulletDestPos.y += TILE_SIZE / 2;
 
 	gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, whichDroid, {0, 0});
-//	evt_pushEvent (-1, MAIN_LOOP_EVENT, MAIN_LOOP_EVENT_ADD_BULLET, dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].bulletType, whichDroid, levelName);
 
 	shipLevel.at (levelName).droid[whichDroid].chanceToShoot = 0.0f;
 	shipLevel.at (levelName).droid[whichDroid].weaponCanFire = false;
@@ -132,6 +133,9 @@ void gam_findChanceToShoot (int whichDroid, const std::string levelName)
 		return;
 
 	if (!dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].canShoot)
+		return;
+
+	if (!shipLevel.at (levelName).droid[whichDroid].weaponCanFire)
 		return;
 
 	//

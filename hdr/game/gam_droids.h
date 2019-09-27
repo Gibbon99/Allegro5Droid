@@ -23,13 +23,13 @@ void gam_renderDroids (std::string levelName, float interpolate);
 void gam_animateThisLevel ( std::string levelName );
 
 // damageSource can be either a bullet, explosion or collision
-void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid);
+void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int eventSource);
 
 // process ignore collosions
 void gam_processIgnoreCollisions ( std::string whichLevel, int whichDroid );
 
 // Process weapon timings
-void gam_droidWeaponCharge ( int whichDroid, std::string levelName );
+void gam_droidWeaponCharge ( const std::string& levelName, int whichDroid, float tickTime );
 
 // Create the lookup table between droid type and sprite name
 void gl_setupDroidToSpriteLookup();

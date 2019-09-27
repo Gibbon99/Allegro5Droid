@@ -60,9 +60,10 @@ void sys_gameTickRun (double tickTime)
 			io_processKeyActions();
 			gam_processHealingTiles();
 			gam_AStarProcessPaths (cachedCurrentLevelName);
+			gam_weaponRechargePlayer(tickTime);
 
 			sys_updateVisibleScreenArea();
-			ai_processDroidAI(cachedCurrentLevelName);
+			ai_processDroidAI (cachedCurrentLevelName, tickTime);
 			gam_doLineOfSight ();
 			sys_processPhysics (tickTime);
 			break;

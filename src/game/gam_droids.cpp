@@ -9,11 +9,30 @@
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_resourceSprite.h>
 #include <hdr/game/gam_droidAIPatrol.h>
+#include <hdr/game/gam_physicActions.h>
 #include "hdr/game/gam_droids.h"
 
 std::vector<std::string> droidToSpriteLookup;
 float                    droidAnimateSpeed;
 float                    explodeAnimateSpeed;
+
+//-----------------------------------------------------------------------------
+//
+// Process weapon timings
+void gam_droidWeaponCharge (const std::string &levelName, int whichDroid, float tickTime)
+//-----------------------------------------------------------------------------
+{
+	if (shipLevel.at (levelName).droid[whichDroid].weaponCanFire)
+		return;
+
+	shipLevel.at (levelName).droid[whichDroid].weaponDelay += dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].rechargeTime * tickTime;
+
+	if (shipLevel.at (levelName).droid[whichDroid].weaponDelay > 1.0f)
+		{
+			shipLevel.at (levelName).droid[whichDroid].weaponDelay   = 0.0f;
+			shipLevel.at (levelName).droid[whichDroid].weaponCanFire = true;
+		}
+}
 
 //------------------------------------------------------------------------
 //
@@ -81,31 +100,31 @@ void gam_renderDroids (const std::string levelName, float interpolate)
 			if (shipLevel.at (levelName).droid[index].currentMode != DROID_MODE_DEAD)
 				{
 //					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
-						{
-							if (sys_visibleOnScreen (shipLevel.at (levelName).droid[index].worldPos, SPRITE_SIZE))
-								{
-									drawPosition = shipLevel.at (levelName).droid[index].worldPos - shipLevel.at (levelName).droid[index].previousWorldPos;
-									drawPosition *= interpolate;
-									drawPosition += shipLevel.at (levelName).droid[index].previousWorldPos;
+					{
+						if (sys_visibleOnScreen (shipLevel.at (levelName).droid[index].worldPos, SPRITE_SIZE))
+							{
+								drawPosition = shipLevel.at (levelName).droid[index].worldPos - shipLevel.at (levelName).droid[index].previousWorldPos;
+								drawPosition *= interpolate;
+								drawPosition += shipLevel.at (levelName).droid[index].previousWorldPos;
 
-									drawPosition = sys_worldToScreen (drawPosition, SPRITE_SIZE);
+								drawPosition = sys_worldToScreen (drawPosition, SPRITE_SIZE);
 
-									switch (shipLevel.at (levelName).droid[index].currentMode)
-										{
-											case DROID_MODE_NORMAL:
-												io_renderTintedSpriteFrame (shipLevel.at (levelName).droid[index].spriteName, shipLevel.at (levelName).droid[index].currentFrame, drawPosition.x, drawPosition.y,
-														0.0f, 0.0f, 0.0f, shipLevel.at (levelName).droid[index].visibleValue);
+								switch (shipLevel.at (levelName).droid[index].currentMode)
+									{
+										case DROID_MODE_NORMAL:
+											io_renderTintedSpriteFrame (shipLevel.at (levelName).droid[index].spriteName, shipLevel.at (levelName).droid[index].currentFrame, drawPosition.x, drawPosition.y,
+											                            0.0f, 0.0f, 0.0f, shipLevel.at (levelName).droid[index].visibleValue);
+										break;
+
+										case DROID_MODE_EXPLODING:
+											io_renderSpriteFrame ("explosion", shipLevel.at (levelName).droid[index].currentFrame, drawPosition.x, drawPosition.y);
+										break;
+
+										default:
 											break;
-
-											case DROID_MODE_EXPLODING:
-												io_renderSpriteFrame ("explosion", shipLevel.at (levelName).droid[index].currentFrame, drawPosition.x, drawPosition.y);
-											break;
-
-											default:
-												break;
-										}
-								}
-						}
+									}
+							}
+					}
 				}
 		}
 }
@@ -163,11 +182,8 @@ void gam_initDroidValues (const std::string levelName)
 			tempDroid.mass = static_cast<int>(strtol (dataBaseEntry[tempDroid.droidType].weight.c_str (), nullptr, 10));  // This value plus the players base value
 			tempDroid.mass += static_cast<int>(strtol (dataBaseEntry[0].weight.c_str (), nullptr, 10));
 
-			tempDroid.mass = 3.0f;   // TODO Update config file
-
-
+			tempDroid.mass             = 3.0f;   // TODO Update config file
 			tempDroid.ignoreCollisions = false;
-//		tempDroid.isExploding = false;
 
 			tempDroid.targetIndex       = -1;                // Which droid shot this droid
 			tempDroid.beenShotByPlayer  = false;
@@ -179,18 +195,12 @@ void gam_initDroidValues (const std::string levelName)
 
 			tempDroid.ignoreCollisionsCounter = IGNORE_COLLISION_TIME;
 
-			tempDroid.playerDroidTypeDBIndex = "001";     // What sort of droid is the player
-//		tempDroid.droidTransferedIntoIndex = 0;
-
-			tempDroid.currentMode = DROID_MODE_NORMAL;
-
-			tempDroid.chanceToShoot = 0.0f;
-
-			tempDroid.visibleToPlayer = true;
-			//
-// Weapon
-			tempDroid.weaponCanFire   = true;
-			tempDroid.weaponDelay     = 0.0f;
+			tempDroid.playerDroidTypeDBIndex = "db_" + gl_getSpriteName (tempDroid.droidType);
+			tempDroid.currentMode            = DROID_MODE_NORMAL;
+			tempDroid.chanceToShoot          = 0.0f;
+			tempDroid.visibleToPlayer        = true;
+			tempDroid.weaponCanFire          = true;
+			tempDroid.weaponDelay            = 0.0f;
 
 			tempDroid.witnessShooting = false;
 			tempDroid.witnessTransfer = false;
@@ -316,14 +326,14 @@ void gam_destroyDroid (int whichDroid)
 // Do damage to a droid
 //
 // damageSource can be either a bullet, explosion or collision
-void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
+void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int eventSource)
 //---------------------------------------------------------------
 {
 	std::string tempCurrentLevel;
 
 	tempCurrentLevel = lvl_getCurrentLevelName ();
 
-	if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode == DROID_MODE_EXPLODING)
+	if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentMode == DROID_MODE_EXPLODING)
 		return;
 
 	switch (damageSource)
@@ -331,28 +341,28 @@ void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
 			case DAMAGE_BULLET:
 				if (-1 == sourceDroid) // Player bullet
 					{
-						printf ("Droid [ %i ] hit by player bullet.\n", whichDroid);
+						printf ("Droid [ %i ] hit by player bullet.\n", targetDroid);
 
-						if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode == DROID_MODE_EXPLODING)
+						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentMode == DROID_MODE_EXPLODING)
 							{
 								return;
 							}
 
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].targetIndex       = sourceDroid;    // Set player as the target
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].beenShotByPlayer  = true;
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].beenShotCountdown = droidBeenShotValue;
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex       = sourceDroid;    // Set player as the target
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer  = true;
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotCountdown = droidBeenShotValue;
 
 						//
 						// Need to work out bullet damage when using non firing droid
 						//
-						if (dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[whichDroid].droidType].canShoot)
-							shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= 20; //dataBaseEntry[playerDroid.droidType].bulletDamage;
+						if (dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[targetDroid].droidType].canShoot)
+							shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; //dataBaseEntry[playerDroid.droidType].bulletDamage;
 						else
-							shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= 20; //dataBaseEntry[0].bulletDamage;
+							shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; //dataBaseEntry[0].bulletDamage;
 
-						if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth <= 0)
+						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{
-								gam_destroyDroid (whichDroid);
+								gam_destroyDroid (targetDroid);
 							}
 						else
 							{
@@ -361,27 +371,30 @@ void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
 					}
 				else // hit by another droid bullet
 					{
-						if (sourceDroid == whichDroid)
+						if (sourceDroid == targetDroid)
 							{
 								return;
 							}
 
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].targetIndex      = sourceDroid;    // Set this droid as the target
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].beenShotByPlayer = false;
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= 20; // TODO dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex      = sourceDroid;    // Set this droid as the target
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer = false;
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; // TODO dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
 //						evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_DAMAGE, 0, 0, glm::vec2 (), glm::vec2 (), "" );
 
-						if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth <= 0)
+						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{
-								gam_destroyDroid (whichDroid);
+								gam_destroyDroid (targetDroid);
 							}
 					}
 
+//					printf("Remove bullet index [ %i ]\n", eventSource);
+
+		gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, eventSource, {0, 0});
 			break;
 
 			case DAMAGE_EXPLOSION:
 
-				if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode == DROID_MODE_EXPLODING)
+				if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentMode == DROID_MODE_EXPLODING)
 					{
 						return;
 					}
@@ -397,11 +410,11 @@ void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
 					//
 					// Enemy Droid is colliding with another one exploding
 //					evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_DAMAGE, 0, 0, glm::vec2 (), glm::vec2 (), "" );
-					shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= collisionExplosionDamage;
+					shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= collisionExplosionDamage;
 
-					if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth <= 0)
+					if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 						{
-							gam_destroyDroid (whichDroid);
+							gam_destroyDroid (targetDroid);
 						}
 				}
 			break;
@@ -410,23 +423,23 @@ void gam_damageToDroid (int whichDroid, int damageSource, int sourceDroid)
 				if (-1 == sourceDroid)
 					{
 //						gam_doDamageToPlayer ( DAMAGE_COLLISION, whichDroid );
-						shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth -= collisionDamageInflicted;
-						if (shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth <= 0)
+						shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= collisionDamageInflicted;
+						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{
-								gam_destroyDroid (whichDroid);
+								gam_destroyDroid (targetDroid);
 							}
 					}
 			break;
 		}
 	//
 	// Work out animation speed based on current health
-	float healthPercent = shipLevel.at (tempCurrentLevel).droid[whichDroid].currentHealth / (float) dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[whichDroid].droidType].maxHealth;
+	float healthPercent = shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth / (float) dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[targetDroid].droidType].maxHealth;
 	if (healthPercent < 0.0f)
 		healthPercent = 0.1f;
 	if (healthPercent > 1.0f)
 		healthPercent = 1.0f;
 
-	shipLevel.at (tempCurrentLevel).droid[whichDroid].frameDelay = healthPercent;
+	shipLevel.at (tempCurrentLevel).droid[targetDroid].frameDelay = healthPercent;
 }
 
 //-----------------------------------------------------------------------------
@@ -455,25 +468,5 @@ void gam_processIgnoreCollisions (const std::string whichLevel, int whichDroid)
 			shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisions        = false;
 			shipLevel.at (whichLevel).droid[whichDroid].collisionCount          = 0;
 			shipLevel.at (whichLevel).droid[whichDroid].hasCollided             = false;
-		}
-}
-
-//-----------------------------------------------------------------------------
-//
-// Process weapon timings
-void gam_droidWeaponCharge (int whichDroid, const std::string levelName)
-//-----------------------------------------------------------------------------
-{
-	if (shipLevel.at (levelName).droid[whichDroid].weaponCanFire)
-		{
-			return;
-		}
-
-	shipLevel.at (levelName).droid[whichDroid].weaponDelay += dataBaseEntry[shipLevel.at (levelName).droid[whichDroid].droidType].rechargeTime * (1.0f * (1.0f / 30.0f));
-
-	if (shipLevel.at (levelName).droid[whichDroid].weaponDelay > 1.0f)
-		{
-			shipLevel.at (levelName).droid[whichDroid].weaponDelay   = 0.0f;
-			shipLevel.at (levelName).droid[whichDroid].weaponCanFire = true;
 		}
 }

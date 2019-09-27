@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-22-09-2019	23:09:43
+28-09-2019	09:04:32
 Logfile started...
 INFO | Compiled against PhysFS version 3.0.2.
 INFO | Linked against PhysFS version 3.0.2.
@@ -99,6 +99,7 @@ INFO | Script: Registered variable - [ float ai_greenFactor ]
 INFO | Script: Registered variable - [ float ai_yellowFactor ]
 INFO | Script: Registered variable - [ float ai_redFactor ]
 INFO | Script: Registered variable - [ float deckViewRatio ]
+INFO | Script: Registered variable - [ int numStartingBullets ]
 INFO | Script: Registered function - [ void sys_printConInt(string &in, uint param) ]
 INFO | Script: Registered function - [ void sys_loadResource(string &in, string &in, int type, int numFrames, int size) ]
 INFO | Script: Registered function - [ bool lvl_loadShipLevel (string &in) ]
@@ -192,11 +193,11 @@ INFO | gui.sc (868, 92) : WARN : Float value truncated in implicit conversion to
 INFO | gui.sc (876, 110) : WARN : Float value truncated in implicit conversion to integer
 INFO | gui.sc (876, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 1380912096 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 1380908768 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 1380896688 ]
-INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 1380895600 ]
-INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 1380794976 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 71911744 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 71908416 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 71896336 ]
+INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 71895184 ]
+INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 71894128 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -319,8 +320,3 @@ DEBUG | Node [ MOVE_TO ] added. Num Children for [ AI_PATROL ] now [ 2 ]
 DEBUG | Child index set to [ 21 ]
 DEBUG | Node [ FIND_WP ] added. Num Children for [ AI_PATROL ] now [ 3 ]
 DEBUG | Child index set to [ 22 ]
-ERROR | Failed to load sprite [ db_001 ]
-ERROR | Failed to load sprite [ db_123 ]
-ERROR | Failed to load sprite [ db_139 ]
-ERROR | Failed to load sprite [ db_247 ]
-ERROR | Failed to load sprite [ db_249 ]

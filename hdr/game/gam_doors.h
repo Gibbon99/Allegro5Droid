@@ -67,3 +67,6 @@ void gam_renderDoorFrames ();
 
 // Clear out memory for door triggers
 void gam_clearAllDoors();
+
+// Change the collision filters for a door
+void gam_changeDoorFilters (int doorState, int whichDoor);
