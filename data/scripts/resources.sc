@@ -53,6 +53,9 @@ void script_loadAllResources ()
 	sys_loadResource ("explosion", "explosion.bmp", RESOURCE_SPRITE, 25, 0);
 	io_spriteSetAlphaColor ("explosion", 0, 0, 0);
 	//
+	// Particle
+	sys_loadResource ("particleSpark", "particleSpark.bmp", RESOURCE_BITMAP, 0, 0);
+	//
 	// Bullets
 	sys_loadResource ("bullet_001", "bullet_001.bmp", RESOURCE_SPRITE, 8, 0);
 	io_spriteSetAlphaColor ("bullet_001", 255, 0, 255);
@@ -141,6 +144,8 @@ void script_loadAllResources ()
 	sys_loadResource ("intro", "intro.ttf", RESOURCE_FONT, 0, 14);
 	sys_loadResource ("gui", "gui.ttf", RESOURCE_FONT, 0, 14);
 
+	as_initParticleValues ();
+
 	initResourcesAllDone     = true;
 	showDebugPhysics         = false;
 	doorAnimSpeed            = 4.5f;
@@ -185,4 +190,5 @@ void script_loadAllResources ()
 	//
 	// Array starting size
 	numStartingBullets       = 10;
+	useHoldBitmap            = true;
 }

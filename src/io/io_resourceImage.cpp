@@ -2,6 +2,8 @@
 #include <hdr/io/io_logFile.h>
 #include "hdr/io/io_resourceImage.h"
 
+bool useHoldBitmap;
+
 //---------------------------------------------------------------------------------------------------------------------------
 //
 // Get width of image

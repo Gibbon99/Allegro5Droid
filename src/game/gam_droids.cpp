@@ -10,6 +10,7 @@
 #include <hdr/io/io_resourceSprite.h>
 #include <hdr/game/gam_droidAIPatrol.h>
 #include <hdr/game/gam_physicActions.h>
+#include <hdr/game/gam_particles.h>
 #include "hdr/game/gam_droids.h"
 
 std::vector<std::string> droidToSpriteLookup;
@@ -274,8 +275,12 @@ void gam_destroyDroid (int whichDroid)
 				else
 					evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_EXPLODE_2, 0, 0, glm::vec2 (), glm::vec2 (), "" );
 */
-				shipLevel.at (tempCurrentLevel).droid[whichDroid].currentFrame = 0;
-			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode    = DROID_MODE_EXPLODING;
+
+
+				par_addEmitter (droidPhysics[whichDroid].body->GetPosition (), PARTICLE_TYPE_EXPLOSION, -1);
+
+			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentFrame = 0;
+			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode  = DROID_MODE_EXPLODING;
 //			shipLevel.at (tempCurrentLevel).droid[whichDroid].numberOfFrames = sprites.at ("explosion").numFrames;
 			droidPhysics[whichDroid].body->SetLinearVelocity ({0, 0});
 			droidPhysics[whichDroid].body->SetType (b2_staticBody);
@@ -389,7 +394,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 
 //					printf("Remove bullet index [ %i ]\n", eventSource);
 
-		gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, eventSource, {0, 0});
+			gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, eventSource, {0, 0});
 			break;
 
 			case DAMAGE_EXPLOSION:

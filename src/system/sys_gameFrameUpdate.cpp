@@ -11,6 +11,7 @@
 #include <hdr/gui/gui_scrollBox.h>
 #include <hdr/game/gam_lineOfSight.h>
 #include <hdr/gui/gui_database.h>
+#include <hdr/game/gam_particles.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -65,6 +66,8 @@ void sys_gameTickRun (double tickTime)
 			sys_updateVisibleScreenArea();
 			ai_processDroidAI (cachedCurrentLevelName, tickTime);
 			gam_doLineOfSight ();
+			par_processEmitterQueue ();
+			par_animateParticles (tickTime);
 			sys_processPhysics (tickTime);
 			break;
 

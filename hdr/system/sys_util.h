@@ -27,3 +27,6 @@ bool sys_visibleOnScreen (b2Vec2 worldCoord, int shapeSize);
 
 // Test if a point is inside a rectangle
 bool sys_isPointInRect(b2Vec2 testPoint, __BOUNDING_BOX testRectangle);
+
+// Get a random number capped at parameter
+int sys_getCappedRandomNum (int cap);

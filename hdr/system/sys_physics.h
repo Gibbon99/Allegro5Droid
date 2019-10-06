@@ -30,7 +30,7 @@ typedef struct _physicObject
 	b2BodyDef     bodyDef;                      // Used for physics and collisions
 	b2CircleShape shape;
 	b2FixtureDef  fixtureDef;
-	b2Body        *body;
+	b2Body        *body = nullptr;
 	_userData     *userData;
 } _physicObject;
 

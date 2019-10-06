@@ -42,6 +42,9 @@
 
 #define MAX_DROID_TYPES 23
 
+#define DEGTORAD 0.0174532925199432957f
+#define MY_PI 3.1415926535f
+
 enum GAME_MODES {
 
 };

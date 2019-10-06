@@ -310,7 +310,7 @@ void sys_setupSolidWalls (const std::string levelName)
 		tempWall.shape.Set (wallStart, wallFinish);
 		tempWall.fixture.shape = &tempWall.shape;
 		tempWall.fixture.filter.categoryBits = PHYSIC_TYPE_WALL;
-		tempWall.fixture.filter.maskBits = PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_BULLET_PLAYER;
+		tempWall.fixture.filter.maskBits = PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_PARTICLE;
 		tempWall.body->CreateFixture (&tempWall.fixture);
 
 		solidWalls.push_back (tempWall);

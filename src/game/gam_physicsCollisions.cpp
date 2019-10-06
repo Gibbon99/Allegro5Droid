@@ -5,6 +5,7 @@
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_bullet.h>
+#include <hdr/game/gam_particles.h>
 #include "hdr/game/gam_physicsCollisions.h"
 
 contactListener myContactListenerInstance;
@@ -27,6 +28,7 @@ void contactListener::BeginContact (b2Contact *contact)
 				{
 					if ((bodyUserData_B->userType == PHYSIC_TYPE_BULLET_ENEMY) || (bodyUserData_B->userType == PHYSIC_TYPE_BULLET_PLAYER))
 						{
+							par_addEmitter (bullets[bodyUserData_B->dataValue].body->GetPosition (), PARTICLE_TYPE_SPARK, bodyUserData_B->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 							return;
 						}
@@ -38,11 +40,13 @@ void contactListener::BeginContact (b2Contact *contact)
 					if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
 						{
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, bodyUserData_A->dataValue, bodyUserData_B->dataValue, bullets[bodyUserData_A->dataValue].sourceIndex, {0, 0});
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
 							return;
 						}
 
 					if (bodyUserData_B->userType == PHYSIC_TYPE_BULLET_ENEMY)
 						{
+							par_addEmitter (bullets[bodyUserData_B->dataValue].worldPos, PARTICLE_TYPE_SPARK, bodyUserData_B->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 							return;
@@ -56,7 +60,7 @@ void contactListener::BeginContact (b2Contact *contact)
 						{
 							//
 							// Damage to player from enemy bullet
-
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
 							printf ("Damage to player\n");
 
 							return;
@@ -65,6 +69,7 @@ void contactListener::BeginContact (b2Contact *contact)
 					if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
 						{
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, 0, bodyUserData_B->dataValue, bodyUserData_A->dataValue, {0, 0});
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
 							return;
 						}
 					break;
@@ -85,8 +90,8 @@ void contactListener::BeginContact (b2Contact *contact)
 				{
 					if ((bodyUserData_B->userType == PHYSIC_TYPE_BULLET_PLAYER) || (bodyUserData_B->userType == PHYSIC_TYPE_BULLET_ENEMY))
 						{
+							par_addEmitter (bullets[bodyUserData_B->dataValue].worldPos, PARTICLE_TYPE_SPARK, bodyUserData_B->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
-							// Do sparks
 							return;
 						}
 					break;
@@ -152,8 +157,9 @@ void contactListener::BeginContact (b2Contact *contact)
 				{
 					if ((bodyUserData_A->userType == PHYSIC_TYPE_BULLET_ENEMY) || (bodyUserData_A->userType == PHYSIC_TYPE_BULLET_PLAYER))
 						{
+							par_addEmitter (bullets[bodyUserData_A->dataValue].worldPos, PARTICLE_TYPE_SPARK, bodyUserData_A->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
-							return;
+ 							return;
 						}
 					break;
 				}
@@ -163,11 +169,13 @@ void contactListener::BeginContact (b2Contact *contact)
 					if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
 						{
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, bodyUserData_B->dataValue, bodyUserData_A->dataValue, bullets[bodyUserData_B->dataValue].sourceIndex, {0, 0});
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 							return;
 						}
 
 					if (bodyUserData_A->userType == PHYSIC_TYPE_BULLET_ENEMY)
 						{
+							par_addEmitter (bullets[bodyUserData_A->dataValue].worldPos, PARTICLE_TYPE_SPARK, bodyUserData_A->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
 							return;
@@ -183,6 +191,7 @@ void contactListener::BeginContact (b2Contact *contact)
 							// Damage to player from enemy bullet
 
 							printf ("Damage to player\n");
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 
 							return;
 						}
@@ -190,6 +199,7 @@ void contactListener::BeginContact (b2Contact *contact)
 					if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
 						{
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, 0, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 							return;
 						}
 					break;
@@ -210,8 +220,8 @@ void contactListener::BeginContact (b2Contact *contact)
 				{
 					if ((bodyUserData_A->userType == PHYSIC_TYPE_BULLET_PLAYER) || (bodyUserData_A->userType == PHYSIC_TYPE_BULLET_ENEMY))
 						{
+							par_addEmitter (bullets[bodyUserData_A->dataValue].worldPos, PARTICLE_TYPE_SPARK, bodyUserData_A->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
-							// Do sparks
 							return;
 						}
 					break;

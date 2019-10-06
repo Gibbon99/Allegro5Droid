@@ -2,6 +2,8 @@
 
 #include "system/sys_main.h"
 
+extern bool useHoldBitmap;
+
 // Draw a bitmap
 void sys_drawBitmap (const std::string& keyName, float posX, float posY, int drawMode);
 

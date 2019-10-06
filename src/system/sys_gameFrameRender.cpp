@@ -21,6 +21,7 @@
 #include <src/game/gam_terminal.h>
 #include <hdr/gui/gui_database.h>
 #include <hdr/gui/gui_deckView.h>
+#include <hdr/game/gam_particles.h>
 #include "hdr/system/sys_gameFrameRender.h"
 
 ALLEGRO_BITMAP *backingBitmap;
@@ -198,7 +199,9 @@ void sys_displayScreen (double interpolation)
 //			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 			hud_renderHUD ();
 
-			gam_AStarDebugWayPoints (0);
+			par_renderParticles ();
+
+//			gam_AStarDebugWayPoints (0);
 //			lvl_showWayPoints (lvl_getCurrentLevelName());
 			if (showDebugPhysics)
 				sys_getPhysicsWorld()->DrawDebugData();

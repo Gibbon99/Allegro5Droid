@@ -4,10 +4,8 @@
 #include <hdr/game/gam_database.h>
 #include <hdr/game/gam_game.h>
 #include <hdr/io/io_logFile.h>
+#include <hdr/game/gam_particles.h>
 #include "hdr/game/gam_bullet.h"
-
-#define DEGTORAD 0.0174532925199432957f
-#define MY_PI 3.1415926535f
 
 std::vector<__bulletObject> bullets;
 float                       bulletAnimSpeed;          // From script
@@ -73,6 +71,7 @@ void bul_removeBullet (int whichBullet)
 			bullets.at (whichBullet).body = nullptr;
 		}
 	bullets.at (whichBullet).inUse = false;
+	par_removeEmitter (whichBullet);
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -103,8 +102,9 @@ __bulletObject bul_setupNewBullet (int bulletSourceIndex, int arrayIndex)
 
 	if (bulletSourceIndex == -1)        // Bullet came from player
 		{
-			tempBullet.worldPos = playerDroid.worldPos;
-			tempBullet.velocity = playerDroid.velocity;
+			tempBullet.worldPos.x = playerDroid.worldPos.x;     // Physics coords
+			tempBullet.worldPos.y = playerDroid.worldPos.y;
+			tempBullet.velocity   = playerDroid.velocity;
 
 			tempPos = playerDroid.velocity;
 			tempPos.Normalize ();
@@ -201,6 +201,14 @@ __bulletObject bul_setupNewBullet (int bulletSourceIndex, int arrayIndex)
 	tempBullet.sourceIndex      = bulletSourceIndex;
 	tempBullet.inUse            = true;
 
+
+	par_addEmitter (tempBullet.worldPos, PARTICLE_TYPE_TRAIL, arrayIndex);
+/*
+	if (bulletSourceIndex == -1)
+		par_addEmitter (playerDroid.worldPos, PARTICLE_TYPE_TRAIL, arrayIndex);
+	else
+		par_addEmitter (tempBullet.worldPos, PARTICLE_TYPE_TRAIL, arrayIndex);
+		*/
 	return tempBullet;
 }
 
@@ -255,6 +263,8 @@ void bul_applyPhysics (double tickTime)
 					bulletItr.velocity.Normalize ();
 					bulletItr.velocity.operator*= (bulletMoveSpeed);
 					bulletItr.body->ApplyLinearImpulseToCenter (bulletItr.velocity, true);
+
+					bulletItr.worldPos = bulletItr.body->GetPosition ();
 
 					bul_animateBullets (bulletItr, tickTime);
 				}

@@ -1,4 +1,5 @@
 #include <hdr/game/gam_physicActions.h>
+#include <hdr/game/gam_particles.h>
 #include "hdr/game/gam_game.h"
 
 int currentAlertLevel;
@@ -11,4 +12,5 @@ void gam_startNewGame()
 {
 	gam_initPhysicsActionQueue();
 	currentAlertLevel = ALERT_GREEN_TILE;
+	par_resetAllEmitters ();
 }

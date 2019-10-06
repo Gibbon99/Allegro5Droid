@@ -395,6 +395,7 @@ void lvl_changeToLevel (const std::string &newLevelName, int whichLift)
 	gam_findTerminalPositions (newLevelName);
 
 	bul_initBullets ();
+	bul_initBulletArraySize ();
 
 	gam_drawAllTiles ();
 }

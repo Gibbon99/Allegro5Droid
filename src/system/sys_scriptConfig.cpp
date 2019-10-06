@@ -21,6 +21,7 @@
 #include <src/game/gam_terminal.h>
 #include <hdr/gui/gui_database.h>
 #include <hdr/game/gam_database.h>
+#include <hdr/game/gam_particles.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -109,6 +110,37 @@ void sys_scriptInitVariables ()
 
 	sys_scriptAddHostVariable ("float deckViewRatio", &deckViewRatio);
 	sys_scriptAddHostVariable ("int numStartingBullets", &numStartingBullets);
+	sys_scriptAddHostVariable ("bool useHoldBitmap", &useHoldBitmap);
+	sys_scriptAddHostVariable ("bool profileParticles", &profileParticles);
+	sys_scriptAddHostVariable ("bool profileParticles", &profileParticles);
+	sys_scriptAddHostVariable ("bool profileParticles", &profileParticles);
+	sys_scriptAddHostVariable ("bool profileParticles", &profileParticles);
+	sys_scriptAddHostVariable ("int particleRenderType", &particleRenderType);
+	sys_scriptAddHostVariable ("int particleVelocityExplosion", &particleVelocityExplosion);
+	sys_scriptAddHostVariable ("int particleVelocityExplosionAdd", &particleVelocityExplosionAdd);
+	sys_scriptAddHostVariable ("int particleVelocitySpark", &particleVelocitySpark);
+	sys_scriptAddHostVariable ("int particleVelocitySparkAdd", &particleVelocitySparkAdd);
+	sys_scriptAddHostVariable ("int particleNumberExplosion", &particleNumberExplosion);
+	sys_scriptAddHostVariable ("int particleNumberExplosionAdd", &particleNumberExplosionAdd);
+	sys_scriptAddHostVariable ("int particleNumberTrail", &particleNumberTrail);
+	sys_scriptAddHostVariable ("int particleNumberTrailAdd", &particleNumberTrailAdd);
+	sys_scriptAddHostVariable ("int particleTrailAlphaReset", &particleTrailAlphaReset);
+	sys_scriptAddHostVariable ("int particleTrailAlphaResetAdd", &particleTrailAlphaResetAdd);
+	sys_scriptAddHostVariable ("int particleNumberSpark", &particleNumberSpark);
+	sys_scriptAddHostVariable ("int particleNumberSparkAdd", &particleNumberSparkAdd);
+	sys_scriptAddHostVariable ("float particleExplosionReduce", &particleExplosionReduce);
+	sys_scriptAddHostVariable ("float particleSparkReduce", &particleSparkReduce);
+	sys_scriptAddHostVariable ("float particleTrailReduce", &particleTrailReduce);
+	sys_scriptAddHostVariable ("int particleTrailLimit", &particleTrailLimit);
+	sys_scriptAddHostVariable ("float particleMass", &particleMass);
+	sys_scriptAddHostVariable ("float particleFriction", &particleFriction);
+	sys_scriptAddHostVariable ("float particleElastic", &particleElastic);
+	sys_scriptAddHostVariable ("float particleSize", &particleSize);
+
+	sys_scriptAddHostVariable ("int particleBlendSrc", &particleBlendSrc);
+	sys_scriptAddHostVariable ("int particleBlendDst", &particleBlendDst);
+
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -155,6 +187,9 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void gam_previousDatabaseDroid()", (functionPtr) &gam_previousDatabaseDroid);
 	sys_scriptAddHostFunction ("void gam_nextDatabaseDroid()", (functionPtr) &gam_nextDatabaseDroid);
 	sys_scriptAddHostFunction ("void gam_setLocalDroidType()", (functionPtr) &gam_setLocalDroidType);
+
+	sys_scriptAddHostFunction ("void as_setParticleColor(int whichParticle, float red, float green, float blue, float alpha)",(functionPtr) &par_hostSetParticleColor);
+	sys_scriptAddHostFunction ("int sys_getCappedRandomNum(int cap)", (functionPtr) &sys_getCappedRandomNum);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
