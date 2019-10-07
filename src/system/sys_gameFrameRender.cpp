@@ -18,7 +18,7 @@
 #include <hdr/gui/gui_scrollBox.h>
 #include <hdr/gui/gui_render.h>
 #include <hdr/io/io_resourceImage.h>
-#include <src/game/gam_terminal.h>
+#include <hdr/game/gam_terminal.h>
 #include <hdr/gui/gui_database.h>
 #include <hdr/gui/gui_deckView.h>
 #include <hdr/game/gam_particles.h>
@@ -194,7 +194,7 @@ void sys_displayScreen (double interpolation)
 
 			gam_renderDroids (lvl_getCurrentLevelName (), interpolation);
 
-			io_renderSpriteFrame ("001", playerDroid.currentFrame, screenWidth / 2, screenHeight / 2);
+			gam_renderPlayer ();
 			bul_renderBullets ();
 //			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 			hud_renderHUD ();

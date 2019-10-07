@@ -1,5 +1,6 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/system/sys_scriptEngine.h>
+#include <hdr/system/sys_eventsEngine.h>
 #include "hdr/gui/gui_main.h"
 
 std::vector<_screenObject> guiScreens;
@@ -960,6 +961,8 @@ void gui_handleFocusMove(int moveDirection, bool takeAction, int eventSource)
 	{
 		currentObjectSelected = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
 
+		evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+
 		switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 		{
 			case GUI_OBJECT_BUTTON:
@@ -1035,9 +1038,12 @@ void gui_handleFocusMove(int moveDirection, bool takeAction, int eventSource)
 				}
 				guiScreens[currentGUIScreen].selectedObject += indexCount;
 
+				evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+
 				if (indexCount > (int) guiScreens[currentGUIScreen].objectIDIndex.size())
 				{
 					indexCount = static_cast<int>(guiScreens[currentGUIScreen].objectIDIndex.size());
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 				}
 
 				currentObjectSelected = guiScreens[currentGUIScreen].selectedObject;
@@ -1054,10 +1060,12 @@ void gui_handleFocusMove(int moveDirection, bool takeAction, int eventSource)
 					indexCount++;
 					if (guiScreens[currentGUIScreen].selectedObject - indexCount < 0)
 					{
+							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 						return;
 					}
 				}
 				guiScreens[currentGUIScreen].selectedObject -= indexCount;
+				evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 
 				if (guiScreens[currentGUIScreen].selectedObject < 0)
 				{

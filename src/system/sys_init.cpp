@@ -20,6 +20,7 @@
 #include <hdr/system/sys_init.h>
 #include <hdr/game/gam_game.h>
 #include <hdr/game/gam_bullet.h>
+#include <hdr/system/sys_audio.h>
 //#include "system/sys_init.h"
 
 ALLEGRO_TIMER   *timingTimer;
@@ -199,18 +200,10 @@ void sys_initAll ()
 	}
 	//
 	// Use Audio library
-	if (!al_install_audio ())
+	if (!snd_initAudioSystem())
 	{
 		quitProgram = true;
 		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
-	//
-	// Start Audio Codec library
-	if (!al_init_acodec_addon ())
-	{
-		quitProgram = true;
-		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio Codec addon.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
 		return;
 	}
 	//

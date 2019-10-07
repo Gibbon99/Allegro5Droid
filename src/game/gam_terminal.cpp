@@ -3,7 +3,8 @@
 #include <hdr/io/io_resources.h>
 #include <hdr/system/sys_init.h>
 #include <hdr/io/io_logFile.h>
-#include "gam_terminal.h"
+#include <hdr/system/sys_eventsEngine.h>
+#include "hdr/game/gam_terminal.h"
 
 std::vector<__liftSensor> terminals;
 float deckViewRatio;
@@ -105,6 +106,7 @@ void gam_findTerminalPositions (const std::string &levelName)
 void gam_performTerminalAction ()
 //----------------------------------------------------------------------------------------------------------------------
 {
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 0, 0, "greenAlert");
 	gui_changeToGUIScreen (gui_findIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
 	sys_changeMode (MODE_GUI_TERMINAL, true);
 	gui_hostSetObjectFocus ("terminalLogoffButton");

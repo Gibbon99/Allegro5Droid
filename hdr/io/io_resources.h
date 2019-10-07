@@ -22,8 +22,9 @@ typedef struct {
 } __bitmap;
 
 typedef struct {
-	ALLEGRO_SAMPLE   *audio;
-	__resourceCommon common;
+	ALLEGRO_SAMPLE    *audio    = nullptr;
+	ALLEGRO_SAMPLE_ID sampleID;
+	__resourceCommon  common;
 } __audio;
 
 typedef struct {
@@ -55,4 +56,4 @@ extern std::map<std::string, __sprite> sprites;
 //extern std::map<std::string, __tiles> tiles;
 
 // Called from script to load a resource
-void sys_loadResource (const std::string& key, const std::string& fileName, int type, int numFrames, int size);
+void sys_loadResource (const std::string &key, const std::string &fileName, int type, int numFrames, int size);

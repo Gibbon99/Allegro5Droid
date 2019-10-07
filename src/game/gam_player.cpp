@@ -8,14 +8,27 @@
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_bullet.h>
+#include <hdr/io/io_resourceSprite.h>
 #include "hdr/game/gam_player.h"
-#include "gam_terminal.h"
+#include "hdr/game/gam_terminal.h"
 
 b2Vec2 previousPlayerWorldPos;
 float  playerAcceleration;      // From script
 float  playerMaxSpeed;          // From script
 float  gravity;                 // From script
 _droid playerDroid;
+
+//-----------------------------------------------------------------------------
+//
+// Render the player sprite
+void gam_renderPlayer ()
+//-----------------------------------------------------------------------------
+{
+	if (playerDroid.inTransferMode)
+		io_renderTintedSpriteFrame ("001", playerDroid.currentFrame, screenWidth / 2, screenHeight / 2, 0.0f, 0.0f, 1.0f, 1.0f);
+	else
+		io_renderSpriteFrame ("001", playerDroid.currentFrame, screenWidth / 2, screenHeight / 2);
+}
 
 //-----------------------------------------------------------------------------
 //
@@ -57,6 +70,7 @@ void gam_initPlayerValues ()
 	playerDroid.playerDroidTypeDBIndex = "db_" + gl_getSpriteName (playerDroid.droidType);
 	playerDroid.weaponCanFire          = true;
 	playerDroid.weaponDelay            = 0.0f;
+	playerDroid.inTransferMode         = false;
 }
 
 // ----------------------------------------------------------------------------
@@ -212,33 +226,47 @@ void gam_processPlayerMovement ()
 void gam_processActionKey ()
 //----------------------------------------------------------------------------
 {
-	if (playerDroid.overLiftTile)
+	//
+	// Actions when no movements are down
+	if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
 		{
-			if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
+			if (playerDroid.overLiftTile)
 				{
-					gam_performLiftAction ();
-					keyBinding[gameAction].currentlyPressed = false;
+					if (!playerDroid.inTransferMode)
+						{
+							gam_performLiftAction ();
+							keyBinding[gameAction].currentlyPressed = false;
+							return;
+						}
 				}
-//		return;
+
+			if (playerDroid.overTerminalTile)
+				{
+					if (!playerDroid.inTransferMode)
+						{
+							gam_performTerminalAction ();
+							keyBinding[gameAction].currentlyPressed = false;
+							return;
+						}
+				}
+
+			if (!playerDroid.inTransferMode)
+				{
+					playerDroid.inTransferMode = true;
+				}
 		}
 
-	if (playerDroid.overTerminalTile)
-		{
-			if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
-				{
-					gam_performTerminalAction ();
-					keyBinding[gameAction].currentlyPressed = false;
-				}
-		}
-
-	if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
-		{
-			if (playerDroid.weaponCanFire)
-				{
-					gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
-					keyBinding[gameAction].currentlyPressed = false;
-					playerDroid.weaponCanFire               = false;
-					return;
-				}
-		}
+		if (!playerDroid.inTransferMode)
+			{
+				if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
+					{
+						if (playerDroid.weaponCanFire)
+							{
+								gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
+								keyBinding[gameAction].currentlyPressed = false;
+								playerDroid.weaponCanFire               = false;
+								return;
+							}
+					}
+			}
 }

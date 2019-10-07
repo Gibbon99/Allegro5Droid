@@ -43,14 +43,14 @@ enum eventActions
 	MAIN_LOOP_EVENT_ADD_BULLET,
 	MAIN_LOOP_EVENT_REMOVE_DROID_PHYSICS,
 
-	USER_EVENT_AUDIO,
-	AUDIO_PLAY_SAMPLE,
-
 	GAME_EVENT_CHANGE_MODE,
 	GAME_EVENT_DOOR,
 	GAME_EVENT_DOOR_ANIMATE,
 	GAME_DOOR_STATE_ENTER,
 	GAME_DOOR_STATE_EXIT,
+
+	GAME_EVENT_PLAY_AUDIO,
+	GAME_EVENT_STOP_AUDIO,
 
 	GAME_EVENT_HEALING_START,
 	GAME_EVENT_HEALING_STOP
@@ -107,13 +107,29 @@ typedef struct
 	char lineText[CLIENT_GAME_FILENAME_SIZE];
 } __GAME;
 
+//
+// AUDIO event structure
+//
+typedef struct
+{
+	int eventType;
+	int eventAction;
+	int eventCounter;
+
+	ALLEGRO_PLAYMODE loop;
+	float gain;
+	float pan;
+	char keyName[CLIENT_GAME_FILENAME_SIZE];
+} __AUDIO;
+
 union PARA_EVENT
 {
 	__LOG_FILE    logFile;
 	__CONSOLE     console;
 	__GAME        game;
 	__MAIN_THREAD main;
-	__GAME        audio;
+//	__GAME        audio;
+	__AUDIO       audio;
 };
 
 extern bool runThreads;     // Master flag to control state of detached threads

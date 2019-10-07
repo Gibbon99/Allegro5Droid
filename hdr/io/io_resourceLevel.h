@@ -78,6 +78,7 @@ typedef struct {
 	float visibleValue;
 	int   visibleStatus;
 
+	bool inTransferMode;              // For player droid only
 	bool overTerminalTile;
 	bool overLiftTile;
 	int  liftIndex;                      // Which lift on the level are we over

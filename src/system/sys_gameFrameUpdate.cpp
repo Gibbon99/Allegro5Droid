@@ -12,6 +12,7 @@
 #include <hdr/game/gam_lineOfSight.h>
 #include <hdr/gui/gui_database.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/game/gam_game.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -63,6 +64,7 @@ void sys_gameTickRun (double tickTime)
 			gam_AStarProcessPaths (cachedCurrentLevelName);
 			gam_weaponRechargePlayer(tickTime);
 
+			gam_processScore (tickTime);
 			sys_updateVisibleScreenArea();
 			ai_processDroidAI (cachedCurrentLevelName, tickTime);
 			gam_doLineOfSight ();

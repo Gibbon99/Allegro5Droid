@@ -11,6 +11,7 @@
 #include <hdr/game/gam_droidAIPatrol.h>
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_droids.h"
 
 std::vector<std::string> droidToSpriteLookup;
@@ -144,26 +145,12 @@ void gam_initDroidValues (const std::string levelName)
 
 	for (int i = 0; i != shipLevel.at (levelName).numDroids; i++)
 		{
-
-//		tempDroid.isAlive = true;
 			tempDroid.droidType         = shipLevel.at (levelName).droidTypes[i];
 			tempDroid.currentHealth     = dataBaseEntry[tempDroid.droidType].maxHealth;
 			tempDroid.wayPointIndex     = rand () % (shipLevel.at (levelName).numWaypoints - 1);
 			tempDroid.wayPointDirection = WAYPOINT_DOWN;
 			tempDroid.spriteName        = gl_getSpriteName (tempDroid.droidType);
 			tempDroid.currentFrame      = 0;
-
-//		tempDroid.body = nullptr;
-/*
-		if (sprites.empty ())
-		{
-			tempDroid.numberOfFrames = 9;
-		}
-		else
-		{
-			tempDroid.numberOfFrames = sprites.at ("001").numFrames;
-		}
-*/
 			tempDroid.frameDelay       = 1.0f;
 			tempDroid.frameAnimCounter = 1.0f;
 			tempDroid.currentSpeed     = 0.0f;
@@ -253,7 +240,6 @@ void gam_removeDroid (int whichDroid)
 //-----------------------------------------------------------------------------
 //
 // Kill an enemy droid
-// TODO Remove enemy physics objects  - may need to be done in post-callback collision - Use event in mainLoop
 // like for player and droid routine
 void gam_destroyDroid (int whichDroid)
 //-----------------------------------------------------------------------------
@@ -269,19 +255,16 @@ void gam_destroyDroid (int whichDroid)
 			break;
 
 			case DROID_MODE_NORMAL:
-/*
-				if ( shipLevel.at ( lvl_returnLevelNameFromDeck ( whichLevel )).droid[whichDroid].droidType < 6 )
-					evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, "explode1", 0, 0, );
+
+				if (shipLevel.at (tempCurrentLevel).droid[whichDroid].droidType < 6)
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 70, ALLEGRO_PLAYMODE_ONCE, "explode1");
 				else
-					evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_EXPLODE_2, 0, 0, glm::vec2 (), glm::vec2 (), "" );
-*/
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 70, ALLEGRO_PLAYMODE_ONCE, "explode2");
 
-
-				par_addEmitter (droidPhysics[whichDroid].body->GetPosition (), PARTICLE_TYPE_EXPLOSION, -1);
+			par_addEmitter (droidPhysics[whichDroid].body->GetPosition (), PARTICLE_TYPE_EXPLOSION, -1);
 
 			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentFrame = 0;
 			shipLevel.at (tempCurrentLevel).droid[whichDroid].currentMode  = DROID_MODE_EXPLODING;
-//			shipLevel.at (tempCurrentLevel).droid[whichDroid].numberOfFrames = sprites.at ("explosion").numFrames;
 			droidPhysics[whichDroid].body->SetLinearVelocity ({0, 0});
 			droidPhysics[whichDroid].body->SetType (b2_staticBody);
 
@@ -290,12 +273,7 @@ void gam_destroyDroid (int whichDroid)
 					gam_AStarRemovePath (shipLevel.at (tempCurrentLevel).droid[whichDroid].aStarPathIndex);
 				}
 
-			// TODO gam_addToScore ( dataBaseEntry[shipLevel.at( lvl_returnLevelNameFromDeck ( whichLevel)).droid[whichDroid].droidType].score );
-
-			/* TODO
-
-			par_addEmitter ( shipLevel.at( lvl_returnLevelNameFromDeck ( whichLevel)).droid[whichDroid].worldPos, PARTICLE_TYPE_EXPLOSION, -1 );
-		*/
+			gam_addToScore (dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[whichDroid].droidType].score);
 
 //
 // TODO: Need extra checks here
@@ -346,8 +324,6 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 			case DAMAGE_BULLET:
 				if (-1 == sourceDroid) // Player bullet
 					{
-						printf ("Droid [ %i ] hit by player bullet.\n", targetDroid);
-
 						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentMode == DROID_MODE_EXPLODING)
 							{
 								return;
@@ -356,7 +332,6 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex       = sourceDroid;    // Set player as the target
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer  = true;
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotCountdown = droidBeenShotValue;
-
 						//
 						// Need to work out bullet damage when using non firing droid
 						//
@@ -371,7 +346,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 							}
 						else
 							{
-//								evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_DAMAGE, 0, 0, glm::vec2 (), glm::vec2 (), "" );
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
 							}
 					}
 				else // hit by another droid bullet
@@ -384,15 +359,13 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex      = sourceDroid;    // Set this droid as the target
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer = false;
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; // TODO dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
-//						evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_DAMAGE, 0, 0, glm::vec2 (), glm::vec2 (), "" );
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
 
 						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{
 								gam_destroyDroid (targetDroid);
 							}
 					}
-
-//					printf("Remove bullet index [ %i ]\n", eventSource);
 
 			gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, eventSource, {0, 0});
 			break;
@@ -414,7 +387,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 				{
 					//
 					// Enemy Droid is colliding with another one exploding
-//					evt_sendEvent ( USER_EVENT_AUDIO, AUDIO_PLAY_SAMPLE, SND_DAMAGE, 0, 0, glm::vec2 (), glm::vec2 (), "" );
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
 					shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= collisionExplosionDamage;
 
 					if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)

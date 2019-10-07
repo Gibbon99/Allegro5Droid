@@ -5,6 +5,8 @@
 #include <hdr/game/gam_game.h>
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/system/sys_audio.h>
+#include <hdr/system/sys_eventsEngine.h>
 #include "hdr/game/gam_bullet.h"
 
 std::vector<__bulletObject> bullets;
@@ -156,17 +158,20 @@ __bulletObject bul_setupNewBullet (int bulletSourceIndex, int arrayIndex)
 				tempBullet.shape.m_radius = (float) (sprites.at ("bullet_001").frameHeight * 0.5f) / pixelsPerMeter;
 			tempBullet.shape.m_p.Set (0, 0);
 			tempBullet.fixtureDef.shape = &tempBullet.shape;
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "laser");
 			break;
 
 			case BULLET_TYPE_SINGLE: // Large single laser
 				tempBullet.boxShape.SetAsBox ((sprites.at ("bullet_476").frameWidth / 2) / pixelsPerMeter, (sprites.at ("bullet_476").frameHeight / 2) / pixelsPerMeter);
 			tempBullet.fixtureDef.shape = &tempBullet.boxShape;
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "laser");
 			break;
 
 			case BULLET_TYPE_DOUBLE: // Large double laser
 				tempBullet.shape.m_radius = (float) (sprites.at ("bullet_821").frameHeight * 0.5f) / pixelsPerMeter;
 			tempBullet.shape.m_p.Set (0, 0);
 			tempBullet.fixtureDef.shape = &tempBullet.shape;
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "laser");
 			break;
 
 			case BULLET_TYPE_DISRUPTER: // Disrupter

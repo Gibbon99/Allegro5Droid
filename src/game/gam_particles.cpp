@@ -392,17 +392,12 @@ void par_animateParticles (float tickTime)
 //-----------------------------------------------------
 {
 	float particleReduce = 0.0f;
-	int   particleIndex  = 0;
-	int   emitterIndex   = 0;
 
 	if (PARTICLE_RENDER_OFF == particleRenderType)
 		return;
 
 	if (profileParticles)
 		profileParticleThinkStart = al_get_time ();
-
-	emitterIndex  = 0;
-	particleIndex = 0;
 
 	for (auto &emitterItr  : emitter)
 		{
@@ -423,16 +418,9 @@ void par_animateParticles (float tickTime)
 							break;
 						}
 
-					particleIndex = 0;
-
 					for (auto &particleItr : emitterItr.particle)
 						{
 							particleItr.color.a -= particleReduce * tickTime;
-
-							if (emitterItr.type == PARTICLE_TYPE_TRAIL)
-								{
-									printf ("particle alpha [ %f ]\n", particleItr.color.a);
-								}
 
 							if (particleItr.color.a < 0.0f)
 								{
@@ -473,10 +461,7 @@ void par_animateParticles (float tickTime)
 
 										}
 								}
-							particleIndex++;
 						}
-
-					particleIndex = 0;
 
 					for (auto &eraseItr : emitterItr.particle)
 						{
@@ -491,7 +476,6 @@ void par_animateParticles (float tickTime)
 								}
 						}
 				}   // End of inuse test
-			emitterIndex++;
 		}   // End of loop for each emitter
 
 	if (profileParticles)
@@ -570,10 +554,12 @@ void par_renderParticles ()
 
 	if (PARTICLE_RENDER_BITMAP == particleRenderType)
 		{
-			if (true == useHoldBitmap)
+			if (useHoldBitmap)
 				al_hold_bitmap_drawing (false);
 		}
+//
+// Profile the type of render, change to the other if it's faster?
 
-	if (true == profileParticles)
+	if (profileParticles)
 		profileParticleRenderEnd = al_get_time ();
 }

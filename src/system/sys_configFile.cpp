@@ -1,4 +1,5 @@
 #include <hdr/gui/gui_text.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/system/sys_configFile.h"
 
 #define CONFIG_FILENAME "config.ini"
@@ -29,6 +30,7 @@ bool cfg_getStartupValues()
 	
 	currentLanguage = (int)strtol(al_get_config_value(configFile, "main", "currentLanguage"), nullptr, 10);
 
+	numReserveSamples = (int)strtol(al_get_config_value(configFile, "main", "numReserveSamples"), nullptr, 10);
 	al_destroy_config(configFile);
 
 	return true;

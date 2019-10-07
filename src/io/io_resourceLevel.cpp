@@ -7,7 +7,10 @@
 #include <hdr/game/gam_lifts.h>
 #include <hdr/game/gam_bullet.h>
 #include <hdr/game/gam_healing.h>
-#include <src/game/gam_terminal.h>
+#include <hdr/game/gam_terminal.h>
+#include <hdr/system/sys_audio.h>
+#include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_game.h>
 #include "hdr/io/io_resourceLevel.h"
 
 #define MAP_VERSION                116
@@ -398,4 +401,8 @@ void lvl_changeToLevel (const std::string &newLevelName, int whichLift)
 	bul_initBulletArraySize ();
 
 	gam_drawAllTiles ();
+
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, currentAlertLevelSoundName);
+//	snd_playSound ("greenAlert", ALLEGRO_PLAYMODE_LOOP, 0.1f, 0.0f);
+
 }

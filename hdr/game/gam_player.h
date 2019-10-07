@@ -24,3 +24,6 @@ void gam_initPlayerValues ();
 
 // Recharge player weapon
 void gam_weaponRechargePlayer(float tickTime);
+
+// Render the player sprite
+void gam_renderPlayer();

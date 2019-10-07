@@ -9,6 +9,7 @@
 #include <hdr/game/gam_doors.h>
 #include <hdr/game/gam_bullet.h>
 #include <hdr/game/gam_healing.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/system/sys_gameEvents.h"
 
 ALLEGRO_EVENT_QUEUE    *eventQueue;
@@ -95,6 +96,14 @@ void *evt_processGameEventQueue ()
 												sys_changeMode (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
 											break;
 
+											case GAME_EVENT_PLAY_AUDIO:
+												snd_playSound(gameLoopEvent.audio.keyName, gameLoopEvent.audio.loop, gameLoopEvent.audio.gain, 0.0f);
+												break;
+
+											case GAME_EVENT_STOP_AUDIO:
+												snd_stopSound(gameLoopEvent.audio.keyName);
+												break;
+
 											default:
 												printf ("ERROR: Unknown logfile action [ %i ]\n", gameLoopEvent.game.eventAction);
 											break;
@@ -110,7 +119,7 @@ void *evt_processGameEventQueue ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Push an event onto the console queue
+// Push an event onto the game queue
 void gam_pushNewEvent (union PARA_EVENT newEvent)
 //----------------------------------------------------------------------------------------------------------------------
 {
@@ -124,7 +133,7 @@ void gam_pushNewEvent (union PARA_EVENT newEvent)
 		}
 
 	//
-	// Put the new event onto the console queue
+	// Put the new event onto the game queue
 	PARA_lockMutex (evt_getMutex (GAME_MUTEX_NAME));   // Blocks if the mutex is locked by another thread
 	gameEventQueue.push (newEvent);
 	PARA_unlockMutex (evt_getMutex (GAME_MUTEX_NAME));
@@ -284,21 +293,21 @@ void evt_pushEvent (int delayCount, int eventType, int eventAction, int data1, i
 //			if (!useSound)
 //				return;
 
-				newEvent.audio.eventType  = PARA_EVENT_AUDIO;
+				newEvent.audio.eventType  = PARA_EVENT_GAME;
 			newEvent.audio.eventAction  = eventAction;
 			newEvent.audio.eventCounter = delayCount;
 
-			newEvent.audio.eventData1 = data1;
-			newEvent.audio.eventData2 = data2;
+			newEvent.audio.gain = (float)data1 / 100.0f;
+			newEvent.audio.loop = (ALLEGRO_PLAYMODE )data2;
 
 			if (eventString.size () > CLIENT_GAME_FILENAME_SIZE)
 				{
 					eventString.reserve (CLIENT_GAME_FILENAME_SIZE - 1);
 				}
 
-			strcpy (newEvent.audio.lineText, eventString.c_str ());
+			strcpy (newEvent.audio.keyName, eventString.c_str ());
 
-//			aud_pushNewEvent(newEvent);
+			gam_pushNewEvent(newEvent);
 			break;
 
 			default:

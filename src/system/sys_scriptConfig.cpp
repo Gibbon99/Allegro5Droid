@@ -18,10 +18,12 @@
 #include <hdr/io/io_resourceImage.h>
 #include <hdr/gui/gui_dialogBox.h>
 #include <hdr/system/sys_timerFunctions.h>
-#include <src/game/gam_terminal.h>
+#include <hdr/game/gam_terminal.h>
 #include <hdr/gui/gui_database.h>
 #include <hdr/game/gam_database.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/system/sys_audio.h>
+#include <hdr/game/gam_game.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -139,6 +141,10 @@ void sys_scriptInitVariables ()
 
 	sys_scriptAddHostVariable ("int particleBlendSrc", &particleBlendSrc);
 	sys_scriptAddHostVariable ("int particleBlendDst", &particleBlendDst);
+
+	sys_scriptAddHostVariable ("float scoreDelay", &scoreDelay);
+	sys_scriptAddHostVariable ("int yellowAlertLevel", &yellowAlertLevel);
+	sys_scriptAddHostVariable ("int redAlertLevel", &redAlertLevel);
 
 
 }

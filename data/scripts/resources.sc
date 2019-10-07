@@ -17,7 +17,7 @@ void script_loadAllResources ()
 	sys_loadResource ("yellowAlert", "yellowAlert.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("console1", "console1.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("endTransmission2", "endTransmission2.wav", RESOURCE_AUDIO, 0, 0);
-	sys_loadResource ("keypressBad", "keypressBad.wav", RESOURCE_AUDIO, 0, 0);
+	sys_loadResource ("keyPressBad", "keypressBad.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("lift2", "lift2.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("start1", "start1.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("transferMove", "transferMove.wav", RESOURCE_AUDIO, 0, 0);
@@ -182,7 +182,7 @@ void script_loadAllResources ()
 	ai_healthAmount          = 0.3f;
 	ai_playerVisible         = 0.2f;
 	ai_witnessShoot          = 0.0f;    // 0.4f
-	ai_witnessTransfer       = 0.0f;    // 0.6f
+	ai_witnessTransfer       = 0.6f;    // 0.6f
 	ai_greenFactor           = 0.1f;
 	ai_yellowFactor          = 0.2f;
 	ai_redFactor             = 0.4f;
@@ -191,4 +191,9 @@ void script_loadAllResources ()
 	// Array starting size
 	numStartingBullets       = 10;
 	useHoldBitmap            = true;
+	//
+	// Delay to update score
+	scoreDelay               = 10.0f;
+	yellowAlertLevel         = 500;
+	redAlertLevel            = 750;
 }
