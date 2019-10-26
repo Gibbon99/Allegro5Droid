@@ -73,7 +73,7 @@ void gl_setupDroidToSpriteLookup ()
 //------------------------------------------------------------------------
 //
 // Return the sprite name for a droidType
-std::string gl_getSpriteName (int droidType)
+std::string gam_getSpriteName (int droidType)
 //------------------------------------------------------------------------
 {
 	if ((droidType < 0) || (droidType > droidToSpriteLookup.size ()))
@@ -149,7 +149,7 @@ void gam_initDroidValues (const std::string levelName)
 			tempDroid.currentHealth     = dataBaseEntry[tempDroid.droidType].maxHealth;
 			tempDroid.wayPointIndex     = rand () % (shipLevel.at (levelName).numWaypoints - 1);
 			tempDroid.wayPointDirection = WAYPOINT_DOWN;
-			tempDroid.spriteName        = gl_getSpriteName (tempDroid.droidType);
+			tempDroid.spriteName        = gam_getSpriteName (tempDroid.droidType);
 			tempDroid.currentFrame      = 0;
 			tempDroid.frameDelay       = 1.0f;
 			tempDroid.frameAnimCounter = 1.0f;
@@ -183,7 +183,7 @@ void gam_initDroidValues (const std::string levelName)
 
 			tempDroid.ignoreCollisionsCounter = IGNORE_COLLISION_TIME;
 
-			tempDroid.playerDroidTypeDBIndex = "db_" + gl_getSpriteName (tempDroid.droidType);
+			tempDroid.playerDroidTypeDBIndex = "db_" + gam_getSpriteName (tempDroid.droidType);
 			tempDroid.currentMode            = DROID_MODE_NORMAL;
 			tempDroid.chanceToShoot          = 0.0f;
 			tempDroid.visibleToPlayer        = true;

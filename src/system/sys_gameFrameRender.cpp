@@ -22,7 +22,10 @@
 #include <hdr/gui/gui_database.h>
 #include <hdr/gui/gui_deckView.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/game/gam_transfer.h>
+#include <hdr/game/gam_transferRender.h>
 #include "hdr/system/sys_gameFrameRender.h"
+#include "hdr/game/gam_droids.h"
 
 ALLEGRO_BITMAP *backingBitmap;
 ALLEGRO_BITMAP *previousScreen;
@@ -46,7 +49,10 @@ void sys_screenFade ()
 {
 	if (fadeInProgress == FADE_NONE)
 	{
-		PARA_presentFrame (display, backingBitmap);
+		if (currentMode == MODE_GUI_TRANSFER_CHOOSE_SIDE)
+			PARA_presentFrame(display, trn_getTransferScreen());
+		else
+			PARA_presentFrame (display, backingBitmap);
 		return;
 	}
 
@@ -135,12 +141,14 @@ void sys_renderFrameTimeQueue ()
 void sys_displayScreen (double interpolation)
 //----------------------------------------------------------------------------------------------------------------------
 {
+	std::string indexName;
+
 	PARA_prepareFrame (backingBitmap);
 
 	switch (currentMode)
 	{
 		case MODE_SPLASH:
-			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN);
+			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN, 0, 0);
 			break;
 
 		case MODE_CONSOLE:
@@ -165,6 +173,47 @@ void sys_displayScreen (double interpolation)
 		case MODE_GUI_TERMINAL:
 			hud_renderHUD ();
 			gui_drawGUI ();
+			break;
+
+		case MODE_GUI_TRANSFER_SCREEN_ONE_LOAD:
+			indexName = "db_" + gam_getSpriteName (playerDroid.droidType);
+			sys_loadResource ("db_sprite", indexName, RESOURCE_SPRITE, 32, -1);
+			sys_changeMode (MODE_GUI_TRANSFER_SCREEN_ONE, true);
+			break;
+
+		case MODE_GUI_TRANSFER_SCREEN_ONE:
+			io_renderSpriteFrame ("db_sprite", 0, (sys_getLogicalWidth () / 2), (sys_getLogicalHeight () / 2));
+			//
+			// Render a quad with alpha to darken graphic, help text stand out
+			hud_renderHUD ();
+			gui_drawGUI ();
+			break;
+
+			case MODE_GUI_TRANSFER_SCREEN_TWO_LOAD:
+			indexName = "db_" + gam_getSpriteName (gam_getTransferTargetDroid ());
+			sys_loadResource ("db_sprite", indexName, RESOURCE_SPRITE, 32, -1);
+			sys_changeMode (MODE_GUI_TRANSFER_SCREEN_TWO, true);
+			break;
+
+
+		case MODE_GUI_TRANSFER_SCREEN_TWO:
+			io_renderSpriteFrame ("db_sprite", 0, (sys_getLogicalWidth () / 2), (sys_getLogicalHeight () / 2));			hud_renderHUD ();
+			gui_drawGUI ();
+			break;
+
+		case MODE_GUI_TRANSFER_INIT_GAME:
+			trn_initTransferValues();
+			sys_changeMode (MODE_GUI_TRANSFER_CHOOSE_SIDE, false);
+			break;
+
+		case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+			trn_renderTransferGame();
+			hud_renderHUD ();
+			break;
+
+		case MODE_PLAY_TRANSFER_GAME:
+			hud_renderHUD ();
+			trn_renderTransferGame ();
 			break;
 
 		case MODE_GUI_TERMINAL_DECKVIEW:

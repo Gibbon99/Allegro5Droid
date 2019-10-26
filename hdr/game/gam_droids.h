@@ -35,7 +35,7 @@ void gam_droidWeaponCharge ( const std::string& levelName, int whichDroid, float
 void gl_setupDroidToSpriteLookup();
 
 // Return the sprite name for a droidType
-std::string gl_getSpriteName(int droidType);
+std::string gam_getSpriteName(int droidType);
 
 // This removes the droid from the current game - sets status to dead, and removes physics body
 void gam_removeDroid(int whichDroid);

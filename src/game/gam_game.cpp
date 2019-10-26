@@ -13,12 +13,22 @@ char        displayScoreString[8];
 
 //-------------------------------------------------------------------------------------------------------------------------
 //
+// Return the current score as a string for displaying on the HUD
+std::string gam_getScore()
+//-------------------------------------------------------------------------------------------------------------------------
+{
+	return displayScoreString;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------
+//
 // Start a new game
 void gam_startNewGame ()
 //-------------------------------------------------------------------------------------------------------------------------
 {
 	gam_initPhysicsActionQueue ();
 	currentAlertLevel = ALERT_GREEN_TILE;
+	currentAlertLevelSoundName = "greenAlert";
 	par_resetAllEmitters ();
 }
 
@@ -74,6 +84,8 @@ void gam_addToScore (int scoreValue)
 //---------------------------------------------------------
 {
 	currentScore += scoreValue;
+
+	printf("Adding [ %i ] to score\n", scoreValue);
 }
 
 //-----------------------------------------------------------------------------

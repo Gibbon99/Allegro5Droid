@@ -5,7 +5,7 @@
 extern bool useHoldBitmap;
 
 // Draw a bitmap
-void sys_drawBitmap (const std::string& keyName, float posX, float posY, int drawMode);
+void sys_drawBitmap (const std::string &keyName, float posX, float posY, int drawMode, float scaleX, float scaleY);
 
 // Load a bitmap file
 void sys_loadResourceBitmap (const std::string &key, const std::string &fileName);

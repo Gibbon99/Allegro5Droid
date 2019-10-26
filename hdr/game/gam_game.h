@@ -29,3 +29,6 @@ void gam_processScore (float tickTime);
 
 // Add passed in value to currentScore
 void gam_addToScore (int scoreValue);
+
+// Return the current score as a string for displaying on the HUD
+std::string gam_getScore();

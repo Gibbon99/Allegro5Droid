@@ -79,6 +79,7 @@ typedef struct {
 	int   visibleStatus;
 
 	bool inTransferMode;              // For player droid only
+	int  transferTargetDroidType;          // Which droid is the player transferring into
 	bool overTerminalTile;
 	bool overLiftTile;
 	int  liftIndex;                      // Which lift on the level are we over

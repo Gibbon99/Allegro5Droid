@@ -220,9 +220,6 @@ _emitter par_setupNewEmitter (b2Vec2 worldPos, int type, int whichBullet)
 			tempParticle.color            = particleTrailColor;
 			tempParticle.color.a          = 1.0f; //sys_getCappedRandomNum (120);
 			tempEmitter.numParticlesAlive = sys_getCappedRandomNum (particleNumber) + particleNumberAdd;
-
-			printf ("Start trail emitter [ %i ]\n", tempEmitter.numParticlesAlive);
-
 			break;
 
 			case PARTICLE_TYPE_SPARK:
@@ -232,9 +229,6 @@ _emitter par_setupNewEmitter (b2Vec2 worldPos, int type, int whichBullet)
 			particleNumber    = particleNumberSpark;
 			particleNumberAdd = particleNumberSparkAdd;
 			particlePosition  = worldPos;
-
-			printf ("Spark for bullet [ %i ] initEmitter [ %f %f ]\n", whichBullet, worldPos.x, worldPos.y);
-
 			tempParticle.color            = particleSparkColor;
 			tempEmitter.numParticlesAlive = sys_getCappedRandomNum (particleNumber) + particleNumberAdd;
 			break;

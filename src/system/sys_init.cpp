@@ -179,6 +179,15 @@ void sys_initAll ()
 	al_register_event_source (eventQueue, al_get_display_event_source (display));
 	al_register_event_source (eventQueue, al_get_keyboard_event_source ());
 //	al_register_event_source(eventQueue, al_get_mouse_event_source());
+
+	uint32_t version = al_get_allegro_version();
+	int major = version >> 24;
+	int minor = (version >> 16) & 255;
+	int revision = (version >> 8) & 255;
+	int release = version & 255;
+
+	log_logMessage (LOG_LEVEL_INFO, sys_getString("Allegro version [ %i.%i.%i ( %i ) ]", major, minor, revision, release));
+
 	//
 	// Display output on screen
 	sys_changeMode (MODE_CONSOLE, false);
@@ -262,6 +271,8 @@ void sys_initAll ()
 
 //	al_start_timer(splashTimer);
 	sys_changeMode (MODE_GAME, true);
+
+	sys_changeMode(MODE_GUI_TRANSFER_INIT_GAME, false);
 
 	gam_startNewGame();
 

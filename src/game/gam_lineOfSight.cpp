@@ -5,8 +5,6 @@
 
 float visibleFadeValue = 3.0f;
 
-// This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
-// just checking for obstruction, so the actual fixture and hit point are irrelevant.
 class RayCastAnyCallback : public b2RayCastCallback {
 	public:
 	RayCastAnyCallback ()
@@ -24,12 +22,14 @@ class RayCastAnyCallback : public b2RayCastCallback {
 			{
 				case PHYSIC_TYPE_WALL:
 					m_hit = true;
-					return 0.0f;
+				return 0.0f;
 				break;
 
 				case PHYSIC_TYPE_DOOR_BULLET:
 					{
-						if ((DOOR_ACROSS_OPEN_2 == doorBulletSensor[userData->dataValue].currentFrame) ||
+						//
+						// Look through open doors, ignoring the bullet sensor
+						if ((DOOR_ACROSS_OPENED == doorBulletSensor[userData->dataValue].currentFrame) ||
 						    (DOOR_UP_OPENED == doorBulletSensor[userData->dataValue].currentFrame))
 							{
 								m_hit = false;
@@ -83,30 +83,27 @@ void gam_doLineOfSight ()
 					shipLevel.at (cacheLevelName).droid[i].visibleToPlayer = false;
 					shipLevel.at (cacheLevelName).droid[i].visibleStatus   = VISIBLE_STATE_GO_NOT_VISIBLE;
 				}
-				else
+			else
 				{
-					shipLevel.at(cacheLevelName).droid[i].visibleToPlayer = true;
-					shipLevel.at(cacheLevelName).droid[i].visibleStatus = VISIBLE_STATE_GO_VISIBLE;
+					shipLevel.at (cacheLevelName).droid[i].visibleToPlayer = true;
+					shipLevel.at (cacheLevelName).droid[i].visibleStatus   = VISIBLE_STATE_GO_VISIBLE;
 				}
 
-			if (shipLevel.at(cacheLevelName).droid[i].visibleStatus == VISIBLE_STATE_GO_VISIBLE)
+			if (shipLevel.at (cacheLevelName).droid[i].visibleStatus == VISIBLE_STATE_GO_VISIBLE)
 				{
-					if (shipLevel.at(cacheLevelName).droid[i].visibleValue < 1.0f)
+					if (shipLevel.at (cacheLevelName).droid[i].visibleValue < 1.0f)
 						{
-							shipLevel.at(cacheLevelName).droid[i].visibleValue += visibleFadeValue * sys_getTickTime ();
-							if (shipLevel.at(cacheLevelName).droid[i].visibleValue > 1.0f)
-								shipLevel.at(cacheLevelName).droid[i].visibleValue = 1.0f;
+							shipLevel.at (cacheLevelName).droid[i].visibleValue += visibleFadeValue * sys_getTickTime ();
+							if (shipLevel.at (cacheLevelName).droid[i].visibleValue > 1.0f)
+								shipLevel.at (cacheLevelName).droid[i].visibleValue = 1.0f;
 						}
 				}
 
-			if (shipLevel.at(cacheLevelName).droid[i].visibleStatus == VISIBLE_STATE_GO_NOT_VISIBLE)
+			if (shipLevel.at (cacheLevelName).droid[i].visibleStatus == VISIBLE_STATE_GO_NOT_VISIBLE)
 				{
-					//if (shipLevel.at (cacheLevelName).droid[i].visibleValue > 0.0f)
-						{
-							shipLevel.at (cacheLevelName).droid[i].visibleValue -= visibleFadeValue * sys_getTickTime ();
-							if (shipLevel.at (cacheLevelName).droid[i].visibleValue < 0.0f)
-								shipLevel.at (cacheLevelName).droid[i].visibleValue = 0.0f;
-						}
+					shipLevel.at (cacheLevelName).droid[i].visibleValue -= visibleFadeValue * sys_getTickTime ();
+					if (shipLevel.at (cacheLevelName).droid[i].visibleValue < 0.0f)
+						shipLevel.at (cacheLevelName).droid[i].visibleValue = 0.0f;
 				}
 		}
 }

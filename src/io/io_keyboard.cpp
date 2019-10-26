@@ -2,6 +2,8 @@
 #include <hdr/game/gam_lifts.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/gui/gui_sideView.h>
+#include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_transfer.h>
 #include "hdr/io/io_keyboard.h"
 
 __KeyBindings keyBinding[NUMBER_ACTIONS];
@@ -62,6 +64,8 @@ void io_processKeyActions ()
 			case MODE_GUI_TERMINAL_SHIPVIEW:
 			case MODE_GUI_TERMINAL_DECKVIEW:
 			case MODE_GUI_DATABASE:
+			case MODE_GUI_TRANSFER_SCREEN_ONE:
+			case MODE_GUI_TRANSFER_SCREEN_TWO:
 				if (keyBinding[gameUp].currentlyPressed)
 					{
 						keyBinding[gameUp].currentlyPressed = false;
@@ -93,6 +97,10 @@ void io_processKeyActions ()
 				}
 			break;
 
+			case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+				trn_handleTransferChooseSide();
+				break;
+
 			case MODE_GAME:
 				gam_processPlayerMovement ();
 			if (keyBinding[gameAction].currentlyPressed)
@@ -102,7 +110,10 @@ void io_processKeyActions ()
 			else
 				{
 					if (playerDroid.inTransferMode)
-						playerDroid.inTransferMode = false;
+						{
+							playerDroid.inTransferMode = false;
+							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
+						}
 				}
 			break;
 

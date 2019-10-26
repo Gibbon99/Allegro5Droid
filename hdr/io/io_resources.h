@@ -5,7 +5,8 @@
 
 enum drawModes {
 	RENDER_FULLSCREEN = 0,
-	RENDER_SOURCE
+	RENDER_SOURCE,
+	RENDER_SCALE
 };
 
 typedef struct {
@@ -22,9 +23,11 @@ typedef struct {
 } __bitmap;
 
 typedef struct {
-	ALLEGRO_SAMPLE    *audio    = nullptr;
-	ALLEGRO_SAMPLE_ID sampleID;
-	__resourceCommon  common;
+	ALLEGRO_SAMPLE          *audio = nullptr;
+	ALLEGRO_SAMPLE_INSTANCE *sampleInstance;
+	ALLEGRO_SAMPLE_ID       sampleID;
+	float                   sampleTimeLength;
+	__resourceCommon        common;
 } __audio;
 
 typedef struct {

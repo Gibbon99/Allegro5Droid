@@ -2,6 +2,34 @@ float buttonHeight = 7.0f;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Handle the actions for the transfer game
+void as_guiHandleTransferAction (string &in objectID)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferOne"))
+		{
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTransferOneNext"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferTwo"));
+					as_guiSetObjectFocus ("buttonTransferTwoNext");
+					sys_changeCurrentMode (MODE_GUI_TRANSFER_SCREEN_TWO_LOAD, true);
+					return;
+				}
+		}
+
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferTwo"))
+		{
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTransferTwoNext"))
+				{
+					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferChooseSide"));
+					sys_changeCurrentMode (MODE_GUI_TRANSFER_INIT_GAME, true);
+					return;
+				}
+		}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Handle the actions for the database screen
 void as_guiHandleDatabaseAction (string &in objectID)
 //----------------------------------------------------------------------------------------------------------------------
@@ -824,6 +852,74 @@ void as_setupMainTerminalScreen ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Setup the first transfer screen
+void as_setupTransferOne()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	as_guiCreateNewScreen ("guiTransferOne");
+
+	as_guiCreateObject (GUI_OBJECT_LABEL, "labelTransferOne");
+	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "labelTransferOne", "guiTransferOne");
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferOne", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "labelTransferOne", GUI_LABEL_CENTER, gui_getString ("labelTransferOne"));
+	as_guiSetReadyState (GUI_OBJECT_LABEL, "labelTransferOne", true);
+
+	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "textBoxTransferOne");
+	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", "guiTransferOne");
+	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
+	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", GUI_LABEL_LEFT, gui_getString ("textBoxTransferOne"));
+	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", true);
+
+//	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
+//	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
+//	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_lift"), gam_getTextureHeight ("tut_lift"));
+//	as_guiSetImageKeyName ("tutImageLift", "tut_lift");
+//	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageLift", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTransferOneNext");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTransferOneNext", "guiTransferOne");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTransferOneNext", GUI_COORD_TYPE_PERCENT, 20, 90, 25, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "buttonTransferOneNext", GUI_LABEL_CENTER, gui_getString ("nextButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTransferOneNext", "as_guiHandleTransferAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTransferOneNext", true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Setup the second transfer screen
+void as_setupTransferTwo()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	as_guiCreateNewScreen ("guiTransferTwo");
+
+	as_guiCreateObject (GUI_OBJECT_LABEL, "labelTransferTwo");
+	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "labelTransferTwo", "guiTransferTwo");
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_LABEL_CENTER, gui_getString ("labelTransferTwo"));
+	as_guiSetReadyState (GUI_OBJECT_LABEL, "labelTransferTwo", true);
+
+	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo");
+	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", "guiTransferTwo");
+	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
+	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", GUI_LABEL_LEFT, gui_getString ("textBoxTransferTwo"));
+	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", true);
+
+//	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
+//	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
+//	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_lift"), gam_getTextureHeight ("tut_lift"));
+//	as_guiSetImageKeyName ("tutImageLift", "tut_lift");
+//	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageLift", true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTransferTwoNext");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", "guiTransferTwo");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", GUI_COORD_TYPE_PERCENT, 20, 90, 25, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", GUI_LABEL_CENTER, gui_getString ("nextButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", "as_guiHandleTransferAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Setup the main GUI screen with buttons
 void as_setupMainScreen ()
 //----------------------------------------------------------------------------------------------------------------------
@@ -921,6 +1017,9 @@ void script_initGUI ()
 	as_setupTerminalDeckviewScreen ();
 	as_setupTerminalShipviewScreen ();
 	script_setupDatabaseScreen ();
+	as_setupTransferOne();
+	as_setupTransferTwo();
+
 //	as_setupMessageBoxes();
 
 	currentGUIScreen      = as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen");

@@ -1,5 +1,7 @@
 #pragma once
 
+#define ALLEGRO_UNSTABLE 1
+
 #include <string>
 #include <vector>
 #include <cstdio>

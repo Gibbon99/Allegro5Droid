@@ -51,7 +51,7 @@ void sys_loadResourceBitmap (const std::string &key, const std::string &fileName
 //---------------------------------------------------------------------------------------------------------------------------
 //
 // Draw a bitmap
-void sys_drawBitmap (const std::string &keyName, float posX, float posY, int drawMode)
+void sys_drawBitmap (const std::string &keyName, float posX, float posY, int drawMode, float scaleX, float scaleY)
 //---------------------------------------------------------------------------------------------------------------------------
 {
 	try
@@ -63,8 +63,12 @@ void sys_drawBitmap (const std::string &keyName, float posX, float posY, int dra
 					break;
 
 					case RENDER_SOURCE:
-						al_draw_bitmap (bitmap.at (keyName).bitmap, 0.0f, 0.0f, 0);
+						al_draw_bitmap (bitmap.at (keyName).bitmap, posX, posY, 0);
 					return;
+
+					case RENDER_SCALE:
+						al_draw_scaled_bitmap (bitmap.at (keyName).bitmap, 0, 0, bitmap.at (keyName).width, bitmap.at (keyName).height, posX, posY, scaleX, scaleY, 0);
+						break;
 				}
 		}
 
@@ -73,5 +77,4 @@ void sys_drawBitmap (const std::string &keyName, float posX, float posY, int dra
 			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Image [ %s ] not found - [ %s ]", keyName.c_str (), oor.what ()));
 			return;
 		}
-//	al_draw_bitmap (bitmap.at(keyName).bitmap, 0, 0, 0);
 }

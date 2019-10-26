@@ -232,7 +232,7 @@ set ( CXX_SRCS
         hdr/io/io_resourceImage.h
         src/game/gam_lineOfSight.cpp
         hdr/game/gam_lineOfSight.h
-        src/gui/gui_terminal.cpp hdr/gui/gui_terminal.h src/game/gam_terminal.cpp hdr/game/gam_terminal.h src/gui/gui_database.cpp hdr/gui/gui_database.h src/gui/gui_deckView.cpp hdr/gui/gui_deckView.h src/game/gam_particles.cpp hdr/game/gam_particles.h)
+        src/gui/gui_terminal.cpp hdr/gui/gui_terminal.h src/game/gam_terminal.cpp hdr/game/gam_terminal.h src/gui/gui_database.cpp hdr/gui/gui_database.h src/gui/gui_deckView.cpp hdr/gui/gui_deckView.h src/game/gam_particles.cpp hdr/game/gam_particles.h src/game/gam_transfer.cpp hdr/game/gam_transfer.h src/game/gam_transferRender.cpp hdr/game/gam_transferRender.h)
 
 set_source_files_properties(
         ${CXX_SRCS} PROPERTIES COMPILE_FLAGS

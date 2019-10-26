@@ -29,11 +29,13 @@ void gam_showCurrentLevel (float ratio)
 
 			al_set_target_bitmap(al_get_backbuffer(display));
 
+			/*
 			if (wroteBitmap == false)
 				{
 					al_save_bitmap("ratio.bmp", ratioBitmap);
 					wroteBitmap = true;
 				}
+			 */
 		}
 	al_draw_bitmap (ratioBitmap, 0, 0, 0);
 

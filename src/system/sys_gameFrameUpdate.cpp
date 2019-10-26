@@ -13,6 +13,7 @@
 #include <hdr/gui/gui_database.h>
 #include <hdr/game/gam_particles.h>
 #include <hdr/game/gam_game.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -43,6 +44,9 @@ void sys_gameTickRun (double tickTime)
 		case MODE_GUI_TERMINAL:
 		case MODE_GUI_TERMINAL_SHIPVIEW:
 		case MODE_GUI_TERMINAL_DECKVIEW:
+		case MODE_GUI_TRANSFER_SCREEN_ONE:
+		case MODE_GUI_TRANSFER_SCREEN_TWO:
+		case MODE_GUI_TRANSFER_CHOOSE_SIDE:
 			io_processKeyActions();
 			break;
 
@@ -71,6 +75,10 @@ void sys_gameTickRun (double tickTime)
 			par_processEmitterQueue ();
 			par_animateParticles (tickTime);
 			sys_processPhysics (tickTime);
+
+//			if (false == snd_isPlaying ("greenAlert"))
+//				printf("Sound [ %s ] is NOT playing.\n", "greenAlert");
+
 			break;
 
 		case MODE_LIFT_VIEW:

@@ -42,4 +42,3 @@ void as_initParticleValues()
 	particleBlendDst = 3;
 
   }
-

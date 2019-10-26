@@ -13,3 +13,6 @@ void snd_playSound (const std::string &key, ALLEGRO_PLAYMODE loop, float gain, f
 
 // Stop playing a sound - pass by string keyName
 void snd_stopSound(const std::string &key);
+
+// Return true if a sound is playing
+bool snd_isPlaying (const std::string &key);

@@ -46,7 +46,7 @@ void gam_previousDatabaseDroid ()
 	if (playerDroidType > 0)
 		{
 			playerDroidType--;
-			currentDatabaseIndex = "db_" + gl_getSpriteName (playerDroidType);
+			currentDatabaseIndex = "db_" + gam_getSpriteName (playerDroidType);
 			gam_enterDatabaseMode ();
 		}
 	else
@@ -64,7 +64,7 @@ void gam_nextDatabaseDroid ()
 	if (playerDroidType < MAX_DROID_TYPES)
 		{
 			playerDroidType++;
-			currentDatabaseIndex = "db_" + gl_getSpriteName (playerDroidType);
+			currentDatabaseIndex = "db_" + gam_getSpriteName (playerDroidType);
 			gam_enterDatabaseMode ();
 		}
 	else

@@ -57,20 +57,21 @@ void gam_weaponRechargePlayer (float tickTime)
 void gam_initPlayerValues ()
 // ----------------------------------------------------------------------------
 {
-	playerDroid.droidType              = 0;
-	playerDroid.currentHealth          = dataBaseEntry[playerDroid.droidType].maxHealth;
-	playerDroid.spriteName             = gl_getSpriteName (playerDroid.droidType);
-	playerDroid.currentFrame           = 0;
+	playerDroid.droidType               = 0;
+	playerDroid.currentHealth           = dataBaseEntry[playerDroid.droidType].maxHealth;
+	playerDroid.spriteName              = gam_getSpriteName (playerDroid.droidType);
+	playerDroid.currentFrame            = 0;
 //	playerDroid.numberOfFrames   = sprites.at ("001").numFrames;
-	playerDroid.frameDelay             = 1.0f;
-	playerDroid.frameAnimCounter       = 1.0f;
-	playerDroid.currentSpeed           = 0.0f;
-	playerDroid.acceleration           = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
-	playerDroid.bulletName             = bul_getBulletName (playerDroid.droidType);
-	playerDroid.playerDroidTypeDBIndex = "db_" + gl_getSpriteName (playerDroid.droidType);
-	playerDroid.weaponCanFire          = true;
-	playerDroid.weaponDelay            = 0.0f;
-	playerDroid.inTransferMode         = false;
+	playerDroid.frameDelay              = 1.0f;
+	playerDroid.frameAnimCounter        = 1.0f;
+	playerDroid.currentSpeed            = 0.0f;
+	playerDroid.acceleration            = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
+	playerDroid.bulletName              = bul_getBulletName (playerDroid.droidType);
+	playerDroid.playerDroidTypeDBIndex  = "db_" + gam_getSpriteName (playerDroid.droidType);
+	playerDroid.weaponCanFire           = true;
+	playerDroid.weaponDelay             = 0.0f;
+	playerDroid.inTransferMode          = false;
+	playerDroid.transferTargetDroidType = -1;     // No target transfer droid yet
 }
 
 // ----------------------------------------------------------------------------
@@ -253,20 +254,21 @@ void gam_processActionKey ()
 			if (!playerDroid.inTransferMode)
 				{
 					playerDroid.inTransferMode = true;
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
 				}
 		}
 
-		if (!playerDroid.inTransferMode)
-			{
-				if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
-					{
-						if (playerDroid.weaponCanFire)
-							{
-								gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
-								keyBinding[gameAction].currentlyPressed = false;
-								playerDroid.weaponCanFire               = false;
-								return;
-							}
-					}
-			}
+	if (!playerDroid.inTransferMode)
+		{
+			if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
+				{
+					if (playerDroid.weaponCanFire)
+						{
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
+							keyBinding[gameAction].currentlyPressed = false;
+							playerDroid.weaponCanFire               = false;
+							return;
+						}
+				}
+		}
 }

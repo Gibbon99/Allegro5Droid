@@ -17,8 +17,7 @@
 //
 //-----------------------------------------------------------------------------
 
-struct _basicTunnel
-{
+struct _basicTunnel {
 	int top;
 	int bottom;
 	int current;
@@ -28,31 +27,30 @@ struct _basicTunnel
 
 extern _basicTunnel tunnel[NUM_OF_TUNNELS];
 
-struct _sideviewBasicLevel
-{
-	int x1;
-	int y1;
-	int x2;
-	int y2;
-	int up;
-	int down;
+struct _sideviewBasicLevel {
+	float x1;
+	float y1;
+	float x2;
+	float y2;
+	int   up;
+	int   down;
 };
 
-struct _sideviewColors
-{
+struct _sideviewColors {
 	PARA_COLOR color;
 };
 
 extern float               sideviewDrawScale;
 extern int                 currentTunnel;
 extern int                 currentDeckNumber;
+extern float               sideviewDrawScaleScript;
 extern _sideviewBasicLevel sideviewLevels[MAX_LEVELS];
 
 // load the sideview data from the external file
-bool gui_loadSideViewData(const std::string sideviewFileName);
+bool gui_loadSideViewData (const std::string sideviewFileName);
 
 // Create a color into the sideview array
-void gui_createSideViewColor(int index, int red, int green, int blue, int alpha);
+void gui_createSideViewColor (int index, int red, int green, int blue, int alpha);
 
 // Show the ship in its sideview on the screen
-void gui_drawSideView();
+void gui_drawSideView ();

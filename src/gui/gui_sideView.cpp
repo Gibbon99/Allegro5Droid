@@ -11,6 +11,7 @@ int                 drawOffsetX       = 0;
 float               sideviewDrawScale;      // From Script
 int                 currentDeckNumber = -1;
 int                 currentTunnel     = 0;
+float               sideviewDrawScaleScript;
 
 // ----------------------------------------------------------------------------
 //
@@ -30,9 +31,9 @@ void gui_createSideViewColor (int index, int red, int green, int blue, int alpha
 //-----------------------------------------------------------------------------
 {
 	if ((index < 0) || (index > SIDEVIEW_NUM_COLORS))
-	{
-		return;
-	}
+		{
+			return;
+		}
 
 	sideviewColors[index].color.r = red;
 	sideviewColors[index].color.g = green;
@@ -131,76 +132,76 @@ bool gui_loadSideViewData (const std::string sideviewFileName)
 	unsigned char levelCount[1];
 	PARA_MEM_FILE *fp;
 
-	int smallX, largeX;
+	float smallX, largeX;
 
 	smallX = 1000;
 	largeX = 0;
 
+	sideviewDrawScale = sideviewDrawScaleScript;
+
 	fileLength = (int) io_getFileSize (sideviewFileName.c_str ());
 	if (fileLength < 0)
-	{
-		log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", sideviewFileName.c_str ()));
-		return false;
-	}
+		{
+			log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", sideviewFileName.c_str ()));
+			return false;
+		}
 
 	fileBuffer = (char *) malloc (sizeof (char) * fileLength);
 	if (nullptr == fileBuffer)
-	{
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation error when loading level file [ %s ].", sideviewFileName.c_str ()));
-	}
+		{
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation error when loading level file [ %s ].", sideviewFileName.c_str ()));
+		}
 
 	if (-1 == io_getFileIntoMemory (sideviewFileName.c_str (), fileBuffer))
-	{
-		free (fileBuffer);
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str ()));
-	}
+		{
+			free (fileBuffer);
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str ()));
+		}
 
 	fp = para_openMemFile (fileBuffer, fileLength);
 	if (nullptr == fp)
-	{
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str ()));
-	}
+		{
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str ()));
+		}
 
 	para_readFile (fp, &levelCount, sizeof (levelCount));
 	numberLevels = levelCount[0];
 
 	if (MAX_LEVELS != numberLevels)
-	{
-		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Bad format or date when reading file [ %s ]", sideviewFileName.c_str ()));
-	}
+		{
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Bad format or date when reading file [ %s ]", sideviewFileName.c_str ()));
+		}
 
 	for (count = 0; count != numberLevels; count++)
-	{
-		float temp;
-
-		sideviewDrawScale = 0.4f;
-
-		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
-		temp = buf[0] * sideviewDrawScale;
-		sideviewLevels[count].x1 = temp;
-
-		if (sideviewLevels[count].x1 < smallX)
 		{
-			smallX = sideviewLevels[count].x1;
+			float temp;
+
+			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
+			temp = (float) buf[0] * sideviewDrawScale;
+			sideviewLevels[count].x1 = temp;
+
+			if (sideviewLevels[count].x1 < smallX)
+				{
+					smallX = sideviewLevels[count].x1;
+				}
+
+			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
+			temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
+			sideviewLevels[count].y1 = temp;
+
+			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
+			temp = (float) buf[0] * sideviewDrawScale;
+			sideviewLevels[count].x2 = temp;
+
+			if (sideviewLevels[count].x2 > largeX)
+				{
+					largeX = sideviewLevels[count].x2;
+				}
+
+			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
+			temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
+			sideviewLevels[count].y2 = temp;
 		}
-
-		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
-		temp = (buf[0] - 100.0f) * sideviewDrawScale;
-		sideviewLevels[count].y1 = temp;
-
-		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
-		temp = buf[0] * sideviewDrawScale;
-		sideviewLevels[count].x2 = temp;
-
-		if (sideviewLevels[count].x2 > largeX)
-		{
-			largeX = sideviewLevels[count].x2;
-		}
-
-		para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
-		temp = (buf[0] - 100.0f) * sideviewDrawScale;
-		sideviewLevels[count].y2 = temp;
-	}
 	para_closeFile (fp);
 
 	free (fileBuffer);
@@ -238,70 +239,69 @@ void gui_drawSideView ()
 	toLifts++;
 
 	for (count = 1; count != MAX_LEVELS - lifts; count++)
-	{
-		gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
-		toLifts++;
-	}
+		{
+			gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+			toLifts++;
+		}
 
 	if (currentMode == MODE_LIFT_VIEW)
-	{
+		{
 //		currentLevel = tunnel[currentTunnel].current;
-		// highlite current level
-		if (0 == currentDeckNumber)
-		{
-			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
+			// highlite current level
+			if (0 == currentDeckNumber)
+				{
+					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
+				}
+			else
+				{
+					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
+				}
 		}
-		else
-		{
-			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
-		}
-	}
 	else
-	{
-		switch (currentAlertLevel)
 		{
-			case ALERT_GREEN_TILE:
-				tempAlert = al_map_rgba (0, 255, 0, 255);
-				break;
+			switch (currentAlertLevel)
+				{
+					case ALERT_GREEN_TILE:
+						tempAlert = al_map_rgba (0, 255, 0, 255);
+					break;
 
-			case ALERT_YELLOW_TILE:
-				tempAlert = al_map_rgba (255, 255, 0, 255);
-				break;
+					case ALERT_YELLOW_TILE:
+						tempAlert = al_map_rgba (255, 255, 0, 255);
+					break;
 
-			case ALERT_RED_TILE:
-				tempAlert = al_map_rgba (255, 0, 0, 255);
-				break;
+					case ALERT_RED_TILE:
+						tempAlert = al_map_rgba (255, 0, 0, 255);
+					break;
 
-			default:
-				tempAlert = al_map_rgba (255, 255, 255, 255);
-				break;
+					default:
+						tempAlert = al_map_rgba (255, 255, 255, 255);
+					break;
+				}
+
+			if (0 == currentDeckNumber)
+				{
+					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, tempAlert);
+				}
+			else
+				{
+					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, tempAlert);
+				}
 		}
-
-		if (0 == currentDeckNumber)
-		{
-			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, tempAlert);
-		}
-		else
-		{
-			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, tempAlert);
-		}
-	}
-
 
 	if ((currentTunnel != 3) && (currentTunnel != 6))
-	{
-		count = 13;
-		gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
-	}
-	else
-	{
-		// using tunnel connecting to level 13
-		if (currentDeckNumber != 13)
 		{
 			count = 13;
 			gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 		}
-	}
+	else
+		{
+			// using tunnel connecting to level 13
+			if (currentDeckNumber != 13)
+				{
+					count = 13;
+					gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+				}
+		}
 
 	// fill in engine part
 	gui_sideviewDrawRect (sideviewLevels[7].x1, sideviewLevels[7].y1, sideviewLevels[7].x2, sideviewLevels[7].y2, sideviewColors[SIDEVIEW_ENGINE_COLOR].color);
@@ -309,9 +309,9 @@ void gui_drawSideView ()
 	// draw the lifts
 	//
 	for (count = 0; count != lifts; count++)
-	{
-		gui_sideviewDrawRect (sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
-	}
+		{
+			gui_sideviewDrawRect (sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
+		}
 
 	/*
 	if (currentMode == MODE_LIFT_VIEW)

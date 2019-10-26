@@ -8,6 +8,56 @@ void script_loadAllResources ()
 {
 	string levelName;
 
+	showDebugPhysics         = false;
+	doorAnimSpeed            = 4.5f;
+	pixelsPerMeter           = 12.0f;        // 12 pixels is 1 meter
+	wayPointDestinationSize  = 1.0f;         // 1 meter
+	shipDamping              = 0.0f;
+	playerRadius             = 12.0f;
+	playerFriction           = 0.5f;
+	playerElastic            = 0.8f;
+	playerAcceleration       = 150.0f;
+	playerMaxSpeed           = 250.0f;
+	gravity                  = 190.0f;
+	sideviewDrawScaleScript  = 0.415f;
+	droidAnimateSpeed        = 60.0f;
+	explodeAnimateSpeed      = 120.0f;
+	badHealthFactor          = 0.10f;        // Percent of health before it's considered bad CHANGE ME
+	collisionDamageInflicted = 3;
+	collisionExplosionDamage = 10;
+	bulletAnimSpeed          = 10.0f;
+	bulletMoveSpeed          = 0.4f;
+	bulletDensity            = 0.2f;
+	healingAnimSpeed         = 10.0f;
+	droidBeenShotValue       = 90.0f;
+	splashTimeout            = 5;
+	databaseAnimTime         = 10.0f;
+	//
+	// Counter for how long droid remembers being shot
+	droidBeenShotValue       = 3.0f;
+	witnessShootValue        = 1.5f;
+	witnessTransferValue     = 1.5f;
+	//
+	// Amounts to influence chance to shoot
+	ai_beenShot              = 0.7f;
+	ai_healthAmount          = 0.3f;
+	ai_playerVisible         = 0.2f;
+	ai_witnessShoot          = 0.0f;    // 0.4f
+	ai_witnessTransfer       = 0.6f;    // 0.6f
+	ai_greenFactor           = 0.1f;
+	ai_yellowFactor          = 0.2f;
+	ai_redFactor             = 0.4f;
+	deckViewRatio            = 0.8f;
+	//
+	// Array starting size
+	numStartingBullets       = 10;
+	useHoldBitmap            = true;
+	//
+	// Delay to update score
+	scoreDelay               = 10.0f;
+	yellowAlertLevel         = 500;
+	redAlertLevel            = 750;
+
 	sys_loadResource ("collision", "collosion1.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("endTransmission1", "endTransmission1.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("greenAlert", "greenAlert.wav", RESOURCE_AUDIO, 0, 0);
@@ -140,60 +190,12 @@ void script_loadAllResources ()
 	lvl_loadShipLevel ("116-newDeck19.dat");
 	lvl_loadShipLevel ("116-newDeck20.dat");
 
-	sys_loadResource ("console", "console.ttf", RESOURCE_FONT, 0, 8);
-	sys_loadResource ("intro", "intro.ttf", RESOURCE_FONT, 0, 14);
-	sys_loadResource ("gui", "gui.ttf", RESOURCE_FONT, 0, 14);
+	sys_loadResource ("console", "console.ttf", RESOURCE_FONT, 0, 16);
+	sys_loadResource ("intro", "intro.ttf", RESOURCE_FONT, 0, 20);
+	sys_loadResource ("gui", "gui.ttf", RESOURCE_FONT, 0, 20);
 
 	as_initParticleValues ();
+	as_initTransferValues ();
 
 	initResourcesAllDone     = true;
-	showDebugPhysics         = false;
-	doorAnimSpeed            = 4.5f;
-	pixelsPerMeter           = 12.0f;        // 12 pixels is 1 meter
-	wayPointDestinationSize  = 1.0f;         // 1 meter
-	shipDamping              = 0.0f;
-	playerRadius             = 12.0f;
-	playerFriction           = 0.5f;
-	playerElastic            = 0.8f;
-	playerAcceleration       = 150.0f;
-	playerMaxSpeed           = 250.0f;
-	gravity                  = 190.0f;
-	sideviewDrawScale        = 0.5f;
-	droidAnimateSpeed        = 60.0f;
-	explodeAnimateSpeed      = 120.0f;
-	badHealthFactor          = 0.10f;        // Percent of health before it's considered bad CHANGE ME
-	collisionDamageInflicted = 3;
-	collisionExplosionDamage = 10;
-	bulletAnimSpeed          = 10.0f;
-	bulletMoveSpeed          = 0.5f;
-	bulletDensity            = 0.2f;
-	healingAnimSpeed         = 10.0f;
-	droidBeenShotValue       = 90.0f;
-	splashTimeout            = 5;
-	databaseAnimTime         = 10.0f;
-	//
-	// Counter for how long droid remembers being shot
-	droidBeenShotValue       = 3.0f;
-	witnessShootValue        = 1.5f;
-	witnessTransferValue     = 1.5f;
-	//
-	// Amounts to influence chance to shoot
-	ai_beenShot              = 0.7f;
-	ai_healthAmount          = 0.3f;
-	ai_playerVisible         = 0.2f;
-	ai_witnessShoot          = 0.0f;    // 0.4f
-	ai_witnessTransfer       = 0.6f;    // 0.6f
-	ai_greenFactor           = 0.1f;
-	ai_yellowFactor          = 0.2f;
-	ai_redFactor             = 0.4f;
-	deckViewRatio            = 0.8f;
-	//
-	// Array starting size
-	numStartingBullets       = 10;
-	useHoldBitmap            = true;
-	//
-	// Delay to update score
-	scoreDelay               = 10.0f;
-	yellowAlertLevel         = 500;
-	redAlertLevel            = 750;
 }

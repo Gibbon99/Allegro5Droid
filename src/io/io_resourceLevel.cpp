@@ -401,8 +401,6 @@ void lvl_changeToLevel (const std::string &newLevelName, int whichLift)
 	bul_initBulletArraySize ();
 
 	gam_drawAllTiles ();
-
+	gam_processScore (0.0f);
 	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, currentAlertLevelSoundName);
-//	snd_playSound ("greenAlert", ALLEGRO_PLAYMODE_LOOP, 0.1f, 0.0f);
-
 }

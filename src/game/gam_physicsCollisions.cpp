@@ -6,6 +6,7 @@
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_bullet.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/game/gam_transfer.h>
 #include "hdr/game/gam_physicsCollisions.h"
 
 contactListener myContactListenerInstance;
@@ -98,10 +99,18 @@ void contactListener::BeginContact (b2Contact *contact)
 				}
 
 			case PHYSIC_TYPE_PLAYER:
-				if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
+				if (!playerDroid.inTransferMode)
 					{
-						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, -1, {0, 0});
-						gam_addPhysicAction (PHYSIC_EVENT_TYPE_PLAYER, PHYSIC_DAMAGE_BUMP, -1, -1, bodyUserData_B->dataValue, {0, 0});
+						if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
+							{
+								gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, -1, {0, 0});
+								gam_addPhysicAction (PHYSIC_EVENT_TYPE_PLAYER, PHYSIC_DAMAGE_BUMP, -1, -1, bodyUserData_B->dataValue, {0, 0});
+								return;
+							}
+					}
+				else
+					{
+						gam_changeToTransferGame (shipLevel.at(lvl_getCurrentLevelName ()).droid[bodyUserData_B->dataValue].droidType);
 						return;
 					}
 			break;
@@ -159,7 +168,7 @@ void contactListener::BeginContact (b2Contact *contact)
 						{
 							par_addEmitter (bullets[bodyUserData_A->dataValue].worldPos, PARTICLE_TYPE_SPARK, bodyUserData_A->dataValue);
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
- 							return;
+							return;
 						}
 					break;
 				}

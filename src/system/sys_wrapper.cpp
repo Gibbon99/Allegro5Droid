@@ -83,7 +83,7 @@ void PARA_presentFrame(PARA_DISPLAY *thisDisplay, PARA_BITMAP *thisBitmap)
 	// Now display backing bitmap onto display
 	al_set_target_backbuffer(thisDisplay);
 	al_clear_to_color(al_map_rgb_f(1, 1, 0));
-	al_draw_scaled_bitmap(thisBitmap, 0, 0, screenWidth, screenHeight, scaleX, scaleY, scaleW, scaleH, 0);
+	al_draw_scaled_bitmap(thisBitmap, 0, 0, al_get_bitmap_width(thisBitmap), al_get_bitmap_height(thisBitmap), scaleX, scaleY, scaleW, scaleH, 0);
 
 	al_flip_display();
 }

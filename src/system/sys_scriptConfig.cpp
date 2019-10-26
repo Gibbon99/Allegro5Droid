@@ -24,6 +24,7 @@
 #include <hdr/game/gam_particles.h>
 #include <hdr/system/sys_audio.h>
 #include <hdr/game/gam_game.h>
+#include <hdr/game/gam_transferRender.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -44,7 +45,7 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("float playerMaxSpeed", &playerMaxSpeed);
 	sys_scriptAddHostVariable ("float gravity", &gravity);
 	sys_scriptAddHostVariable ("float doorAnimSpeed", &doorAnimSpeed);
-	sys_scriptAddHostVariable ("float sideviewDrawScale", &sideviewDrawScale);
+	sys_scriptAddHostVariable ("float sideviewDrawScaleScript", &sideviewDrawScaleScript);
 	sys_scriptAddHostVariable ("float droidAnimateSpeed", &droidAnimateSpeed);
 	sys_scriptAddHostVariable ("float badHealthFactor", &badHealthFactor);
 	sys_scriptAddHostVariable ("int collisionExplosionDamage", &collisionExplosionDamage);
@@ -146,7 +147,23 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("int yellowAlertLevel", &yellowAlertLevel);
 	sys_scriptAddHostVariable ("int redAlertLevel", &redAlertLevel);
 
+	sys_scriptAddHostVariable ("int numberTransferRows", &numberTransferRows);
+	sys_scriptAddHostVariable ("float transferRowHeight", &transferRowHeight);
+	sys_scriptAddHostVariable ("float transferRowStartY", &transferRowStartY);
+	sys_scriptAddHostVariable ("float transferRowCellWidth", &transferRowCellWidth);
 
+	sys_scriptAddHostVariable ("float transferBackgroundStartX", &transferBackgroundStartX);
+	sys_scriptAddHostVariable ("float transferBackgroundStartY", &transferBackgroundStartY);
+	sys_scriptAddHostVariable ("float transferBackgroundWidth", &transferBackgroundWidth);
+	sys_scriptAddHostVariable ("float transferBackgroundHeight", &transferBackgroundHeight);
+	sys_scriptAddHostVariable ("int transferBorderThickness", &transferBorderThickness);
+	sys_scriptAddHostVariable ("float transferStatusTabWidth", &transferStatusTabWidth);
+	sys_scriptAddHostVariable ("float transferStatusTabHeight", &transferStatusTabHeight);
+	sys_scriptAddHostVariable ("float transferSidebarGap", &transferSidebarGap);
+	sys_scriptAddHostVariable ("float transferSidebarWidth", &transferSidebarWidth);
+	sys_scriptAddHostVariable ("float transferLineThickness", &transferLineThickness);
+	sys_scriptAddHostVariable ("int transferBitmapWidth", &transferBitmapWidth);
+	sys_scriptAddHostVariable ("int transferBitmapHeight", &transferBitmapHeight);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -196,6 +213,9 @@ void sys_scriptInitFunctions ()
 
 	sys_scriptAddHostFunction ("void as_setParticleColor(int whichParticle, float red, float green, float blue, float alpha)",(functionPtr) &par_hostSetParticleColor);
 	sys_scriptAddHostFunction ("int sys_getCappedRandomNum(int cap)", (functionPtr) &sys_getCappedRandomNum);
+	sys_scriptAddHostFunction ("float sys_getLogicalWidth()", (functionPtr) &sys_getLogicalWidth);
+	sys_scriptAddHostFunction ("float sys_getLogicalHeight()", (functionPtr) &sys_getLogicalHeight);
+	sys_scriptAddHostFunction ("void trn_setTransferColor(int whichSide, float red, float green, float blue, float alpha)", (functionPtr) &trn_setTransferColor);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -209,5 +229,5 @@ void sys_scriptInitScriptFunctions ()
 	sys_scriptAddScriptFunction ("void as_guiHandleElementAction(string &in objectID)", "as_guiHandleElementAction");
 	sys_scriptAddScriptFunction ("void as_guiHandleTerminalAction(string &in objectID)", "as_guiHandleTerminalAction");
 	sys_scriptAddScriptFunction ("void as_guiHandleDatabaseAction(string &in objectID)", "as_guiHandleDatabaseAction");
+	sys_scriptAddScriptFunction ("void as_guiHandleTransferAction(string &in objectID)", "as_guiHandleTransferAction");
 }
-
