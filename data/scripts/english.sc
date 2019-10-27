@@ -95,5 +95,14 @@ void as_setEnglishText ()
 
 	gui_addKeyAndText ("labelTransferTwo", "Target Droid");
 	gui_addKeyAndText ("textBoxTransferTwo", "This is the unit you wish to control. Prepare to transfer.");
+
+	gui_addKeyAndText ("hudTransfer", "Transfer");
+	gui_addKeyAndText ("hudMoving", "Moving");
+	gui_addKeyAndText ("hudCaptured", "Captured");
+	gui_addKeyAndText ("hudHealing", "Healing");
+	gui_addKeyAndText ("hudRecharging", "Recharge");
+	gui_addKeyAndText ("hudChooseSide", "Choose side");
+	gui_addKeyAndText ("hudTerminal", "Terminal");
+	gui_addKeyAndText ("hudLift", "Lift");
 }
 

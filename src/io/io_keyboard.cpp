@@ -4,6 +4,7 @@
 #include <hdr/gui/gui_sideView.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_transfer.h>
+#include <hdr/game/gam_hud.h>
 #include "hdr/io/io_keyboard.h"
 
 __KeyBindings keyBinding[NUMBER_ACTIONS];
@@ -113,6 +114,7 @@ void io_processKeyActions ()
 						{
 							playerDroid.inTransferMode = false;
 							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
+							hud_setText ("hudMoving");
 						}
 				}
 			break;
@@ -136,6 +138,7 @@ void io_processKeyActions ()
 					lvl_changeToLevel (lvl_returnLevelNameFromDeck (currentDeckNumber), gam_putPlayerOnLiftFromTunnel (currentDeckNumber));
 
 					sys_changeMode (MODE_GAME, true);
+					hud_setText ("hudMoving");
 				}
 
 			break;

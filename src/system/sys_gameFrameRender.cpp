@@ -267,13 +267,13 @@ void sys_displayScreen (double interpolation)
 			break;
 	}
 
-	sys_renderFrameTimeQueue ();
+//	sys_renderFrameTimeQueue ();
 
 	//
 	// Draw everything here
-	fnt_setColor_f (0, 0, 0, 1);
-	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
-	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
+//	fnt_setColor_f (0, 0, 0, 1);
+//	fnt_printSystemFont (5, 0, sys_getString ("Rate [ %i ] FPS [ %f ] ", displayRefreshRate, printFPS));
+//	fnt_printSystemFont (5, 20, sys_getString ("inter [ %f ]", interpolation));
 
 	sys_screenFade ();
 }

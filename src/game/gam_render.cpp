@@ -146,7 +146,8 @@ void gam_drawAllTiles ()
 			for (countX = 0; countX != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x; countX++)
 				{
 					whichTile = shipLevel.at (lvl_getCurrentLevelName()).tiles[(countY * shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x) + countX];
-					gam_drawSingleTile (countX * TILE_SIZE, countY * TILE_SIZE, whichTile);
+					if (whichTile > 0)
+						gam_drawSingleTile (countX * TILE_SIZE, countY * TILE_SIZE, whichTile);
 				}
 		}
 }

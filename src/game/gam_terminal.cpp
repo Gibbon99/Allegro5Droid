@@ -4,6 +4,7 @@
 #include <hdr/system/sys_init.h>
 #include <hdr/io/io_logFile.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_hud.h>
 #include "hdr/game/gam_terminal.h"
 
 std::vector<__liftSensor> terminals;
@@ -110,4 +111,5 @@ void gam_performTerminalAction ()
 	gui_changeToGUIScreen (gui_findIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
 	sys_changeMode (MODE_GUI_TERMINAL, true);
 	gui_hostSetObjectFocus ("terminalLogoffButton");
+	hud_setText ("hudTerminal");
 }

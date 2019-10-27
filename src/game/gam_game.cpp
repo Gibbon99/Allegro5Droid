@@ -1,5 +1,6 @@
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_particles.h>
+#include <hdr/game/gam_hud.h>
 #include "hdr/game/gam_game.h"
 
 int         currentAlertLevel;
@@ -30,6 +31,7 @@ void gam_startNewGame ()
 	currentAlertLevel = ALERT_GREEN_TILE;
 	currentAlertLevelSoundName = "greenAlert";
 	par_resetAllEmitters ();
+	hud_setText ("hudMoving");
 }
 
 //-------------------------------------------------------------------------------------------------------------------------
@@ -98,5 +100,5 @@ void gam_resetScore ()
 	// Reset score
 	//
 	currentScore = 0;
-	displayScore = 0;
+	displayScore = 101010;
 }

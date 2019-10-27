@@ -3,20 +3,33 @@
 #include <hdr/system/sys_font.h>
 #include <hdr/game/gam_game.h>
 #include <hdr/game/gam_transferRender.h>
+#include <hdr/gui/gui_text.h>
 #include "hdr/game/gam_hud.h"
 
-//---------------------------------------------------------------------------------
+std::string hudStatusText;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+//
+// Set the text for the HUD status
+void hud_setText(std::string newText)
+//--------------------------------------------------------------------------------------------------------------------------------------------
+{
+	hudStatusText = gui_getString(newText);
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
 //
 // Render the HUD - scale to logical screen width
-void hud_renderHUD()
-//---------------------------------------------------------------------------------
+void hud_renderHUD ()
+//--------------------------------------------------------------------------------------------------------------------------------------------
 {
-	float hudFontX;
+	float hudScoreFontX;
+	float hudStatusFontX;
 	float hudFontY;
 
 	try
 		{
-			if (!bitmap.at("hud").common.loaded)
+			if (!bitmap.at ("hud").common.loaded)
 				return;
 		}
 
@@ -25,23 +38,30 @@ void hud_renderHUD()
 			return;
 		}
 
-		switch (currentMode)
-			{
-				case MODE_GUI_TRANSFER_CHOOSE_SIDE:
-					sys_drawBitmap ("hud", 0.0f, 0.0f, RENDER_SCALE, trn_getTransferBitmapWidth (), sys_getImageHeight ("hud"));
-					break;
-
-				default:
-					sys_drawBitmap ("hud", 0.0f, 0.0f, RENDER_SCALE, sys_getLogicalWidth (), sys_getImageHeight ("hud"));
-					break;
-			}
-
-
+	fnt_setColor_f (0.0f, 0.0f, 0.0f, 1.0f);
 	fnt_setTTF ("gui");
 
-	hudFontX = 30.0f;
+	switch (currentMode)
+		{
+			case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+				sys_drawBitmap ("hud", 0.0f, 0.0f, RENDER_SCALE, trn_getTransferBitmapWidth (), sys_getImageHeight ("hud"));
+			hudScoreFontX = trn_getTransferBitmapWidth () - fnt_getWidth (sys_getString ("%s", gam_getScore ().c_str ()));
+			hudScoreFontX -= fnt_getWidth("--");
+			hudStatusFontX = fnt_getWidth("-");
+			break;
+
+			default:
+				sys_drawBitmap ("hud", 0.0f, 0.0f, RENDER_SCALE, sys_getLogicalWidth (), sys_getImageHeight ("hud"));
+			hudScoreFontX = sys_getLogicalWidth () - fnt_getWidth (sys_getString ("%s", gam_getScore ().c_str ()));
+			hudScoreFontX -= fnt_getWidth("--");
+			hudStatusFontX = fnt_getWidth("-");
+			break;
+		}
+
 	hudFontY = (sys_getImageHeight ("hud") / 2) - (fnt_getHeight () / 2);
 
-	fnt_render (b2Vec2{hudFontX, hudFontY}, sys_getString("%s",gam_getScore().c_str()));
+	fnt_render (b2Vec2{hudScoreFontX, hudFontY}, sys_getString ("%s", gam_getScore ().c_str ()));
+
+	fnt_render (b2Vec2{hudStatusFontX, hudFontY}, sys_getString ("%s", hudStatusText.c_str()));
 }
 

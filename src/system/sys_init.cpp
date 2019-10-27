@@ -272,7 +272,7 @@ void sys_initAll ()
 //	al_start_timer(splashTimer);
 	sys_changeMode (MODE_GAME, true);
 
-	sys_changeMode(MODE_GUI_TRANSFER_INIT_GAME, false);
+//	sys_changeMode(MODE_GUI_TRANSFER_INIT_GAME, false);
 
 	gam_startNewGame();
 

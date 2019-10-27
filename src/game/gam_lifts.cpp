@@ -3,6 +3,7 @@
 #include <hdr/game/gam_player.h>
 #include <hdr/io/io_logFile.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_hud.h>
 #include "hdr/game/gam_lifts.h"
 
 std::vector<__liftSensor> lifts;
@@ -23,6 +24,7 @@ void gam_performLiftAction ()
 	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 0, 0, "greenAlert");
 	gam_getTunnelToUse ();
 	sys_changeMode (MODE_LIFT_VIEW, true);
+	hud_setText ("hudLift");
 }
 
 //----------------------------------------------------------------------------

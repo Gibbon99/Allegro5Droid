@@ -2,6 +2,7 @@
 #include <hdr/io/io_keyboard.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_transferRender.h>
+#include <hdr/game/gam_hud.h>
 #include "hdr/game/gam_transfer.h"
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -26,6 +27,7 @@ void gam_changeToTransferGame (int targetDroid)
 	gui_changeToGUIScreen (gui_findIndex (GUI_OBJECT_SCREEN, "guiTransferOne"));
 	sys_changeMode (MODE_GUI_TRANSFER_SCREEN_ONE_LOAD, true);
 	gui_hostSetObjectFocus ("buttonTransferOneNext");
+	hud_setText ("hudCaptured");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
