@@ -31,6 +31,8 @@ void gui_drawCheckbox(int whichObject, bool hasFocus)
 		return;
 	}
 
+	fnt_setTTF (guiCheckBoxes[whichObject].fontName);
+
 	boxSize = fnt_getHeight() + insideSize;
 
 	textStartX = guiCheckBoxes[whichObject].boundingBox.x + boxSize + insideSize; //guiCheckBoxes[whichObject].gapSize;

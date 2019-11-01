@@ -37,6 +37,8 @@ void gui_drawTextbox (int whichObject)
 		return;
 	}
 
+	fnt_setTTF (guiTextBoxes[whichObject].fontName);
+
 	nextLine.clear ();
 	textLength = 0;
 

@@ -32,6 +32,8 @@ void gui_drawLabel(int whichObject)
 		return;
 	}
 
+	fnt_setTTF (guiLabels[whichObject].fontName);
+
 	switch (guiLabels[whichObject].labelPos)
 	{
 		case GUI_LABEL_CENTER:

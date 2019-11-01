@@ -58,6 +58,13 @@ void sys_gameTickRun (double tickTime)
 
 		case MODE_GUI_INTRO:
 			gui_scrollScrollBox (&introScrollBox, tickTime);
+			io_processKeyActions();
+			break;
+
+		case MODE_PRE_GAME:
+			lvl_changeToLevel ("Staterooms", 0);
+			gam_startNewGame();
+			sys_changeMode (MODE_GAME, false);
 			break;
 
 		case MODE_GAME:

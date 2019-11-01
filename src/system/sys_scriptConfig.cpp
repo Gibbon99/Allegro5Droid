@@ -25,6 +25,8 @@
 #include <hdr/system/sys_audio.h>
 #include <hdr/game/gam_game.h>
 #include <hdr/game/gam_transferRender.h>
+#include <hdr/game/gam_hud.h>
+#include <hdr/system/sys_eventsEngine.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -185,6 +187,7 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void as_guiSetObjectLabel    (int guiObjectType, string &in, int labelPos, string &in)", (functionPtr) &gui_hostSetObjectLabel);
 	sys_scriptAddHostFunction ("void as_guiAddObjectToScreen (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostAddObjectToScreen);
 	sys_scriptAddHostFunction ("void as_guiSetObjectFunction (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostSetObjectFunctions);
+	sys_scriptAddHostFunction ("void as_guiSetObjectFontName (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostSetObjectFontName);
 
 	sys_scriptAddHostFunction ("void as_guiSetObjectColor    (int guiObjectType, string &in, int whichColor, float red, float green, float blue, float alpha)", (functionPtr) &gui_hostSetObjectColor);
 	sys_scriptAddHostFunction ("void as_guiSetReadyState     (int guiObjectType, string &in, bool newState)", (functionPtr) &gui_hostSetReadyState);
@@ -216,6 +219,10 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("float sys_getLogicalWidth()", (functionPtr) &sys_getLogicalWidth);
 	sys_scriptAddHostFunction ("float sys_getLogicalHeight()", (functionPtr) &sys_getLogicalHeight);
 	sys_scriptAddHostFunction ("void trn_setTransferColor(int whichSide, float red, float green, float blue, float alpha)", (functionPtr) &trn_setTransferColor);
+
+	sys_scriptAddHostFunction ("void hud_setText(string &in)", (functionPtr) &hud_setText);
+
+	sys_scriptAddHostFunction ("void evt_pushEvent (int delayCount, int eventType, int eventAction, int data1, int data2, string &in)", (functionPtr) &evt_pushEvent);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

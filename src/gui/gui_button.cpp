@@ -41,6 +41,8 @@ void gui_drawButton(int whichButton, bool hasFocus)
 		return;
 	}
 
+	fnt_setTTF (guiButtons[whichButton].fontName);
+
 	startX = guiButtons[whichButton].startX;
 	startY = guiButtons[whichButton].startY;
 	width = guiButtons[whichButton].width;

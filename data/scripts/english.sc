@@ -104,5 +104,11 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("hudChooseSide", "Choose side");
 	gui_addKeyAndText ("hudTerminal", "Terminal");
 	gui_addKeyAndText ("hudLift", "Lift");
+	gui_addKeyAndText ("hudDatabase", "Database");
+	gui_addKeyAndText ("hudDeckView", "Deck View");
+	gui_addKeyAndText ("hudShipView", "Ship View");
+	gui_addKeyAndText ("hudBriefing", "Briefing");
+	gui_addKeyAndText ("hudOptions", "Options");
+	gui_addKeyAndText ("hudGameOn", "Game On");
 }
 

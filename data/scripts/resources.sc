@@ -193,6 +193,8 @@ void script_loadAllResources ()
 	sys_loadResource ("console", "console.ttf", RESOURCE_FONT, 0, 16);
 	sys_loadResource ("intro", "intro.ttf", RESOURCE_FONT, 0, 20);
 	sys_loadResource ("gui", "gui.ttf", RESOURCE_FONT, 0, 20);
+	sys_loadResource ("gui_small", "gui.ttf", RESOURCE_FONT, 0, 14);
+	sys_loadResource ("gui_label", "gui.ttf", RESOURCE_FONT, 0, 18);
 
 	as_initParticleValues ();
 	as_initTransferValues ();

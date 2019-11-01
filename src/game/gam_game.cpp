@@ -31,7 +31,7 @@ void gam_startNewGame ()
 	currentAlertLevel = ALERT_GREEN_TILE;
 	currentAlertLevelSoundName = "greenAlert";
 	par_resetAllEmitters ();
-	hud_setText ("hudMoving");
+	hud_setText ("hudGameOn");
 }
 
 //-------------------------------------------------------------------------------------------------------------------------

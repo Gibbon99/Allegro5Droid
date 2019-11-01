@@ -99,8 +99,17 @@ void io_processKeyActions ()
 			break;
 
 			case MODE_GUI_TRANSFER_CHOOSE_SIDE:
-				trn_handleTransferChooseSide();
-				break;
+				trn_handleTransferChooseSide ();
+			break;
+
+			case MODE_GUI_INTRO:
+				if (keyBinding[gameAction].currentlyPressed)
+					{
+						keyBinding[gameAction].currentlyPressed = false;
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 0, 0, "introSound");
+						sys_changeMode (MODE_GUI, true);
+					}
+			break;
 
 			case MODE_GAME:
 				gam_processPlayerMovement ();

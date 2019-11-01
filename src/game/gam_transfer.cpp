@@ -47,6 +47,8 @@ void trn_startTransferGame()
 void trn_handleTransferChooseSide ()
 //---------------------------------------------------------------------------------------------------------------------
 {
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 0, 0, "keyPressGood");
+
 	if (keyBinding[gameLeft].currentlyPressed)
 		{
 			transferPlayerWhichSide = TRANSFER_COLOR_LEFT;

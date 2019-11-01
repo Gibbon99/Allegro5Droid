@@ -1,4 +1,8 @@
 float buttonHeight = 7.0f;
+float hudPadding   = 10.0f;
+
+int ALLEGRO_PLAYMODE_ONCE = 0x100;
+int ALLEGRO_PLAYMODE_LOOP = 0x101;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -23,6 +27,7 @@ void as_guiHandleTransferAction (string &in objectID)
 				{
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferChooseSide"));
 					sys_changeCurrentMode (MODE_GUI_TRANSFER_INIT_GAME, true);
+					hud_setText ("hudChooseSide");
 					return;
 				}
 		}
@@ -38,7 +43,7 @@ void as_guiHandleDatabaseAction (string &in objectID)
 		{
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databasePrevButton"))
 				{
-					gam_previousDatabaseDroid();
+					gam_previousDatabaseDroid ();
 					// Go to previous droid
 					return;
 				}
@@ -53,7 +58,7 @@ void as_guiHandleDatabaseAction (string &in objectID)
 
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseNextButton"))
 				{
-					gam_nextDatabaseDroid();
+					gam_nextDatabaseDroid ();
 					// Go to next droid
 					return;
 				}
@@ -73,16 +78,18 @@ void as_guiHandleTerminalAction (string &in objectID)
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalLogoffButton"))
 				{
 					sys_changeCurrentMode (MODE_GAME, true);
+					hud_setText ("hudMoving");
 					return;
 				}
 
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDatabaseButton"))
 				{
-					gam_setLocalDroidType();
-					gam_enterDatabaseMode();
+					gam_setLocalDroidType ();
+					gam_enterDatabaseMode ();
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "databaseScreen"));
 					as_guiSetObjectFocus ("databaseCancelButton");
 					sys_changeCurrentMode (MODE_GUI_DATABASE, true);
+					hud_setText ("hudDatabase");
 					return;
 				}
 
@@ -91,7 +98,7 @@ void as_guiHandleTerminalAction (string &in objectID)
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalDeckviewScreen"));
 					as_guiSetObjectFocus ("deckviewCancelButton");
 					sys_changeCurrentMode (MODE_GUI_TERMINAL_DECKVIEW, true);
-//					sys_changeCurrentMode(MODE_GUI_SHIPVIEW, true);
+					hud_setText ("hudDeckView");
 					return;
 				}
 
@@ -100,6 +107,7 @@ void as_guiHandleTerminalAction (string &in objectID)
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalShipviewScreen"));
 					as_guiSetObjectFocus ("shipviewCancelButton");
 					sys_changeCurrentMode (MODE_GUI_TERMINAL_SHIPVIEW, true);
+					hud_setText ("hudShipView");
 					return;
 				}
 		}
@@ -112,6 +120,7 @@ void as_guiHandleTerminalAction (string &in objectID)
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
 					as_guiSetObjectFocus ("terminalShipviewButton");
 					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+					hud_setText ("hudTerminal");
 					return;
 				}
 		}
@@ -123,6 +132,7 @@ void as_guiHandleTerminalAction (string &in objectID)
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
 					as_guiSetObjectFocus ("terminalDeckviewButton");
 					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+					hud_setText ("hudTerminal");
 					return;
 				}
 		}
@@ -142,12 +152,15 @@ void as_guiHandleElementAction (string &in objectID)
 				{
 					//gam_changeToLevel("Bridge");
 					sys_changeCurrentMode (MODE_PRE_GAME, true);
+					hud_setText ("hudMoving");
 					return;
 				}
 
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "briefingButton"))
 				{
 					sys_changeCurrentMode (MODE_GUI_INTRO, true);
+					hud_setText ("hudBriefing");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "introSound");
 					return;
 				}
 
@@ -156,6 +169,7 @@ void as_guiHandleElementAction (string &in objectID)
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
 					sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
 					as_guiSetObjectFocus ("guiOptionsMainCancelButton");
+					hud_setText ("hudOptions");
 					return;
 				}
 
@@ -217,7 +231,6 @@ void as_guiHandleElementAction (string &in objectID)
 					return;
 				}
 		}
-
 
 	//
 	// Start of the tutorial screens - how to move
@@ -366,7 +379,7 @@ void as_guiHandleElementAction (string &in objectID)
 void script_setupDatabaseScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	float buttonStartY                 = 95; //logicalHeight - (buttonHeight * 2);
+	float buttonStartY                 = gam_getTextureWidth ("hud") + buttonHeight;  //logicalHeight - (buttonHeight * 2);
 	int   databaseScrollBoxBorderWidth = 10;
 
 	databaseScrollBoxWidth  = logicalWidth - databaseScrollBoxBorderWidth;
@@ -400,6 +413,7 @@ void script_setupDatabaseScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "databasePrevButton", GUI_LABEL_CENTER, gui_getString ("previousButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "databasePrevButton", "as_guiHandleDatabaseAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databasePrevButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "databasePrevButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "databaseCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "databaseCancelButton", "databaseScreen");
@@ -407,6 +421,7 @@ void script_setupDatabaseScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "databaseCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "databaseCancelButton", "as_guiHandleDatabaseAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databaseCancelButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "databaseCancelButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "databaseNextButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "databaseNextButton", "databaseScreen");
@@ -414,6 +429,7 @@ void script_setupDatabaseScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "databaseNextButton", GUI_LABEL_CENTER, gui_getString ("nextButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "databaseNextButton", "as_guiHandleDatabaseAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databaseNextButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "databaseNextButton", "gui");
 }
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -453,14 +469,17 @@ void script_setupIntroScrollBox ()
 void as_setupOptionsVideoScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
+	float buttonStartY = gam_getTextureHeight ("hud") + buttonHeight;
+
 	as_guiCreateNewScreen ("optionsVideo");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "optionVideoLabel");
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "optionVideoLabel", "optionsVideo");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "optionVideoLabel", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "optionVideoLabel", GUI_COORD_TYPE_ABSOLUTE, 8, buttonStartY, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "optionVideoLabel", GUI_LABEL_CENTER, gui_getString ("optionVideoLabel"));
 	as_guiSetObjectColor (GUI_OBJECT_LABEL, "optionVideoLabel", GUI_INACTIVE_COL, 250, 250, 200, 250);
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "optionVideoLabel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "optionVideoLabel", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen");
 	as_guiAddObjectToScreen (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen", "optionsVideo");
@@ -470,6 +489,7 @@ void as_setupOptionsVideoScreen ()
 	as_guiSetCheckboxGroup ("optionsVideoCheckFullScreen", -1);
 	as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", -1, fullScreen);
 	as_guiSetReadyState (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen", true);
+	as_guiSetObjectFontName (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsVideoCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "optionsVideo");
@@ -477,6 +497,7 @@ void as_setupOptionsVideoScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "gui");
 
 //	as_guiSetCheckboxTick ( "optionsVideoCheckFullScreen", -1, fullScreenValue == 1 ? true : false );
 }
@@ -487,14 +508,17 @@ void as_setupOptionsVideoScreen ()
 void as_setupOptionsScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
+	float hudSize      = gam_getTextureHeight ("hud") + hudPadding;
+
 	as_guiCreateNewScreen ("guiOptionsMain");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "guiOptionsMainLabel");
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "guiOptionsMainLabel", "guiOptionsMain");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "guiOptionsMainLabel", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "guiOptionsMainLabel", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "guiOptionsMainLabel", GUI_LABEL_CENTER, gui_getString ("guiOptionsMainLabel"));
 	as_guiSetObjectColor (GUI_OBJECT_LABEL, "guiOptionsMainLabel", GUI_INACTIVE_COL, 250, 250, 200, 250);
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "guiOptionsMainLabel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "guiOptionsMainLabel", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton", "guiOptionsMain");
@@ -502,6 +526,7 @@ void as_setupOptionsScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton", GUI_LABEL_CENTER, gui_getString ("guiOptionsMainVideoButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton", "guiOptionsMain");
@@ -509,6 +534,7 @@ void as_setupOptionsScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton", GUI_LABEL_CENTER, gui_getString ("guiOptionsMainAudioButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton", "guiOptionsMain");
@@ -516,6 +542,7 @@ void as_setupOptionsScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton", GUI_LABEL_CENTER, gui_getString ("guiOptionsMainGraphicsButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton", "guiOptionsMain");
@@ -523,6 +550,7 @@ void as_setupOptionsScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton", GUI_LABEL_CENTER, gui_getString ("guiOptionsMainControlsButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", "guiOptionsMain");
@@ -530,6 +558,7 @@ void as_setupOptionsScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", "gui");
 }
 
 //------------------------------------------------------------
@@ -538,19 +567,24 @@ void as_setupOptionsScreen ()
 void as_guiSetupTutorial ()
 //------------------------------------------------------------
 {
+	float hudSize      = gam_getTextureHeight ("hud") + hudPadding;
+	float tutImageSize = 48.0f;
+
 	as_guiCreateNewScreen ("scrTutorial");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutMove");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutMove", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutMove", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutMove", GUI_LABEL_CENTER, gui_getString ("tutMoveLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutMove", "scrTutorial");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutMove", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutMove", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutTextBox", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutTextBox", GUI_LABEL_LEFT, gui_getString ("tutMoveText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutTextBox", "scrTutorial");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutMoveNext");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutMoveNext", GUI_COORD_TYPE_PERCENT, 20, 90, 25, buttonHeight);
@@ -558,6 +592,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutMoveNext", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutMoveNext", "scrTutorial");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutMoveNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutMoveNext", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutorialCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutorialCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -565,6 +600,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutorialCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutorialCancel", "scrTutorial");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutorialCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutorialCancel", "gui");
 
 	//
 	// Screen how to start transfer mode
@@ -572,16 +608,18 @@ void as_guiSetupTutorial ()
 	as_guiCreateNewScreen ("scrTutTransfer");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutTransMove");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTransMove", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTransMove", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutTransMove", GUI_LABEL_CENTER, gui_getString ("tutTransferLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutTransMove", "scrTutTransfer");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutTransMove", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutTransMove", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutTransTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutTransTextBox", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutTransTextBox", GUI_LABEL_LEFT, gui_getString ("tutTransText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutTransTextBox", "scrTutTransfer");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutTransTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutTransTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutTransNext");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutTransNext", GUI_COORD_TYPE_PERCENT, 20, 90, 25, buttonHeight);
@@ -589,6 +627,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTransNext", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTransNext", "scrTutTransfer");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTransNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTransNext", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutTransCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutTransCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -596,6 +635,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTransCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTransCancel", "scrTutTransfer");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTransCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTransCancel", "gui");
 
 	//
 	// Screen explaining transfer game
@@ -603,16 +643,18 @@ void as_guiSetupTutorial ()
 	as_guiCreateNewScreen ("scrTutTransGame");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutTransGame");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTransGame", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTransGame", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutTransGame", GUI_LABEL_CENTER, gui_getString ("tutTransGameLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutTransGame", "scrTutTransGame");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutTransGame", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutTransGame", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutTransGameTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutTransGameTextBox", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutTransGameTextBox", GUI_LABEL_LEFT, gui_getString ("tutTransGameText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutTransGameTextBox", "scrTutTransGame");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutTransGameTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutTransGameTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutTransGameNext");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutTransGameNext", GUI_COORD_TYPE_PERCENT, 20, 90, 25, buttonHeight);
@@ -620,6 +662,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTransGameNext", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTransGameNext", "scrTutTransGame");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTransGameNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTransGameNext", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -627,6 +670,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel", "scrTutTransGame");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel", "gui");
 
 	//
 	// Screen showing how to use lifts
@@ -634,20 +678,22 @@ void as_guiSetupTutorial ()
 	as_guiCreateNewScreen ("scrTutLifts");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutLifts");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutLifts", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutLifts", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutLifts", GUI_LABEL_CENTER, gui_getString ("tutLiftLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutLifts", "scrTutLifts");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutLifts", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutLifts", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutLiftTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutLiftTextBox", GUI_COORD_TYPE_PERCENT, 5, 50, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutLiftTextBox", GUI_LABEL_LEFT, gui_getString ("tutLiftText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutLiftTextBox", "scrTutLifts");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutLiftTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutLiftTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
 	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
-	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_lift"), gam_getTextureHeight ("tut_lift"));
+	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, (logicalWidth - tutImageSize) / 2, hudSize + (hudPadding * 2), tutImageSize, tutImageSize);
 	as_guiSetImageKeyName ("tutImageLift", "tut_lift");
 	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageLift", true);
 
@@ -657,6 +703,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutLiftNext", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutLiftNext", "scrTutLifts");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutLiftNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutLiftNext", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutLiftCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutLiftCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -664,6 +711,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutLiftCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutLiftCancel", "scrTutLifts");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutLiftCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutLiftCancel", "gui");
 
 	//
 	// Screen showing terminal use
@@ -671,20 +719,22 @@ void as_guiSetupTutorial ()
 	as_guiCreateNewScreen ("scrTutTerminals");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutTerminals");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTerminals", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTerminals", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutTerminals", GUI_LABEL_CENTER, gui_getString ("tutTerminalLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutTerminals", "scrTutTerminals");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutTerminals", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutTerminals", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutTerminalTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutTerminalTextBox", GUI_COORD_TYPE_PERCENT, 5, 50, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutTerminalTextBox", GUI_LABEL_LEFT, gui_getString ("tutTerminalText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutTerminalTextBox", "scrTutTerminals");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutTerminalTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutTerminalTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageTerminal");
 	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageTerminal", "scrTutTerminals");
-	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageTerminal", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_terminal"), gam_getTextureHeight ("tut_terminal"));
+	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageTerminal", GUI_COORD_TYPE_ABSOLUTE, (logicalWidth - tutImageSize) / 2, hudSize + (hudPadding * 2), tutImageSize, tutImageSize);
 	as_guiSetImageKeyName ("tutImageTerminal", "tut_terminal");
 	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageTerminal", true);
 
@@ -694,6 +744,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTerminalNext", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTerminalNext", "scrTutTerminals");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTerminalNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTerminalNext", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -701,6 +752,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel", "scrTutTerminals");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel", "gui");
 
 	//
 	// Screen showing healing use
@@ -708,20 +760,22 @@ void as_guiSetupTutorial ()
 	as_guiCreateNewScreen ("scrTutHealing");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutHealing");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutHealing", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutHealing", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutHealing", GUI_LABEL_CENTER, gui_getString ("tutHealingLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutHealing", "scrTutHealing");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutHealing", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutHealing", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutHealingTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutHealingTextBox", GUI_COORD_TYPE_PERCENT, 5, 50, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutHealingTextBox", GUI_LABEL_LEFT, gui_getString ("tutHealingText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutHealingTextBox", "scrTutHealing");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutHealingTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutHealingTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageHealing");
 	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageHealing", "scrTutHealing");
-	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageHealing", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_healing"), gam_getTextureHeight ("tut_healing"));
+	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageHealing", GUI_COORD_TYPE_ABSOLUTE, (logicalWidth - tutImageSize) / 2, hudSize + (hudPadding * 2), tutImageSize, tutImageSize);
 	as_guiSetImageKeyName ("tutImageHealing", "tut_healing");
 	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageHealing", true);
 
@@ -731,6 +785,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutHealinglNext", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutHealinglNext", "scrTutHealing");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutHealinglNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutHealinglNext", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutHealingCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutHealingCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -738,6 +793,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutHealingCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutHealingCancel", "scrTutHealing");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutHealingCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutHealingCancel", "gui");
 
 	//
 	// Screen showing some gameplay tips
@@ -745,16 +801,18 @@ void as_guiSetupTutorial ()
 	as_guiCreateNewScreen ("scrTutTips");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "textLabelTutTips");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTips", GUI_COORD_TYPE_PERCENT, 8, 19, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "textLabelTutTips", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "textLabelTutTips", GUI_LABEL_CENTER, gui_getString ("tutTipsLabel"));
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "textLabelTutTips", "scrTutTips");
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "textLabelTutTips", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "textLabelTutTips", "gui_label");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "tutTipsTextBox");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "tutTipsTextBox", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "tutTipsTextBox", GUI_LABEL_LEFT, gui_getString ("tutTipsText"));
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "tutTipsTextBox", "scrTutTips");
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "tutTipsTextBox", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "tutTipsTextBox", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTutTipsCancel");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "buttonTutTipsCancel", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
@@ -762,6 +820,7 @@ void as_guiSetupTutorial ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTutTipsCancel", "as_guiHandleElementAction");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTutTipsCancel", "scrTutTips");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTutTipsCancel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTutTipsCancel", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -780,6 +839,7 @@ void as_setupTerminalDeckviewScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "deckviewCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "deckviewCancelButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "deckviewCancelButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "deckviewCancelButton", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -798,6 +858,7 @@ void as_setupTerminalShipviewScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "shipviewCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "shipviewCancelButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "shipviewCancelButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "shipviewCancelButton", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -808,14 +869,16 @@ void as_setupMainTerminalScreen ()
 {
 	float buttonStartY  = 40;
 	float buttonSpacing = 13;
+	float hudSize       = gam_getTextureHeight ("hud") + hudPadding;
 
 	as_guiCreateNewScreen ("mainTerminalScreen");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "terminalScreenLabel");
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "terminalScreenLabel", "mainTerminalScreen");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "terminalScreenLabel", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "terminalScreenLabel", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "terminalScreenLabel", GUI_LABEL_CENTER, gui_getString ("terminalScreenLabel"));
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "terminalScreenLabel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "terminalScreenLabel", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalLogoffButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalLogoffButton", "mainTerminalScreen");
@@ -824,6 +887,7 @@ void as_setupMainTerminalScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalLogoffButton", GUI_LABEL_CENTER, gui_getString ("terminalLogoffButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalLogoffButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalLogoffButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "terminalLogoffButton", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalDatabaseButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalDatabaseButton", "mainTerminalScreen");
@@ -832,6 +896,7 @@ void as_setupMainTerminalScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalDatabaseButton", GUI_LABEL_CENTER, gui_getString ("terminalDatabaseButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalDatabaseButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalDatabaseButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "terminalDatabaseButton", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalDeckviewButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalDeckviewButton", "mainTerminalScreen");
@@ -840,6 +905,7 @@ void as_setupMainTerminalScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalDeckviewButton", GUI_LABEL_CENTER, gui_getString ("terminalDeckviewButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalDeckviewButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalDeckviewButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "terminalDeckviewButton", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "terminalShipviewButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "terminalShipviewButton", "mainTerminalScreen");
@@ -848,12 +914,13 @@ void as_setupMainTerminalScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "terminalShipviewButton", GUI_LABEL_CENTER, gui_getString ("terminalShipviewButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "terminalShipviewButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "terminalShipviewButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "terminalShipviewButton", "gui_small");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup the first transfer screen
-void as_setupTransferOne()
+void as_setupTransferOne ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	as_guiCreateNewScreen ("guiTransferOne");
@@ -863,12 +930,14 @@ void as_setupTransferOne()
 	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferOne", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "labelTransferOne", GUI_LABEL_CENTER, gui_getString ("labelTransferOne"));
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "labelTransferOne", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "labelTransferOne", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "textBoxTransferOne");
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", "guiTransferOne");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", GUI_LABEL_LEFT, gui_getString ("textBoxTransferOne"));
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", "gui");
 
 //	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
 //	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
@@ -882,12 +951,13 @@ void as_setupTransferOne()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "buttonTransferOneNext", GUI_LABEL_CENTER, gui_getString ("nextButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTransferOneNext", "as_guiHandleTransferAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTransferOneNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTransferOneNext", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup the second transfer screen
-void as_setupTransferTwo()
+void as_setupTransferTwo ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	as_guiCreateNewScreen ("guiTransferTwo");
@@ -897,12 +967,14 @@ void as_setupTransferTwo()
 	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_LABEL_CENTER, gui_getString ("labelTransferTwo"));
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "labelTransferTwo", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "labelTransferTwo", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo");
 	as_guiAddObjectToScreen (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", "guiTransferTwo");
 	as_guiSetObjectPosition (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", GUI_COORD_TYPE_PERCENT, 5, 35, 90, 90);
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", GUI_LABEL_LEFT, gui_getString ("textBoxTransferTwo"));
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", true);
+	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", "gui");
 
 //	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
 //	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
@@ -916,6 +988,7 @@ void as_setupTransferTwo()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", GUI_LABEL_CENTER, gui_getString ("nextButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", "as_guiHandleTransferAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -924,16 +997,21 @@ void as_setupTransferTwo()
 void as_setupMainScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	float buttonStartY  = 40;
+	float buttonStartY = 40;
+//	float labelStartY                 = 32;
+	float labelStartY  = gam_getTextureHeight ("hud") - buttonHeight;
+	float hudSize      = gam_getTextureHeight ("hud") + hudPadding;
+
 	float buttonSpacing = 13;
 
 	as_guiCreateNewScreen ("mainGUIScreen");
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "mainScreenLabel");
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "mainScreenLabel", "mainGUIScreen");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "mainScreenLabel", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "mainScreenLabel", GUI_COORD_TYPE_ABSOLUTE, 8, hudSize, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "mainScreenLabel", GUI_LABEL_CENTER, gui_getString ("mainScreenLabel"));
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "mainScreenLabel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "mainScreenLabel", "gui_small");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "startGameButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "startGameButton", "mainGUIScreen");
@@ -942,6 +1020,7 @@ void as_setupMainScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "startGameButton", GUI_LABEL_CENTER, gui_getString ("startGameButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "startGameButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "startGameButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "startGameButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsButton", "mainGUIScreen");
@@ -950,6 +1029,7 @@ void as_setupMainScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsButton", GUI_LABEL_CENTER, gui_getString ("optionsButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "tutorialButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "tutorialButton", "mainGUIScreen");
@@ -958,6 +1038,7 @@ void as_setupMainScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "tutorialButton", GUI_LABEL_CENTER, gui_getString ("tutorialButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "tutorialButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "tutorialButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "tutorialButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "briefingButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "briefingButton", "mainGUIScreen");
@@ -966,6 +1047,7 @@ void as_setupMainScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "briefingButton", GUI_LABEL_CENTER, gui_getString ("briefingButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "briefingButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "briefingButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "briefingButton", "gui");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "exitGameButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "exitGameButton", "mainGUIScreen");
@@ -974,6 +1056,7 @@ void as_setupMainScreen ()
 	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "exitGameButton", GUI_LABEL_CENTER, gui_getString ("exitGameButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "exitGameButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "exitGameButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "exitGameButton", "gui");
 }
 
 //-----------------------------------------------------------------------------
@@ -1017,8 +1100,8 @@ void script_initGUI ()
 	as_setupTerminalDeckviewScreen ();
 	as_setupTerminalShipviewScreen ();
 	script_setupDatabaseScreen ();
-	as_setupTransferOne();
-	as_setupTransferTwo();
+	as_setupTransferOne ();
+	as_setupTransferTwo ();
 
 //	as_setupMessageBoxes();
 

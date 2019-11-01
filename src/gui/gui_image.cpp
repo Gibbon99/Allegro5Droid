@@ -32,6 +32,9 @@ void gui_drawImage(int whichObject)
 	startX = guiImages[whichObject].startX;
 	startY = guiImages[whichObject].startY;
 
-	sys_drawBitmap (guiImages[whichObject].__GUI_element.image.keyName, startX, startY, RENDER_SOURCE, 0, 0);
+	if (GUI_COORD_TYPE_PERCENT == guiImages[whichObject].coordType)
+		sys_drawBitmap (guiImages[whichObject].__GUI_element.image.keyName, startX, startY, RENDER_SOURCE, 0, 0);
+	else
+		sys_drawBitmap (guiImages[whichObject].__GUI_element.image.keyName, startX, startY, RENDER_SCALE, 48, 48);
 }
 

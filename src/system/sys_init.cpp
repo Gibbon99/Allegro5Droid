@@ -263,17 +263,15 @@ void sys_initAll ()
 		gam_findHealingTiles (levelItr.first);
 	}
 
-	lvl_changeToLevel ("Staterooms", 0);
+//	lvl_changeToLevel ("Staterooms", 0);
 
 	gam_initPlayerValues ();
 
 	bul_initBulletArraySize ();
 
-//	al_start_timer(splashTimer);
-	sys_changeMode (MODE_GAME, true);
+	al_start_timer(splashTimer);
+	sys_changeMode (MODE_SPLASH, true);
 
 //	sys_changeMode(MODE_GUI_TRANSFER_INIT_GAME, false);
-
-	gam_startNewGame();
 
 }

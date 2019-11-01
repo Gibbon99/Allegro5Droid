@@ -2,8 +2,7 @@
 
 #include "system/sys_main.h"
 
-enum GUI_ACTIONS
-{
+enum GUI_ACTIONS {
 	GUI_MOVE_UP = 0,
 	GUI_MOVE_DOWN,
 	GUI_MOVE_LEFT,
@@ -12,16 +11,14 @@ enum GUI_ACTIONS
 	GUI_MOUSE_MOTION
 };
 
-typedef struct
-{
+typedef struct {
 	int              selectedObject;
 	std::string      screenID;               // Name of this screen
 	std::vector<int> objectIDIndex;          // Index into object array
 	std::vector<int> objectType;             // Which object array
 } _screenObject;
 
-struct __GUI_scrollBox
-{
+struct __GUI_scrollBox {
 	int           currentChar;
 	float         scrollSpeed;
 	float         scrollDelay;
@@ -33,28 +30,24 @@ struct __GUI_scrollBox
 	char          fontName[32];
 };
 
-struct __GUI_checkBox
-{
+struct __GUI_checkBox {
 	int  whichGroup;
 	int  boxSize;       // TODO - set this for bounding box calculation - get font size from script?
 	bool isChecked;
 };
 
-struct __GUI_image
-{
+struct __GUI_image {
 	char keyName[32];
 };
 
-struct __BOUNDING_BOX
-{
+struct __BOUNDING_BOX {
 	float w;
 	float h;
 	float x;
 	float y;
 };
 
-struct __GUI_object
-{
+struct __GUI_object {
 	bool                     ready          = false;
 	std::string              objectID       = "";
 	int                      screenID       = -1;                      // which screen does this belong to
@@ -70,6 +63,7 @@ struct __GUI_object
 	float                    radius         = -1;
 	std::string              text           = "";
 	std::string              action         = "";
+	std::string              fontName       = "";
 	ALLEGRO_COLOR            color{};
 	ALLEGRO_COLOR            hasFocusColor{};
 	ALLEGRO_COLOR            noFocusColor{};
@@ -87,14 +81,12 @@ struct __GUI_object
 	__BOUNDING_BOX           boundingBox;
 	std::vector<std::string> scrollBoxLineText;
 
-	union
-	{
+	union {
 		struct __GUI_scrollBox scrollBox;
 		struct __GUI_checkBox  checkBox;
 		struct __GUI_image     image;
 	}                        __GUI_element;
 };
-
 
 extern int                       currentGUIScreen;
 extern int                       currentObjectSelected;  // Pass this to script to act on
@@ -153,4 +145,7 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource);
 int gui_findIndex (int guiObjectType, std::string objectID);
 
 // Set an image keyName to the relevant resource image loaded
-void gui_setImageKeyName(std::string objectID, std::string keyName);
+void gui_setImageKeyName (std::string objectID, std::string keyName);
+
+// Set the font name to use for text for this object
+void gui_hostSetObjectFontName (int guiObjectType, const std::string &objectID, std::string fontName);
