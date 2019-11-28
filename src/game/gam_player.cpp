@@ -48,7 +48,7 @@ void gam_weaponRechargePlayer (float tickTime)
 				{
 					playerDroid.weaponDelay   = 0.0f;
 					playerDroid.weaponCanFire = true;
-					hud_setText ("hudMoving");
+					hud_setText (false, "hudMoving");
 				}
 		}
 }
@@ -229,10 +229,10 @@ void gam_processPlayerMovement ()
 void gam_processActionKey ()
 //----------------------------------------------------------------------------
 {
-	hud_setText ("hudMoving");
+	hud_setText (false, "hudMoving");
 
 	if (playerDroid.inTransferMode)
-		hud_setText("hudTransfer");
+		hud_setText (false, "hudTransfer");
 	//
 	// Actions when no movements are down
 	if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
@@ -261,7 +261,7 @@ void gam_processActionKey ()
 				{
 					playerDroid.inTransferMode = true;
 					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
-					hud_setText("hudTransfer");
+					hud_setText (false, "hudTransfer");
 				}
 		}
 
@@ -274,7 +274,7 @@ void gam_processActionKey ()
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
 							keyBinding[gameAction].currentlyPressed = false;
 							playerDroid.weaponCanFire               = false;
-							hud_setText("hudRecharging");
+							hud_setText (false, "hudRecharging");
 							return;
 						}
 				}

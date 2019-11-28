@@ -166,14 +166,14 @@ bool lvl_loadShipLevel (const std::string fileName)
 	io_getFileIntoMemory (fileName.c_str (), memoryBuffer);
 	//
 	// Open the block of memory and read like a file
-	fp = para_openMemFile (memoryBuffer, fileSize);
+	fp = PARA_openMemFile (memoryBuffer, fileSize);
 	if (nullptr == fp)
 		{
 			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", fileName.c_str ()));
 		}
 	//
 	// Check this version is ok to use
-	para_readFile (fp, &checkVersion, sizeof (checkVersion));
+	PARA_readFile (fp, &checkVersion, sizeof (checkVersion));
 	if (checkVersion != MAP_VERSION)
 		{
 			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("MAP_VERSION wrong for file [ %s ]", fileName.c_str ()));
@@ -181,31 +181,31 @@ bool lvl_loadShipLevel (const std::string fileName)
 		}
 	//
 	// Read number variables
-	para_readFile (fp, (void *) &tempLevel.numLineSegments, sizeof (tempLevel.numLineSegments));
-	para_readFile (fp, (void *) &tempLevel.numWaypoints, sizeof (tempLevel.numWaypoints));
-	para_readFile (fp, (void *) &tempLevel.numDroids, sizeof (tempLevel.numDroids));
-	para_readFile (fp, (void *) &tempLevel.numLifts, sizeof (tempLevel.numLifts));
+	PARA_readFile (fp, (void *) &tempLevel.numLineSegments, sizeof (tempLevel.numLineSegments));
+	PARA_readFile (fp, (void *) &tempLevel.numWaypoints, sizeof (tempLevel.numWaypoints));
+	PARA_readFile (fp, (void *) &tempLevel.numDroids, sizeof (tempLevel.numDroids));
+	PARA_readFile (fp, (void *) &tempLevel.numLifts, sizeof (tempLevel.numLifts));
 
-	para_readFile (fp, &tempFloat, sizeof (tempFloat));
+	PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 	tempLevel.levelDimensions.x = tempFloat;
 
-	para_readFile (fp, &tempFloat, sizeof (tempFloat));
+	PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 	tempLevel.levelDimensions.y = tempFloat;
 
 	//
 	// Line segments for physics collisions
 	for (int i = 0; i != tempLevel.numLineSegments; i++)
 		{
-			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 			tempSegment.start.x = tempFloat;
 
-			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 			tempSegment.start.y = tempFloat;
 
-			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 			tempSegment.finish.x = tempFloat;
 
-			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 			tempSegment.finish.y = tempFloat;
 
 			tempSegment.start.x += drawOffset.x;
@@ -220,10 +220,10 @@ bool lvl_loadShipLevel (const std::string fileName)
 	// Waypoints for Droid patrol
 	for (int i = 0; i != tempLevel.numWaypoints; i++)
 		{
-			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 			tempWaypoint.x = tempFloat;
 
-			para_readFile (fp, &tempFloat, sizeof (tempFloat));
+			PARA_readFile (fp, &tempFloat, sizeof (tempFloat));
 			tempWaypoint.y = tempFloat;
 
 			tempWaypoint.x += drawOffset.x;
@@ -241,21 +241,21 @@ bool lvl_loadShipLevel (const std::string fileName)
 	// Load each droid type on the current level
 	for (int i = 0; i != tempLevel.numDroids; i++)
 		{
-			para_readFile (fp, &tempDroidType, sizeof (tempDroidType));
+			PARA_readFile (fp, &tempDroidType, sizeof (tempDroidType));
 			tempLevel.droidTypes.push_back (tempDroidType);
 		}
 	//
 	// Array holding tile types
 	for (int i = 0; i != tempLevel.levelDimensions.x * tempLevel.levelDimensions.y; i++)
 		{
-			para_readFile (fp, &tempTile, sizeof (tempTile));
+			PARA_readFile (fp, &tempTile, sizeof (tempTile));
 			tempLevel.tiles.push_back (tempTile);
 		}
-	para_readFile (fp, &tempLevel.levelName, sizeof (tempLevel.levelName));
+	PARA_readFile (fp, &tempLevel.levelName, sizeof (tempLevel.levelName));
 
 	//
 	// Finished - close the file
-	para_closeFile (fp);
+	PARA_closeFile (fp);
 	free (memoryBuffer);
 
 	//

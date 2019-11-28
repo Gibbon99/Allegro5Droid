@@ -3,8 +3,7 @@
 #include "system/sys_main.h"
 #include <hdr/system/sys_font.h>
 
-enum fadeValues
-{
+enum fadeValues {
 	FADE_ON = 0,
 	FADE_OFF,
 	FADE_NONE
@@ -19,6 +18,7 @@ extern ALLEGRO_BITMAP *backingBitmap;
 extern ALLEGRO_BITMAP *previousScreen;
 extern float          fadeAlphaValue;
 extern int            fadeInProgress;
+extern float          transferImageFade;
 
 // Render a frame once
 void sys_displayScreen (double interpolation);

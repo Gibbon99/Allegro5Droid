@@ -8,3 +8,6 @@
 
 // Draw the current level onto the entire screen
 void gam_showCurrentLevel (float ratio);
+
+// Get the deckview bitmap
+PARA_BITMAP *gam_getDeckViewBitmap();

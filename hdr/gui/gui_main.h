@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include "system/sys_main.h"
 
 enum GUI_ACTIONS {
@@ -11,12 +12,53 @@ enum GUI_ACTIONS {
 	GUI_MOUSE_MOTION
 };
 
+struct __BOUNDING_BOX {
+	float w;
+	float h;
+	float x;
+	float y;
+};
+
 typedef struct {
 	int              selectedObject;
 	std::string      screenID;               // Name of this screen
 	std::vector<int> objectIDIndex;          // Index into object array
 	std::vector<int> objectType;             // Which object array
 } _screenObject;
+
+typedef struct {
+	std::string label;    // Text to display
+	std::string value;    // Value of this element
+	int         type;    // What type of element - convert on query
+} _sliderElement;
+
+struct __GUI_slider {
+	int            coordType;
+	float          startX = -1;
+	float          startY = -1;
+	float          width  = -1;
+	float          height = -1;
+	__BOUNDING_BOX boundingBox;
+	int            currentStep;  // What is selected
+	int            numberSteps;  // How many elements
+	int            barThickness;  // Thickness for drawing the bar
+	std::string    objectID;
+	std::string    fontName;
+	std::string    text;
+	std::string    action = "";
+	ALLEGRO_COLOR  color{};
+	ALLEGRO_COLOR  hasFocusColor{};
+	ALLEGRO_COLOR  noFocusColor{};
+	ALLEGRO_COLOR            labelHasFocusColor{};
+	ALLEGRO_COLOR            labelNoFocusColor{};
+
+	int                       labelPos;
+	bool                        canFocus;
+	bool                        positionCalled;
+	float                       gapSize;
+	bool                        ready;
+	std::vector<_sliderElement> element;    // Value for this step
+};
 
 struct __GUI_scrollBox {
 	int           currentChar;
@@ -34,17 +76,11 @@ struct __GUI_checkBox {
 	int  whichGroup;
 	int  boxSize;       // TODO - set this for bounding box calculation - get font size from script?
 	bool isChecked;
+	int  value;          // What value is set when box is ticked
 };
 
 struct __GUI_image {
 	char keyName[32];
-};
-
-struct __BOUNDING_BOX {
-	float w;
-	float h;
-	float x;
-	float y;
 };
 
 struct __GUI_object {
@@ -70,7 +106,7 @@ struct __GUI_object {
 	ALLEGRO_COLOR            cornerFocusColor{};
 	ALLEGRO_COLOR            cornerNoFocusColor{};
 	ALLEGRO_COLOR            labelHasFocusColor{};
-	ALLEGRO_COLOR            labelNoFocusColor;
+	ALLEGRO_COLOR            labelNoFocusColor{};
 	float                    fadeCounter    = 0;
 	bool                     isHighlited    = false;
 	float                    mouseBoxX      = 0;
@@ -85,18 +121,19 @@ struct __GUI_object {
 		struct __GUI_scrollBox scrollBox;
 		struct __GUI_checkBox  checkBox;
 		struct __GUI_image     image;
+//		struct __GUI_slider    slider;
 	}                        __GUI_element;
 };
 
-extern int                       currentGUIScreen;
-extern int                       currentObjectSelected;  // Pass this to script to act on
-extern bool                      isGUIStarted;
-extern std::vector<__GUI_object> guiButtons;
-extern std::vector<__GUI_object> guiCheckBoxes;
-extern std::vector<__GUI_object> guiLabels;
-extern std::vector<__GUI_object> guiTextBoxes;
-extern std::vector<__GUI_object> guiImages;
-
+extern int                        currentGUIScreen;
+extern int                        currentObjectSelected;  // Pass this to script to act on
+extern bool                       isGUIStarted;
+extern std::vector<__GUI_object>  guiButtons;
+extern std::vector<__GUI_object>  guiCheckBoxes;
+extern std::vector<__GUI_object>  guiLabels;
+extern std::vector<__GUI_object>  guiTextBoxes;
+extern std::vector<__GUI_object>  guiImages;
+extern std::vector<__GUI_slider>  guiSliders;
 extern std::vector<_screenObject> guiScreens;
 
 extern __GUI_object introScrollBox;
@@ -149,3 +186,6 @@ void gui_setImageKeyName (std::string objectID, std::string keyName);
 
 // Set the font name to use for text for this object
 void gui_hostSetObjectFontName (int guiObjectType, const std::string &objectID, std::string fontName);
+
+// Add an element to a slider
+void gui_addNewElement (const std::string objectID, const std::string newLabel, const std::string newValue, int type);

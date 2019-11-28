@@ -1,3 +1,17 @@
+TODO
+------
+DONE - Remove transfer setting of droids
+DONE - Fade graphics of transfer screens of droid images
+DONE - Get door physics to not sleep on start
+
+Disrupter weapon and effect - flash screen
+Do GUI options
+Collisions for droids to ignore
+Darken level when all droids dead
+Droid that just healed still animates slowly
+Doors getting stuck open
+transferRender - stop drawing on -1 for numDroidTokens
+
 Change working directory
 --------------------------
 
@@ -6,10 +20,19 @@ al_change_directory(al_path_cstr(p) , ALLEGRO_NATIVE_PATH_SEP);
 al_destroy_path(p);
 p = 0;
 
+Ship Names
+---------------
+Paradroid
+Metahawk
+Hewstromo
+Graftgold
+Blabgorius IV
+Red Barchetta
+Retta-beast
+Itsnotardenuff
 
 Transfer mode
 ----------------
-HUD text is 'captured'
 
 Choose 'color' side - countdown 96
 
@@ -21,3 +44,22 @@ MODE_COUNTDOWN
 MODE_TRANSFER_GAME
 
 - keyboard - up / down for current token. Action to place token
+
+GUI
+---
+
+Audio
+ - Use sound - checkbox
+ - Volume level
+ - num Samples
+
+ Video
+ - Use backdrop
+ - Screen - Windowed / Fullscreen
+
+ Graphics
+ - Tile Color
+ - Tile Type
+
+ Controls
+ - Keyboard mapping

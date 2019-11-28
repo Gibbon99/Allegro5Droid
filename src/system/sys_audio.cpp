@@ -4,6 +4,8 @@
 #include "system/sys_audio.h"
 
 int numReserveSamples;      // From config file
+bool enableSound;           // From config file
+bool soundInitDone;         // Was sound done at startup
 
 //---------------------------------------------------------------------------------------------------------------------------
 //
@@ -11,6 +13,9 @@ int numReserveSamples;      // From config file
 bool snd_initAudioSystem ()
 //---------------------------------------------------------------------------------------------------------------------------
 {
+	if (!enableSound)
+		return true;
+
 	if (!al_init_acodec_addon ())
 		return false;
 
@@ -31,6 +36,9 @@ bool snd_initAudioSystem ()
 void snd_stopSound (const std::string &key)
 //---------------------------------------------------------------------------------------------------------------------------
 {
+	if ((!enableSound) || (!soundInitDone))
+		return;
+
 	try
 		{
 			al_stop_sample (&audio.at (key).sampleID);
@@ -51,6 +59,9 @@ void snd_playSound (const std::string &key, ALLEGRO_PLAYMODE loop, float gain, f
 //---------------------------------------------------------------------------------------------------------------------------
 {
 	bool playResult;
+
+	if ((!enableSound) || (!soundInitDone))
+		return;
 
 	try
 		{
@@ -86,6 +97,9 @@ bool snd_isPlaying (const std::string &key)
 //---------------------------------------------------------------------------------------------------------------------------
 {
 	bool returnResult = false;
+
+	if ((!enableSound) || (!soundInitDone))
+		return false;
 
 	try
 		{

@@ -40,10 +40,10 @@ void PARA_presentFrame(PARA_DISPLAY *thisDisplay, PARA_BITMAP *thisBitmap);
 double PARA_getTime();
 
 // Return a file pointer to a block of memory to be treated like a file
-PARA_MEM_FILE *para_openMemFile(char *memoryPointer, int memorySize);
+PARA_MEM_FILE *PARA_openMemFile(char *memoryPointer, int memorySize);
 
 // Wrap the library file read routine
-void para_readFile(PARA_MEM_FILE *filePointer, void *memoryPtr, size_t readSize);
+void PARA_readFile(PARA_MEM_FILE *filePointer, void *memoryPtr, size_t readSize);
 
 // Close a memory file
-void para_closeFile(PARA_MEM_FILE *filePointer);
+void PARA_closeFile(PARA_MEM_FILE *filePointer);

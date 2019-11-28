@@ -209,12 +209,17 @@ void sys_initAll ()
 	}
 	//
 	// Use Audio library
-	if (!snd_initAudioSystem())
-	{
-		quitProgram = true;
-		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return;
-	}
+	if (enableSound)
+		{
+			soundInitDone = false;
+			if (!snd_initAudioSystem ())
+				{
+					quitProgram = true;
+					al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not start Audio.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+					return;
+				}
+			soundInitDone = true;
+		}
 	//
 	// Create all the timers
 	if (!tim_initAllTimers ())

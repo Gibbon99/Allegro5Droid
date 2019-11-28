@@ -59,6 +59,7 @@ extern double thinkFPS;
 extern double printFPS;
 extern double printThinkFPS;
 extern double frameTimePrint;
+extern int    renderBackdrop;
 extern int    windowWidth;
 extern int    windowHeight;
 extern int    displayRefreshRate;

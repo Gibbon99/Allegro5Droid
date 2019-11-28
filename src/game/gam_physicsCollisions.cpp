@@ -110,7 +110,7 @@ void contactListener::BeginContact (b2Contact *contact)
 					}
 				else
 					{
-						gam_changeToTransferGame (shipLevel.at(lvl_getCurrentLevelName ()).droid[bodyUserData_B->dataValue].droidType);
+						trn_changeToTransferGame (shipLevel.at (lvl_getCurrentLevelName ()).droid[bodyUserData_B->dataValue].droidType);
 						return;
 					}
 			break;

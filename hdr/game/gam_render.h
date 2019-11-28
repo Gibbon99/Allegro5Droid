@@ -2,6 +2,8 @@
 
 #include "system/sys_main.h"
 
+extern int            numTileAcrossInTexture, numTilesDownInTexture;
+
 // Setup up precalculated coords for the tiles
 void gam_calcTileTexCoords ();
 

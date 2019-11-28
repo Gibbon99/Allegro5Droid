@@ -6,4 +6,4 @@
 void hud_renderHUD();
 
 // Set the text for the HUD status
-void hud_setText(std::string newText);
+void hud_setText (bool useDirectValue, std::string newText);

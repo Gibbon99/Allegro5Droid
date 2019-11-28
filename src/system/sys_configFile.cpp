@@ -1,5 +1,6 @@
 #include <hdr/gui/gui_text.h>
 #include <hdr/system/sys_audio.h>
+#include <hdr/io/io_logFile.h>
 #include "hdr/system/sys_configFile.h"
 
 #define CONFIG_FILENAME "config.ini"
@@ -31,7 +32,40 @@ bool cfg_getStartupValues()
 	currentLanguage = (int)strtol(al_get_config_value(configFile, "main", "currentLanguage"), nullptr, 10);
 
 	numReserveSamples = (int)strtol(al_get_config_value(configFile, "main", "numReserveSamples"), nullptr, 10);
-	al_destroy_config(configFile);
+
+	renderBackdrop = (int)strtol(al_get_config_value(configFile, "main", "renderBackdrop"), nullptr, 10);
+
+	enableSound = (bool)strtol(al_get_config_value (configFile, "main", "enableSound"), nullptr, 10);
+//	al_destroy_config(configFile);
 
 	return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Update value in currently open config file
+void cfg_setConfigValue(std::string whichKey, std::string newValue)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (configFile == nullptr)
+		{
+			log_logMessage(LOG_LEVEL_ERROR, "Config file not open.");
+			return;
+		}
+
+	al_set_config_value(configFile, "main", whichKey.c_str(), newValue.c_str());
+
+	al_save_config_file(CONFIG_FILENAME, configFile);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Close the open config file
+void cfg_closeConfigFile()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (configFile != nullptr)
+		{
+			al_destroy_config (configFile);
+		}
 }

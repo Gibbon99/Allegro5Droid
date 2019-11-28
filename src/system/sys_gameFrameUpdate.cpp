@@ -14,6 +14,9 @@
 #include <hdr/game/gam_particles.h>
 #include <hdr/game/gam_game.h>
 #include <hdr/system/sys_audio.h>
+#include <hdr/game/gam_transfer.h>
+#include <hdr/game/gam_transferDroidAI.h>
+#include <hdr/game/gam_transferPlayer.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -34,6 +37,7 @@ void sys_gameTickRun (double tickTime)
 		case MODE_GUI:
 		case MODE_GUI_OPTIONS:
 		case MODE_GUI_OPTIONS_VIDEO:
+		case MODE_GUI_OPTIONS_AUDIO:
 		case MODE_GUI_TUT_MOVE:
 		case MODE_GUI_TUT_TRANSFER_GAME:
 		case MODE_GUI_TUT_TRANSFER_START:
@@ -46,7 +50,16 @@ void sys_gameTickRun (double tickTime)
 		case MODE_GUI_TERMINAL_DECKVIEW:
 		case MODE_GUI_TRANSFER_SCREEN_ONE:
 		case MODE_GUI_TRANSFER_SCREEN_TWO:
+			io_processKeyActions();
+			break;
+
+		case MODE_PLAY_TRANSFER_GAME:
+			trn_processTransferGame(tickTime);
+			trn_processPlayerActions();
+			break;
+
 		case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+			trn_processChooseSide(tickTime);
 			io_processKeyActions();
 			break;
 

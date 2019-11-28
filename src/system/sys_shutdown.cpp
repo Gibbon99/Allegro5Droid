@@ -2,7 +2,8 @@
 #include <hdr/system/sys_font.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/io/io_console.h>
-#include "hdr/system/sys_shutdown.h"
+#include <hdr/system/sys_configFile.h>
+//#include "hdr/system/sys_shutdown.h"
 #include "hdr/system/sys_scriptEngine.h"
 #include "hdr/system/sys_physics.h"
 
@@ -13,6 +14,8 @@ void sys_shutdownToSystem()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	evt_stopThreads();
+
+	cfg_closeConfigFile();
 
 	fnt_destroyFonts();
 	fnt_destroySystemFont();

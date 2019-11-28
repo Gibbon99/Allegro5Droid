@@ -27,6 +27,9 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("guiOptionsMainLabel", "OPTIONS");
 	gui_addKeyAndText ("optionVideoLabel", "VIDEO OPTIONS");
 	gui_addKeyAndText ("optionsVideoCheckFullScreen", "Fullscreen");
+	gui_addKeyAndText ("optionsVideoCheckFullScreenWindowed", "Fullscreen windowed");
+	gui_addKeyAndText ("optionsVideoCheckWindowed", "Windowed");
+	gui_addKeyAndText ("optionVideoLabelWindowType", "Window Type");
 	gui_addKeyAndText ("guiOptionsMainVideoButton", "Video");
 	gui_addKeyAndText ("guiOptionsMainAudioButton", "Audio");
 	gui_addKeyAndText ("guiOptionsMainGraphicsButton", "Graphics");
@@ -110,5 +113,10 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("hudBriefing", "Briefing");
 	gui_addKeyAndText ("hudOptions", "Options");
 	gui_addKeyAndText ("hudGameOn", "Game On");
+	gui_addKeyAndText ("optionsVideoCheckBackdrop", "Show backdrop");
+
+	gui_addKeyAndText ("optionAudioLabel", "Audio");
+	gui_addKeyAndText ("optionsAudioUseSound", "Enable sound");
+	gui_addKeyAndText ("optionsAudioVolume", "Audio Volume");
 }
 

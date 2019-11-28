@@ -54,6 +54,7 @@ void io_processKeyActions ()
 			case MODE_GUI:
 			case MODE_GUI_OPTIONS:
 			case MODE_GUI_OPTIONS_VIDEO:
+			case MODE_GUI_OPTIONS_AUDIO:
 			case MODE_GUI_TUT_MOVE:
 			case MODE_GUI_TUT_TRANSFER_GAME:
 			case MODE_GUI_TUT_TRANSFER_START:
@@ -98,6 +99,9 @@ void io_processKeyActions ()
 				}
 			break;
 
+			case MODE_PLAY_TRANSFER_GAME:
+				break;
+
 			case MODE_GUI_TRANSFER_CHOOSE_SIDE:
 				trn_handleTransferChooseSide ();
 			break;
@@ -123,7 +127,7 @@ void io_processKeyActions ()
 						{
 							playerDroid.inTransferMode = false;
 							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
-							hud_setText ("hudMoving");
+							hud_setText (false, "hudMoving");
 						}
 				}
 			break;
@@ -147,7 +151,7 @@ void io_processKeyActions ()
 					lvl_changeToLevel (lvl_returnLevelNameFromDeck (currentDeckNumber), gam_putPlayerOnLiftFromTunnel (currentDeckNumber));
 
 					sys_changeMode (MODE_GAME, true);
-					hud_setText ("hudMoving");
+					hud_setText (false, "hudMoving");
 				}
 
 			break;

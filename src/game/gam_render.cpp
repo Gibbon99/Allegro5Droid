@@ -3,6 +3,7 @@
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/system/sys_gameFrameRender.h>
+#include <hdr/io/io_resourceImage.h>
 #include "hdr/game/gam_render.h"
 
 PARA_BITMAP *completeLevelBMP = nullptr;
@@ -138,18 +139,19 @@ void gam_drawAllTiles ()
 	// Render all tiles onto it
 	al_set_target_bitmap (completeLevelBMP);
 
-	int countX = 0;
-	int countY = 0;
-
-	for (countY = 0; countY != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.y; countY++)
+	for (int countY = 0; countY != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.y; countY++)
 		{
-			for (countX = 0; countX != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x; countX++)
+			for (int countX = 0; countX != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x; countX++)
 				{
 					whichTile = shipLevel.at (lvl_getCurrentLevelName()).tiles[(countY * shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x) + countX];
 					if (whichTile > 0)
 						gam_drawSingleTile (countX * TILE_SIZE, countY * TILE_SIZE, whichTile);
 				}
 		}
+		//
+		// Allow backdrop image to show through
+	if (1 == renderBackdrop)
+		al_convert_mask_to_alpha(completeLevelBMP, al_map_rgb(1, 0, 0));
 }
 
 //-----------------------------------------------------------------------------

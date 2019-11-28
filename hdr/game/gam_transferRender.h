@@ -2,6 +2,10 @@
 
 #include "system/sys_main.h"
 
+#define BLOCK_HEIGHT             8
+#define BLOCK_WIDTH              4
+#define BLOCK_STEP               2
+
 extern int transferBorderThickness;
 extern int numberTransferRows;
 extern float transferRowHeight;
@@ -21,6 +25,13 @@ extern float transferLineThickness;
 
 extern int transferBitmapWidth;
 extern int transferBitmapHeight;
+
+extern ALLEGRO_BITMAP *transferGameBitmap;
+extern ALLEGRO_COLOR transferColorStatusCell;
+extern ALLEGRO_COLOR transferColorBorder;
+extern ALLEGRO_COLOR transferColorLeftActive;
+extern ALLEGRO_COLOR transferColorRightActive;
+extern float activeTokenPosX;
 
 enum rowTypes
 {
@@ -42,7 +53,9 @@ enum rowTypes
 	TRANSFER_ROW_TWO_INTO_ONE_TOP,
 	TRANSFER_ROW_TWO_INTO_ONE_BOTTOM,
 	TRANSFER_ROW_LAUNCHER_LEFT,
-	TRANSFER_ROW_LAUNCHER_RIGHT
+	TRANSFER_ROW_LAUNCHER_RIGHT,
+	TRANSFER_ROW_LAUNCHER_RIGHT_COLOR,
+	TRANSFER_ROW_LAUNCHER_LEFT_COLOR
 };
 
 typedef struct
@@ -50,16 +63,21 @@ typedef struct
 	int leftSideType;
 	int rightSideType;
 	int currentColor;
-	int leftSideActiveCounter;
-	int rightSideActiveCounter;
+	float leftSideActiveCounter;
+	float rightSideActiveCounter;
 	float startX;
 	float startY;
+	float rightSideActiveAlphaCount;
+	float rightSideActiveAlphaColor;
+	float leftSideActiveAlphaCount;
+	float leftSideActiveAlphaColor;
+	bool rightSideActive;
+	bool leftSideActive;
+	bool rightSideActiveIsOn;
+	bool leftSideActiveIsOn;
 } __transferRow;
 
 extern std::vector<__transferRow> transferRows;
-
-// Setup the default values for the transfer rows
-void trn_initTransferValues();
 
 // Render the current transfer game elements
 void trn_renderTransferGame();
@@ -67,7 +85,7 @@ void trn_renderTransferGame();
 // Set a color for the transfer game
 void trn_setTransferColor(int whichSide, float red, float green, float blue, float alpha);
 
-// Return the bitmap for the tranfer game screen
+// Return the bitmap for the transfer game screen
 ALLEGRO_BITMAP *trn_getTransferScreen();
 
 // Return the transfer bitmap width

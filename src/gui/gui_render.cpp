@@ -4,6 +4,7 @@
 #include <hdr/gui/gui_image.h>
 #include <hdr/gui/gui_button.h>
 #include <hdr/gui/gui_checkBox.h>
+#include <hdr/gui/gui_slider.h>
 #include "hdr/gui/gui_render.h"
 
 //-----------------------------------------------------------------------------
@@ -32,6 +33,10 @@ void gui_drawObject (int objectType, int whichObject, bool hasFocus)
 
 		case GUI_OBJECT_IMAGE:
 			gui_drawImage (whichObject);
+			break;
+
+		case GUI_OBJECT_SLIDER:
+			gui_drawSlider(whichObject, hasFocus);
 			break;
 
 		default:

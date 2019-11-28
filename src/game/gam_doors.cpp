@@ -239,7 +239,11 @@ void gam_createDoorSensor (unsigned long whichDoor, int index)
 {
 	doorTriggers[whichDoor].bodyDef.type = b2_staticBody;
 	doorTriggers[whichDoor].bodyDef.position.Set (doorTriggers[whichDoor].worldPosition.x / pixelsPerMeter, doorTriggers[whichDoor].worldPosition.y / pixelsPerMeter);
+	doorTriggers[whichDoor].bodyDef.active = true;
+	doorTriggers[whichDoor].bodyDef.allowSleep = false;
 	doorTriggers[whichDoor].body = sys_getPhysicsWorld ()->CreateBody (&doorTriggers[whichDoor].bodyDef);
+
+	doorTriggers[whichDoor].body->SetAwake (true);
 
 	doorTriggers[whichDoor].userData            = new _userData;
 	doorTriggers[whichDoor].userData->userType  = PHYSIC_TYPE_DOOR_CLOSED;

@@ -15,6 +15,7 @@ double printThinkFPS  = 0;
 double frameTimePrint = 0;
 
 bool quitProgram        = false;
+int  renderBackdrop     = 1;
 int  windowWidth        = 0;
 int  windowHeight       = 0;
 int  screenWidth        = 0;
@@ -23,14 +24,14 @@ int  screenType         = 0;
 int  displayRefreshRate = 0;
 int  currentMode        = 0;
 
-double tickTime       = 1.0f / TICKS_PER_SECOND;
+double tickTime = 1.0f / TICKS_PER_SECOND;
 
 std::vector<double> deltaArray;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Return logical screen width
-float sys_getLogicalWidth()
+float sys_getLogicalWidth ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	return screenWidth;
@@ -39,7 +40,7 @@ float sys_getLogicalWidth()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Return the logical screen height
-float sys_getLogicalHeight()
+float sys_getLogicalHeight ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	return screenHeight;
@@ -48,7 +49,7 @@ float sys_getLogicalHeight()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Return current tickTime
-double sys_getTickTime()
+double sys_getTickTime ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	return tickTime;
@@ -64,22 +65,22 @@ double sys_smoothDelta2 (double delta)
 	double     totalDelta;
 
 	if (deltaArray.size () < numFramesToSmooth)
-	{
-		deltaArray.push_back (delta);
-	}
-	else
-	{
-		for (int i  = 0; i != deltaArray.size () - 1; i++)
 		{
-			deltaArray[i] = deltaArray[i + 1];
+			deltaArray.push_back (delta);
 		}
-		deltaArray[deltaArray.size () - 1] = delta;
-	}
+	else
+		{
+			for (int i                         = 0; i != deltaArray.size () - 1; i++)
+				{
+					deltaArray[i] = deltaArray[i + 1];
+				}
+			deltaArray[deltaArray.size () - 1] = delta;
+		}
 
 	for (auto index : deltaArray)
-	{
-		totalDelta += index;
-	}
+		{
+			totalDelta += index;
+		}
 	return totalDelta / deltaArray.size ();
 
 }
@@ -104,27 +105,27 @@ int main (int argc, char *argv[])
 	currentTime = PARA_getTime ();
 
 	while (!quitProgram)
-	{
-		newTime   = PARA_getTime ();
-		frameTime = newTime - currentTime;
-
-		if (frameTime > 0.25)
-			frameTime = 0.25;
-
-		currentTime = newTime;
-
-		accumulator += frameTime;
-
-		while (accumulator >= tickTime)
 		{
-			accumulator -= tickTime;
-			sys_gameTickRun (tickTime);
-			thinkFPS++;
-		}
+			newTime   = PARA_getTime ();
+			frameTime = newTime - currentTime;
 
-		evt_handleEvents ();
+			if (frameTime > 0.25)
+				frameTime = 0.25;
 
-		percentInFrame = accumulator / tickTime;
+			currentTime = newTime;
+
+			accumulator += frameTime;
+
+			while (accumulator >= tickTime)
+				{
+					accumulator -= tickTime;
+					sys_gameTickRun (tickTime);
+					thinkFPS++;
+				}
+
+			evt_handleEvents ();
+
+			percentInFrame = accumulator / tickTime;
 
 //		percentInFrame = cpflerp(0.0, 1.0f, percentInFrame);
 
@@ -132,18 +133,18 @@ int main (int argc, char *argv[])
 
 //		smoothedDelta = cpfclamp(smoothedDelta, 0.0f, 1.0f);
 
-		double smoothedDelta = percentInFrame;
+			double smoothedDelta = percentInFrame;
 
-		sys_displayScreen (smoothedDelta);
-		fps++;
+			sys_displayScreen (smoothedDelta);
+			fps++;
 
-		sys_pushFrameTimeIntoQueue (accumulator, 500.00f);
+			sys_pushFrameTimeIntoQueue (accumulator, 500.00f);
 
-		frameTimePrint = (PARA_getTime () - newTime) * 1000.0f;
+			frameTimePrint = (PARA_getTime () - newTime) * 1000.0f;
 
-		if (accumulator < 0.0f)
-			accumulator = 0.0f;
-	}
+			if (accumulator < 0.0f)
+				accumulator = 0.0f;
+		}
 	sys_shutdownToSystem ();
 }
 
@@ -157,16 +158,16 @@ void sys_changeMode (int newMode, bool fade)
 	printf ("Changing mode\n");
 
 	if (fade)
-	{
-		previousScreen = al_clone_bitmap (backingBitmap);
+		{
+			previousScreen = al_clone_bitmap (backingBitmap);
 
-		fadeAlphaValue = 255;
-		fadeInProgress = FADE_ON;
-		if (nullptr != fadeTimer)
-			al_start_timer (fadeTimer);
-	}
+			fadeAlphaValue = 255;
+			fadeInProgress = FADE_ON;
+			if (nullptr != fadeTimer)
+				al_start_timer (fadeTimer);
+		}
 	else
-	{
-		fadeInProgress = FADE_NONE;
-	}
+		{
+			fadeInProgress = FADE_NONE;
+		}
 }

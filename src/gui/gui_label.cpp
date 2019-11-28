@@ -37,7 +37,8 @@ void gui_drawLabel(int whichObject)
 	switch (guiLabels[whichObject].labelPos)
 	{
 		case GUI_LABEL_CENTER:
-			startX = (sys_getLogicalWidth() - fnt_getWidth(guiLabels[whichObject].text)) / 2;
+			startX = guiLabels[whichObject].startX;
+//			(sys_getLogicalWidth() - fnt_getWidth(guiLabels[whichObject].text)) / 2;
 			startY = guiLabels[whichObject].startY;
 			break;
 

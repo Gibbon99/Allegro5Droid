@@ -9,7 +9,7 @@ void script_loadAllResources ()
 	string levelName;
 
 	showDebugPhysics         = false;
-	doorAnimSpeed            = 4.5f;
+	doorAnimSpeed            = 5.5f;
 	pixelsPerMeter           = 12.0f;        // 12 pixels is 1 meter
 	wayPointDestinationSize  = 1.0f;         // 1 meter
 	shipDamping              = 0.0f;
@@ -28,6 +28,7 @@ void script_loadAllResources ()
 	bulletAnimSpeed          = 10.0f;
 	bulletMoveSpeed          = 0.4f;
 	bulletDensity            = 0.2f;
+	numDisrupterFrames       = 4;
 	healingAnimSpeed         = 10.0f;
 	droidBeenShotValue       = 90.0f;
 	splashTimeout            = 5;
@@ -57,6 +58,9 @@ void script_loadAllResources ()
 	scoreDelay               = 10.0f;
 	yellowAlertLevel         = 500;
 	redAlertLevel            = 750;
+	chooseSideTimeOut        = 30;
+	chooseSideDelayTime      = 3.7f;
+	chooseRowDelayTime       = 4.0f;
 
 	sys_loadResource ("collision", "collosion1.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("endTransmission1", "endTransmission1.wav", RESOURCE_AUDIO, 0, 0);
@@ -96,12 +100,15 @@ void script_loadAllResources ()
 	sys_loadResource ("tut_healing", "tut_healing.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("tut_lift", "tut_lift.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("tut_terminal", "tut_terminal.bmp", RESOURCE_BITMAP, 0, 0);
-	sys_loadResource ("alltiles", "alltiles.bmp", RESOURCE_BITMAP, 0, 0);
+	sys_loadResource ("alltiles", "future_blue.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("alltiles_128", "alltiles_128.bmp", RESOURCE_BITMAP, 0, 0);
 	//
 	// Explosion
 	sys_loadResource ("explosion", "explosion.bmp", RESOURCE_SPRITE, 25, 0);
 	io_spriteSetAlphaColor ("explosion", 0, 0, 0);
+	//
+	// Backdrop picture
+	sys_loadResource ("backdrop", "universe.bmp", RESOURCE_BITMAP, 0, 0);
 	//
 	// Particle
 	sys_loadResource ("particleSpark", "particleSpark.bmp", RESOURCE_BITMAP, 0, 0);
@@ -199,5 +206,5 @@ void script_loadAllResources ()
 	as_initParticleValues ();
 	as_initTransferValues ();
 
-	initResourcesAllDone     = true;
+	initResourcesAllDone = true;
 }

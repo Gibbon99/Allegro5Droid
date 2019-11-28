@@ -10,3 +10,9 @@ void gui_hostSetCheckboxTick(const std::string objectID, int whichGroup, bool ti
 
 // Set the group that this checkbox belongs to
 void gui_hostSetCheckboxGroup(const std::string objectID, int whichGroup);
+
+// Get the value from a checkbox
+int gui_hostGetCheckboxValue (const std::string objectID);
+
+// Set the value for this checkbox
+void gui_hostSetCheckboxValue (const std::string objectID, int newValue);

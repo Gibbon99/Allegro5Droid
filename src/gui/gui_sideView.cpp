@@ -158,13 +158,13 @@ bool gui_loadSideViewData (const std::string sideviewFileName)
 			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str ()));
 		}
 
-	fp = para_openMemFile (fileBuffer, fileLength);
+	fp = PARA_openMemFile (fileBuffer, fileLength);
 	if (nullptr == fp)
 		{
 			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str ()));
 		}
 
-	para_readFile (fp, &levelCount, sizeof (levelCount));
+	PARA_readFile (fp, &levelCount, sizeof (levelCount));
 	numberLevels = levelCount[0];
 
 	if (MAX_LEVELS != numberLevels)
@@ -176,7 +176,7 @@ bool gui_loadSideViewData (const std::string sideviewFileName)
 		{
 			float temp;
 
-			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
+			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
 			temp = (float) buf[0] * sideviewDrawScale;
 			sideviewLevels[count].x1 = temp;
 
@@ -185,11 +185,11 @@ bool gui_loadSideViewData (const std::string sideviewFileName)
 					smallX = sideviewLevels[count].x1;
 				}
 
-			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
+			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
 			temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
 			sideviewLevels[count].y1 = temp;
 
-			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
+			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
 			temp = (float) buf[0] * sideviewDrawScale;
 			sideviewLevels[count].x2 = temp;
 
@@ -198,11 +198,11 @@ bool gui_loadSideViewData (const std::string sideviewFileName)
 					largeX = sideviewLevels[count].x2;
 				}
 
-			para_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
+			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
 			temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
 			sideviewLevels[count].y2 = temp;
 		}
-	para_closeFile (fp);
+	PARA_closeFile (fp);
 
 	free (fileBuffer);
 

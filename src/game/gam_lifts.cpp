@@ -24,7 +24,7 @@ void gam_performLiftAction ()
 	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 0, 0, "greenAlert");
 	gam_getTunnelToUse ();
 	sys_changeMode (MODE_LIFT_VIEW, true);
-	hud_setText ("hudLift");
+	hud_setText (false, "hudLift");
 }
 
 //----------------------------------------------------------------------------

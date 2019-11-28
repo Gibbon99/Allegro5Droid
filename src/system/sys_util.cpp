@@ -229,3 +229,28 @@ int sys_getCappedRandomNum (int cap)
 
 	return returnValue;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Convert a bool to string for script
+std::string sys_boolToString(bool boolValue)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (boolValue)
+		return "1";
+
+	return "0";
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Convert a int to a string for script
+std::string sys_intToString(int intValue)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	std::string tempString;
+
+	tempString = std::to_string(intValue);
+
+	return tempString;
+}

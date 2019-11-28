@@ -11,10 +11,13 @@ std::string hudStatusText;
 //--------------------------------------------------------------------------------------------------------------------------------------------
 //
 // Set the text for the HUD status
-void hud_setText(std::string newText)
+void hud_setText (bool useDirectValue, std::string newText)
 //--------------------------------------------------------------------------------------------------------------------------------------------
 {
-	hudStatusText = gui_getString(newText);
+	if (!useDirectValue)
+		hudStatusText = gui_getString(newText);
+	else
+		hudStatusText = newText;
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -44,6 +47,7 @@ void hud_renderHUD ()
 	switch (currentMode)
 		{
 			case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+			case MODE_PLAY_TRANSFER_GAME:
 				sys_drawBitmap ("hud", 0.0f, 0.0f, RENDER_SCALE, trn_getTransferBitmapWidth (), sys_getImageHeight ("hud"));
 			hudScoreFontX = trn_getTransferBitmapWidth () - fnt_getWidth (sys_getString ("%s", gam_getScore ().c_str ()));
 			hudScoreFontX -= fnt_getWidth("--");

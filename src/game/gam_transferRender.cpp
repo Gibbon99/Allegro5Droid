@@ -5,6 +5,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/system/sys_init.h>
 #include <hdr/game/gam_database.h>
+#include <hdr/game/gam_transferDroidAI.h>
 #include "hdr/game/gam_transferRender.h"
 
 int   transferBorderThickness;
@@ -20,6 +21,7 @@ float transferStatusTabWidth;
 float transferStatusTabHeight;
 float transferSidebarGap;
 float transferSidebarWidth;
+float activeTokenPosX;
 
 int   transferPlayerWhichSide;
 float transferLineThickness;
@@ -28,7 +30,9 @@ int transferBitmapWidth;
 int transferBitmapHeight;
 
 ALLEGRO_COLOR transferColorLeft;
+ALLEGRO_COLOR transferColorLeftActive;
 ALLEGRO_COLOR transferColorRight;
+ALLEGRO_COLOR transferColorRightActive;
 ALLEGRO_COLOR transferColorBackground;
 ALLEGRO_COLOR transferColorBorder;
 ALLEGRO_COLOR transferColorStatusCell;
@@ -39,10 +43,6 @@ float gapWidth;
 
 std::vector<__transferRow> transferRows;
 
-#define BLOCK_HEIGHT             8
-#define BLOCK_WIDTH              4
-#define BLOCK_STEP               2
-
 //
 // Create another backing bitmap large enough to hold the transfer screen
 //
@@ -50,74 +50,83 @@ std::vector<__transferRow> transferRows;
 
 //-------------------------------------------------------------------------------------------------------------------
 //
+// Return the backing bitmap for the transfer game
+ALLEGRO_BITMAP *trn_getTransferBitmap ()
+//-------------------------------------------------------------------------------------------------------------------
+{
+	return transferGameBitmap;
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+//
 // Return the row type by string
-std::string trn_getRowName(int rowType)
+std::string trn_getRowName (int rowType)
 //-------------------------------------------------------------------------------------------------------------------
 {
 	switch (rowType)
 		{
 			case TRANSFER_ROW_FULL_LINE:
 				return "TRANSFER_ROW_FULL_LINE";
-				break;
+			break;
 
 			case TRANSFER_ROW_HALF_LINE:
 				return "TRANSFER_ROW_HALF_LINE";
-				break;
+			break;
 
 			case TRANSFER_ROW_3_4_LINE:
 				return "TRANSFER_ROW_3_4_LINE";
-				break;
+			break;
 
 			case TRANSFER_ROW_FULL_LINE_1:
 				return "TRANSFER_ROW_FULL_LINE_1";
-				break;
+			break;
 
 			case TRANSFER_ROW_QUARTER_LINE:
 				return "TRANSFER_ROW_QUARTER_LINE";
-				break;
+			break;
 
 			case TRANSFER_ROW_REPEAT_HALF:
 				return "TRANSFER_ROW_REPEAT_HALF";
-				break;
+			break;
 
 			case TRANSFER_ROW_REPEAT_QUARTER:
 				return "TRANSFER_ROW_REPEAT_QUARTER";
-				break;
+			break;
 
 			case TRANSFER_ROW_FULL_LINE_2:
 				return "TRANSFER_ROW_FULL_LINE_2";
-				break;
+			break;
 
 			case TRANSFER_ROW_REVERSE_HALF:
 				return "TRANSFER_ROW_REVERSE_HALF";
-				break;
+			break;
 
 			case TRANSFER_ROW_REVERSE_QUARTER:
 				return "TRANSFER_ROW_REVERSE_QUARTER";
-				break;
+			break;
 
 			case TRANSFER_ROW_TWO_INTO_ONE_MIDDLE:
 				return "TRANSFER_ROW_TWO_INTO_ONE_MIDDLE";
-				break;
+			break;
 
 			case TRANSFER_ROW_ONE_INTO_TWO_MIDDLE:
 				return "TRANSFER_ROW_ONE_INTO_TWO_MIDDLE";
-				break;
+			break;
 
 			case TRANSFER_ROW_FULL_LINE_3:
 				return "TRANSFER_ROW_FULL_LINE_3";
-				break;
+			break;
 
 			case TRANSFER_ROW_ONE_INTO_TWO_TOP:
 			case TRANSFER_ROW_ONE_INTO_TWO_BOTTOM:
 			case TRANSFER_ROW_TWO_INTO_ONE_TOP:
 			case TRANSFER_ROW_TWO_INTO_ONE_BOTTOM:
 				return "Split row";
-				break;
+			break;
 
 			default:
-				return sys_getString("Unknown Row Line [ %i ]", rowType);
-				break;
+				return sys_getString ("Unknown Row Line [ %i ]", rowType);
+			break;
 		}
 }
 
@@ -223,22 +232,55 @@ void trn_renderLineForRow (__transferRow whichRow, float lineLength, int special
 			return;
 		}
 
+	if (TRANSFER_ROW_LAUNCHER_RIGHT_COLOR == special)
+		{
+			lineStartY -= transferRowHeight;
+			al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength / 4), lineStartY + transferLineThickness, transferColorBorder);
+			trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength / 4), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight); //transferColorBorder);
+			return;
+		}
+
+	if (TRANSFER_ROW_LAUNCHER_LEFT_COLOR == special)
+		{
+			lineStartY -= transferRowHeight;
+			al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + (lineLength / 4), lineStartY + transferLineThickness, transferColorBorder);
+			trn_renderToken (TOKEN_DIRECTION_RIGHT, leftLineStartX + (lineLength / 4), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorLeft);
+			return;
+		}
+
 	switch (whichRow.leftSideType)
 		{
 			case TRANSFER_ROW_FULL_LINE:
 			case TRANSFER_ROW_FULL_LINE_1:
 			case TRANSFER_ROW_FULL_LINE_2:
 			case TRANSFER_ROW_FULL_LINE_3:
-				al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + lineLength, lineStartY + transferLineThickness, transferColorBorder);
+				if (whichRow.leftSideActive)
+					{
+						al_draw_filled_rectangle (leftLineStartX + (activeTokenPosX * 2), lineStartY, leftLineStartX + lineLength, lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (leftLineStartX + (activeTokenPosX * 2), lineStartY, leftLineStartX + lineLength, lineStartY + transferLineThickness, transferColorLeftActive);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, leftLineStartX + (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorLeft);
+					}
+				else
+					al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + lineLength, lineStartY + transferLineThickness, transferColorBorder);
 			break;
 
 			case TRANSFER_ROW_HALF_LINE:
-				al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + (lineLength / 2), lineStartY + transferLineThickness, transferColorBorder);
+				if (whichRow.leftSideActive)
+					{
+						al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + (lineLength / 2), lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (leftLineStartX + (activeTokenPosX * 2), lineStartY, leftLineStartX + (lineLength / 2), lineStartY + transferLineThickness, transferColorLeftActive);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, leftLineStartX + (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorLeft);
+					}
+				else
+					al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + (lineLength / 2), lineStartY + transferLineThickness, transferColorBorder);
 			trn_renderToken (TOKEN_DIRECTION_LEFT, leftLineStartX + (lineLength / 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorLeft);
 			break;
 
 			case TRANSFER_ROW_3_4_LINE:
-				al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + (lineLength * 0.75f), lineStartY + transferLineThickness, transferColorBorder);
+				if (whichRow.leftSideActive)
+					al_draw_filled_rectangle (leftLineStartX + activeTokenPosX, lineStartY, leftLineStartX + (lineLength * 0.75f), lineStartY + transferLineThickness, transferColorLeftActive);
+				else
+					al_draw_filled_rectangle (leftLineStartX, lineStartY, leftLineStartX + (lineLength * 0.75f), lineStartY + transferLineThickness, transferColorBorder);
 			trn_renderToken (TOKEN_DIRECTION_LEFT, leftLineStartX + (lineLength * 0.75f), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorLeft);
 			break;
 
@@ -303,7 +345,7 @@ void trn_renderLineForRow (__transferRow whichRow, float lineLength, int special
 
 			default:
 //				printf ("Unknown left row [ %f ] value [ %s ]\n", whichRow.startY / transferRowHeight, trn_getRowName (whichRow.leftSideType).c_str());
-			break;
+				break;
 		}
 
 	switch (whichRow.rightSideType)
@@ -312,11 +354,27 @@ void trn_renderLineForRow (__transferRow whichRow, float lineLength, int special
 			case TRANSFER_ROW_FULL_LINE_1:
 			case TRANSFER_ROW_FULL_LINE_2:
 			case TRANSFER_ROW_FULL_LINE_3:
-				al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
+				if (whichRow.rightSideActive)
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (rightLineStartX - (activeTokenPosX * 2), lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness,
+						                          al_map_rgba_f (whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+				else
+					al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
 			break;
 
 			case TRANSFER_ROW_HALF_LINE:
-				al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength / 2), lineStartY + transferLineThickness, transferColorBorder);
+				if (whichRow.rightSideActive)
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength / 2), lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (rightLineStartX - (activeTokenPosX * 2), lineStartY, rightLineStartX - (lineLength / 2), lineStartY + transferLineThickness,
+						                          al_map_rgba_f (whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+				else
+					al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength / 2), lineStartY + transferLineThickness, transferColorBorder);
 			trn_renderToken (TOKEN_DIRECTION_RIGHT, rightLineStartX - (lineLength / 2) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
 			break;
 
@@ -326,18 +384,65 @@ void trn_renderLineForRow (__transferRow whichRow, float lineLength, int special
 			break;
 
 			case TRANSFER_ROW_QUARTER_LINE:
-				al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength * 0.25f), lineStartY + transferLineThickness, transferColorBorder);
-			trn_renderToken (TOKEN_DIRECTION_RIGHT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+				if (whichRow.rightSideActive)
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength * 0.25f), lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (rightLineStartX - (activeTokenPosX * 2), lineStartY, rightLineStartX - (lineLength * 0.25f), lineStartY + transferLineThickness,
+						                          al_map_rgba_f (whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						trn_renderToken (TOKEN_DIRECTION_RIGHT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+				else
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - (lineLength * 0.25f), lineStartY + transferLineThickness, transferColorBorder);
+						trn_renderToken (TOKEN_DIRECTION_RIGHT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+
+					}
 			break;
 
 			case TRANSFER_ROW_REPEAT_HALF:
-				al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
-			trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength / 2) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+				if (whichRow.rightSideActive)
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (rightLineStartX - (activeTokenPosX * 2), lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness,
+						                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength / 2) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+				else
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength / 2) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+			//
+			// Keep the power on for repeater
+			if (whichRow.rightSideActiveIsOn)
+				{
+					al_draw_filled_rectangle (rightLineStartX - (lineLength / 2) - transferBorderThickness - (BLOCK_WIDTH * 2), lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness,
+					                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+				}
 			break;
 
 			case TRANSFER_ROW_REPEAT_QUARTER:
-				al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
-			trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+				if (whichRow.rightSideActive)
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
+						al_draw_filled_rectangle (rightLineStartX - (activeTokenPosX * 2), lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness,
+						                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+				else
+					{
+						al_draw_filled_rectangle (rightLineStartX, lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness, transferColorBorder);
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+
+			if (whichRow.rightSideActiveIsOn)
+				{
+					al_draw_filled_rectangle (rightLineStartX - (lineLength * 0.25f) - transferBorderThickness - (BLOCK_WIDTH * 2), lineStartY, rightLineStartX - lineLength, lineStartY + transferLineThickness,
+					                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+				}
 			break;
 
 			case TRANSFER_ROW_REVERSE_HALF:
@@ -364,23 +469,53 @@ void trn_renderLineForRow (__transferRow whichRow, float lineLength, int special
 			break;
 
 			case TRANSFER_ROW_ONE_INTO_TWO_MIDDLE:
-				//
-				// Top Line
-				al_draw_filled_rectangle (rightLineStartX - lineLength + (BLOCK_WIDTH * 6), lineStartY - transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY - transferRowHeight) + transferLineThickness, transferColorBorder);
-			//
-			// Bottom line
-			al_draw_filled_rectangle (rightLineStartX - lineLength, lineStartY + transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY + transferRowHeight) + transferLineThickness, transferColorBorder);
-			//
-			// Middle line
-			al_draw_filled_rectangle (rightLineStartX - (lineLength * 0.5f), lineStartY, rightLineStartX, lineStartY + transferLineThickness, transferColorBorder);
+				if (whichRow.rightSideActive)
+					{
+						//
+						// Top Line - Black
+						al_draw_filled_rectangle (rightLineStartX - lineLength + (BLOCK_WIDTH * 6), lineStartY - transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY - transferRowHeight) + transferLineThickness, transferColorBorder);
+						//
+						// Bottom line - Black
+						al_draw_filled_rectangle (rightLineStartX - lineLength, lineStartY + transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY + transferRowHeight) + transferLineThickness, transferColorBorder);
+						//
+						// Middle line - Black
+						al_draw_filled_rectangle (rightLineStartX - (lineLength * 0.5f), lineStartY, rightLineStartX, lineStartY + transferLineThickness, transferColorBorder);
+						//
+						// Draw lines with highlite active
+						//
+						// Top Line - Active
+						al_draw_filled_rectangle (rightLineStartX - lineLength + (BLOCK_WIDTH * 6), lineStartY - transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY - transferRowHeight) + transferLineThickness,
+						                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						//
+						// Bottom line - Active
+						al_draw_filled_rectangle (rightLineStartX - lineLength + (activeTokenPosX * 2), lineStartY + transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY + transferRowHeight) + transferLineThickness,
+						                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
+						//
+						// Middle line - Active
+						al_draw_filled_rectangle (rightLineStartX - (lineLength * 0.5f), lineStartY, rightLineStartX - (activeTokenPosX * 2), lineStartY + transferLineThickness,
+						                          al_map_rgba_f(whichRow.rightSideActiveAlphaColor, transferColorRightActive.g, transferColorRightActive.b, 0.0f));
 
-			trn_renderRowBar (rightLineStartX - (lineLength * 0.5f), lineStartY, transferColorRight);
-
+						trn_renderToken (TOKEN_DIRECTION_LEFT, rightLineStartX - (activeTokenPosX * 2), lineStartY - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+					}
+				else
+					{
+						//
+						// Top Line
+						al_draw_filled_rectangle (rightLineStartX - lineLength + (BLOCK_WIDTH * 6), lineStartY - transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY - transferRowHeight) + transferLineThickness, transferColorBorder);
+						//
+						// Bottom line
+						al_draw_filled_rectangle (rightLineStartX - lineLength, lineStartY + transferRowHeight, rightLineStartX - (lineLength * 0.5f), (lineStartY + transferRowHeight) + transferLineThickness, transferColorBorder);
+						//
+						// Middle line
+						al_draw_filled_rectangle (rightLineStartX - (lineLength * 0.5f), lineStartY, rightLineStartX, lineStartY + transferLineThickness, transferColorBorder);
+					}
 			al_draw_filled_rectangle (rightLineStartX, lineStartY - transferRowHeight, rightLineStartX - (lineLength * 0.25f), (lineStartY - transferRowHeight) + transferLineThickness, transferColorBorder);
 			trn_renderToken (TOKEN_DIRECTION_RIGHT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, (lineStartY - transferRowHeight) - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
 
 			al_draw_filled_rectangle (rightLineStartX, lineStartY + transferRowHeight, rightLineStartX - (lineLength * 0.25f), (lineStartY + transferRowHeight) + transferLineThickness, transferColorBorder);
 			trn_renderToken (TOKEN_DIRECTION_RIGHT, rightLineStartX - (lineLength * 0.25f) - transferBorderThickness, (lineStartY + transferRowHeight) - (transferStatusTabHeight / 2) + (transferBorderThickness / 2), transferColorRight);
+
+			trn_renderRowBar (rightLineStartX - (lineLength * 0.5f), lineStartY, transferColorRight);
 
 			break;
 
@@ -499,9 +634,6 @@ void trn_renderTransferGame ()
 	// Draw left side launchpad
 	trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_LEFT);
 	//
-	// Draw right side launchpad
-	trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_RIGHT);
-	//
 	// Draw the two sprite types
 	float droidX, droidY;
 	gapWidth = ((transferRows[0].startX - (transferSidebarGap + transferSidebarWidth)) / 2);
@@ -511,7 +643,7 @@ void trn_renderTransferGame ()
 			droidX = (transferSidebarGap + transferSidebarWidth) + gapWidth;
 			droidY = transferRows[0].startY - (transferRowHeight * 2);
 
-			for (int i = 0; i != dataBaseEntry[playerDroid.droidType].tokenCount; i++)
+			for (int i = 0; i != numPlayerTokens; i++)
 				{
 					trn_renderToken (TOKEN_DIRECTION_RIGHT, transferSidebarGap - (BLOCK_WIDTH * 3), transferRows[i].startY, transferColorLeft);
 				}
@@ -519,40 +651,67 @@ void trn_renderTransferGame ()
 			io_renderSpriteFrame (gam_getSpriteName (playerDroid.droidType), 0, droidX, droidY);
 
 			droidX = (transferBitmapWidth - (transferSidebarGap + transferSidebarWidth)) - gapWidth;
-			//
-			// TODO Remove
-			playerDroid.transferTargetDroidType = 9;
 
-			for (int i = 0; i != dataBaseEntry[playerDroid.transferTargetDroidType].tokenCount; i++)
+			//
+			// TODO - stop drawing on no numDroidTokens left
+			for (int i = 0; i != numDroidTokens; i++)
 				{
 					trn_renderToken (TOKEN_DIRECTION_LEFT, transferBitmapWidth - (BLOCK_WIDTH * 3), transferRows[i].startY, transferColorRight);
 				}
 
-			io_renderTintedSpriteFrame (gam_getSpriteName (gam_getTransferTargetDroid ()), 0, droidX, droidY,
+			io_renderTintedSpriteFrame (gam_getSpriteName (trn_getTransferTargetDroid ()), 0, droidX, droidY,
 			                            0.0, 0.0, 0.0, 1.0);
+
+			switch (droidBlockPos)
+				{
+					case -1:
+						//
+						// Draw right side launchpad
+						trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_RIGHT_COLOR);
+					break;
+
+					case -2:
+					default:
+						//
+						// Render current moving token
+						trn_renderToken (TOKEN_DIRECTION_LEFT, transferBitmapWidth - (transferSidebarGap + transferSidebarWidth) - (BLOCK_WIDTH * 2), transferRows[droidBlockPos].startY + 4, transferColorRight);
+					//
+					// Draw right side launchpad
+					trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_RIGHT);
+					break;
+				}
+
+				switch (playerBlockPos)
+					{
+						case -1:
+							trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_LEFT_COLOR);
+							break;
+
+						case -2:
+						default:
+							trn_renderToken (TOKEN_DIRECTION_RIGHT, gapWidth, transferRows[playerBlockPos].startY, transferColorLeft);
+						trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_LEFT_COLOR);
+							break;
+					}
 		}
 	else
 		{
 			droidX = (transferSidebarGap + transferSidebarWidth) + gapWidth;
 			droidY = transferRows[0].startY - (transferRowHeight * 2);
 
-			//
-			// TODO Remove
-			playerDroid.transferTargetDroidType = 9;
-
-			for (int i = 0; i != dataBaseEntry[playerDroid.transferTargetDroidType].tokenCount; i++)
+			for (int i = 0; i != numDroidTokens; i++)
 				{
 					trn_renderToken (TOKEN_DIRECTION_RIGHT, transferSidebarGap - (BLOCK_WIDTH * 3), transferRows[i].startY, transferColorLeft);
 				}
 
-			io_renderTintedSpriteFrame (gam_getSpriteName (gam_getTransferTargetDroid ()), 0, droidX, droidY,
+			io_renderTintedSpriteFrame (gam_getSpriteName (trn_getTransferTargetDroid ()), 0, droidX, droidY,
 			                            0.0, 0.0, 0.0, 1.0);
 
 			droidX = (transferBitmapWidth - (transferSidebarGap + transferSidebarWidth)) - gapWidth;
 
 			io_renderSpriteFrame (gam_getSpriteName (playerDroid.droidType), 0, droidX, droidY);
 
-			for (int i = 0; i != dataBaseEntry[playerDroid.droidType].tokenCount; i++)
+			for (int i = 0; i != numPlayerTokens; i++)
 				{
 					trn_renderToken (TOKEN_DIRECTION_LEFT, transferBitmapWidth - (BLOCK_WIDTH * 3), transferRows[i].startY, transferColorRight);
 				}
@@ -583,56 +742,4 @@ void trn_setTransferColor (int whichSide, float red, float green, float blue, fl
 				transferColorBorder = al_map_rgba_f (red, green, blue, alpha);
 			break;
 		}
-}
-//-------------------------------------------------------------------------------------------------------------------
-//
-// Setup the default values for the transfer rows
-void trn_initTransferValues ()
-//-------------------------------------------------------------------------------------------------------------------
-{
-	__transferRow tempTransferRow;
-
-	if (transferRows.empty ())
-		{
-			for (int i = 0; i != numberTransferRows; i++)
-				{
-					tempTransferRow.startX                 = transferBitmapWidth / 2;
-					tempTransferRow.startY                 = transferRowStartY + (i * transferRowHeight);
-					tempTransferRow.leftSideActiveCounter  = 0.0f;
-					tempTransferRow.rightSideActiveCounter = 0.0f;
-					tempTransferRow.leftSideType           = TRANSFER_ROW_REVERSE_QUARTER;
-					tempTransferRow.rightSideType          = TRANSFER_ROW_REVERSE_QUARTER;
-
-					if (i % 2 == 0)
-						tempTransferRow.currentColor = TRANSFER_COLOR_LEFT;
-					else
-						tempTransferRow.currentColor = TRANSFER_COLOR_RIGHT;
-
-					transferRows.push_back (tempTransferRow);
-				}
-
-			transferGameBitmap = al_create_bitmap (transferBitmapWidth, transferBitmapHeight);
-			if (nullptr == transferGameBitmap)
-				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to create backing bitmap for transfer game."));
-
-			al_set_target_bitmap (transferGameBitmap);
-
-//					al_set_target_bitmap(al_get_backbuffer(display));
-		}
-
-	transferColorStatusCell = transferColorBorder;
-	transferPlayerWhichSide = TRANSFER_COLOR_LEFT;
-
-	setupTransferCellValues ();
-
-//	transferRows[0].leftSideType = TRANSFER_ROW_HALF_LINE;
-//	transferRows[1].leftSideType = TRANSFER_ROW_ONE_INTO_TWO_TOP;
-//	transferRows[2].leftSideType = TRANSFER_ROW_ONE_INTO_TWO_MIDDLE;
-//	transferRows[3].leftSideType = TRANSFER_ROW_ONE_INTO_TWO_BOTTOM;
-
-	transferRows[0].rightSideType = TRANSFER_ROW_HALF_LINE;
-	transferRows[1].rightSideType = TRANSFER_ROW_ONE_INTO_TWO_TOP;
-	transferRows[2].rightSideType = TRANSFER_ROW_ONE_INTO_TWO_MIDDLE;
-	transferRows[3].rightSideType = TRANSFER_ROW_ONE_INTO_TWO_BOTTOM;
-
 }

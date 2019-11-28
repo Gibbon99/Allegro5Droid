@@ -27,6 +27,9 @@
 #include <hdr/game/gam_transferRender.h>
 #include <hdr/game/gam_hud.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_transfer.h>
+#include <hdr/game/gam_transferDroidAI.h>
+#include <hdr/system/sys_configFile.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -67,6 +70,7 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("int currentObjectSelected", &currentObjectSelected);
 	sys_scriptAddHostVariable ("bool isGUIStarted", &isGUIStarted);
 	sys_scriptAddHostVariable ("bool fullScreen", &fullScreen);
+	sys_scriptAddHostVariable ("int screenType", &screenType);
 
 	sys_scriptAddHostVariable ("float introScrollBoxStartX", &introScrollBoxStartX);
 	sys_scriptAddHostVariable ("float introScrollBoxStartY", &introScrollBoxStartY);
@@ -166,6 +170,14 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("float transferLineThickness", &transferLineThickness);
 	sys_scriptAddHostVariable ("int transferBitmapWidth", &transferBitmapWidth);
 	sys_scriptAddHostVariable ("int transferBitmapHeight", &transferBitmapHeight);
+	sys_scriptAddHostVariable ("int chooseSideTimeOut", &chooseSideTimeOut);
+	sys_scriptAddHostVariable ("float chooseSideDelayTime", &chooseSideDelayTime);
+	sys_scriptAddHostVariable ("float chooseRowDelayTime", &chooseRowDelayTime);
+	sys_scriptAddHostVariable ("float transferImageFade", &transferImageFade);
+	sys_scriptAddHostVariable ("bool renderBackdrop", &renderBackdrop);
+
+	sys_scriptAddHostVariable ("bool enableSound", &enableSound);
+	sys_scriptAddHostVariable ("int numDisrupterFrames", &numDisrupterFrames);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -204,8 +216,11 @@ void sys_scriptInitFunctions ()
 
 	sys_scriptAddHostFunction ("void as_guiSetCheckboxGroup  (string &in, int whichGroup)", (functionPtr) &gui_hostSetCheckboxGroup);
 	sys_scriptAddHostFunction ("void as_guiSetCheckboxTick   (string &in, int whichGroup, bool ticked)", (functionPtr) &gui_hostSetCheckboxTick);
-	sys_scriptAddHostFunction ("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
+	sys_scriptAddHostFunction ("void as_guiSetCheckboxValue (string &in, int newValue)", (functionPtr) &gui_hostSetCheckboxValue);
+	sys_scriptAddHostFunction ("int as_guiGetCheckboxValue (string &in)", (functionPtr) &gui_hostGetCheckboxValue);
 
+	sys_scriptAddHostFunction ("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
+	sys_scriptAddHostFunction ("void as_guiAddNewElement (string &in, string &in, string &in, int type)", (functionPtr) &gui_addNewElement);
 	sys_scriptAddHostFunction ("void as_guiSetImageKeyName(string &in, string &in)", (functionPtr) &gui_setImageKeyName);
 	sys_scriptAddHostFunction ("void sys_changeCurrentMode(int newMode, bool fade)", (functionPtr) &sys_changeMode);
 
@@ -214,15 +229,18 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void gam_nextDatabaseDroid()", (functionPtr) &gam_nextDatabaseDroid);
 	sys_scriptAddHostFunction ("void gam_setLocalDroidType()", (functionPtr) &gam_setLocalDroidType);
 
-	sys_scriptAddHostFunction ("void as_setParticleColor(int whichParticle, float red, float green, float blue, float alpha)",(functionPtr) &par_hostSetParticleColor);
+	sys_scriptAddHostFunction ("void as_setParticleColor(int whichParticle, float red, float green, float blue, float alpha)", (functionPtr) &par_hostSetParticleColor);
 	sys_scriptAddHostFunction ("int sys_getCappedRandomNum(int cap)", (functionPtr) &sys_getCappedRandomNum);
 	sys_scriptAddHostFunction ("float sys_getLogicalWidth()", (functionPtr) &sys_getLogicalWidth);
 	sys_scriptAddHostFunction ("float sys_getLogicalHeight()", (functionPtr) &sys_getLogicalHeight);
 	sys_scriptAddHostFunction ("void trn_setTransferColor(int whichSide, float red, float green, float blue, float alpha)", (functionPtr) &trn_setTransferColor);
 
-	sys_scriptAddHostFunction ("void hud_setText(string &in)", (functionPtr) &hud_setText);
+	sys_scriptAddHostFunction ("void hud_setText(bool useDirectValue, string &in)", (functionPtr) &hud_setText);
 
 	sys_scriptAddHostFunction ("void evt_pushEvent (int delayCount, int eventType, int eventAction, int data1, int data2, string &in)", (functionPtr) &evt_pushEvent);
+	sys_scriptAddHostFunction ("void cfg_setConfigValue(string &in, string &in)", (functionPtr) &cfg_setConfigValue);
+	sys_scriptAddHostFunction ("string sys_boolToString(bool boolValue)", (functionPtr) &sys_boolToString);
+	sys_scriptAddHostFunction ("string sys_intToString(int intValue)", (functionPtr) &sys_intToString);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

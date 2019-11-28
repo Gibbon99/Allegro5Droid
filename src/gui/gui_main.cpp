@@ -1,6 +1,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/system/sys_scriptEngine.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/gui/gui_main.h>
 #include "hdr/gui/gui_main.h"
 
 std::vector<_screenObject> guiScreens;
@@ -9,6 +10,7 @@ std::vector<__GUI_object>  guiCheckBoxes;
 std::vector<__GUI_object>  guiLabels;
 std::vector<__GUI_object>  guiTextBoxes;
 std::vector<__GUI_object>  guiImages;
+std::vector<__GUI_slider>  guiSliders;
 
 int  currentGUIScreen;
 int  currentObjectSelected;  // Pass this to script to act on
@@ -186,7 +188,7 @@ void gui_hostAddObjectToScreen (int guiObjectType, std::string objectID, std::st
 			case GUI_OBJECT_TEXTBOX:
 			case GUI_OBJECT_LABEL:
 			case GUI_OBJECT_IMAGE:
-//		case GUI_OBJECT_SLIDER:
+			case GUI_OBJECT_SLIDER:
 //		case GUI_OBJECT_KEYCODE:
 				guiScreens[screenIndex].objectIDIndex.push_back (objectIndex);    // Add objectIndex to the end
 			guiScreens[screenIndex].objectType.push_back (guiObjectType);
@@ -213,6 +215,7 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 	__GUI_object tmpGuiTextBox;
 	__GUI_object tmpLabel;
 	__GUI_object tmpObject;
+	__GUI_slider tmpSlider;
 
 #ifdef DEBUG_GUI_SETUP
 	log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Added new object - [ %s ]", objectID.c_str()));
@@ -238,7 +241,7 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 				}
 			//
 			// See if it exists already
-			for (auto guiItr : guiButtons)
+			for (const auto &guiItr : guiButtons)
 				{
 					if (guiItr.objectID == objectID)
 						{
@@ -268,7 +271,7 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 					return;
 				}
 
-			for (auto guiItr : guiCheckBoxes)
+			for (const auto &guiItr : guiCheckBoxes)
 				{
 					if (guiItr.objectID == objectID)
 						{
@@ -277,6 +280,30 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 						}
 				}
 			guiCheckBoxes.push_back (tmpGuiCheckBox);
+			break;
+
+			case GUI_OBJECT_SLIDER:
+				tmpSlider.objectID     = objectID;
+			tmpSlider.canFocus       = true;
+			tmpSlider.positionCalled = false;
+			tmpSlider.gapSize        = 4;
+			tmpSlider.ready          = false;
+
+			if (guiSliders.empty ())
+				{
+					guiSliders.push_back (tmpSlider);
+					return;
+				}
+
+			for (const auto &guiItr : guiSliders)
+				{
+					if (guiItr.objectID == objectID)
+						{
+							log_logMessage (LOG_LEVEL_INFO, sys_getString ("GUI slider element already exists [ %s [", objectID.c_str ()));
+							return;
+						}
+				}
+			guiSliders.push_back (tmpSlider);
 			break;
 
 			case GUI_OBJECT_TEXTBOX:
@@ -296,7 +323,7 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 					return;
 				}
 
-			for (auto guiItr : guiTextBoxes)
+			for (const auto &guiItr : guiTextBoxes)
 				{
 					if (guiItr.objectID == objectID)
 						{
@@ -324,7 +351,7 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 					return;
 				}
 
-			for (auto guiItr : guiLabels)
+			for (const auto &guiItr : guiLabels)
 				{
 					if (guiItr.objectID == objectID)
 						{
@@ -347,13 +374,13 @@ void gui_hostCreateObject (int guiObjectType, const std::string objectID)
 			tmpObject.ready          = false;
 			strcpy (tmpObject.__GUI_element.image.keyName, "");
 
-			if (guiImages.empty ())      // WHY ? TODO
+			if (guiImages.empty ())
 				{
 					guiImages.push_back (tmpObject);
 					return;
 				}
 
-			for (auto imageItr : guiImages)
+			for (const auto &imageItr : guiImages)
 				{
 					if (imageItr.objectID == objectID)
 						{
@@ -418,6 +445,30 @@ void gui_hostSetObjectPosition (int guiObjectType, const std::string &objectID, 
 			guiButtons[objectIndex].positionCalled = true;
 			break;
 
+			case GUI_OBJECT_SLIDER:
+				guiSliders[objectIndex].coordType = coordType;
+
+			if (GUI_COORD_TYPE_PERCENT == guiSliders[objectIndex].coordType)
+				{
+					guiSliders[objectIndex].boundingBox.x = (sys_getLogicalWidth () * ((float) width / 100.0f));
+					guiSliders[objectIndex].boundingBox.y = (sys_getLogicalHeight () * ((float) height / 100.0f));
+
+					guiSliders[objectIndex].boundingBox.x = ((sys_getLogicalWidth () * ((float) startX / 100.0f)));
+					guiSliders[objectIndex].boundingBox.y = ((sys_getLogicalHeight () * ((float) startY / 100.0f)));
+				}
+			else
+				{
+					guiSliders[objectIndex].boundingBox.x = startX;
+					guiSliders[objectIndex].boundingBox.y = startY;
+					guiSliders[objectIndex].boundingBox.w = width;
+					guiSliders[objectIndex].boundingBox.h = height;
+				}
+
+			guiSliders[objectIndex].startX         = guiSliders[objectIndex].boundingBox.x;
+			guiSliders[objectIndex].startY         = guiSliders[objectIndex].boundingBox.y;
+			guiSliders[objectIndex].positionCalled = true;
+			break;
+
 			case GUI_OBJECT_CHECKBOX:
 				guiCheckBoxes[objectIndex].coordType = coordType;
 			if (GUI_COORD_TYPE_PERCENT == guiCheckBoxes[objectIndex].coordType)
@@ -471,8 +522,8 @@ void gui_hostSetObjectPosition (int guiObjectType, const std::string &objectID, 
 					guiLabels[objectIndex].boundingBox.w = (sys_getLogicalWidth () * ((float) width / 100.0f));
 					guiLabels[objectIndex].boundingBox.h = (sys_getLogicalHeight () * ((float) height / 100.0f));
 
-					guiLabels[objectIndex].boundingBox.x = ((sys_getLogicalWidth () * ((float) startX / 100.0f)) - (guiLabels[objectIndex].boundingBox.w / 2));
-					guiLabels[objectIndex].boundingBox.y = ((sys_getLogicalHeight () * ((float) startY / 100.0f)) - (guiLabels[objectIndex].boundingBox.h / 2));
+					guiLabels[objectIndex].boundingBox.x = ((sys_getLogicalWidth () * ((float) startX / 100.0f))); // - (guiLabels[objectIndex].boundingBox.w / 2));
+					guiLabels[objectIndex].boundingBox.y = ((sys_getLogicalHeight () * ((float) startY / 100.0f))); // - (guiLabels[objectIndex].boundingBox.h / 2));
 				}
 			else
 				{
@@ -547,6 +598,10 @@ void gui_hostSetObjectFontName (int guiObjectType, const std::string &objectID, 
 				guiLabels[objectIndex].fontName = std::move (fontName);
 			break;
 
+			case GUI_OBJECT_SLIDER:
+				guiSliders[objectIndex].fontName = std::move (fontName);
+			break;
+
 			default:
 				break;
 		}
@@ -584,6 +639,16 @@ void gui_hostSetObjectLabel (int guiObjectType, const std::string &objectID, int
 					}
 			guiButtons[objectIndex].text     = std::move (newLabel);
 			guiButtons[objectIndex].labelPos = labelPos;
+			break;
+
+			case GUI_OBJECT_SLIDER:
+				if (!guiSliders[objectIndex].positionCalled)
+					{
+						log_logMessage (LOG_LEVEL_ERROR, sys_getString ("GUI object position has not been site [ %s ]", objectID.c_str ()));
+						return;
+					}
+			guiSliders[objectIndex].text     = std::move (newLabel);
+			guiSliders[objectIndex].labelPos = labelPos;
 			break;
 
 			case GUI_OBJECT_CHECKBOX:
@@ -657,6 +722,10 @@ void gui_hostSetObjectFunctions (int guiObjectType, const std::string objectID, 
 				guiTextBoxes[objectIndex].action = actionFunction;
 			break;
 
+			case GUI_OBJECT_SLIDER:
+				guiSliders[objectIndex].action = actionFunction;
+			break;
+
 			default:
 				break;
 		}
@@ -666,7 +735,7 @@ void gui_hostSetObjectFunctions (int guiObjectType, const std::string objectID, 
 //
 // Set the color for the passed in element for this object
 //
-// Colors are in range 0..255
+// Colors are in range 0..1
 void gui_setObjectColorByIndex (int guiObjectType, int objectIndex, int whichColor, float red, float green, float blue, float alpha)
 //-----------------------------------------------------------------------------
 {
@@ -706,6 +775,38 @@ void gui_setObjectColorByIndex (int guiObjectType, int objectIndex, int whichCol
 
 							case GUI_INACTIVE_LABEL_COL:
 								guiButtons[objectIndex].labelNoFocusColor = al_map_rgba_f (red, green, blue, alpha);
+							break;
+
+							default:
+								break;
+						}
+				}
+			break;
+
+			case GUI_OBJECT_SLIDER:
+				{
+					if (objectIndex > guiSliders.size () - 1)
+						{
+							log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Index used to access guiSliders is too large."));
+							return;
+						}
+
+					switch (whichColor)
+						{
+							case GUI_ACTIVE_COL:
+								guiSliders[objectIndex].hasFocusColor = al_map_rgba_f (red, green, blue, alpha);
+							break;
+
+							case GUI_INACTIVE_COL:
+								guiSliders[objectIndex].noFocusColor = al_map_rgba_f (red, green, blue, alpha);
+							break;
+
+							case GUI_ACTIVE_LABEL_COL:
+								guiSliders[objectIndex].labelHasFocusColor = al_map_rgba_f (red, green, blue, alpha);
+							break;
+
+							case GUI_INACTIVE_LABEL_COL:
+								guiSliders[objectIndex].labelNoFocusColor = al_map_rgba_f (red, green, blue, alpha);
 							break;
 
 							default:
@@ -864,6 +965,10 @@ void gui_hostSetObjectColor (int guiObjectType, const std::string objectID, int 
 						numObjects = guiLabels.size ();
 					break;
 
+					case GUI_OBJECT_SLIDER:
+						numObjects = guiSliders.size ();
+					break;
+
 					default:
 						break;
 				}
@@ -932,6 +1037,13 @@ void gui_hostSetReadyState (int guiObjectType, const std::string &objectID, bool
 			case GUI_OBJECT_IMAGE:
 				guiImages[objectIndex].ready = newState;
 			break;
+
+			case GUI_OBJECT_SLIDER:
+				guiSliders[objectIndex].ready = newState;
+			break;
+
+			default:
+				break;
 		}
 }
 
@@ -949,6 +1061,14 @@ void gui_hostSetObjectFocus (std::string objectID)
 				{
 					case GUI_OBJECT_BUTTON:
 						if (guiButtons[guiScreens[currentGUIScreen].objectIDIndex[indexCount]].objectID == objectID)
+							{
+								guiScreens[currentGUIScreen].selectedObject = indexCount;
+								return;
+							}
+					break;
+
+					case GUI_OBJECT_SLIDER:
+						if (guiSliders[guiScreens[currentGUIScreen].objectIDIndex[indexCount]].objectID == objectID)
 							{
 								guiScreens[currentGUIScreen].selectedObject = indexCount;
 								return;
@@ -1068,11 +1188,9 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 
 			case GUI_MOVE_DOWN:
 				indexCount = 1;
-			if (guiScreens[currentGUIScreen].selectedObject != (int) guiScreens[currentGUIScreen].objectIDIndex.size () -
-			                                                   1)    // Don't go past number of objects on the screen
+			if (guiScreens[currentGUIScreen].selectedObject != (int) guiScreens[currentGUIScreen].objectIDIndex.size () - 1)    // Don't go past number of objects on the screen
 				{
-					while (!gui_canObjectBeSelected (guiScreens[currentGUIScreen].objectType[
-							                                 guiScreens[currentGUIScreen].selectedObject + indexCount]))
+					while (!gui_canObjectBeSelected (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject + indexCount]))
 						{
 							indexCount++;
 						}
@@ -1088,14 +1206,15 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 
 					currentObjectSelected = guiScreens[currentGUIScreen].selectedObject;
 				}
+			else
+				evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 			break;
 
 			case GUI_MOVE_UP:
 				indexCount = 1;
 			if (guiScreens[currentGUIScreen].selectedObject > 0)
 				{
-					while (!gui_canObjectBeSelected (guiScreens[currentGUIScreen].objectType[
-							                                 guiScreens[currentGUIScreen].selectedObject - indexCount]))
+					while (!gui_canObjectBeSelected (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject - indexCount]))
 						{
 							indexCount++;
 							if (guiScreens[currentGUIScreen].selectedObject - indexCount < 0)
@@ -1154,4 +1273,34 @@ void gui_setImageKeyName (const std::string objectID, const std::string keyName)
 		}
 
 	strcpy (guiImages[objectIndex].__GUI_element.image.keyName, keyName.c_str ());
+}
+
+//-----------------------------------------------------------------------------
+//
+// Add an element to a slider
+void gui_addNewElement (const std::string objectID, const std::string newLabel, const std::string newValue, int type)
+//-----------------------------------------------------------------------------
+{
+#ifdef DEBUG_GUI_SETUP
+	log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Setting image keyName [ %s ] for - [ %s ]", keyName.c_str(), objectID.c_str()));
+#endif // DEBUG_GUI_SETUP
+	_sliderElement tmpElement;
+
+	int objectIndex = 0;
+	//
+	// Find the index for this object
+	objectIndex = gui_findIndex (GUI_OBJECT_SLIDER, objectID);
+	if (-1 == objectIndex)
+		{
+			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("ERROR: Couldn't find GUI object index [ %s ]", objectID.c_str ()));
+			return;
+		}
+
+	tmpElement.label = newLabel;
+	tmpElement.value = newValue;
+	tmpElement.type = type;
+
+	guiSliders[objectIndex].element.push_back (tmpElement);
+
+	printf("Slider - add object [ %s ] label [ %s ] Value [ %s ]\n", objectID.c_str(), newLabel.c_str(), newValue.c_str());
 }

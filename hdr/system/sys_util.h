@@ -30,3 +30,9 @@ bool sys_isPointInRect(b2Vec2 testPoint, __BOUNDING_BOX testRectangle);
 
 // Get a random number capped at parameter
 int sys_getCappedRandomNum (int cap);
+
+// Convert a bool to string for script
+std::string sys_boolToString(bool boolValue);
+
+// Convert a int to a string for script
+std::string sys_intToString(int intValue);

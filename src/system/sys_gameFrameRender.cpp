@@ -32,12 +32,13 @@ ALLEGRO_BITMAP *previousScreen;
 
 bool  showDebugPhysics;
 float frameTimeArray[800];
-float scaleW         = 0;
-float scaleH         = 0;
-float scaleX         = 0;
-float scaleY         = 0;
-float fadeAlphaValue = 0;
-int   fadeInProgress = FADE_NONE;
+float scaleW            = 0;
+float scaleH            = 0;
+float scaleX            = 0;
+float scaleY            = 0;
+float fadeAlphaValue    = 0;
+int   fadeInProgress    = FADE_NONE;
+float transferImageFade = 0.5f;
 
 double renderCirclePosX, renderCirclePosY;
 
@@ -48,26 +49,36 @@ void sys_screenFade ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (fadeInProgress == FADE_NONE)
-	{
-		if (currentMode == MODE_GUI_TRANSFER_CHOOSE_SIDE)
-			PARA_presentFrame(display, trn_getTransferScreen());
-		else
-			PARA_presentFrame (display, backingBitmap);
-		return;
-	}
+		{
+			switch (currentMode)
+				{
+					case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+					case MODE_PLAY_TRANSFER_GAME:
+						PARA_presentFrame (display, trn_getTransferScreen ());
+					break;
+
+					case MODE_GUI_TERMINAL_DECKVIEW:
+						PARA_presentFrame (display, gam_getDeckViewBitmap ());
+					break;
+
+					default:
+						PARA_presentFrame (display, backingBitmap);
+					break;
+				}
+		}
 
 	if (fadeInProgress == FADE_ON)
-	{
-		al_draw_filled_rectangle (0, 0, screenWidth, screenHeight, al_map_rgba (0, 0, 0, fadeAlphaValue));
+		{
+			al_draw_filled_rectangle (0, 0, screenWidth, screenHeight, al_map_rgba (0, 0, 0, fadeAlphaValue));
 
-		PARA_presentFrame (display, backingBitmap);
-	}
+			PARA_presentFrame (display, backingBitmap);
+		}
 	else if (fadeInProgress == FADE_OFF)
-	{
-		al_draw_filled_rectangle (0, 0, screenWidth, screenHeight, al_map_rgba (0, 0, 0, fadeAlphaValue));
+		{
+			al_draw_filled_rectangle (0, 0, screenWidth, screenHeight, al_map_rgba (0, 0, 0, fadeAlphaValue));
 
-		PARA_presentFrame (display, previousScreen);
-	}
+			PARA_presentFrame (display, previousScreen);
+		}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -81,11 +92,11 @@ bool sys_initRenderVariables ()
 
 	backingBitmap = al_create_bitmap (screenWidth, screenHeight);
 	if (nullptr == backingBitmap)
-	{
-		quitProgram = true;
-		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create backing bitmap.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-		return false;
-	}
+		{
+			quitProgram = true;
+			al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could not create backing bitmap.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+			return false;
+		}
 
 	sx              = windowWidth / screenWidth;
 	sy              = windowHeight / screenHeight;
@@ -111,9 +122,9 @@ void sys_pushFrameTimeIntoQueue (double thisFrameTime, float factor)
 	renderFrameTime = thisFrameTime * factor;
 
 	for (int i                      = 0; i != screenWidth - 1; i++)
-	{
-		frameTimeArray[i] = frameTimeArray[i + 1];
-	}
+		{
+			frameTimeArray[i] = frameTimeArray[i + 1];
+		}
 	frameTimeArray[screenWidth - 1] = renderFrameTime;
 
 //	printf("%f\n", thisFrameTime);
@@ -129,10 +140,10 @@ void sys_renderFrameTimeQueue ()
 	float startY = screenHeight;
 
 	for (int i = 0; i != screenWidth - 1; i++)
-	{
-		al_draw_line (startX, startY, startX, startY - frameTimeArray[i], al_map_rgba_f (0, 0, 0, 0.4), 1);
-		startX--;
-	}
+		{
+			al_draw_line (startX, startY, startX, startY - frameTimeArray[i], al_map_rgba_f (0, 0, 0, 0.4), 1);
+			startX--;
+		}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -142,47 +153,51 @@ void sys_displayScreen (double interpolation)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	std::string indexName;
+	std::string newHud;
 
 	PARA_prepareFrame (backingBitmap);
 
 	switch (currentMode)
-	{
-		case MODE_SPLASH:
-			sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN, 0, 0);
+		{
+			case MODE_SPLASH:
+				sys_drawBitmap ("splash", 0.0f, 0.0f, RENDER_FULLSCREEN, 0, 0);
 			break;
 
-		case MODE_CONSOLE:
-			con_renderConsole ();
+			case MODE_CONSOLE:
+				con_renderConsole ();
 			break;
 
-		case MODE_GUI_INTRO:
-			hud_renderHUD ();
-			gui_renderScrollBox(&introScrollBox, interpolation);
+			case MODE_GUI_INTRO:
+				hud_renderHUD ();
+			gui_renderScrollBox (&introScrollBox, interpolation);
 			break;
 
-		case MODE_GUI:
-		case MODE_GUI_OPTIONS:
-		case MODE_GUI_OPTIONS_VIDEO:
-		case MODE_GUI_TUT_MOVE:
-		case MODE_GUI_TUT_TRANSFER_GAME:
-		case MODE_GUI_TUT_TRANSFER_START:
-		case MODE_GUI_TUT_LIFTS:
-		case MODE_GUI_TUT_TERMINALS:
-		case MODE_GUI_TUT_HEALING:
-		case MODE_GUI_TUT_TIPS:
-		case MODE_GUI_TERMINAL:
-			hud_renderHUD ();
+			case MODE_GUI:
+			case MODE_GUI_OPTIONS:
+			case MODE_GUI_OPTIONS_VIDEO:
+			case MODE_GUI_OPTIONS_AUDIO:
+			case MODE_GUI_TUT_MOVE:
+			case MODE_GUI_TUT_TRANSFER_GAME:
+			case MODE_GUI_TUT_TRANSFER_START:
+			case MODE_GUI_TUT_LIFTS:
+			case MODE_GUI_TUT_TERMINALS:
+			case MODE_GUI_TUT_HEALING:
+			case MODE_GUI_TUT_TIPS:
+			case MODE_GUI_TERMINAL:
+				hud_renderHUD ();
 			gui_drawGUI ();
 			break;
 
-		case MODE_GUI_TRANSFER_SCREEN_ONE_LOAD:
-			indexName = "db_" + gam_getSpriteName (playerDroid.droidType);
+			case MODE_GUI_TRANSFER_SCREEN_ONE_LOAD:
+				indexName = "db_" + gam_getSpriteName (playerDroid.droidType);
 			sys_loadResource ("db_sprite", indexName, RESOURCE_SPRITE, 32, -1);
 			sys_changeMode (MODE_GUI_TRANSFER_SCREEN_ONE, true);
 			break;
 
-		case MODE_GUI_TRANSFER_SCREEN_ONE:
-			io_renderSpriteFrame ("db_sprite", 0, (sys_getLogicalWidth () / 2), (sys_getLogicalHeight () / 2));
+			case MODE_GUI_TRANSFER_SCREEN_ONE:
+				io_renderSpriteFrame ("db_sprite", 0, (sys_getLogicalWidth () / 2), (sys_getLogicalHeight () / 2));
+			al_draw_filled_rectangle (0.0f, sys_getImageHeight ("hud"), sys_getLogicalWidth (), sys_getLogicalHeight (),
+			                          al_map_rgba_f (0.0f, 0.0f, 0.0f, transferImageFade));
 			//
 			// Render a quad with alpha to darken graphic, help text stand out
 			hud_renderHUD ();
@@ -190,52 +205,60 @@ void sys_displayScreen (double interpolation)
 			break;
 
 			case MODE_GUI_TRANSFER_SCREEN_TWO_LOAD:
-			indexName = "db_" + gam_getSpriteName (gam_getTransferTargetDroid ());
+				indexName = "db_" + gam_getSpriteName (trn_getTransferTargetDroid ());
 			sys_loadResource ("db_sprite", indexName, RESOURCE_SPRITE, 32, -1);
 			sys_changeMode (MODE_GUI_TRANSFER_SCREEN_TWO, true);
 			break;
 
-
-		case MODE_GUI_TRANSFER_SCREEN_TWO:
-			io_renderSpriteFrame ("db_sprite", 0, (sys_getLogicalWidth () / 2), (sys_getLogicalHeight () / 2));			hud_renderHUD ();
+			case MODE_GUI_TRANSFER_SCREEN_TWO:
+				io_renderSpriteFrame ("db_sprite", 0, (sys_getLogicalWidth () / 2), (sys_getLogicalHeight () / 2));
+			al_draw_filled_rectangle (0.0f, sys_getImageHeight ("hud"), sys_getLogicalWidth (), sys_getLogicalHeight (),
+			                          al_map_rgba_f (0.0f, 0.0f, 0.0f, transferImageFade));
+			hud_renderHUD ();
 			gui_drawGUI ();
 			break;
 
-		case MODE_GUI_TRANSFER_INIT_GAME:
-			trn_initTransferValues();
+			case MODE_GUI_TRANSFER_INIT_GAME:
+				trn_initTransferValues ();
 			sys_changeMode (MODE_GUI_TRANSFER_CHOOSE_SIDE, false);
 			break;
 
-		case MODE_GUI_TRANSFER_CHOOSE_SIDE:
-			trn_renderTransferGame();
+			case MODE_GUI_TRANSFER_CHOOSE_SIDE:
+				trn_renderTransferGame ();
+			newHud = sys_getString ("Select side %i", trn_getChooseSideCounter ());
+			hud_setText (true, newHud);
 			hud_renderHUD ();
 			break;
 
-		case MODE_PLAY_TRANSFER_GAME:
+			case MODE_PLAY_TRANSFER_GAME:
+				trn_renderTransferGame ();
 			hud_renderHUD ();
-			trn_renderTransferGame ();
+
 			break;
 
-		case MODE_GUI_TERMINAL_DECKVIEW:
-			gam_showCurrentLevel(deckViewRatio);
-			hud_renderHUD ();
-			gui_drawGUI ();
-			break;
-
-		case MODE_GUI_TERMINAL_SHIPVIEW:
-			gui_drawSideView ();
-			hud_renderHUD();
-			gui_drawGUI();
-			break;
-
-		case MODE_GUI_DATABASE:
-			gui_renderDatabaseScreen();
-			gui_renderScrollBox(&databaseScrollBox, interpolation);
+			case MODE_GUI_TERMINAL_DECKVIEW:
+				gam_showCurrentLevel (deckViewRatio);
 			hud_renderHUD ();
 			gui_drawGUI ();
 			break;
 
-		case MODE_GAME:
+			case MODE_GUI_TERMINAL_SHIPVIEW:
+				gui_drawSideView ();
+			hud_renderHUD ();
+			gui_drawGUI ();
+			break;
+
+			case MODE_GUI_DATABASE:
+				gui_renderDatabaseScreen ();
+			gui_renderScrollBox (&databaseScrollBox, interpolation);
+			hud_renderHUD ();
+			gui_drawGUI ();
+			break;
+
+			case MODE_GAME:
+
+				if (1 == renderBackdrop)
+					sys_drawBitmap ("backdrop", 0, 0, RENDER_FULLSCREEN, 1.0, 1.0);
 
 			gam_renderDoorFrames ();
 			gam_renderHealingFrames (lvl_getCurrentLevelName ());
@@ -253,19 +276,19 @@ void sys_displayScreen (double interpolation)
 //			gam_AStarDebugWayPoints (0);
 //			lvl_showWayPoints (lvl_getCurrentLevelName());
 			if (showDebugPhysics)
-				sys_getPhysicsWorld()->DrawDebugData();
+				sys_getPhysicsWorld ()->DrawDebugData ();
 
 			break;
 
-		case MODE_LIFT_VIEW:
-			al_set_target_bitmap (backingBitmap);
+			case MODE_LIFT_VIEW:
+				al_set_target_bitmap (backingBitmap);
 			gui_drawSideView ();
 			hud_renderHUD ();
 			break;
 
-		default:
-			break;
-	}
+			default:
+				break;
+		}
 
 //	sys_renderFrameTimeQueue ();
 
