@@ -5,6 +5,7 @@
 #include <hdr/game/gam_pathFind.h>
 #include <hdr/io/io_logFile.h>
 #include <hdr/game/gam_droidAIPatrol.h>
+#include <hdr/game/gam_droids.h>
 
 //#define AI_HEALTH_DEBUG 1
 
@@ -61,7 +62,7 @@ void ai_resetHealthFlags ( int whichDroid, const std::string levelName )
 //-----------------------------------------------------------------------------
 //
 // Is the droid currently located on a healing tile
-int ai_onHealingTile ( int whichDroid, const std::string levelName )
+auto ai_onHealingTile ( int whichDroid, const std::string levelName ) -> int
 //-----------------------------------------------------------------------------
 {
 	//
@@ -73,6 +74,7 @@ int ai_onHealingTile ( int whichDroid, const std::string levelName )
 			log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Droid [ %i ] fully healed", whichDroid ));
 #endif
 			shipLevel.at( levelName ).droid[whichDroid].currentHealth = dataBaseEntry[shipLevel.at( levelName ).droid[whichDroid].droidType].maxHealth;
+			gam_adjustHealthAnimation(levelName, whichDroid);
 			//
 			// Find way back to origin
 			//

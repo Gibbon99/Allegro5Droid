@@ -3,12 +3,13 @@ TODO
 DONE - Remove transfer setting of droids
 DONE - Fade graphics of transfer screens of droid images
 DONE - Get door physics to not sleep on start
+DONE - Droid that just healed still animates slowly
+DONE - Disrupter weapon and effect - flash screen
+DONE - Darken level when all droids dead
 
-Disrupter weapon and effect - flash screen
 Do GUI options
 Collisions for droids to ignore
-Darken level when all droids dead
-Droid that just healed still animates slowly
+
 Doors getting stuck open
 transferRender - stop drawing on -1 for numDroidTokens
 
@@ -50,8 +51,8 @@ GUI
 
 Audio
  - Use sound - checkbox
- - Volume level
- - num Samples
+ - Volume level - gui_slider
+ - num Samples - gui_slider
 
  Video
  - Use backdrop

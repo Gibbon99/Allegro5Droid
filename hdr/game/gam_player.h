@@ -27,3 +27,6 @@ void gam_weaponRechargePlayer(float tickTime);
 
 // Render the player sprite
 void gam_renderPlayer();
+
+// Destroy the player and end game
+void gam_destroyPlayer();

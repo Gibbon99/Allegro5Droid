@@ -29,6 +29,7 @@ void script_loadAllResources ()
 	bulletMoveSpeed          = 0.4f;
 	bulletDensity            = 0.2f;
 	numDisrupterFrames       = 4;
+	disrupterFadeAmount      = 0.8f;
 	healingAnimSpeed         = 10.0f;
 	droidBeenShotValue       = 90.0f;
 	splashTimeout            = 5;
@@ -100,7 +101,9 @@ void script_loadAllResources ()
 	sys_loadResource ("tut_healing", "tut_healing.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("tut_lift", "tut_lift.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("tut_terminal", "tut_terminal.bmp", RESOURCE_BITMAP, 0, 0);
+
 	sys_loadResource ("alltiles", "future_blue.bmp", RESOURCE_BITMAP, 0, 0);
+	sys_loadResource ("alltiles_dark", "future_dark.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("alltiles_128", "alltiles_128.bmp", RESOURCE_BITMAP, 0, 0);
 	//
 	// Explosion

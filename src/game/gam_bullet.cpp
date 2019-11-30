@@ -7,14 +7,16 @@
 #include <hdr/game/gam_particles.h>
 #include <hdr/system/sys_audio.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_droids.h>
 #include "hdr/game/gam_bullet.h"
 
 std::vector<__bulletObject> bullets;
 float                       bulletAnimSpeed;          // From script
 float                       bulletMoveSpeed;          // From script
 float                       bulletDensity;            // From script
-int                         numStartingBullets;
+int                         numStartingBullets;       // From script
 int                         numDisrupterFrames;       // From script
+float                       disrupterFadeAmount;      // From script
 
 //-----------------------------------------------------------------------------
 //
@@ -66,8 +68,6 @@ void bul_initBullets ()
 void bul_removeBullet (int whichBullet)
 //---------------------------------------------------------------------------------------------------------------
 {
-	printf ("Remove bullet [ %i ]\n", whichBullet);
-
 	if (bullets.at (whichBullet).body != nullptr)
 		{
 			sys_getPhysicsWorld ()->DestroyBody (bullets.at (whichBullet).body);
@@ -91,6 +91,34 @@ void bul_initBulletArraySize ()
 		{
 			tempBullet.inUse = false;
 			bullets.push_back (tempBullet);
+		}
+}
+
+//---------------------------------------------------------------------------------------------------------------
+//
+// Do damage from disrupter fire
+void bul_doDisrupterDamage (int sourceDroid)
+//---------------------------------------------------------------------------------------------------------------
+{
+	std::string currentLevelName;
+
+	currentLevelName = lvl_getCurrentLevelName ();
+
+	if (-1 == sourceDroid)    // Player used disrupter
+		{
+			for (auto i = 0; i != shipLevel.at (currentLevelName).numDroids; i++)
+				{
+					if ((shipLevel.at (currentLevelName).droid[i].visibleToPlayer) &&
+					    (shipLevel.at (currentLevelName).droid[i].currentMode != DROID_MODE_DEAD) &&
+					    (!dataBaseEntry[shipLevel.at (currentLevelName).droid[i].droidType].disrupterImmune))
+						{
+							gam_damageToDroid (i, DAMAGE_BULLET, sourceDroid, -1);
+						}
+				}
+		}
+	else  // Enemy used disrupter
+		{
+
 		}
 }
 
@@ -136,8 +164,8 @@ auto bul_setupNewBullet (int bulletSourceIndex, int arrayIndex) -> __bulletObjec
 			bulletType = dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].droidType].bulletType;
 		}
 
-	// TODO Test
-	bulletType = BULLET_TYPE_DISRUPTER;
+// TODO Test
+// bulletType = BULLET_TYPE_DISRUPTER;
 
 	if (bulletType != BULLET_TYPE_DISRUPTER)
 		{
@@ -187,7 +215,10 @@ auto bul_setupNewBullet (int bulletSourceIndex, int arrayIndex) -> __bulletObjec
 			break;
 
 			case BULLET_TYPE_DISRUPTER: // Disrupter
-				break;
+				tempBullet.disrupterFadeAmount = disrupterFadeAmount / (float) numDisrupterFrames;
+			tempBullet.disrupterFade         = disrupterFadeAmount;
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "disrupter");
+			break;
 
 			default:
 				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used."));
@@ -244,10 +275,7 @@ void bul_createNewBullet (int bulletSourceIndex)
 					return;
 				}
 		}
-
 	bullets.push_back (bul_setupNewBullet (bulletSourceIndex, bullets.size () - 1));
-
-	printf ("New bullet [ %f ] Source [ %i ] Start [ %f %f ]\n", tempBullet.angle, bulletSourceIndex, tempBullet.destPos.x, tempBullet.destPos.y);
 }
 
 //---------------------------------------------------------------------------------------------------------------------------
@@ -268,10 +296,15 @@ void bul_animateBullets (__bulletObject &bulletItr, double tickTime)
 				}
 			else
 				{
+					bulletItr.disrupterFade -= bulletItr.disrupterFadeAmount;
+					if (bulletItr.disrupterFade < 0.0f)
+						bulletItr.disrupterFade = 0.0f;
+
 					if (bulletItr.currentFrame > numDisrupterFrames)
 						{
-							bulletItr.currentFrame = 0;
-							bulletItr.inUse        = false;
+							bulletItr.currentFrame  = 0;
+							bulletItr.inUse         = false;
+							bulletItr.disrupterFade = 0.0f;
 						}
 				}
 		}
@@ -308,8 +341,8 @@ void bul_renderDisrupter (__bulletObject whichBullet)
 //---------------------------------------------------------------------------------------------------------------
 {
 	al_draw_filled_rectangle (0, 0, sys_getLogicalWidth (), sys_getLogicalHeight (),
-	                          al_map_rgba_f (1.0f, 1.0f, 1.0f, 0.5f));
-
+	                          al_map_rgba_f (whichBullet.disrupterFade, whichBullet.disrupterFade,
+	                                         whichBullet.disrupterFade, whichBullet.disrupterFade));
 }
 
 //---------------------------------------------------------------------------------------------------------------

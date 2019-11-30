@@ -32,3 +32,6 @@ void gam_addToScore (int scoreValue);
 
 // Return the current score as a string for displaying on the HUD
 std::string gam_getScore();
+
+// Power down a level - all droids are dead
+void gam_powerDownLevel(std::string whichLevel);

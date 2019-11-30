@@ -231,6 +231,8 @@ void gam_createDoorBulletSensor (unsigned long whichDoor)
 	doorBulletSensor[whichDoor].body->CreateFixture (&doorBulletSensor[whichDoor].fixtureDef);
 }
 
+// TODO: Check each rectangle for a sprite in them?
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Create a door sensor

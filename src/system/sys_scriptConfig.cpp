@@ -178,6 +178,7 @@ void sys_scriptInitVariables ()
 
 	sys_scriptAddHostVariable ("bool enableSound", &enableSound);
 	sys_scriptAddHostVariable ("int numDisrupterFrames", &numDisrupterFrames);
+	sys_scriptAddHostVariable ("float disrupterFadeAmount", &disrupterFadeAmount);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

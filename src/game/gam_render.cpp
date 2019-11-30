@@ -12,13 +12,13 @@ struct _tileTexCoords {
 	b2Vec2 texCoord;
 };
 
-_tileTexCoords *tileTexCoords   = nullptr;
+_tileTexCoords *tileTexCoords = nullptr;
 int            numTileAcrossInTexture, numTilesDownInTexture;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Return the backing bitmap to draw map onto
-PARA_BITMAP *gam_getCompleteLevel()
+PARA_BITMAP *gam_getCompleteLevel ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	return completeLevelBMP;
@@ -97,11 +97,20 @@ void gam_drawSingleTile (float destX, float destY, int whichTile)
 		}
 #endif
 
-	al_draw_bitmap_region (bitmap.at ("alltiles").bitmap,
-	                       textureCoordsSrc.x, textureCoordsSrc.y,
-	                       TILE_SIZE, TILE_SIZE,
-	                       destX, destY, 0);
-
+	if (shipLevel.at (lvl_getCurrentLevelName ()).numEnemiesAlive == 0)
+		{
+			al_draw_bitmap_region (bitmap.at ("alltiles_dark").bitmap,
+			                       textureCoordsSrc.x, textureCoordsSrc.y,
+			                       TILE_SIZE, TILE_SIZE,
+			                       destX, destY, 0);
+		}
+	else
+		{
+			al_draw_bitmap_region (bitmap.at ("alltiles").bitmap,
+			                       textureCoordsSrc.x, textureCoordsSrc.y,
+			                       TILE_SIZE, TILE_SIZE,
+			                       destX, destY, 0);
+		}
 //	profileTotalTileDrawn++;
 }
 
@@ -114,18 +123,18 @@ void gam_drawAllTiles ()
 	int whichTile = 0;
 
 	if (completeLevelBMP != nullptr)
-	{
-		//
-		// Already exists - need to destroy and recreate it
-		al_destroy_bitmap(completeLevelBMP);
-		completeLevelBMP = nullptr;
-	}
+		{
+			//
+			// Already exists - need to destroy and recreate it
+			al_destroy_bitmap (completeLevelBMP);
+			completeLevelBMP = nullptr;
+		}
 	//
 	// Now recreate it with the correct size for the current level
 	if (completeLevelBMP == nullptr)
 		{
-			completeLevelBMP = al_create_bitmap (shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x * TILE_SIZE,
-			                                     shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.y * TILE_SIZE);
+			completeLevelBMP = al_create_bitmap (shipLevel.at (lvl_getCurrentLevelName ()).levelDimensions.x * TILE_SIZE,
+			                                     shipLevel.at (lvl_getCurrentLevelName ()).levelDimensions.y * TILE_SIZE);
 			if (nullptr == completeLevelBMP)
 				{
 					al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Allegro. Exiting", "Could create backing bimap.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
@@ -139,19 +148,19 @@ void gam_drawAllTiles ()
 	// Render all tiles onto it
 	al_set_target_bitmap (completeLevelBMP);
 
-	for (int countY = 0; countY != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.y; countY++)
+	for (int countY = 0; countY != shipLevel.at (lvl_getCurrentLevelName ()).levelDimensions.y; countY++)
 		{
-			for (int countX = 0; countX != shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x; countX++)
+			for (int countX = 0; countX != shipLevel.at (lvl_getCurrentLevelName ()).levelDimensions.x; countX++)
 				{
-					whichTile = shipLevel.at (lvl_getCurrentLevelName()).tiles[(countY * shipLevel.at (lvl_getCurrentLevelName()).levelDimensions.x) + countX];
+					whichTile = shipLevel.at (lvl_getCurrentLevelName ()).tiles[(countY * shipLevel.at (lvl_getCurrentLevelName ()).levelDimensions.x) + countX];
 					if (whichTile > 0)
 						gam_drawSingleTile (countX * TILE_SIZE, countY * TILE_SIZE, whichTile);
 				}
 		}
-		//
-		// Allow backdrop image to show through
+	//
+	// Allow backdrop image to show through
 	if (1 == renderBackdrop)
-		al_convert_mask_to_alpha(completeLevelBMP, al_map_rgb(1, 0, 0));
+		al_convert_mask_to_alpha (completeLevelBMP, al_map_rgb (1, 0, 0));
 }
 
 //-----------------------------------------------------------------------------
@@ -168,7 +177,7 @@ void gam_drawVisibleScreen (float interpolation)
 
 	al_set_target_bitmap (backingBitmap);
 	al_draw_bitmap_region (completeLevelBMP,
-	                       (float)renderPlayerWorldPos.x - (screenWidth / 2),
-	                       (float)renderPlayerWorldPos.y - (screenHeight / 2),
-	                       (float)screenWidth, (float)screenHeight, 0, 0, 0);
+	                       (float) renderPlayerWorldPos.x - (screenWidth / 2),
+	                       (float) renderPlayerWorldPos.y - (screenHeight / 2),
+	                       (float) screenWidth, (float) screenHeight, 0, 0, 0);
 }

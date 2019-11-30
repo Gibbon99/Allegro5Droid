@@ -4,23 +4,25 @@
 #include "system/sys_physics.h"
 
 typedef struct {
-	bool           inUse            = false;
-	float          angle            = 0.0f;
+	bool           inUse               = false;
+	float          angle               = 0.0f;
 	b2BodyDef      bodyDef;                      // Used for physics and collisions
 	b2CircleShape  shape;
 	b2PolygonShape boxShape;
 	b2FixtureDef   fixtureDef;
-	b2Body         *body            = nullptr;
-	_userData      *userData        = nullptr;
+	b2Body         *body               = nullptr;
+	_userData      *userData           = nullptr;
 	b2Vec2         worldPos;
 	b2Vec2         destPos;
 	b2Vec2         previousWorldPos;
 	b2Vec2         middlePosition;             // TODO set middle position for droids
 	b2Vec2         velocity;                   // Current speed
-	int            currentFrame     = 0;
-	float          frameAnimCounter = 1.0f;
-	int            sourceIndex      = 0;
-	int            type             = 0;
+	int            currentFrame        = 0;
+	float          frameAnimCounter    = 1.0f;
+	int            sourceIndex         = 0;
+	int            type                = 0;
+	float          disrupterFadeAmount = 0.3f;
+	float          disrupterFade       = 0.0f;
 } __bulletObject;
 
 extern std::vector<__bulletObject> bullets;
@@ -28,7 +30,8 @@ extern float                       bulletAnimSpeed;          // From script
 extern float                       bulletMoveSpeed;          // From script
 extern float                       bulletDensity;            // From script
 extern int                         numStartingBullets;
-extern int                         numDisrupterFrames;     // From script
+extern int                         numDisrupterFrames;      // From script
+extern float                       disrupterFadeAmount;     // From script
 
 // Create a new bullet - pass in the source of the bullet
 void bul_createNewBullet (int bulletSourceIndex);

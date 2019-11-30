@@ -39,3 +39,6 @@ std::string gam_getSpriteName(int droidType);
 
 // This removes the droid from the current game - sets status to dead, and removes physics body
 void gam_removeDroid(int whichDroid);
+
+// Droid health has changed; either damage or healing - adjust the animation
+void gam_adjustHealthAnimation(std::string tempCurrentLevel, int targetDroid);

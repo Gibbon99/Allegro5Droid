@@ -12,6 +12,7 @@
 #include <hdr/game/gam_physicActions.h>
 #include <hdr/game/gam_particles.h>
 #include <hdr/system/sys_audio.h>
+#include <hdr/game/gam_render.h>
 #include "hdr/game/gam_droids.h"
 
 std::vector<std::string> droidToSpriteLookup;
@@ -151,11 +152,11 @@ void gam_initDroidValues (const std::string levelName)
 			tempDroid.wayPointDirection = WAYPOINT_DOWN;
 			tempDroid.spriteName        = gam_getSpriteName (tempDroid.droidType);
 			tempDroid.currentFrame      = 0;
-			tempDroid.frameDelay       = 1.0f;
-			tempDroid.frameAnimCounter = 1.0f;
-			tempDroid.currentSpeed     = 0.0f;
-			tempDroid.acceleration     = 0.4f; // TODO dataBaseEntry[tempDroid.droidType].accelerate;
-			tempDroid.worldPos         = shipLevel.at (levelName).wayPoints[tempDroid.wayPointIndex];    // In pixels
+			tempDroid.frameDelay        = 1.0f;
+			tempDroid.frameAnimCounter  = 1.0f;
+			tempDroid.currentSpeed      = 0.0f;
+			tempDroid.acceleration      = 0.4f; // TODO dataBaseEntry[tempDroid.droidType].accelerate;
+			tempDroid.worldPos          = shipLevel.at (levelName).wayPoints[tempDroid.wayPointIndex];    // In pixels
 
 			tempDroid.previousWorldPos = tempDroid.worldPos;
 			tempDroid.middlePosition   = shipLevel.at (levelName).wayPoints[i];        // TODO - do maths for this
@@ -290,8 +291,7 @@ void gam_destroyDroid (int whichDroid)
 
 			if (0 == shipLevel.at (tempCurrentLevel).numEnemiesAlive)
 				{
-// TODO 		gam_powerDownLevel ( whichLevel, true );
-					log_logMessage (LOG_LEVEL_INFO, sys_getString ("No enemies left on deck. [ %s ]", tempCurrentLevel.c_str ()));
+					gam_powerDownLevel(tempCurrentLevel);
 				}
 
 			return;
@@ -336,9 +336,9 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 						// Need to work out bullet damage when using non firing droid
 						//
 						if (dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[targetDroid].droidType].canShoot)
-							shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; //dataBaseEntry[playerDroid.droidType].bulletDamage;
+							shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= dataBaseEntry[playerDroid.droidType].bulletDamage;
 						else
-							shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; //dataBaseEntry[0].bulletDamage;
+							shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= dataBaseEntry[0].bulletDamage;
 
 						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{
@@ -356,14 +356,27 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 								return;
 							}
 
-						shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex      = sourceDroid;    // Set this droid as the target
-						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer = false;
-						shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= 20; // TODO dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
-
-						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
+						if (targetDroid != -1)    // Hit another droid
 							{
-								gam_destroyDroid (targetDroid);
+								shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex      = sourceDroid;    // Set this droid as the target
+								shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer = false;
+								shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+
+								if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
+									{
+										gam_destroyDroid (targetDroid);
+									}
+							}
+						else  // Player hit by droid bullet
+							{
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+								playerDroid.currentHealth -= dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
+								if (playerDroid.currentHealth < 0)
+									{
+										gam_destroyPlayer ();
+										return;
+									}
 							}
 					}
 
@@ -381,7 +394,13 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 				{
 					//
 					// Player is colliding with exploding sprite
-//					gam_doDamageToPlayer ( DAMAGE_EXPLOSION, whichDroid );
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+					playerDroid.currentHealth -= collisionExplosionDamage;
+					if (playerDroid.currentHealth < 0)
+						{
+							gam_destroyPlayer ();
+							return;
+						}
 				}
 			else
 				{
@@ -400,7 +419,15 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 			case DAMAGE_COLLISION:
 				if (-1 == sourceDroid)
 					{
-//						gam_doDamageToPlayer ( DAMAGE_COLLISION, whichDroid );
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+						playerDroid.currentHealth -= collisionDamageInflicted;
+						if (playerDroid.currentHealth < 0)
+							{
+								gam_destroyPlayer ();
+								return;
+							}
+
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= collisionDamageInflicted;
 						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{
@@ -409,11 +436,22 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 					}
 			break;
 		}
+	gam_adjustHealthAnimation(tempCurrentLevel, targetDroid);
+}
+
+//---------------------------------------------------------------------------------------------------------------
+//
+// Droid health has changed; either damage or healing - adjust the animation
+void gam_adjustHealthAnimation(std::string tempCurrentLevel, int targetDroid)
+//---------------------------------------------------------------------------------------------------------------
+{
 	//
 	// Work out animation speed based on current health
 	float healthPercent = shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth / (float) dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[targetDroid].droidType].maxHealth;
+
 	if (healthPercent < 0.0f)
 		healthPercent = 0.1f;
+
 	if (healthPercent > 1.0f)
 		healthPercent = 1.0f;
 
