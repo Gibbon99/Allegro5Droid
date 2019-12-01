@@ -9,7 +9,7 @@ DONE - Darken level when all droids dead
 
 Do GUI options
 Collisions for droids to ignore
-
+Particles still around on exploding droids sometimes
 Doors getting stuck open
 transferRender - stop drawing on -1 for numDroidTokens
 
