@@ -161,7 +161,7 @@ void evt_handleEvents ()
 {
 	ALLEGRO_EVENT event{};
 
-	while (!al_is_event_queue_empty(eventQueue))
+	while (!al_is_event_queue_empty(eventQueue))    // Prevent input lag from not clearing queue
 	{
 		al_get_next_event (eventQueue, &event);
 
@@ -192,10 +192,7 @@ void evt_handleEvents ()
 					keyBinding[gameUp].currentlyPressed = true;
 
 				if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
-				{
-					printf ("Pressed action key from within event queue\n");
 					keyBinding[gameAction].currentlyPressed = true;
-				}
 
 				break;
 
