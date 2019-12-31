@@ -161,70 +161,76 @@ void evt_handleEvents ()
 {
 	ALLEGRO_EVENT event{};
 
-	al_get_next_event (eventQueue, &event);
+	while (!al_is_event_queue_empty(eventQueue))
+	{
+		al_get_next_event (eventQueue, &event);
 
-	switch (event.type)
+		switch (event.type)
 		{
 			//
 			// Was the close button on the window pressed
 			case ALLEGRO_EVENT_DISPLAY_CLOSE:
 				quitProgram = true;
-			return;
+				return;
 
-			//
-			// Key pressed down - record state
+				//
+				// Key pressed down - record state
 			case ALLEGRO_EVENT_KEY_DOWN:
 				if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 					quitProgram = true;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_LEFT)
-				keyBinding[gameLeft].currentlyPressed = true;
+				if (event.keyboard.keycode == ALLEGRO_KEY_LEFT)
+					keyBinding[gameLeft].currentlyPressed = true;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
-				keyBinding[gameRight].currentlyPressed = true;
+				if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
+					keyBinding[gameRight].currentlyPressed = true;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-				keyBinding[gameDown].currentlyPressed = true;
+				if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
+					keyBinding[gameDown].currentlyPressed = true;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-				keyBinding[gameUp].currentlyPressed = true;
+				if (event.keyboard.keycode == ALLEGRO_KEY_UP)
+					keyBinding[gameUp].currentlyPressed = true;
 
-			if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
-				keyBinding[gameAction].currentlyPressed = true;
+				if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
+				{
+					printf ("Pressed action key from within event queue\n");
+					keyBinding[gameAction].currentlyPressed = true;
+				}
 
-			break;
+				break;
 
 			case ALLEGRO_EVENT_KEY_UP:
 				if (event.keyboard.keycode == ALLEGRO_KEY_LEFT)
 					keyBinding[gameLeft].currentlyPressed = false;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
-				keyBinding[gameRight].currentlyPressed = false;
+				if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT)
+					keyBinding[gameRight].currentlyPressed = false;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
-				keyBinding[gameDown].currentlyPressed = false;
+				if (event.keyboard.keycode == ALLEGRO_KEY_DOWN)
+					keyBinding[gameDown].currentlyPressed = false;
 
-			if (event.keyboard.keycode == ALLEGRO_KEY_UP)
-				keyBinding[gameUp].currentlyPressed = false;
+				if (event.keyboard.keycode == ALLEGRO_KEY_UP)
+					keyBinding[gameUp].currentlyPressed = false;
 
-			if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
-				keyBinding[gameAction].currentlyPressed = false;
+				if (event.keyboard.keycode == keyBinding[gameAction].keyValue)
+					keyBinding[gameAction].currentlyPressed = false;
 
-			break;
-			//
-			// Process timer functions
+				break;
+				//
+				// Process timer functions
 			case ALLEGRO_EVENT_TIMER:
 				if (timingTimer == event.timer.source)
 					tim_tickTimers (&event.timer);
 
-			if (fadeTimer == event.timer.source)
-				tim_runFadeProcess (&event.timer);
+				if (fadeTimer == event.timer.source)
+					tim_runFadeProcess (&event.timer);
 
-			if (splashTimer == event.timer.source)
-				tim_changeToGUI(&event.timer);
+				if (splashTimer == event.timer.source)
+					tim_changeToGUI (&event.timer);
 
-			break;
+				break;
 		}
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------

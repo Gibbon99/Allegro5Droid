@@ -122,11 +122,9 @@ int main (int argc, char *argv[])
 					sys_gameTickRun (tickTime);
 					thinkFPS++;
 				}
-
-			evt_handleEvents ();
-
 			percentInFrame = accumulator / tickTime;
 
+			evt_handleEvents ();
 //		percentInFrame = cpflerp(0.0, 1.0f, percentInFrame);
 
 //		double smoothedDelta = sys_smoothDelta2(percentInFrame);

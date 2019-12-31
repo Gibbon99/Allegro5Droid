@@ -119,7 +119,9 @@ void io_processKeyActions ()
 				gam_processPlayerMovement ();
 			if (keyBinding[gameAction].currentlyPressed)
 				{
+				printf("Pressed game action key\n");
 					gam_processActionKey ();
+
 				}
 			else
 				{
