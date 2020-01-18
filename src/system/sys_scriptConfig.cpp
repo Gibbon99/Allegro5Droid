@@ -30,6 +30,7 @@
 #include <hdr/game/gam_transfer.h>
 #include <hdr/game/gam_transferDroidAI.h>
 #include <hdr/system/sys_configFile.h>
+#include <hdr/gui/gui_slider.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -179,6 +180,8 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("bool enableSound", &enableSound);
 	sys_scriptAddHostVariable ("int numDisrupterFrames", &numDisrupterFrames);
 	sys_scriptAddHostVariable ("float disrupterFadeAmount", &disrupterFadeAmount);
+
+	sys_scriptAddHostVariable ("string volumeLevelStr", &volumeLevelStr);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -220,6 +223,8 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void as_guiSetCheckboxValue (string &in, int newValue)", (functionPtr) &gui_hostSetCheckboxValue);
 	sys_scriptAddHostFunction ("int as_guiGetCheckboxValue (string &in)", (functionPtr) &gui_hostGetCheckboxValue);
 
+	sys_scriptAddHostFunction("void as_guiSetSliderValue(string &in, string &in)", (functionPtr)&gui_hostSetSliderValue);
+
 	sys_scriptAddHostFunction ("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
 	sys_scriptAddHostFunction ("void as_guiAddNewElement (string &in, string &in, string &in, int type)", (functionPtr) &gui_addNewElement);
 	sys_scriptAddHostFunction ("void as_guiSetImageKeyName(string &in, string &in)", (functionPtr) &gui_setImageKeyName);
@@ -242,6 +247,8 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void cfg_setConfigValue(string &in, string &in)", (functionPtr) &cfg_setConfigValue);
 	sys_scriptAddHostFunction ("string sys_boolToString(bool boolValue)", (functionPtr) &sys_boolToString);
 	sys_scriptAddHostFunction ("string sys_intToString(int intValue)", (functionPtr) &sys_intToString);
+
+	sys_scriptAddHostFunction ("string gui_IntToString(int intValue)", (functionPtr) &gui_IntToString);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

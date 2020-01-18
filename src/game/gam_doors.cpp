@@ -225,7 +225,8 @@ void gam_createDoorBulletSensor (unsigned long whichDoor)
 	doorBulletSensor[whichDoor].fixtureDef.shape    = &doorBulletSensor[whichDoor].shape;
 	doorBulletSensor[whichDoor].fixtureDef.isSensor = false;
 
-	doorBulletSensor[whichDoor].fixtureDef.filter.categoryBits = PHYSIC_TYPE_DOOR_BULLET;
+//	doorBulletSensor[whichDoor].fixtureDef.filter.categoryBits = PHYSIC_TYPE_DOOR_BULLET;
+	doorBulletSensor[whichDoor].fixtureDef.filter.categoryBits = PHYSIC_TYPE_DOOR_CLOSED;       // Fix door physics not working on start
 	doorBulletSensor[whichDoor].fixtureDef.filter.maskBits     = PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY;
 
 	doorBulletSensor[whichDoor].body->CreateFixture (&doorBulletSensor[whichDoor].fixtureDef);

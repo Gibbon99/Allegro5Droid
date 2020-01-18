@@ -258,9 +258,9 @@ void gam_destroyDroid (int whichDroid)
 			case DROID_MODE_NORMAL:
 
 				if (shipLevel.at (tempCurrentLevel).droid[whichDroid].droidType < 6)
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 70, ALLEGRO_PLAYMODE_ONCE, "explode1");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "explode1");
 				else
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 70, ALLEGRO_PLAYMODE_ONCE, "explode2");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "explode2");
 
 			par_addEmitter (droidPhysics[whichDroid].body->GetPosition (), PARTICLE_TYPE_EXPLOSION, -1);
 
@@ -346,7 +346,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 							}
 						else
 							{
-								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 							}
 					}
 				else // hit by another droid bullet
@@ -361,7 +361,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 								shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex      = sourceDroid;    // Set this droid as the target
 								shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer = false;
 								shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
-								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 
 								if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 									{
@@ -370,7 +370,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 							}
 						else  // Player hit by droid bullet
 							{
-								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 								playerDroid.currentHealth -= dataBaseEntry[shipLevel.at (tempCurrentLevel).droid[sourceDroid].droidType].bulletDamage;
 								if (playerDroid.currentHealth < 0)
 									{
@@ -394,7 +394,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 				{
 					//
 					// Player is colliding with exploding sprite
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 					playerDroid.currentHealth -= collisionExplosionDamage;
 					if (playerDroid.currentHealth < 0)
 						{
@@ -406,7 +406,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 				{
 					//
 					// Enemy Droid is colliding with another one exploding
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 					shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= collisionExplosionDamage;
 
 					if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
@@ -419,7 +419,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 			case DAMAGE_COLLISION:
 				if (-1 == sourceDroid)
 					{
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 						playerDroid.currentHealth -= collisionDamageInflicted;
 						if (playerDroid.currentHealth < 0)
 							{
@@ -427,7 +427,7 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 								return;
 							}
 
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 50, ALLEGRO_PLAYMODE_ONCE, "damage");
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "damage");
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth -= collisionDamageInflicted;
 						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentHealth <= 0)
 							{

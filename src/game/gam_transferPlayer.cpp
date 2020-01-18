@@ -2,6 +2,7 @@
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_transferDroidAI.h>
 #include <hdr/game/gam_transferRender.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_transferPlayer.h"
 
 // ----------------------------------------------------------------------------
@@ -25,7 +26,7 @@ void trn_movePlayerToken (int direction)
 			if (playerBlockPos > transferRows.size () - 1)
 				playerBlockPos = 0;          // wrap back to top
 		}
-	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 }
 
 //---------------------------------------------------------------------------------------------------------------------

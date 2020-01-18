@@ -6,6 +6,7 @@
 #include <hdr/game/gam_transferDroidAI.h>
 #include <hdr/game/gam_database.h>
 #include <hdr/io/io_logFile.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_transfer.h"
 
 int   currentChooseSideTimeLeft = 0;
@@ -108,7 +109,7 @@ void trn_processChooseSide (float tickTime)
 void trn_handleTransferChooseSide ()
 //---------------------------------------------------------------------------------------------------------------------
 {
-	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 0, 0, "keyPressGood");
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 
 	if (keyBinding[gameLeft].currentlyPressed)
 		{

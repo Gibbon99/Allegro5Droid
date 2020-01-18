@@ -4,6 +4,7 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_hud.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_lifts.h"
 
 std::vector<__liftSensor> lifts;
@@ -213,11 +214,11 @@ void gam_moveLift (int direction)
 						tunnel[currentTunnel].current_deck++;
 						tunnel[currentTunnel].current = tunnel[currentTunnel].decks[tunnel[currentTunnel].current_deck];
 						currentDeckNumber = tunnel[currentTunnel].current;
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 					}
 				else
 					{
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 					}
 
 			break;
@@ -228,11 +229,11 @@ void gam_moveLift (int direction)
 						tunnel[currentTunnel].current_deck--;
 						tunnel[currentTunnel].current = tunnel[currentTunnel].decks[tunnel[currentTunnel].current_deck];
 						currentDeckNumber = tunnel[currentTunnel].current;
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 					}
 				else
 					{
-						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 					}
 
 			break;
@@ -241,7 +242,7 @@ void gam_moveLift (int direction)
 
 				lvl_changeToLevel (lvl_returnLevelNameFromDeck (currentDeckNumber), gam_putPlayerOnLiftFromTunnel (currentDeckNumber));
 
-			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 
 			sys_changeMode (MODE_GAME, true);
 

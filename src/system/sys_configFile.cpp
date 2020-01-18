@@ -36,6 +36,11 @@ bool cfg_getStartupValues()
 	renderBackdrop = (int)strtol(al_get_config_value(configFile, "main", "renderBackdrop"), nullptr, 10);
 
 	enableSound = (bool)strtol(al_get_config_value (configFile, "main", "enableSound"), nullptr, 10);
+
+	volumeLevel = (int)strtol(al_get_config_value (configFile, "main", "volumeLevel"), nullptr, 10);
+
+	volumeLevelStr = std::to_string(volumeLevel);
+
 //	al_destroy_config(configFile);
 
 	return true;

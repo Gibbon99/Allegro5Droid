@@ -18,6 +18,15 @@ bool isGUIStarted = false;
 
 //-----------------------------------------------------------------------------
 //
+// Convert int value to string and return
+std::string gui_IntToString(int intValue)
+//-----------------------------------------------------------------------------
+{
+	return std::to_string(intValue);
+}
+
+//-----------------------------------------------------------------------------
+//
 // Change to a new GUI screen
 void gui_changeToGUIScreen (int newScreen)
 //-----------------------------------------------------------------------------
@@ -127,6 +136,18 @@ int gui_findIndex (int guiObjectType, const std::string objectID)
 							}
 						indexCount++;
 					}
+			return -1;
+			break;
+
+			case GUI_OBJECT_SLIDER:
+				for (const auto &iter : guiSliders)
+				{
+					if (iter.objectID == objectID)
+					{
+						return indexCount;
+					}
+					indexCount++;
+				}
 			return -1;
 			break;
 
@@ -450,8 +471,8 @@ void gui_hostSetObjectPosition (int guiObjectType, const std::string &objectID, 
 
 			if (GUI_COORD_TYPE_PERCENT == guiSliders[objectIndex].coordType)
 				{
-					guiSliders[objectIndex].boundingBox.x = (sys_getLogicalWidth () * ((float) width / 100.0f));
-					guiSliders[objectIndex].boundingBox.y = (sys_getLogicalHeight () * ((float) height / 100.0f));
+					guiSliders[objectIndex].boundingBox.w = (sys_getLogicalWidth () * ((float) width / 100.0f));
+					guiSliders[objectIndex].boundingBox.h = (sys_getLogicalHeight () * ((float) height / 100.0f));
 
 					guiSliders[objectIndex].boundingBox.x = ((sys_getLogicalWidth () * ((float) startX / 100.0f)));
 					guiSliders[objectIndex].boundingBox.y = ((sys_getLogicalHeight () * ((float) startY / 100.0f)));
@@ -1102,12 +1123,12 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 //-----------------------------------------------------------------------------
 {
 	int    indexCount = 0;
-//	int selectedSlider, selectedKeyCode;
+	int selectedSlider, selectedKeyCode;
 	b2Vec2 mouseLocation;
 
 //	indexCount = 0;
 
-//	selectedSlider = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
+	selectedSlider = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
 //	selectedKeyCode = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
 
 	if (!isGUIStarted)
@@ -1238,12 +1259,22 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 			case GUI_MOVE_LEFT:
 				switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 					{
+						case GUI_OBJECT_SLIDER:
+							guiSliders[selectedSlider].currentStep -= 1;
+							if (guiSliders[selectedSlider].currentStep < 0)
+								guiSliders[selectedSlider].currentStep = 0;
+							break;
 					}
 			break;
 
 			case GUI_MOVE_RIGHT:
 				switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 					{
+						case GUI_OBJECT_SLIDER:
+							guiSliders[selectedSlider].currentStep += 1;
+							if (guiSliders[selectedSlider].currentStep > (int)guiSliders[selectedSlider].element.size() - 1)
+								guiSliders[selectedSlider].currentStep = guiSliders[selectedSlider].element.size() - 1;
+							break;
 					}
 			break;
 

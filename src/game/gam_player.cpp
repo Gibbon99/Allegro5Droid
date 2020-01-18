@@ -10,6 +10,7 @@
 #include <hdr/game/gam_bullet.h>
 #include <hdr/io/io_resourceSprite.h>
 #include <hdr/game/gam_hud.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_player.h"
 #include "hdr/game/gam_terminal.h"
 
@@ -260,7 +261,7 @@ void gam_processActionKey ()
 			if (!playerDroid.inTransferMode)
 				{
 					playerDroid.inTransferMode = true;
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, "transferMove");
 					hud_setText (false, "hudTransfer");
 				}
 		}

@@ -139,6 +139,9 @@ extern std::vector<_screenObject> guiScreens;
 extern __GUI_object introScrollBox;
 extern __GUI_object databaseScrollBox;
 
+// Convert int value to string and return
+std::string gui_IntToString(int intValue);
+
 // Change to a new GUI screen
 void gui_changeToGUIScreen (int newScreen);
 

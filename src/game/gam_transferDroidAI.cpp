@@ -2,6 +2,7 @@
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_transfer.h>
 #include <hdr/game/gam_player.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_transferDroidAI.h"
 
 int  numDroidTokens      = 0;
@@ -105,7 +106,7 @@ void moveEnemyToken (int direction)
 			if (droidBlockPos > transferRows.size () - 1)
 				droidBlockPos = 0;          // wrap back to top
 		}
-	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 }
 
 // ----------------------------------------------------------------------------

@@ -35,7 +35,7 @@ void evt_initGameLoopQueue ()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Process the events put onto the GameLoop queue - run by detached thread
-void *evt_processGameEventQueue ()
+auto evt_processGameEventQueue () -> void *
 //----------------------------------------------------------------------------------------------------------------------
 {
 	PARA_EVENT        gameLoopEvent{};
@@ -105,7 +105,7 @@ void *evt_processGameEventQueue ()
 												break;
 
 											default:
-												printf ("ERROR: Unknown logfile action [ %i ]\n", gameLoopEvent.game.eventAction);
+												printf ("ERROR: Unknown Game Event action [ %i ]\n", gameLoopEvent.game.eventAction);
 											break;
 										}
 								}

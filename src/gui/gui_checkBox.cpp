@@ -98,7 +98,7 @@ void gui_hostSetCheckboxTick (const std::string objectID, int whichGroup, bool t
 			return;
 		}
 
-	for (unsigned int i                                         = 0; i != guiCheckBoxes.size (); i++)
+	for (unsigned int i = 0; i != guiCheckBoxes.size (); i++)
 		{
 			if (whichGroup == guiCheckBoxes[i].__GUI_element.checkBox.whichGroup)
 				guiCheckBoxes[i].__GUI_element.checkBox.isChecked = false;

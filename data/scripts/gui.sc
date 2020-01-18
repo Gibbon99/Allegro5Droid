@@ -43,8 +43,7 @@ void as_guiHandleDatabaseAction (string &in objectID)
 		{
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databasePrevButton"))
 				{
-					gam_previousDatabaseDroid ();
-					// Go to previous droid
+					gam_previousDatabaseDroid ();   // Go to previous droid
 					return;
 				}
 
@@ -58,8 +57,7 @@ void as_guiHandleDatabaseAction (string &in objectID)
 
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseNextButton"))
 				{
-					gam_nextDatabaseDroid ();
-					// Go to next droid
+					gam_nextDatabaseDroid ();   // Go to next droid
 					return;
 				}
 		}
@@ -233,8 +231,8 @@ void as_guiHandleElementAction (string &in objectID)
 			// Use Audio checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsAudioUseSound"))
 				{
-					as_guiSetCheckboxTick ("optionsAudioUseSound", -1, enableSound);
 					enableSound = !enableSound;
+					as_guiSetCheckboxTick ("optionsAudioUseSound", -1, enableSound);
 					cfg_setConfigValue ("enableSound", sys_boolToString (enableSound));
 					return;
 				}
@@ -552,13 +550,19 @@ void as_setupOptionsAudioScreen ()
 
 	as_guiCreateObject (GUI_OBJECT_SLIDER, "optionsAudioVolume");
 	as_guiAddObjectToScreen (GUI_OBJECT_SLIDER, "optionsAudioVolume", "optionsAudio");
-	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsAudioVolume", GUI_COORD_TYPE_PERCENT, 1, 40, 40, 40);
+	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsAudioVolume", GUI_COORD_TYPE_PERCENT, 1, 50, 40, 2);
 	as_guiSetObjectLabel (GUI_OBJECT_SLIDER, "optionsAudioVolume", GUI_LABEL_CENTER, gui_getString ("optionsAudioVolume"));
-	as_guiAddNewElement ("optionsAudioVolume", "10", "10", SLIDER_TYPE_INT);
-	as_guiAddNewElement ("optionsAudioVolume", "30", "30", SLIDER_TYPE_INT);
-	as_guiAddNewElement ("optionsAudioVolume", "50", "50", SLIDER_TYPE_INT);
-	as_guiAddNewElement ("optionsAudioVolume", "70", "70", SLIDER_TYPE_INT);
-	as_guiAddNewElement ("optionsAudioVolume", "100", "100", SLIDER_TYPE_INT);
+
+	string tempNum;
+
+	for ( int i = 0; i != 10; i++ )
+	{
+		tempNum = gui_IntToString ( i + 1 );
+		as_guiAddNewElement ( "optionsAudioVolume", tempNum, tempNum, SLIDER_TYPE_INT );
+	}
+
+	as_guiSetSliderValue ( "optionsAudioVolume", volumeLevelStr );
+
 	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsAudioVolume", true);
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsAudioVolume", "gui_small");
 //as_guiAddNewElement (const std::string objectID, const std::string newLabel, const std::string newValue, int type)
@@ -1285,6 +1289,10 @@ void script_initGUI ()
 	as_guiSetObjectColor (GUI_OBJECT_TEXTBOX, "ALL", GUI_ACTIVE_COL, 0.19f, 0.58f, 0.58f, 0.98f);
 
 	as_guiSetObjectColor (GUI_OBJECT_LABEL, "ALL", GUI_INACTIVE_COL, 0.98f, 0.98f, 0.78f, 0.98f);
+
+	as_guiSetObjectColor (GUI_OBJECT_SLIDER, "ALL", GUI_ACTIVE_COL, 0.19f, 0.58f, 0.58f, 0.98f);
+	as_guiSetObjectColor (GUI_OBJECT_SLIDER, "ALL", GUI_INACTIVE_COL, 0.0f, 0.19f, 0.19f, 0.98f);
+
 
 	isGUIStarted = true;
 }

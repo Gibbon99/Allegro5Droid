@@ -6,6 +6,7 @@ DONE - Get door physics to not sleep on start
 DONE - Droid that just healed still animates slowly
 DONE - Disrupter weapon and effect - flash screen
 DONE - Darken level when all droids dead
+DONE - Fix Audio setting checkbox in GUI and config file
 
 Do GUI options
 Collisions for droids to ignore

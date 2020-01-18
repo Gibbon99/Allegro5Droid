@@ -4,6 +4,7 @@
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_render.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_game.h"
 
 int         currentAlertLevel;
@@ -30,7 +31,7 @@ std::string gam_getScore()
 void gam_powerDownLevel(std::string whichLevel)
 //-------------------------------------------------------------------------------------------------------------------------
 {
-	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 70, ALLEGRO_PLAYMODE_ONCE, "levelPowerDown");
+	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "levelPowerDown");
 	gam_drawAllTiles ();
 	//
 	// check to see if all levels are dead

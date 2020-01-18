@@ -6,6 +6,8 @@
 extern int  numReserveSamples;
 extern bool enableSound;           // From config file
 extern bool soundInitDone;         // Was sound done at startup
+extern int  volumeLevel;            // From config file
+extern std::string volumeLevelStr;    // Pass to script
 
 // Start the Audio system
 bool snd_initAudioSystem ();
