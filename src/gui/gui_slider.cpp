@@ -6,6 +6,22 @@
 
 //-----------------------------------------------------------------------------
 //
+// Get the value of the current slot in a slider
+std::string gui_hostGetSliderValue(std::string objectID)
+//-----------------------------------------------------------------------------
+{
+	for (std::vector<__GUI_slider>::iterator it = guiSliders.begin(); it != guiSliders.end(); ++it)
+	{
+		if (it->objectID == objectID)
+		{
+			return it->element[it->currentStep].value;
+		}
+	}
+	return "Slider ID not found";
+}
+
+//-----------------------------------------------------------------------------
+//
 // Set the slider to the passed in value
 void gui_hostSetSliderValue(const std::string& objectID, const std::string& value)
 //-----------------------------------------------------------------------------

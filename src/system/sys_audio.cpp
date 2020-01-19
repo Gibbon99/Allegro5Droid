@@ -19,7 +19,6 @@ float snd_getSampleGain(float volumeLevelPassed)
 {
 	return volumeLevelPassed / 10.0f;
 }
-//al_set_sample_instance_gain(ALLEGRO_SAMPLE_INSTANCE *spl, float val)
 
 //---------------------------------------------------------------------------------------------------------------------------
 //

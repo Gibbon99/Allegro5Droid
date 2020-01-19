@@ -300,7 +300,7 @@ void evt_pushEvent (int delayCount, int eventType, int eventAction, int data1, i
 			newEvent.audio.eventAction  = eventAction;
 			newEvent.audio.eventCounter = delayCount;
 
-			newEvent.audio.gain = (float)data1 / 100.0f;
+			newEvent.audio.gain = (float)data1;
 			newEvent.audio.loop = (ALLEGRO_PLAYMODE )data2;
 
 			if (eventString.size () > CLIENT_GAME_FILENAME_SIZE)

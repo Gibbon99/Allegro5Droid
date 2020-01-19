@@ -248,9 +248,14 @@ std::string sys_boolToString(bool boolValue)
 std::string sys_intToString(int intValue)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	std::string tempString;
+	return std::to_string(intValue);
+}
 
-	tempString = std::to_string(intValue);
-
-	return tempString;
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Convert a string value to Int
+int sys_stringToInt(std::string value)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	return (int)strtol(value.c_str(), nullptr, 10);
 }

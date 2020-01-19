@@ -158,7 +158,7 @@ void as_guiHandleElementAction (string &in objectID)
 				{
 					sys_changeCurrentMode (MODE_GUI_INTRO, true);
 					hud_setText (false, "hudBriefing");
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "introSound");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, "introSound");
 					return;
 				}
 
@@ -219,9 +219,15 @@ void as_guiHandleElementAction (string &in objectID)
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsAudio"))
 		{
 			//
-			// Cancel button - back one screen
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsAudioCancelButton"))
+			// Back button - back one screen
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsAudioBackButton"))
 				{
+				//
+				// Save values to config file
+					cfg_setConfigValue ("enableSound", sys_boolToString (enableSound));
+					cfg_setConfigValue ("volumeLevel", as_guiGetSliderValue("optionsAudioVolume"));
+					volumeLevel = sys_stringToInt(as_guiGetSliderValue("optionsAudioVolume"));
+
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
 					sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
 					as_guiSetObjectFocus ("guiOptionsMainCancelButton");
@@ -233,7 +239,6 @@ void as_guiHandleElementAction (string &in objectID)
 				{
 					enableSound = !enableSound;
 					as_guiSetCheckboxTick ("optionsAudioUseSound", -1, enableSound);
-					cfg_setConfigValue ("enableSound", sys_boolToString (enableSound));
 					return;
 				}
 		}
@@ -254,8 +259,8 @@ void as_guiHandleElementAction (string &in objectID)
 			// Fullscreen checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen"))
 				{
-					as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", 1, true);
 					fullScreen = !fullScreen;
+					as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", 1, true);
 					cfg_setConfigValue ("screenType", sys_intToString (screenType));
 					return;
 				}
@@ -263,8 +268,8 @@ void as_guiHandleElementAction (string &in objectID)
 			// Windowed checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckWindowed"))
 				{
-					as_guiSetCheckboxTick ("optionsVideoCheckWindowed", 1, true);
 					fullScreen = !fullScreen;
+					as_guiSetCheckboxTick ("optionsVideoCheckWindowed", 1, true);
 					cfg_setConfigValue ("screenType", sys_intToString (screenType));
 					return;
 				}
@@ -272,8 +277,8 @@ void as_guiHandleElementAction (string &in objectID)
 			// Windowed fullscreen checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreenWindowed"))
 				{
-					as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", 1, true);
 					fullScreen = !fullScreen;
+					as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", 1, true);
 					cfg_setConfigValue ("screenType", sys_intToString (screenType));
 					return;
 				}
@@ -281,8 +286,8 @@ void as_guiHandleElementAction (string &in objectID)
 			// Use backdrop checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop"))
 				{
-					as_guiSetCheckboxTick ("optionsVideoCheckBackdrop", -1, renderBackdrop);
 					renderBackdrop = !renderBackdrop;
+					as_guiSetCheckboxTick ("optionsVideoCheckBackdrop", -1, renderBackdrop);
 					cfg_setConfigValue ("renderBackdrop", sys_boolToString (renderBackdrop));
 					return;
 				}
@@ -557,7 +562,7 @@ void as_setupOptionsAudioScreen ()
 
 	for ( int i = 0; i != 10; i++ )
 	{
-		tempNum = gui_IntToString ( i + 1 );
+		tempNum = sys_intToString ( i + 1 );
 		as_guiAddNewElement ( "optionsAudioVolume", tempNum, tempNum, SLIDER_TYPE_INT );
 	}
 
@@ -567,13 +572,13 @@ void as_setupOptionsAudioScreen ()
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsAudioVolume", "gui_small");
 //as_guiAddNewElement (const std::string objectID, const std::string newLabel, const std::string newValue, int type)
 
-	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsAudioCancelButton");
-	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsAudioCancelButton", "optionsAudio");
-	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "optionsAudioCancelButton", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
-	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsAudioCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
-	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsAudioCancelButton", "as_guiHandleElementAction");
-	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsAudioCancelButton", true);
-	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsAudioCancelButton", "gui");
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsAudioBackButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsAudioBackButton", "optionsAudio");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "optionsAudioBackButton", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsAudioBackButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsAudioBackButton", "as_guiHandleElementAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsAudioBackButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsAudioBackButton", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------

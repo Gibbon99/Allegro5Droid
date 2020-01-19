@@ -55,6 +55,7 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("previousButton", "Previous");
 	gui_addKeyAndText ("cancelButton", "Cancel");
 	gui_addKeyAndText ("nextButton", "Next");
+	gui_addKeyAndText ("backButton", "Back");
 
 	gui_addKeyAndText ("pausedTitle", "Paused");
 	gui_addKeyAndText ("pausedText", "Game Paused");

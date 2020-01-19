@@ -32,12 +32,16 @@ bool cfg_getStartupValues()
 	currentLanguage = (int)strtol(al_get_config_value(configFile, "main", "currentLanguage"), nullptr, 10);
 
 	numReserveSamples = (int)strtol(al_get_config_value(configFile, "main", "numReserveSamples"), nullptr, 10);
+	if (numReserveSamples < 0) numReserveSamples = 1;
+	if (numReserveSamples > 10) numReserveSamples = 10;
 
 	renderBackdrop = (int)strtol(al_get_config_value(configFile, "main", "renderBackdrop"), nullptr, 10);
 
 	enableSound = (bool)strtol(al_get_config_value (configFile, "main", "enableSound"), nullptr, 10);
 
 	volumeLevel = (int)strtol(al_get_config_value (configFile, "main", "volumeLevel"), nullptr, 10);
+	if (volumeLevel > 10) volumeLevel = 10;
+	if (volumeLevel < 0) volumeLevel = 0;
 
 	volumeLevelStr = std::to_string(volumeLevel);
 
@@ -59,6 +63,8 @@ void cfg_setConfigValue(std::string whichKey, std::string newValue)
 		}
 
 	al_set_config_value(configFile, "main", whichKey.c_str(), newValue.c_str());
+
+	printf("Saving key [ %s ] - Value [ %s ]", whichKey.c_str(), newValue.c_str());
 
 	al_save_config_file(CONFIG_FILENAME, configFile);
 }

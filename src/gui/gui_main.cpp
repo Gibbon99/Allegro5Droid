@@ -2,6 +2,7 @@
 #include <hdr/system/sys_scriptEngine.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/gui/gui_main.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/gui/gui_main.h"
 
 std::vector<_screenObject> guiScreens;
@@ -15,15 +16,6 @@ std::vector<__GUI_slider>  guiSliders;
 int  currentGUIScreen;
 int  currentObjectSelected;  // Pass this to script to act on
 bool isGUIStarted = false;
-
-//-----------------------------------------------------------------------------
-//
-// Convert int value to string and return
-std::string gui_IntToString(int intValue)
-//-----------------------------------------------------------------------------
-{
-	return std::to_string(intValue);
-}
 
 //-----------------------------------------------------------------------------
 //
@@ -1142,7 +1134,7 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 		{
 			currentObjectSelected = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
 
-			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 
 			switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 				{
@@ -1217,18 +1209,18 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 						}
 					guiScreens[currentGUIScreen].selectedObject += indexCount;
 
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 
 					if (indexCount > (int) guiScreens[currentGUIScreen].objectIDIndex.size ())
 						{
 							indexCount = static_cast<int>(guiScreens[currentGUIScreen].objectIDIndex.size ());
-							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 						}
 
 					currentObjectSelected = guiScreens[currentGUIScreen].selectedObject;
 				}
 			else
-				evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+				evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 			break;
 
 			case GUI_MOVE_UP:
@@ -1240,12 +1232,12 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 							indexCount++;
 							if (guiScreens[currentGUIScreen].selectedObject - indexCount < 0)
 								{
-									evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+									evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
 									return;
 								}
 						}
 					guiScreens[currentGUIScreen].selectedObject -= indexCount;
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, 20, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
+					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 
 					if (guiScreens[currentGUIScreen].selectedObject < 0)
 						{
@@ -1260,23 +1252,37 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 				switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 					{
 						case GUI_OBJECT_SLIDER:
+							if (guiSliders[selectedSlider].currentStep == 0)
+							{
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+								return;
+							}
+
+							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 							guiSliders[selectedSlider].currentStep -= 1;
 							if (guiSliders[selectedSlider].currentStep < 0)
 								guiSliders[selectedSlider].currentStep = 0;
 							break;
 					}
-			break;
+				break;
 
 			case GUI_MOVE_RIGHT:
 				switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 					{
 						case GUI_OBJECT_SLIDER:
+							if (guiSliders[selectedSlider].currentStep == guiSliders[selectedSlider].element.size() - 1)
+							{
+								evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressBad");
+								return;
+							}
+
+							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 							guiSliders[selectedSlider].currentStep += 1;
 							if (guiSliders[selectedSlider].currentStep > (int)guiSliders[selectedSlider].element.size() - 1)
 								guiSliders[selectedSlider].currentStep = guiSliders[selectedSlider].element.size() - 1;
 							break;
 					}
-			break;
+				break;
 
 			default:
 				break;

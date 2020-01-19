@@ -126,7 +126,7 @@ void io_processKeyActions ()
 					if (playerDroid.inTransferMode)
 						{
 							playerDroid.inTransferMode = false;
-							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 20, ALLEGRO_PLAYMODE_LOOP, "transferMove");
+							evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_STOP_AUDIO, 0, ALLEGRO_PLAYMODE_LOOP, "transferMove");
 							hud_setText (false, "hudMoving");
 						}
 				}

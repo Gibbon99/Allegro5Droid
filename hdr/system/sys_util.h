@@ -36,3 +36,6 @@ std::string sys_boolToString(bool boolValue);
 
 // Convert a int to a string for script
 std::string sys_intToString(int intValue);
+
+// Convert a string value to Int
+int sys_stringToInt(std::string value);
