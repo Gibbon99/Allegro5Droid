@@ -1,6 +1,7 @@
 #include <hdr/gui/gui_text.h>
 #include <hdr/system/sys_audio.h>
 #include <hdr/io/io_logFile.h>
+#include <hdr/game/gam_render.h>
 #include "hdr/system/sys_configFile.h"
 
 #define CONFIG_FILENAME "config.ini"
@@ -33,17 +34,20 @@ bool cfg_getStartupValues()
 
 	numReserveSamples = (int)strtol(al_get_config_value(configFile, "main", "numReserveSamples"), nullptr, 10);
 	if (numReserveSamples < 0) numReserveSamples = 1;
-	if (numReserveSamples > 10) numReserveSamples = 10;
+	if (numReserveSamples > MAX_NUM_RESERVE_SAMPLES) numReserveSamples = MAX_NUM_RESERVE_SAMPLES;
 
 	renderBackdrop = (int)strtol(al_get_config_value(configFile, "main", "renderBackdrop"), nullptr, 10);
 
 	enableSound = (bool)strtol(al_get_config_value (configFile, "main", "enableSound"), nullptr, 10);
 
 	volumeLevel = (int)strtol(al_get_config_value (configFile, "main", "volumeLevel"), nullptr, 10);
-	if (volumeLevel > 10) volumeLevel = 10;
+	if (volumeLevel > MAX_VOLUME_LEVEL) volumeLevel = MAX_VOLUME_LEVEL;
 	if (volumeLevel < 0) volumeLevel = 0;
 
 	volumeLevelStr = std::to_string(volumeLevel);
+
+	tileType = al_get_config_value(configFile, "main", "tileType");
+	tileColor = al_get_config_value(configFile, "main", "tileColor");
 
 //	al_destroy_config(configFile);
 

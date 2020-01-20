@@ -114,10 +114,21 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("hudBriefing", "Briefing");
 	gui_addKeyAndText ("hudOptions", "Options");
 	gui_addKeyAndText ("hudGameOn", "Game On");
-	gui_addKeyAndText ("optionsVideoCheckBackdrop", "Show backdrop");
+	gui_addKeyAndText ("optionsGraphicsCheckBackdrop", "Show backdrop");
 
 	gui_addKeyAndText ("optionAudioLabel", "Audio");
 	gui_addKeyAndText ("optionsAudioUseSound", "Enable sound");
 	gui_addKeyAndText ("optionsAudioVolume", "Audio Volume");
+	gui_addKeyAndText ("optionGraphicsLabel", "Graphics");
+	gui_addKeyAndText ("optionsGraphicsTileColor", "Tile Color");
+	gui_addKeyAndText ("optionsGraphicsTileType", "Tile Style");
+	gui_addKeyAndText ("colorBlue", "Blue");
+	gui_addKeyAndText ("colorGray", "Gray");
+	gui_addKeyAndText ("colorGreen", "Green");
+	gui_addKeyAndText ("colorRed", "Red");
+	gui_addKeyAndText ("colorTurquoise", "Turquoise");
+	gui_addKeyAndText ("colorYellow", "Yellow");
+	gui_addKeyAndText ("tileTypeFuture", "Future");
+	gui_addKeyAndText ("tileTypeRetro", "Retro");
 }
 

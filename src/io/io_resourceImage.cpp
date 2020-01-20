@@ -30,22 +30,47 @@ void sys_loadResourceBitmap (const std::string &key, const std::string &fileName
 {
 	__bitmap tempBitmap;
 
-	tempBitmap.common.fileName = fileName;
-	tempBitmap.bitmap          = al_load_bitmap (fileName.c_str ());
-	if (nullptr == tempBitmap.bitmap)
+	try
 	{
-		tempBitmap.common.loaded = false;
-		bitmap.insert (std::pair<std::string, __bitmap> (key, tempBitmap));
-		log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Failed to load [ %s ]", fileName.c_str ()));
-		return;
+		if (bitmap.at (key).common.loaded)  // Already loaded
+		{
+			al_destroy_bitmap(bitmap.at(key).bitmap);
+			bitmap.at(key).common.fileName = fileName;
+			bitmap.at(key).bitmap = al_load_bitmap(fileName.c_str());
+			if (nullptr == bitmap.at(key).bitmap)
+			{
+				bitmap.at(key).common.loaded = false;
+				log_logMessage (LOG_LEVEL_ERROR, sys_getString("Failed to load [ %s ]", fileName.c_str()));
+				return;
+			}
+			bitmap.at(key).width = al_get_bitmap_width(bitmap.at(key).bitmap);
+			bitmap.at(key).height = al_get_bitmap_height(bitmap.at(key).bitmap);
+			bitmap.at(key).common.loaded = true;
+
+			log_logMessage (LOG_LEVEL_DEBUG, sys_getString("Loaded [ %s ]", fileName.c_str()));
+			return;
+		}
 	}
 
-	tempBitmap.width         = al_get_bitmap_width (tempBitmap.bitmap);
-	tempBitmap.height        = al_get_bitmap_height (tempBitmap.bitmap);
-	tempBitmap.common.loaded = true;
-	bitmap.insert (std::pair<std::string, __bitmap> (key, tempBitmap));
+	catch (const std::out_of_range &oor)
+	{
+		tempBitmap.common.fileName = fileName;
+		tempBitmap.bitmap          = al_load_bitmap (fileName.c_str ());
+		if (nullptr == tempBitmap.bitmap)
+		{
+			tempBitmap.common.loaded = false;
+			bitmap.insert (std::pair<std::string, __bitmap> (key, tempBitmap));
+			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Failed to load [ %s ]", fileName.c_str ()));
+			return;
+		}
 
-	log_logMessage (LOG_LEVEL_DEBUG, sys_getString ("Loaded [ %s ]", fileName.c_str ()));
+		tempBitmap.width         = al_get_bitmap_width (tempBitmap.bitmap);
+		tempBitmap.height        = al_get_bitmap_height (tempBitmap.bitmap);
+		tempBitmap.common.loaded = true;
+		bitmap.insert (std::pair<std::string, __bitmap> (key, tempBitmap));
+
+		log_logMessage (LOG_LEVEL_DEBUG, sys_getString ("Loaded [ %s ]", fileName.c_str ()));
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------------------

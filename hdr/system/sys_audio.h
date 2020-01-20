@@ -3,6 +3,9 @@
 #include <allegro5/allegro_audio.h>
 #include "system/sys_main.h"
 
+#define MAX_NUM_RESERVE_SAMPLES     16
+#define MAX_VOLUME_LEVEL            10
+
 extern int  numReserveSamples;
 extern bool enableSound;           // From config file
 extern bool soundInitDone;         // Was sound done at startup

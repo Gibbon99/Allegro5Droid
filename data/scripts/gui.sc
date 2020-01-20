@@ -206,6 +206,14 @@ void as_guiHandleElementAction (string &in objectID)
 					return;
 				}
 
+			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton"))
+			{
+				as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsGraphics"));
+				sys_changeCurrentMode (MODE_GUI_OPTIONS_GRAPHICS, true);
+				as_guiSetObjectFocus ("optionsGraphicsCheckBackdrop");
+				return;
+			}
+
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton"))
 				{
 					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
@@ -242,6 +250,45 @@ void as_guiHandleElementAction (string &in objectID)
 					return;
 				}
 		}
+	//
+	// Graphics Options screen
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsGraphics"))
+	{
+		//
+		// Back Button - back one screen
+		// TODO : Save any changes
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton"))
+		{
+			string tileTypeName;
+			string tileColorName;
+			string tileFileName;
+
+			tileTypeName = as_guiGetSliderValue("optionsGraphicsTileType");
+			tileColorName = as_guiGetSliderValue("optionsGraphicsTileColor");
+			tileFileName = tileTypeName + "_" + tileColorName + ".bmp";
+			sys_loadResource ("alltiles", tileFileName, RESOURCE_BITMAP, 0, 0);
+
+			tileFileName = tileTypeName + "_" + "dark.bmp";
+			sys_loadResource ("alltiles_dark", tileFileName, RESOURCE_BITMAP, 0, 0);
+
+			cfg_setConfigValue ("tileType", tileTypeName);
+			cfg_setConfigValue ("tileColor", tileColorName);
+
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
+			as_guiSetObjectFocus ("guiOptionsMainCancelButton");
+			return;
+		}
+		//
+		// Use backdrop checkbox
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop"))
+		{
+			renderBackdrop = !renderBackdrop;
+			as_guiSetCheckboxTick ("optionsGraphicsCheckBackdrop", -1, renderBackdrop);
+			cfg_setConfigValue ("renderBackdrop", sys_boolToString (renderBackdrop));
+			return;
+		}
+	}
 	//
 	// Video Options screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsVideo"))
@@ -280,15 +327,6 @@ void as_guiHandleElementAction (string &in objectID)
 					fullScreen = !fullScreen;
 					as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", 1, true);
 					cfg_setConfigValue ("screenType", sys_intToString (screenType));
-					return;
-				}
-			//
-			// Use backdrop checkbox
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop"))
-				{
-					renderBackdrop = !renderBackdrop;
-					as_guiSetCheckboxTick ("optionsVideoCheckBackdrop", -1, renderBackdrop);
-					cfg_setConfigValue ("renderBackdrop", sys_boolToString (renderBackdrop));
 					return;
 				}
 		}
@@ -583,7 +621,77 @@ void as_setupOptionsAudioScreen ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Setup up Options - Video screen
+// Setup Options - Graphics screen
+void as_setupOptionsGraphicsScreen()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	float buttonStartY = gam_getTextureHeight ("hud") + buttonHeight;
+
+	as_guiCreateNewScreen ("optionsGraphics");
+
+	as_guiCreateObject (GUI_OBJECT_LABEL, "optionGraphicsLabel");
+	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "optionGraphicsLabel", "optionsGraphics");
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "optionGraphicsLabel", GUI_COORD_TYPE_ABSOLUTE, 8, buttonStartY, 10, 10);
+	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "optionGraphicsLabel", GUI_LABEL_CENTER, gui_getString ("optionGraphicsLabel"));
+	as_guiSetObjectColor (GUI_OBJECT_LABEL, "optionGraphicsLabel", GUI_INACTIVE_COL, 250, 250, 200, 250);
+	as_guiSetReadyState (GUI_OBJECT_LABEL, "optionGraphicsLabel", true);
+	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "optionGraphicsLabel", "gui");
+
+	as_guiCreateObject (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop");
+	as_guiAddObjectToScreen (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop", "optionsGraphics");
+	as_guiSetObjectPosition (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop", GUI_COORD_TYPE_PERCENT, 50, 30, 25, 25);
+	as_guiSetObjectLabel (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop", GUI_LABEL_CENTER, gui_getString ("optionsGraphicsCheckBackdrop"));
+	as_guiSetObjectFunction (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop", "as_guiHandleElementAction");
+	as_guiSetCheckboxGroup ("optionsGraphicsCheckBackdrop", -1);
+	as_guiSetCheckboxTick ("optionsGraphicsCheckBackdrop", -1, renderBackdrop);
+	as_guiSetReadyState (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop", true);
+	as_guiSetObjectFontName (GUI_OBJECT_CHECKBOX, "optionsGraphicsCheckBackdrop", "gui_small");
+	//
+	// Which Tile Color
+	as_guiCreateObject (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor");
+	as_guiAddObjectToScreen (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", "optionsGraphics");
+	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", GUI_COORD_TYPE_PERCENT, 1, 50, 30, 2);
+	as_guiSetObjectLabel (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", GUI_LABEL_CENTER, gui_getString ("optionsGraphicsTileColor"));
+
+	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorBlue"), "blue", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorGray"), "gray", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorGreen"), "green", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorRed"), "red", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorTurquoise"), "turquoise", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorYellow"), "yellow", SLIDER_TYPE_STRING );
+
+	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", true);
+	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", "gui_small");
+
+	as_guiSetSliderValue ( "optionsGraphicsTileColor", "blue" );
+	//
+	// Which tile style
+	as_guiCreateObject (GUI_OBJECT_SLIDER, "optionsGraphicsTileType");
+	as_guiAddObjectToScreen (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", "optionsGraphics");
+	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", GUI_COORD_TYPE_PERCENT, 69, 50, 30, 2);
+	as_guiSetObjectLabel (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", GUI_LABEL_CENTER, gui_getString ("optionsGraphicsTileType"));
+
+	as_guiAddNewElement ( "optionsGraphicsTileType", gui_getString("tileTypeFuture"), "future", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ( "optionsGraphicsTileType", gui_getString("tileTypeRetro"), "retro", SLIDER_TYPE_STRING );
+
+	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", true);
+	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", "gui_small");
+
+	as_guiSetSliderValue ( "optionsGraphicsTileType", "future" );
+
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", "optionsGraphics");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", "as_guiHandleElementAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", "gui");
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Setup Options - Video screen
 void as_setupOptionsVideoScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
@@ -652,20 +760,10 @@ void as_setupOptionsVideoScreen ()
 			break;
 		}
 
-	as_guiCreateObject (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop");
-	as_guiAddObjectToScreen (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop", "optionsVideo");
-	as_guiSetObjectPosition (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop", GUI_COORD_TYPE_PERCENT, 50, 30, 25, 25);
-	as_guiSetObjectLabel (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop", GUI_LABEL_CENTER, gui_getString ("optionsVideoCheckBackdrop"));
-	as_guiSetObjectFunction (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop", "as_guiHandleElementAction");
-	as_guiSetCheckboxGroup ("optionsVideoCheckBackdrop", -1);
-	as_guiSetCheckboxTick ("optionsVideoCheckBackdrop", -1, renderBackdrop);
-	as_guiSetReadyState (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop", true);
-	as_guiSetObjectFontName (GUI_OBJECT_CHECKBOX, "optionsVideoCheckBackdrop", "gui_small");
-
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsVideoCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "optionsVideo");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
-	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", true);
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "gui");
@@ -1267,6 +1365,7 @@ void script_initGUI ()
 	as_setupOptionsScreen ();
 	as_setupOptionsVideoScreen ();
 	as_setupOptionsAudioScreen ();
+	as_setupOptionsGraphicsScreen ();
 	as_guiSetupTutorial ();
 	as_setupMainTerminalScreen ();
 	as_setupTerminalDeckviewScreen ();
@@ -1297,7 +1396,6 @@ void script_initGUI ()
 
 	as_guiSetObjectColor (GUI_OBJECT_SLIDER, "ALL", GUI_ACTIVE_COL, 0.19f, 0.58f, 0.58f, 0.98f);
 	as_guiSetObjectColor (GUI_OBJECT_SLIDER, "ALL", GUI_INACTIVE_COL, 0.0f, 0.19f, 0.19f, 0.98f);
-
 
 	isGUIStarted = true;
 }

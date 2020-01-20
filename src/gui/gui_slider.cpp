@@ -43,6 +43,14 @@ void gui_hostSetSliderValue(const std::string& objectID, const std::string& valu
 							return;
 						}
 						break;
+
+					case SLIDER_TYPE_STRING:
+						if (stepItr->value == value)
+						{
+							sliderItr.currentStep = indexCount;
+							return;
+						}
+						break;
 				}
 				indexCount += 1;
 			}

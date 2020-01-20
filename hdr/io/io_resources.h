@@ -10,13 +10,13 @@ enum drawModes {
 };
 
 typedef struct {
-	bool        loaded;
-	std::string fileName;
+	bool        loaded = false;
+	std::string fileName = "";
 } __resourceCommon;
 
 typedef struct {
-	ALLEGRO_BITMAP   *bitmap;
-	std::string      fileName;
+	ALLEGRO_BITMAP   *bitmap = nullptr;
+	std::string      fileName = "";
 	int              width;
 	int              height;
 	__resourceCommon common;

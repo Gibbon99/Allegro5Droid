@@ -32,11 +32,12 @@ void io_loadResourceSprite (const std::string &key, const std::string &fileName,
 					return;
 				}
 			sprites.at (key).common.loaded = true;
+			return;
 		}
 
 	if (nullptr == tempSprite.bitmap)
 		{
-			tempSprite.bitmap        = al_load_bitmap (fileName.c_str ());
+			tempSprite.bitmap = al_load_bitmap (fileName.c_str ());
 			if (nullptr == tempSprite.bitmap)
 				{
 					log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Failed to load sprite [ %s ]", fileName.c_str ()));

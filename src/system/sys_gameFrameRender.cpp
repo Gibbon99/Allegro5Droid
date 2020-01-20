@@ -176,6 +176,7 @@ void sys_displayScreen (double interpolation)
 			case MODE_GUI_OPTIONS:
 			case MODE_GUI_OPTIONS_VIDEO:
 			case MODE_GUI_OPTIONS_AUDIO:
+			case MODE_GUI_OPTIONS_GRAPHICS:
 			case MODE_GUI_TUT_MOVE:
 			case MODE_GUI_TUT_TRANSFER_GAME:
 			case MODE_GUI_TUT_TRANSFER_START:
