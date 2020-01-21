@@ -11,26 +11,26 @@ void as_guiHandleTransferAction (string &in objectID)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferOne"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTransferOneNext"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTransferOneNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferTwo"));
-					as_guiSetObjectFocus ("buttonTransferTwoNext");
-					sys_changeCurrentMode (MODE_GUI_TRANSFER_SCREEN_TWO_LOAD, true);
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferTwo"));
+			as_guiSetObjectFocus ("buttonTransferTwoNext");
+			sys_changeCurrentMode (MODE_GUI_TRANSFER_SCREEN_TWO_LOAD, true);
+			return;
 		}
+	}
 
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferTwo"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTransferTwoNext"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTransferTwoNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferChooseSide"));
-					sys_changeCurrentMode (MODE_GUI_TRANSFER_INIT_GAME, true);
-					hud_setText (false, "hudChooseSide");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiTransferChooseSide"));
+			sys_changeCurrentMode (MODE_GUI_TRANSFER_INIT_GAME, true);
+			hud_setText (false, "hudChooseSide");
+			return;
 		}
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,27 +40,27 @@ void as_guiHandleDatabaseAction (string &in objectID)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "databaseScreen"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databasePrevButton"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databasePrevButton"))
-				{
-					gam_previousDatabaseDroid ();   // Go to previous droid
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseCancelButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
-					as_guiSetObjectFocus ("terminalDatabaseButton");
-					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseNextButton"))
-				{
-					gam_nextDatabaseDroid ();   // Go to next droid
-					return;
-				}
+			gam_previousDatabaseDroid ();   // Go to previous droid
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseCancelButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
+			as_guiSetObjectFocus ("terminalDatabaseButton");
+			sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "databaseNextButton"))
+		{
+			gam_nextDatabaseDroid ();   // Go to next droid
+			return;
+		}
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -72,68 +72,68 @@ void as_guiHandleTerminalAction (string &in objectID)
 	//
 	// Main terminal screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalLogoffButton"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalLogoffButton"))
-				{
-					sys_changeCurrentMode (MODE_GAME, true);
-					hud_setText (false, "hudMoving");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDatabaseButton"))
-				{
-					gam_setLocalDroidType ();
-					gam_enterDatabaseMode ();
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "databaseScreen"));
-					as_guiSetObjectFocus ("databaseCancelButton");
-					sys_changeCurrentMode (MODE_GUI_DATABASE, true);
-					hud_setText (false, "hudDatabase");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDeckviewButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalDeckviewScreen"));
-					as_guiSetObjectFocus ("deckviewCancelButton");
-					sys_changeCurrentMode (MODE_GUI_TERMINAL_DECKVIEW, true);
-					hud_setText (false, "hudDeckView");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalShipviewButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalShipviewScreen"));
-					as_guiSetObjectFocus ("shipviewCancelButton");
-					sys_changeCurrentMode (MODE_GUI_TERMINAL_SHIPVIEW, true);
-					hud_setText (false, "hudShipView");
-					return;
-				}
+			sys_changeCurrentMode (MODE_GAME, true);
+			hud_setText (false, "hudMoving");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDatabaseButton"))
+		{
+			gam_setLocalDroidType ();
+			gam_enterDatabaseMode ();
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "databaseScreen"));
+			as_guiSetObjectFocus ("databaseCancelButton");
+			sys_changeCurrentMode (MODE_GUI_DATABASE, true);
+			hud_setText (false, "hudDatabase");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalDeckviewButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalDeckviewScreen"));
+			as_guiSetObjectFocus ("deckviewCancelButton");
+			sys_changeCurrentMode (MODE_GUI_TERMINAL_DECKVIEW, true);
+			hud_setText (false, "hudDeckView");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalShipviewButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalShipviewScreen"));
+			as_guiSetObjectFocus ("shipviewCancelButton");
+			sys_changeCurrentMode (MODE_GUI_TERMINAL_SHIPVIEW, true);
+			hud_setText (false, "hudShipView");
+			return;
+		}
+	}
 	//
 	// For each display screen - shipview and deckview
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalShipviewScreen"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "shipviewCancelButton"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "shipviewCancelButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
-					as_guiSetObjectFocus ("terminalShipviewButton");
-					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
-					hud_setText (false, "hudTerminal");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
+			as_guiSetObjectFocus ("terminalShipviewButton");
+			sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+			hud_setText (false, "hudTerminal");
+			return;
 		}
+	}
 
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "terminalDeckviewScreen"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "deckviewCancelButton"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "deckviewCancelButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
-					as_guiSetObjectFocus ("terminalDeckviewButton");
-					sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
-					hud_setText (false, "hudTerminal");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainTerminalScreen"));
+			as_guiSetObjectFocus ("terminalDeckviewButton");
+			sys_changeCurrentMode (MODE_GUI_TERMINAL, true);
+			hud_setText (false, "hudTerminal");
+			return;
 		}
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -145,111 +145,119 @@ void as_guiHandleElementAction (string &in objectID)
 	//
 	// Main Screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "startGameButton"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "startGameButton"))
-				{
-					//gam_changeToLevel("Bridge");
-					sys_changeCurrentMode (MODE_PRE_GAME, true);
-					hud_setText (false, "hudMoving");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "briefingButton"))
-				{
-					sys_changeCurrentMode (MODE_GUI_INTRO, true);
-					hud_setText (false, "hudBriefing");
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, "introSound");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
-					sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
-					as_guiSetObjectFocus ("guiOptionsMainCancelButton");
-					hud_setText (false, "hudOptions");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "tutorialButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutorial"));
-					sys_changeCurrentMode (MODE_GUI_TUT_MOVE, true);
-					as_guiSetObjectFocus ("buttonTutMoveNext");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "exitGameButton"))
-				{
-					quitProgram = 1;
-					return;
-				}
+			//gam_changeToLevel("Bridge");
+			sys_changeCurrentMode (MODE_PRE_GAME, true);
+			hud_setText (false, "hudMoving");
 			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "briefingButton"))
+		{
+			sys_changeCurrentMode (MODE_GUI_INTRO, true);
+			hud_setText (false, "hudBriefing");
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, "introSound");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
+			as_guiSetObjectFocus ("guiOptionsMainCancelButton");
+			hud_setText (false, "hudOptions");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "tutorialButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutorial"));
+			sys_changeCurrentMode (MODE_GUI_TUT_MOVE, true);
+			as_guiSetObjectFocus ("buttonTutMoveNext");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "exitGameButton"))
+		{
+			quitProgram = 1;
+			return;
+		}
+		return;
+	}
 	//
 	// Main Option Screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainVideoButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsVideo"));
-					sys_changeCurrentMode (MODE_GUI_OPTIONS_VIDEO, true);
-					as_guiSetObjectFocus ("optionsVideoCheckFullScreen");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsAudio"));
-					sys_changeCurrentMode (MODE_GUI_OPTIONS_AUDIO, true);
-					as_guiSetObjectFocus ("optionsAudioUseSound");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton"))
-			{
-				as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsGraphics"));
-				sys_changeCurrentMode (MODE_GUI_OPTIONS_GRAPHICS, true);
-				as_guiSetObjectFocus ("optionsGraphicsCheckBackdrop");
-				return;
-			}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsVideo"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS_VIDEO, true);
+			as_guiSetObjectFocus ("optionsVideoCheckFullScreen");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainAudioButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsAudio"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS_AUDIO, true);
+			as_guiSetObjectFocus ("optionsAudioUseSound");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainGraphicsButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsGraphics"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS_GRAPHICS, true);
+			as_guiSetObjectFocus ("optionsGraphicsCheckBackdrop");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainControlsButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsControls"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS_CONTROLS, true);
+			as_guiSetObjectFocus ("optionsControlsBackButton");
+			return;
+		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
+		}
+	}
 	//
 	// Audio Options screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsAudio"))
+	{
+		//
+		// Back button - back one screen
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsAudioBackButton"))
 		{
 			//
-			// Back button - back one screen
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsAudioBackButton"))
-				{
-				//
-				// Save values to config file
-					cfg_setConfigValue ("enableSound", sys_boolToString (enableSound));
-					cfg_setConfigValue ("volumeLevel", as_guiGetSliderValue("optionsAudioVolume"));
-					volumeLevel = sys_stringToInt(as_guiGetSliderValue("optionsAudioVolume"));
+			// Save values to config file
+			cfg_setConfigValue ("enableSound", sys_boolToString (enableSound));
+			cfg_setConfigValue ("volumeLevel", as_guiGetSliderValue ("optionsAudioVolume"));
+			volumeLevel = sys_stringToInt (as_guiGetSliderValue ("optionsAudioVolume"));
 
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
-					sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
-					as_guiSetObjectFocus ("guiOptionsMainCancelButton");
-					return;
-				}
-			//
-			// Use Audio checkbox
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsAudioUseSound"))
-				{
-					enableSound = !enableSound;
-					as_guiSetCheckboxTick ("optionsAudioUseSound", -1, enableSound);
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
+			as_guiSetObjectFocus ("guiOptionsMainCancelButton");
+			return;
 		}
+		//
+		// Use Audio checkbox
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsAudioUseSound"))
+		{
+			enableSound = !enableSound;
+			as_guiSetCheckboxTick ("optionsAudioUseSound", -1, enableSound);
+			return;
+		}
+	}
 	//
 	// Graphics Options screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsGraphics"))
@@ -258,10 +266,10 @@ void as_guiHandleElementAction (string &in objectID)
 		// Back Button - back one screen
 		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton"))
 		{
-			sys_loadTileBitmap(as_guiGetSliderValue("optionsGraphicsTileType"), as_guiGetSliderValue("optionsGraphicsTileColor"));
+			sys_loadTileBitmap (as_guiGetSliderValue ("optionsGraphicsTileType"), as_guiGetSliderValue ("optionsGraphicsTileColor"));
 
-			cfg_setConfigValue ("tileType", as_guiGetSliderValue("optionsGraphicsTileType"));
-			cfg_setConfigValue ("tileColor", as_guiGetSliderValue("optionsGraphicsTileColor"));
+			cfg_setConfigValue ("tileType", as_guiGetSliderValue ("optionsGraphicsTileType"));
+			cfg_setConfigValue ("tileColor", as_guiGetSliderValue ("optionsGraphicsTileColor"));
 
 			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
 			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
@@ -281,180 +289,199 @@ void as_guiHandleElementAction (string &in objectID)
 	//
 	// Video Options screen
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsVideo"))
+	{
+		//
+		// Cancel button - back one screen
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsVideoCancelButton"))
 		{
-			//
-			// Cancel button - back one screen
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsVideoCancelButton"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
-					sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
-					as_guiSetObjectFocus ("guiOptionsMainCancelButton");
-					return;
-				}
-			//
-			// Fullscreen checkbox
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen"))
-				{
-					as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", 1, true);
-					cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue("optionsVideoCheckFullScreen")));
-					return;
-				}
-			//
-			// Windowed checkbox
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckWindowed"))
-				{
-					as_guiSetCheckboxTick ("optionsVideoCheckWindowed", 1, true);
-					cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue("optionsVideoCheckWindowed")));
-					return;
-				}
-			//
-			// Windowed fullscreen checkbox
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreenWindowed"))
-				{
-					as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", 1, true);
-					cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue("optionsVideoCheckFullScreenWindowed")));
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
+			as_guiSetObjectFocus ("guiOptionsMainCancelButton");
+			return;
 		}
+		//
+		// Fullscreen checkbox
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen"))
+		{
+			as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", 1, true);
+			cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue ("optionsVideoCheckFullScreen")));
+			return;
+		}
+		//
+		// Windowed checkbox
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckWindowed"))
+		{
+			as_guiSetCheckboxTick ("optionsVideoCheckWindowed", 1, true);
+			cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue ("optionsVideoCheckWindowed")));
+			return;
+		}
+		//
+		// Windowed fullscreen checkbox
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreenWindowed"))
+		{
+			as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", 1, true);
+			cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue ("optionsVideoCheckFullScreenWindowed")));
+			return;
+		}
+	}
+	//
+	// Controls Options screen
+	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "optionsControls"))
+	{
+		currentLanguage = sys_stringToInt (as_guiGetSliderValue ("optionsControlsLanguageSlider"));
+		cfg_setConfigValue ("currentLanguage", sys_intToString(currentLanguage));
 
+		// TODO: Popup restart required message
+		//
+		as_setLanguageStrings();
+		//
+		// Back button - back one screen
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsControlsBackButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
+			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
+			as_guiSetObjectFocus ("guiOptionsMainCancelButton");
+			return;
+		}
+	}
 	//
 	// Start of the tutorial screens - how to move
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutorial"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutorialCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutorialCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutMoveNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTransfer"));
-					sys_changeCurrentMode (MODE_GUI_TUT_TRANSFER_START, true);
-					as_guiSetObjectFocus ("buttonTutTransNext");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutMoveNext"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTransfer"));
+			sys_changeCurrentMode (MODE_GUI_TUT_TRANSFER_START, true);
+			as_guiSetObjectFocus ("buttonTutTransNext");
+			return;
+		}
+	}
 
 	//
 	// Tutorial on doing a transfer
 	if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTransfer"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTransGame"));
-					sys_changeCurrentMode (MODE_GUI_TUT_TRANSFER_GAME, true);
-					as_guiSetObjectFocus ("buttonTutTransGameNext");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransNext"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTransGame"));
+			sys_changeCurrentMode (MODE_GUI_TUT_TRANSFER_GAME, true);
+			as_guiSetObjectFocus ("buttonTutTransGameNext");
+			return;
+		}
+	}
 
 		//
 		// Tutorial on transfer game
 	else if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTransGame"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransGameCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransGameNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutLifts"));
-					sys_changeCurrentMode (MODE_GUI_TUT_LIFTS, true);
-					as_guiSetObjectFocus ("buttonTutLiftNext");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTransGameNext"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutLifts"));
+			sys_changeCurrentMode (MODE_GUI_TUT_LIFTS, true);
+			as_guiSetObjectFocus ("buttonTutLiftNext");
+			return;
+		}
+	}
 
 		//
 		// How to use the lifts
 	else if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutLifts"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutLiftCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutLiftCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutLiftNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTerminals"));
-					sys_changeCurrentMode (MODE_GUI_TUT_TERMINALS, true);
-					as_guiSetObjectFocus ("buttonTutTerminalNext");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutLiftNext"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTerminals"));
+			sys_changeCurrentMode (MODE_GUI_TUT_TERMINALS, true);
+			as_guiSetObjectFocus ("buttonTutTerminalNext");
+			return;
+		}
+	}
 
 		//
 		// How to use the terminals
 	else if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTerminals"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTerminalCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTerminalNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutHealing"));
-					sys_changeCurrentMode (MODE_GUI_TUT_HEALING, true);
-					as_guiSetObjectFocus ("buttonTutHealinglNext");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTerminalNext"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutHealing"));
+			sys_changeCurrentMode (MODE_GUI_TUT_HEALING, true);
+			as_guiSetObjectFocus ("buttonTutHealinglNext");
+			return;
+		}
+	}
 
 		//
 		// How to use the healing tiles
 	else if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutHealing"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutHealingCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutHealingCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
-
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutHealinglNext"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTips"));
-					sys_changeCurrentMode (MODE_GUI_TUT_TIPS, true);
-					as_guiSetObjectFocus ("buttonTutTipsCancel");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutHealinglNext"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTips"));
+			sys_changeCurrentMode (MODE_GUI_TUT_TIPS, true);
+			as_guiSetObjectFocus ("buttonTutTipsCancel");
+			return;
+		}
+	}
 
 		//
 		// Gameplay tips
 	else if (currentGUIScreen == as_guiFindIndex (GUI_OBJECT_SCREEN, "scrTutTips"))
+	{
+		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTipsCancel"))
 		{
-			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "buttonTutTipsCancel"))
-				{
-					as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
-					sys_changeCurrentMode (MODE_GUI, true);
-					as_guiSetObjectFocus ("startGameButton");
-					return;
-				}
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
 		}
+	}
 
 }
 
@@ -516,6 +543,7 @@ void script_setupDatabaseScreen ()
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "databaseNextButton", true);
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "databaseNextButton", "gui");
 }
+
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup the values for the intro scrollbox
@@ -584,13 +612,13 @@ void as_setupOptionsAudioScreen ()
 
 	string tempNum;
 
-	for ( int i = 0; i != 10; i++ )
+	for (int i = 0; i != 10; i++)
 	{
-		tempNum = sys_intToString ( i + 1 );
-		as_guiAddNewElement ( "optionsAudioVolume", tempNum, tempNum, SLIDER_TYPE_INT );
+		tempNum = sys_intToString (i + 1);
+		as_guiAddNewElement ("optionsAudioVolume", tempNum, tempNum, SLIDER_TYPE_INT);
 	}
 
-	as_guiSetSliderValue ( "optionsAudioVolume", volumeLevelStr );
+	as_guiSetSliderValue ("optionsAudioVolume", volumeLevelStr);
 
 	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsAudioVolume", true);
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsAudioVolume", "gui_small");
@@ -608,7 +636,7 @@ void as_setupOptionsAudioScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup Options - Graphics screen
-void as_setupOptionsGraphicsScreen()
+void as_setupOptionsGraphicsScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	float buttonStartY = gam_getTextureHeight ("hud") + buttonHeight;
@@ -639,17 +667,17 @@ void as_setupOptionsGraphicsScreen()
 	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", GUI_COORD_TYPE_PERCENT, 1, 50, 30, 2);
 	as_guiSetObjectLabel (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", GUI_LABEL_CENTER, gui_getString ("optionsGraphicsTileColor"));
 
-	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorBlue"), "blue", SLIDER_TYPE_STRING );
-	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorGray"), "gray", SLIDER_TYPE_STRING );
-	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorGreen"), "green", SLIDER_TYPE_STRING );
-	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorRed"), "red", SLIDER_TYPE_STRING );
-	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorTurquoise"), "turquoise", SLIDER_TYPE_STRING );
-	as_guiAddNewElement ( "optionsGraphicsTileColor", gui_getString("colorYellow"), "yellow", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ("optionsGraphicsTileColor", gui_getString ("colorBlue"), "blue", SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsGraphicsTileColor", gui_getString ("colorGray"), "gray", SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsGraphicsTileColor", gui_getString ("colorGreen"), "green", SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsGraphicsTileColor", gui_getString ("colorRed"), "red", SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsGraphicsTileColor", gui_getString ("colorTurquoise"), "turquoise", SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsGraphicsTileColor", gui_getString ("colorYellow"), "yellow", SLIDER_TYPE_STRING);
 
 	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", true);
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", "gui_small");
 
-	as_guiSetSliderValue ( "optionsGraphicsTileColor", tileColor );
+	as_guiSetSliderValue ("optionsGraphicsTileColor", tileColor);
 	//
 	// Which tile style
 	as_guiCreateObject (GUI_OBJECT_SLIDER, "optionsGraphicsTileType");
@@ -657,13 +685,13 @@ void as_setupOptionsGraphicsScreen()
 	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", GUI_COORD_TYPE_PERCENT, 69, 50, 30, 2);
 	as_guiSetObjectLabel (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", GUI_LABEL_CENTER, gui_getString ("optionsGraphicsTileType"));
 
-	as_guiAddNewElement ( "optionsGraphicsTileType", gui_getString("tileTypeFuture"), "future", SLIDER_TYPE_STRING );
-	as_guiAddNewElement ( "optionsGraphicsTileType", gui_getString("tileTypeRetro"), "retro", SLIDER_TYPE_STRING );
+	as_guiAddNewElement ("optionsGraphicsTileType", gui_getString ("tileTypeFuture"), "future", SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsGraphicsTileType", gui_getString ("tileTypeRetro"), "retro", SLIDER_TYPE_STRING);
 
 	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", true);
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", "gui_small");
 
-	as_guiSetSliderValue ( "optionsGraphicsTileType", tileType );
+	as_guiSetSliderValue ("optionsGraphicsTileType", tileType);
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", "optionsGraphics");
@@ -735,19 +763,19 @@ void as_setupOptionsVideoScreen ()
 	as_guiSetCheckboxTick ("optionsVideoCheckWindowed", -1, false);
 
 	switch (screenType)
-		{
-			case 0:
-				as_guiSetCheckboxTick ("optionsVideoCheckWindowed", -1, true);
+	{
+		case 0:
+			as_guiSetCheckboxTick ("optionsVideoCheckWindowed", -1, true);
 			break;
 
-			case 1:
-				as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", -1, true);
+		case 1:
+			as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", -1, true);
 			break;
 
-			case 2:
-				as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", -1, true);
+		case 2:
+			as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", -1, true);
 			break;
-		}
+	}
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsVideoCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "optionsVideo");
@@ -758,6 +786,39 @@ void as_setupOptionsVideoScreen ()
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsVideoCancelButton", "gui");
 
 //	as_guiSetCheckboxTick ( "optionsVideoCheckFullScreen", -1, fullScreenValue == 1 ? true : false );
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Setup the controls options screen
+void as_setupOptionsControlsScreen ()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	as_guiCreateNewScreen ("optionsControls");
+
+	//
+	// Which language to use
+	as_guiCreateObject (GUI_OBJECT_SLIDER, "optionsControlsLanguageSlider");
+	as_guiAddObjectToScreen (GUI_OBJECT_SLIDER, "optionsControlsLanguageSlider", "optionsControls");
+	as_guiSetObjectPosition (GUI_OBJECT_SLIDER, "optionsControlsLanguageSlider", GUI_COORD_TYPE_PERCENT, 5, 70, 30, 2);
+	as_guiSetObjectLabel (GUI_OBJECT_SLIDER, "optionsControlsLanguageSlider", GUI_LABEL_CENTER, gui_getString ("optionsControlsLanguageSlider"));
+
+	as_guiAddNewElement ("optionsControlsLanguageSlider", gui_getString ("languageEnglish"), sys_intToString(1), SLIDER_TYPE_INT);
+	as_guiAddNewElement ("optionsControlsLanguageSlider", gui_getString ("languageItalian"), sys_intToString(2), SLIDER_TYPE_STRING);
+	as_guiAddNewElement ("optionsControlsLanguageSlider", gui_getString ("languageGerman"), sys_intToString(3), SLIDER_TYPE_STRING);
+
+	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsControlsLanguageSlider", true);
+	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsControlsLanguageSlider", "gui_small");
+
+	as_guiSetSliderValue ("optionsControlsLanguageSlider", sys_intToString(1));
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsControlsBackButton");
+	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsControlsBackButton", "optionsControls");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "optionsControlsBackButton", GUI_COORD_TYPE_PERCENT, 80, 90, 25, buttonHeight);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "optionsControlsBackButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "optionsControlsBackButton", "as_guiHandleElementAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "optionsControlsBackButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "optionsControlsBackButton", "gui");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1355,6 +1416,7 @@ void script_initGUI ()
 	as_setupOptionsVideoScreen ();
 	as_setupOptionsAudioScreen ();
 	as_setupOptionsGraphicsScreen ();
+	as_setupOptionsControlsScreen ();
 	as_guiSetupTutorial ();
 	as_setupMainTerminalScreen ();
 	as_setupTerminalDeckviewScreen ();

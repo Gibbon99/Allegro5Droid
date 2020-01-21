@@ -122,6 +122,11 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("optionGraphicsLabel", "Graphics");
 	gui_addKeyAndText ("optionsGraphicsTileColor", "Tile Color");
 	gui_addKeyAndText ("optionsGraphicsTileType", "Tile Style");
+	gui_addKeyAndText ("optionsControlsLanguageSlider", "Language");
+	gui_addKeyAndText ("languageEnglish", "English");
+	gui_addKeyAndText ("languageGerman", "German");
+	gui_addKeyAndText ("languageItalian", "Italian");
+
 	gui_addKeyAndText ("colorBlue", "Blue");
 	gui_addKeyAndText ("colorGray", "Gray");
 	gui_addKeyAndText ("colorGreen", "Green");

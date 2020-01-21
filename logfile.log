@@ -1,7 +1,18 @@
 -----------------------------------------------------------------------------
 Log file opened:
-21-01-2020	22:23:17
+21-01-2020	14:14:29
 Logfile started...
+INFO | Packfile: Supported archive types.
+INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
+INFO | Packfile: [ 7Z ] : [ 7zip archives ]
+INFO | Packfile: [ GRP ] : [ Build engine Groupfile format ]
+INFO | Packfile: [ PAK ] : [ Quake I/II format ]
+INFO | Packfile: [ HOG ] : [ Descent I/II HOG file format ]
+INFO | Packfile: [ MVL ] : [ Descent II Movielib format ]
+INFO | Packfile: [ WAD ] : [ DOOM engine format ]
+INFO | Packfile: [ SLB ] : [ I-War / Independence War Slab file ]
+INFO | Packfile: [ ISO ] : [ ISO9660 image file ]
+INFO | Packfile: [ VDF ] : [ Gothic I/II engine format ]
 INFO | Allegro version [ 5.2.6 ( 0 ) ]
 INFO | Script [ english.sc ]
 INFO | Script [ german.sc ]
@@ -207,101 +218,103 @@ INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ particles.sc ]
 INFO | Section has been added [ resources.sc ]
 INFO | Section has been added [ transfer.sc ]
-INFO | gui.sc (464, 1) : INFO : Compiling void script_setupDatabaseScreen()
-INFO | gui.sc (497, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (497, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (505, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (505, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (513, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (513, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (554, 1) : INFO : Compiling void as_setupOptionsAudioScreen()
-INFO | gui.sc (563, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (601, 108) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (611, 1) : INFO : Compiling void as_setupOptionsGraphicsScreen()
-INFO | gui.sc (620, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (671, 113) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (681, 1) : INFO : Compiling void as_setupOptionsVideoScreen()
-INFO | gui.sc (690, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (755, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (767, 1) : INFO : Compiling void as_setupOptionsScreen()
-INFO | gui.sc (776, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (784, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (792, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (800, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (808, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (816, 112) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (826, 1) : INFO : Compiling void as_guiSetupTutorial()
-INFO | gui.sc (835, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (849, 103) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (857, 106) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (870, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (884, 104) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (892, 106) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (905, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (919, 108) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (927, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (940, 94) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (955, 163) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (955, 149) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (955, 129) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (955, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (960, 103) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (968, 105) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (981, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (996, 167) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (996, 153) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (996, 133) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (996, 120) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1001, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1009, 109) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1022, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1037, 166) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1037, 152) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1037, 132) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1037, 119) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1042, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1050, 108) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1063, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1077, 105) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1088, 1) : INFO : Compiling void as_setupTerminalDeckviewScreen()
-INFO | gui.sc (1097, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1097, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1107, 1) : INFO : Compiling void as_setupTerminalShipviewScreen()
-INFO | gui.sc (1116, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1116, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1126, 1) : INFO : Compiling void as_setupMainTerminalScreen()
-INFO | gui.sc (1137, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1144, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1144, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1153, 118) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1153, 100) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1162, 118) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1162, 100) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1171, 118) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1171, 100) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1182, 1) : INFO : Compiling void as_setupTransferOne()
-INFO | gui.sc (1209, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1219, 1) : INFO : Compiling void as_setupTransferTwo()
-INFO | gui.sc (1246, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1256, 1) : INFO : Compiling void as_setupMainScreen()
-INFO | gui.sc (1270, 92) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1277, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1277, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1286, 109) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1286, 91) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1295, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1295, 92) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1304, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1304, 92) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1313, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1313, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (488, 1) : INFO : Compiling void script_setupDatabaseScreen()
+INFO | gui.sc (521, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (521, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (529, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (529, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (537, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (537, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (579, 1) : INFO : Compiling void as_setupOptionsAudioScreen()
+INFO | gui.sc (588, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (626, 108) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (636, 1) : INFO : Compiling void as_setupOptionsGraphicsScreen()
+INFO | gui.sc (645, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (695, 113) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (705, 1) : INFO : Compiling void as_setupOptionsVideoScreen()
+INFO | gui.sc (714, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (779, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (791, 1) : INFO : Compiling void as_setupOptionsControlsScreen()
+INFO | gui.sc (814, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (824, 1) : INFO : Compiling void as_setupOptionsScreen()
+INFO | gui.sc (833, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (841, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (849, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (857, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (865, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (873, 112) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (883, 1) : INFO : Compiling void as_guiSetupTutorial()
+INFO | gui.sc (892, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (906, 103) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (914, 106) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (927, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (941, 104) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (949, 106) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (962, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (976, 108) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (984, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (997, 94) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1012, 163) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1012, 149) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1012, 129) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1012, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1017, 103) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1025, 105) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1038, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1053, 167) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1053, 153) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1053, 133) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1053, 120) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1058, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1066, 109) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1079, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1094, 166) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1094, 152) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1094, 132) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1094, 119) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1099, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1107, 108) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1120, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1134, 105) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1145, 1) : INFO : Compiling void as_setupTerminalDeckviewScreen()
+INFO | gui.sc (1154, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1154, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1164, 1) : INFO : Compiling void as_setupTerminalShipviewScreen()
+INFO | gui.sc (1173, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1173, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1183, 1) : INFO : Compiling void as_setupMainTerminalScreen()
+INFO | gui.sc (1194, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1201, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1201, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1210, 118) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1210, 100) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1219, 118) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1219, 100) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1228, 118) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1228, 100) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1239, 1) : INFO : Compiling void as_setupTransferOne()
+INFO | gui.sc (1266, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1276, 1) : INFO : Compiling void as_setupTransferTwo()
+INFO | gui.sc (1303, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1313, 1) : INFO : Compiling void as_setupMainScreen()
+INFO | gui.sc (1327, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1334, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1334, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1343, 109) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1343, 91) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1352, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1352, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1361, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1361, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1370, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1370, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 986954576 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 986950864 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 986932304 ]
-INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 986931296 ]
-INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 986930224 ]
-INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ 986929056 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 892306288 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 892302576 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 892282976 ]
+INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 892281968 ]
+INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 892280896 ]
+INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ 892279728 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -373,6 +386,7 @@ Screen [ guiOptionsMain ] created.
 Screen [ optionsVideo ] created.
 Screen [ optionsAudio ] created.
 Screen [ optionsGraphics ] created.
+Screen [ optionsControls ] created.
 Screen [ scrTutorial ] created.
 Screen [ scrTutTransfer ] created.
 Screen [ scrTutTransGame ] created.
@@ -432,6 +446,3 @@ DEBUG | Node [ MOVE_TO ] added. Num Children for [ AI_PATROL ] now [ 2 ]
 DEBUG | Child index set to [ 21 ]
 DEBUG | Node [ FIND_WP ] added. Num Children for [ AI_PATROL ] now [ 3 ]
 DEBUG | Child index set to [ 22 ]
-DEBUG | Loaded [ retro_turquoise.bmp ]
-DEBUG | Loaded [ retro_dark.bmp ]
-DEBUG | Clearing out emitters

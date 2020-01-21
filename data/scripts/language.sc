@@ -1,5 +1,5 @@
 //
-// Select which language to assign to string
+// Select which language to assign to strings
 //
 
 #include "data/sharedDefines.h"
