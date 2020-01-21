@@ -256,23 +256,12 @@ void as_guiHandleElementAction (string &in objectID)
 	{
 		//
 		// Back Button - back one screen
-		// TODO : Save any changes
 		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton"))
 		{
-			string tileTypeName;
-			string tileColorName;
-			string tileFileName;
+			sys_loadTileBitmap(as_guiGetSliderValue("optionsGraphicsTileType"), as_guiGetSliderValue("optionsGraphicsTileColor"));
 
-			tileTypeName = as_guiGetSliderValue("optionsGraphicsTileType");
-			tileColorName = as_guiGetSliderValue("optionsGraphicsTileColor");
-			tileFileName = tileTypeName + "_" + tileColorName + ".bmp";
-			sys_loadResource ("alltiles", tileFileName, RESOURCE_BITMAP, 0, 0);
-
-			tileFileName = tileTypeName + "_" + "dark.bmp";
-			sys_loadResource ("alltiles_dark", tileFileName, RESOURCE_BITMAP, 0, 0);
-
-			cfg_setConfigValue ("tileType", tileTypeName);
-			cfg_setConfigValue ("tileColor", tileColorName);
+			cfg_setConfigValue ("tileType", as_guiGetSliderValue("optionsGraphicsTileType"));
+			cfg_setConfigValue ("tileColor", as_guiGetSliderValue("optionsGraphicsTileColor"));
 
 			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "guiOptionsMain"));
 			sys_changeCurrentMode (MODE_GUI_OPTIONS, true);
@@ -306,27 +295,24 @@ void as_guiHandleElementAction (string &in objectID)
 			// Fullscreen checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreen"))
 				{
-					fullScreen = !fullScreen;
 					as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", 1, true);
-					cfg_setConfigValue ("screenType", sys_intToString (screenType));
+					cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue("optionsVideoCheckFullScreen")));
 					return;
 				}
 			//
 			// Windowed checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckWindowed"))
 				{
-					fullScreen = !fullScreen;
 					as_guiSetCheckboxTick ("optionsVideoCheckWindowed", 1, true);
-					cfg_setConfigValue ("screenType", sys_intToString (screenType));
+					cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue("optionsVideoCheckWindowed")));
 					return;
 				}
 			//
 			// Windowed fullscreen checkbox
 			if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreenWindowed"))
 				{
-					fullScreen = !fullScreen;
 					as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", 1, true);
-					cfg_setConfigValue ("screenType", sys_intToString (screenType));
+					cfg_setConfigValue ("screenType", sys_intToString (as_guiGetCheckboxValue("optionsVideoCheckFullScreenWindowed")));
 					return;
 				}
 		}
@@ -663,7 +649,7 @@ void as_setupOptionsGraphicsScreen()
 	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", true);
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsGraphicsTileColor", "gui_small");
 
-	as_guiSetSliderValue ( "optionsGraphicsTileColor", "blue" );
+	as_guiSetSliderValue ( "optionsGraphicsTileColor", tileColor );
 	//
 	// Which tile style
 	as_guiCreateObject (GUI_OBJECT_SLIDER, "optionsGraphicsTileType");
@@ -677,8 +663,7 @@ void as_setupOptionsGraphicsScreen()
 	as_guiSetReadyState (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", true);
 	as_guiSetObjectFontName (GUI_OBJECT_SLIDER, "optionsGraphicsTileType", "gui_small");
 
-	as_guiSetSliderValue ( "optionsGraphicsTileType", "future" );
-
+	as_guiSetSliderValue ( "optionsGraphicsTileType", tileType );
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "optionsGraphicsCancelButton", "optionsGraphics");
@@ -745,18 +730,22 @@ void as_setupOptionsVideoScreen ()
 	as_guiSetReadyState (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreenWindowed", true);
 	as_guiSetObjectFontName (GUI_OBJECT_CHECKBOX, "optionsVideoCheckFullScreenWindowed", "gui_small");
 
+	as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", -1, false);
+	as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", -1, false);
+	as_guiSetCheckboxTick ("optionsVideoCheckWindowed", -1, false);
+
 	switch (screenType)
 		{
 			case 0:
-				as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", -1, true);
+				as_guiSetCheckboxTick ("optionsVideoCheckWindowed", -1, true);
 			break;
 
 			case 1:
-				as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", -1, true); // Repeat for off for others??
+				as_guiSetCheckboxTick ("optionsVideoCheckFullScreenWindowed", -1, true);
 			break;
 
 			case 2:
-				as_guiSetCheckboxTick ("optionsVideoCheckWindowed", -1, true); // Repeat for off for others??
+				as_guiSetCheckboxTick ("optionsVideoCheckFullScreen", -1, true);
 			break;
 		}
 
@@ -824,7 +813,7 @@ void as_setupOptionsScreen ()
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", "guiOptionsMain");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", GUI_COORD_TYPE_PERCENT, 20, 84, 25, buttonHeight);
-	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", "as_guiHandleElementAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", true);
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "guiOptionsMainCancelButton", "gui");

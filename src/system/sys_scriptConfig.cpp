@@ -31,6 +31,7 @@
 #include <hdr/game/gam_transferDroidAI.h>
 #include <hdr/system/sys_configFile.h>
 #include <hdr/gui/gui_slider.h>
+#include <hdr/game/gam_render.h>
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -183,6 +184,9 @@ void sys_scriptInitVariables ()
 
 	sys_scriptAddHostVariable ("string volumeLevelStr", &volumeLevelStr);
 	sys_scriptAddHostVariable("int volumeLevel", &volumeLevel);
+
+	sys_scriptAddHostVariable ("string tileType", &tileType);
+	sys_scriptAddHostVariable ("string tileColor", &tileColor);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -250,6 +254,7 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("string sys_boolToString(bool boolValue)", (functionPtr) &sys_boolToString);
 	sys_scriptAddHostFunction ("string sys_intToString(int intValue)", (functionPtr) &sys_intToString);
 	sys_scriptAddHostFunction ("int sys_stringToInt(string &in)", (functionPtr) &sys_stringToInt);
+	sys_scriptAddHostFunction("void sys_loadTileBitmap(string tileType, string tileColor)", (functionPtr) &sys_loadTileBitmap);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

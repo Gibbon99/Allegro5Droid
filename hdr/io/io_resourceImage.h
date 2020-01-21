@@ -16,3 +16,5 @@ int sys_getImageHeight(const std::string& keyName);
 // Get width of image
 int sys_getImageWidth(const std::string& keyName);
 
+// Load the tile graphics
+void sys_loadTileBitmap(const std::string tileType, const std::string tileColor);

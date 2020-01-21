@@ -24,6 +24,21 @@ int sys_getImageHeight(const std::string& keyName)
 
 //---------------------------------------------------------------------------------------------------------------------------
 //
+// Load the tile graphics
+void sys_loadTileBitmap(const std::string tileType, const std::string tileColor)
+//---------------------------------------------------------------------------------------------------------------------------
+{
+	std::string tileFilename;
+
+	tileFilename = tileType + "_" + tileColor + ".bmp";
+	sys_loadResource ("alltiles", tileFilename, RESOURCE_BITMAP, 0, 0);
+
+	tileFilename = tileType + "_" + "dark.bmp";
+	sys_loadResource ("alltiles_dark", tileFilename, RESOURCE_BITMAP, 0, 0);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+//
 // Load a bitmap file
 void sys_loadResourceBitmap (const std::string &key, const std::string &fileName)
 //---------------------------------------------------------------------------------------------------------------------------

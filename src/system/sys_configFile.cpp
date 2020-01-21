@@ -68,7 +68,7 @@ void cfg_setConfigValue(std::string whichKey, std::string newValue)
 
 	al_set_config_value(configFile, "main", whichKey.c_str(), newValue.c_str());
 
-	printf("Saving key [ %s ] - Value [ %s ]", whichKey.c_str(), newValue.c_str());
+	printf("Saving key [ %s ] - Value [ %s ]\n", whichKey.c_str(), newValue.c_str());
 
 	al_save_config_file(CONFIG_FILENAME, configFile);
 }

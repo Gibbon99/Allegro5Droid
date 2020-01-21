@@ -17,6 +17,9 @@
 #include <hdr/game/gam_transfer.h>
 #include <hdr/game/gam_transferDroidAI.h>
 #include <hdr/game/gam_transferPlayer.h>
+#include <hdr/gui/gui_slider.h>
+#include <hdr/io/io_resources.h>
+#include <hdr/io/io_resourceImage.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -26,6 +29,9 @@ void sys_gameTickRun (double tickTime)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	std::string cachedCurrentLevelName;
+	std::string tileTypeName;
+	std::string tileColorName;
+	std::string tileFileName;
 
 	cachedCurrentLevelName = lvl_getCurrentLevelName ();
 
@@ -76,6 +82,8 @@ void sys_gameTickRun (double tickTime)
 			break;
 
 		case MODE_PRE_GAME:
+			sys_loadTileBitmap(gui_hostGetSliderValue("optionsGraphicsTileType"), gui_hostGetSliderValue("optionsGraphicsTileColor"));
+
 			lvl_changeToLevel ("Staterooms", 0);
 			gam_startNewGame();
 			sys_changeMode (MODE_GAME, false);
