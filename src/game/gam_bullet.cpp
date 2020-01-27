@@ -41,15 +41,15 @@ void bul_clearAllBullets ()
 //---------------------------------------------------------------------------------------------------------------
 {
 	for (auto &bulletItr : bullets)
-		{
-			bulletItr.inUse = false;
+	{
+		bulletItr.inUse = false;
 
-			if (bulletItr.userData != nullptr)
-				delete (bulletItr.userData);
+		if (bulletItr.userData != nullptr)
+			delete (bulletItr.userData);
 
-			if (bulletItr.body != nullptr)
-				sys_getPhysicsWorld ()->DestroyBody (bulletItr.body);
-		}
+		if (bulletItr.body != nullptr)
+			sys_getPhysicsWorld ()->DestroyBody (bulletItr.body);
+	}
 	bullets.clear ();
 }
 
@@ -68,13 +68,22 @@ void bul_initBullets ()
 void bul_removeBullet (int whichBullet)
 //---------------------------------------------------------------------------------------------------------------
 {
-	if (bullets.at (whichBullet).body != nullptr)
+	try
+	{
+		if (bullets.at (whichBullet).body != nullptr)
 		{
 			sys_getPhysicsWorld ()->DestroyBody (bullets.at (whichBullet).body);
 			bullets.at (whichBullet).body = nullptr;
 		}
-	bullets.at (whichBullet).inUse = false;
-	par_removeEmitter (whichBullet);
+		bullets.at (whichBullet).inUse = false;
+		par_removeEmitter (whichBullet);
+	}
+	catch (const std::out_of_range &oor)
+	{
+		log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Attempting to remove invalid bullet index\n"));
+
+		printf("Attempting to remove invalid bullet index\n");
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -88,10 +97,10 @@ void bul_initBulletArraySize ()
 	bullets.reserve (numStartingBullets);
 
 	for (int i = 0; i != numStartingBullets; i++)
-		{
-			tempBullet.inUse = false;
-			bullets.push_back (tempBullet);
-		}
+	{
+		tempBullet.inUse = false;
+		bullets.push_back (tempBullet);
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -105,21 +114,25 @@ void bul_doDisrupterDamage (int sourceDroid)
 	currentLevelName = lvl_getCurrentLevelName ();
 
 	if (-1 == sourceDroid)    // Player used disrupter
+	{
+		for (auto i = 0; i != shipLevel.at (currentLevelName).numDroids; i++)
 		{
-			for (auto i = 0; i != shipLevel.at (currentLevelName).numDroids; i++)
-				{
-					if ((shipLevel.at (currentLevelName).droid[i].visibleToPlayer) &&
-					    (shipLevel.at (currentLevelName).droid[i].currentMode != DROID_MODE_DEAD) &&
-					    (!dataBaseEntry[shipLevel.at (currentLevelName).droid[i].droidType].disrupterImmune))
-						{
-							gam_damageToDroid (i, DAMAGE_BULLET, sourceDroid, -1);
-						}
-				}
+			if ((shipLevel.at (currentLevelName).droid[i].visibleToPlayer) && (shipLevel.at (currentLevelName).droid[i].currentMode != DROID_MODE_DEAD) && (!dataBaseEntry[shipLevel.at (currentLevelName).droid[i].droidType].disrupterImmune))
+			{
+				gam_damageToDroid (i, DAMAGE_BULLET, sourceDroid, -1);
+			}
 		}
+	}
 	else  // Enemy used disrupter
+	{
+		for (auto i = 0; i != shipLevel.at (currentLevelName).numDroids; i++)
 		{
-
+			if ((shipLevel.at (currentLevelName).droid[i].visibleToPlayer) && (shipLevel.at (currentLevelName).droid[i].currentMode != DROID_MODE_DEAD) && (!dataBaseEntry[shipLevel.at (currentLevelName).droid[i].droidType].disrupterImmune))
+			{
+				gam_damageToDroid (i, DAMAGE_BULLET, sourceDroid, -1);
+			}
 		}
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -133,122 +146,123 @@ auto bul_setupNewBullet (int bulletSourceIndex, int arrayIndex) -> __bulletObjec
 	int            bulletType;
 
 	if (bulletSourceIndex == -1)        // Bullet came from player
-		{
-			tempBullet.worldPos.x = playerDroid.worldPos.x;     // Physics coords
-			tempBullet.worldPos.y = playerDroid.worldPos.y;
-			tempBullet.velocity   = playerDroid.velocity;
+	{
+		tempBullet.worldPos.x = playerDroid.worldPos.x;     // Physics coords
+		tempBullet.worldPos.y = playerDroid.worldPos.y;
+		tempBullet.velocity   = playerDroid.velocity;
 
-			tempPos = playerDroid.velocity;
-			tempPos.Normalize ();
-			tempPos.operator*= (12.0f);
-			tempBullet.worldPos += tempPos;
+		tempPos = playerDroid.velocity;
+		tempPos.Normalize ();
+		tempPos.operator*= (12.0f);
+		tempBullet.worldPos += tempPos;
 
-			tempBullet.velocity.operator*= (2.0f);
-			tempBullet.destPos = tempBullet.worldPos + tempBullet.velocity;
+		tempBullet.velocity.operator*= (2.0f);
+		tempBullet.destPos = tempBullet.worldPos + tempBullet.velocity;
 
-			bulletType = dataBaseEntry[playerDroid.droidType].bulletType;
-		}
+		bulletType = dataBaseEntry[playerDroid.droidType].bulletType;
+	}
 	else                                // Bullet came from enemy droid - index on level used
-		{
-			tempBullet.worldPos = shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].worldPos;
-			tempBullet.destPos  = playerDroid.worldPos;
-			tempBullet.velocity = tempBullet.destPos - tempBullet.worldPos;
-			tempBullet.velocity.Normalize ();
-			tempBullet.velocity *= bulletMoveSpeed;
+	{
+		tempBullet.worldPos = shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].worldPos;
+		tempBullet.destPos  = playerDroid.worldPos;
+		tempBullet.velocity = tempBullet.destPos - tempBullet.worldPos;
+		tempBullet.velocity.Normalize ();
+		tempBullet.velocity *= bulletMoveSpeed;
 
-			tempPos = tempBullet.velocity;
-			tempPos.Normalize ();
-			tempPos.operator*= (24.0f);
-			tempBullet.worldPos += tempPos;
+		tempPos = tempBullet.velocity;
+		tempPos.Normalize ();
+		tempPos.operator*= (24.0f);
+		tempBullet.worldPos += tempPos;
 
-			bulletType = dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].droidType].bulletType;
-		}
+		bulletType = dataBaseEntry[shipLevel.at (lvl_getCurrentLevelName ()).droid[bulletSourceIndex].droidType].bulletType;
+	}
 
 // TODO Test
 // bulletType = BULLET_TYPE_DISRUPTER;
 
 	if (bulletType != BULLET_TYPE_DISRUPTER)
+	{
+		tempBullet.angle = bul_getBulletAngle (tempBullet.worldPos, tempBullet.destPos);
+
+		tempBullet.bodyDef.type = b2_dynamicBody;
+		tempBullet.bodyDef.position.Set (tempBullet.worldPos.x / pixelsPerMeter, tempBullet.worldPos.y / pixelsPerMeter);
+		tempBullet.bodyDef.angle  = 0;
+		tempBullet.bodyDef.bullet = true;
+		tempBullet.body           = sys_getPhysicsWorld ()->CreateBody (&tempBullet.bodyDef);
+		if (tempBullet.body == nullptr)
 		{
-			tempBullet.angle = bul_getBulletAngle (tempBullet.worldPos, tempBullet.destPos);
-
-			tempBullet.bodyDef.type = b2_dynamicBody;
-			tempBullet.bodyDef.position.Set (tempBullet.worldPos.x / pixelsPerMeter, tempBullet.worldPos.y / pixelsPerMeter);
-			tempBullet.bodyDef.angle  = 0;
-			tempBullet.bodyDef.bullet = true;
-			tempBullet.body           = sys_getPhysicsWorld ()->CreateBody (&tempBullet.bodyDef);
-			if (tempBullet.body == nullptr)
-				{
-					tempBullet.inUse = false;
-					return tempBullet;
-				}
-
-			tempBullet.userData             = new _userData;
-			if (bulletSourceIndex == -1)
-				tempBullet.userData->userType = PHYSIC_TYPE_BULLET_PLAYER;
-			else
-				tempBullet.userData->userType = PHYSIC_TYPE_BULLET_ENEMY;
-
-			tempBullet.userData->dataValue = arrayIndex;
-			tempBullet.body->SetUserData (tempBullet.userData);
+			tempBullet.inUse = false;
+			return tempBullet;
 		}
 
+		tempBullet.userData               = new _userData;
+		if (bulletSourceIndex == -1)
+			tempBullet.userData->userType = PHYSIC_TYPE_BULLET_PLAYER;
+		else
+			tempBullet.userData->userType = PHYSIC_TYPE_BULLET_ENEMY;
+
+		tempBullet.userData->dataValue = arrayIndex;
+		tempBullet.body->SetUserData (tempBullet.userData);
+	}
+
 	switch (bulletType)
-		{
-			case BULLET_TYPE_NORMAL: // small double laser
-				tempBullet.shape.m_radius = (float) (sprites.at ("bullet_001").frameHeight * 0.5f) / pixelsPerMeter;
+	{
+		case BULLET_TYPE_NORMAL: // small double laser
+			tempBullet.shape.m_radius = (float) (sprites.at ("bullet_001").frameHeight * 0.5f) / pixelsPerMeter;
 			tempBullet.shape.m_p.Set (0, 0);
 			tempBullet.fixtureDef.shape = &tempBullet.shape;
 			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "laser");
 			break;
 
-			case BULLET_TYPE_SINGLE: // Large single laser
-				tempBullet.boxShape.SetAsBox ((sprites.at ("bullet_476").frameWidth / 2) / pixelsPerMeter, (sprites.at ("bullet_476").frameHeight / 2) / pixelsPerMeter);
+		case BULLET_TYPE_SINGLE: // Large single laser
+			tempBullet.boxShape.SetAsBox ((sprites.at ("bullet_476").frameWidth / 2) / pixelsPerMeter, (sprites.at ("bullet_476").frameHeight / 2) / pixelsPerMeter);
 			tempBullet.fixtureDef.shape = &tempBullet.boxShape;
 			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "laser");
 			break;
 
-			case BULLET_TYPE_DOUBLE: // Large double laser
-				tempBullet.shape.m_radius = (float) (sprites.at ("bullet_821").frameHeight * 0.5f) / pixelsPerMeter;
+		case BULLET_TYPE_DOUBLE: // Large double laser
+			tempBullet.shape.m_radius = (float) (sprites.at ("bullet_821").frameHeight * 0.5f) / pixelsPerMeter;
 			tempBullet.shape.m_p.Set (0, 0);
 			tempBullet.fixtureDef.shape = &tempBullet.shape;
 			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "laser");
 			break;
 
-			case BULLET_TYPE_DISRUPTER: // Disrupter
-				tempBullet.disrupterFadeAmount = disrupterFadeAmount / (float) numDisrupterFrames;
-			tempBullet.disrupterFade         = disrupterFadeAmount;
+		case BULLET_TYPE_DISRUPTER: // Disrupter
+			tempBullet.disrupterFadeAmount = disrupterFadeAmount / (float) numDisrupterFrames;
+			tempBullet.disrupterFade       = disrupterFadeAmount;
 			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "disrupter");
+			bul_doDisrupterDamage (bulletSourceIndex);
 			break;
 
-			default:
-				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used."));
+		default:
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used."));
 			break;
-		}
+	}
 
 	if (bulletType != BULLET_TYPE_DISRUPTER)
+	{
+
+		if (bulletSourceIndex == -1)
 		{
-
-			if (bulletSourceIndex == -1)
-				{
-					tempBullet.fixtureDef.filter.categoryBits = PHYSIC_TYPE_BULLET_PLAYER;
-					tempBullet.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
-				}
-			else
-				{
-					tempBullet.fixtureDef.filter.categoryBits = PHYSIC_TYPE_BULLET_ENEMY;
-					tempBullet.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
-				}
-
-			tempBullet.fixtureDef.density     = bulletDensity;
-			tempBullet.fixtureDef.friction    = 0.3f;
-			tempBullet.fixtureDef.restitution = 0.0f;
-			tempBullet.body->CreateFixture (&tempBullet.fixtureDef);
-
-			if (dataBaseEntry[playerDroid.droidType].bulletType == BULLET_TYPE_SINGLE)
-				tempBullet.body->SetTransform (tempBullet.body->GetPosition (), tempBullet.angle);
-
-			par_addEmitter (tempBullet.worldPos, PARTICLE_TYPE_TRAIL, arrayIndex);
+			tempBullet.fixtureDef.filter.categoryBits = PHYSIC_TYPE_BULLET_PLAYER;
+			tempBullet.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
 		}
+		else
+		{
+			tempBullet.fixtureDef.filter.categoryBits = PHYSIC_TYPE_BULLET_ENEMY;
+			tempBullet.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
+		}
+
+		tempBullet.fixtureDef.density     = bulletDensity;
+		tempBullet.fixtureDef.friction    = 0.3f;
+		tempBullet.fixtureDef.restitution = 0.0f;
+		tempBullet.body->CreateFixture (&tempBullet.fixtureDef);
+
+		if (dataBaseEntry[playerDroid.droidType].bulletType == BULLET_TYPE_SINGLE)
+			tempBullet.body->SetTransform (tempBullet.body->GetPosition (), tempBullet.angle);
+
+		par_addEmitter (tempBullet.worldPos, PARTICLE_TYPE_TRAIL, arrayIndex);
+	}
 
 	tempBullet.currentFrame     = 0;
 	tempBullet.frameAnimCounter = 1.0f;
@@ -268,13 +282,13 @@ void bul_createNewBullet (int bulletSourceIndex)
 	__bulletObject tempBullet;
 
 	for (int i = 0; i != bullets.size (); i++)
+	{
+		if (!bullets.at (i).inUse)
 		{
-			if (!bullets.at (i).inUse)
-				{
-					bullets.at (i) = bul_setupNewBullet (bulletSourceIndex, i);
-					return;
-				}
+			bullets.at (i) = bul_setupNewBullet (bulletSourceIndex, i);
+			return;
 		}
+	}
 	bullets.push_back (bul_setupNewBullet (bulletSourceIndex, bullets.size () - 1));
 }
 
@@ -286,28 +300,28 @@ void bul_animateBullets (__bulletObject &bulletItr, double tickTime)
 {
 	bulletItr.frameAnimCounter -= bulletAnimSpeed * (float) tickTime;
 	if (bulletItr.frameAnimCounter < 0.0f)
+	{
+		bulletItr.frameAnimCounter = 1.0f;
+		bulletItr.currentFrame++;
+		if (bulletItr.type != BULLET_TYPE_DISRUPTER)
 		{
-			bulletItr.frameAnimCounter = 1.0f;
-			bulletItr.currentFrame++;
-			if (bulletItr.type != BULLET_TYPE_DISRUPTER)
-				{
-					if (bulletItr.currentFrame == sprites.at ("bullet_001").numFrames)
-						bulletItr.currentFrame = 0;
-				}
-			else
-				{
-					bulletItr.disrupterFade -= bulletItr.disrupterFadeAmount;
-					if (bulletItr.disrupterFade < 0.0f)
-						bulletItr.disrupterFade = 0.0f;
-
-					if (bulletItr.currentFrame > numDisrupterFrames)
-						{
-							bulletItr.currentFrame  = 0;
-							bulletItr.inUse         = false;
-							bulletItr.disrupterFade = 0.0f;
-						}
-				}
+			if (bulletItr.currentFrame == sprites.at ("bullet_001").numFrames)
+				bulletItr.currentFrame = 0;
 		}
+		else
+		{
+			bulletItr.disrupterFade -= bulletItr.disrupterFadeAmount;
+			if (bulletItr.disrupterFade < 0.0f)
+				bulletItr.disrupterFade = 0.0f;
+
+			if (bulletItr.currentFrame > numDisrupterFrames)
+			{
+				bulletItr.currentFrame  = 0;
+				bulletItr.inUse         = false;
+				bulletItr.disrupterFade = 0.0f;
+			}
+		}
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -317,21 +331,21 @@ void bul_applyPhysics (double tickTime)
 //---------------------------------------------------------------------------------------------------------------
 {
 	for (auto &bulletItr : bullets)
-		{
+	{
 //			if ((bulletItr.body != nullptr) && (bulletItr.inUse))
-			if (bulletItr.inUse)
-				{
-					if (bulletItr.type != BULLET_TYPE_DISRUPTER)
-						{
-							bulletItr.velocity.Normalize ();
-							bulletItr.velocity.operator*= (bulletMoveSpeed);
-							bulletItr.body->ApplyLinearImpulseToCenter (bulletItr.velocity, true);
+		if (bulletItr.inUse)
+		{
+			if (bulletItr.type != BULLET_TYPE_DISRUPTER)
+			{
+				bulletItr.velocity.Normalize ();
+				bulletItr.velocity.operator*= (bulletMoveSpeed);
+				bulletItr.body->ApplyLinearImpulseToCenter (bulletItr.velocity, true);
 
-							bulletItr.worldPos = bulletItr.body->GetPosition ();
-						}
-					bul_animateBullets (bulletItr, tickTime);
-				}
+				bulletItr.worldPos = bulletItr.body->GetPosition ();
+			}
+			bul_animateBullets (bulletItr, tickTime);
 		}
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -340,9 +354,7 @@ void bul_applyPhysics (double tickTime)
 void bul_renderDisrupter (__bulletObject whichBullet)
 //---------------------------------------------------------------------------------------------------------------
 {
-	al_draw_filled_rectangle (0, 0, sys_getLogicalWidth (), sys_getLogicalHeight (),
-	                          al_map_rgba_f (whichBullet.disrupterFade, whichBullet.disrupterFade,
-	                                         whichBullet.disrupterFade, whichBullet.disrupterFade));
+	al_draw_filled_rectangle (0, 0, sys_getLogicalWidth (), sys_getLogicalHeight (), al_map_rgba_f (whichBullet.disrupterFade, whichBullet.disrupterFade, whichBullet.disrupterFade, whichBullet.disrupterFade));
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -354,26 +366,26 @@ void bul_renderBullets ()
 	b2Vec2 tempPosition;
 
 	for (auto bulletItr : bullets)
+	{
+		if (bulletItr.type != BULLET_TYPE_DISRUPTER)
 		{
-			if (bulletItr.type != BULLET_TYPE_DISRUPTER)
-				{
-					if ((bulletItr.body != nullptr) && (bulletItr.inUse))
-						{
-							tempPosition = bulletItr.body->GetPosition ();      // Get position in meters
-							tempPosition.x *= pixelsPerMeter;                   // Change to pixels
-							tempPosition.y *= pixelsPerMeter;
+			if ((bulletItr.body != nullptr) && (bulletItr.inUse))
+			{
+				tempPosition = bulletItr.body->GetPosition ();      // Get position in meters
+				tempPosition.x *= pixelsPerMeter;                   // Change to pixels
+				tempPosition.y *= pixelsPerMeter;
 
-							tempPosition = sys_worldToScreen (tempPosition, SPRITE_SIZE);
+				tempPosition = sys_worldToScreen (tempPosition, SPRITE_SIZE);
 
-							io_renderRotatedSpriteFrame (playerDroid.bulletName, bulletItr.currentFrame, tempPosition.x, tempPosition.y, bulletItr.angle);
-						}
-				}
-			else
-				{   // Draw disrupter effect
-					if (bulletItr.inUse)
-						bul_renderDisrupter (bulletItr);
-				}
+				io_renderRotatedSpriteFrame (playerDroid.bulletName, bulletItr.currentFrame, tempPosition.x, tempPosition.y, bulletItr.angle);
+			}
 		}
+		else
+		{   // Draw disrupter effect
+			if (bulletItr.inUse)
+				bul_renderDisrupter (bulletItr);
+		}
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -383,25 +395,25 @@ std::string bul_getBulletName (int droidType)
 //---------------------------------------------------------------------------------------------------------------
 {
 	switch (dataBaseEntry[droidType].bulletType)
-		{
-			case BULLET_TYPE_NORMAL: // small double laser
-				return "bullet_001";
+	{
+		case BULLET_TYPE_NORMAL: // small double laser
+			return "bullet_001";
 			break;
 
-			case BULLET_TYPE_SINGLE: // Large single laser
-				return "bullet_476";
+		case BULLET_TYPE_SINGLE: // Large single laser
+			return "bullet_476";
 			break;
 
-			case BULLET_TYPE_DOUBLE: // Large double laser
-				return "bullet_821";
+		case BULLET_TYPE_DOUBLE: // Large double laser
+			return "bullet_821";
 			break;
 
-			case BULLET_TYPE_DISRUPTER: // Disrupter
-				break;
-
-			default:
-				log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used in bul_getBulletName."));
+		case BULLET_TYPE_DISRUPTER: // Disrupter
 			break;
-		}
+
+		default:
+			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Invalid bullet type used in bul_getBulletName."));
+			break;
+	}
 	return "Never get here";
 }

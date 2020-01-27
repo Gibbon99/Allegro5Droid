@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-27-01-2020	16:11:24
+27-01-2020	16:40:00
 Logfile started...
 INFO | Packfile: Supported archive types.
 INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
@@ -309,12 +309,12 @@ INFO | gui.sc (1364, 92) : WARN : Float value truncated in implicit conversion t
 INFO | gui.sc (1373, 110) : WARN : Float value truncated in implicit conversion to integer
 INFO | gui.sc (1373, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ 1297783232 ]
-INFO | Func ID for [ void script_initGUI() ] - [ 1297779520 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 1297759920 ]
-INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 1297758912 ]
-INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 1297757840 ]
-INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ 1297756672 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 554559504 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 554555792 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 554536192 ]
+INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 554535184 ]
+INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 554534112 ]
+INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ 554532944 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -449,3 +449,84 @@ DEBUG | Child index set to [ 22 ]
 DEBUG | Loaded [ retro_turquoise.bmp ]
 DEBUG | Loaded [ retro_dark.bmp ]
 DEBUG | Clearing out emitters
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+ERROR | Attempting to remove invalid bullet index
+
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Attempting to remove invalid bullet index
+
+ERROR | Attempting to remove invalid bullet index
+
+DEBUG | Put new emitter request into queue - bullet [ -1 ]
+ERROR | Attempting to remove invalid bullet index
+
+DEBUG | Adding new emitter - type [ 0 ]
+DEBUG | Done initEmitter - bullet [ -1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ -1 ]
+ERROR | Attempting to remove invalid bullet index
+
+DEBUG | Adding new emitter - type [ 0 ]
+DEBUG | Done initEmitter - bullet [ -1 ]

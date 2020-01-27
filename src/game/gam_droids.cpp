@@ -324,11 +324,6 @@ void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int 
 			case DAMAGE_BULLET:
 				if (-1 == sourceDroid) // Player bullet
 					{
-						if (shipLevel.at (tempCurrentLevel).droid[targetDroid].currentMode == DROID_MODE_EXPLODING)
-							{
-								return;
-							}
-
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].targetIndex       = sourceDroid;    // Set player as the target
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotByPlayer  = true;
 						shipLevel.at (tempCurrentLevel).droid[targetDroid].beenShotCountdown = droidBeenShotValue;
