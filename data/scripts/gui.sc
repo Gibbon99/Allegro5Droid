@@ -75,7 +75,7 @@ void as_guiHandleTerminalAction (string &in objectID)
 	{
 		if (currentObjectSelected == as_guiFindIndex (GUI_OBJECT_BUTTON, "terminalLogoffButton"))
 		{
-			sys_changeCurrentMode (MODE_GAME, true);
+			sys_changeCurrentMode (MODE_GAME_RETURN, true);
 			hud_setText (false, "hudMoving");
 			return;
 		}

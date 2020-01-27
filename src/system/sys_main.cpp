@@ -153,7 +153,6 @@ void sys_changeMode (int newMode, bool fade)
 //----------------------------------------------------------------------------------------------------------------------
 {
 	currentMode = newMode;
-	printf ("Changing mode\n");
 
 	if (fade)
 		{

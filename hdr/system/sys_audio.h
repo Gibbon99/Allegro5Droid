@@ -23,3 +23,6 @@ void snd_stopSound (const std::string &key);
 
 // Return true if a sound is playing
 bool snd_isPlaying (const std::string &key);
+
+// Stop all audio playing
+void snd_stopAllPlaying();

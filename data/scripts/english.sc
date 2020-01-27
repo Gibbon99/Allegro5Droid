@@ -135,5 +135,7 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("colorYellow", "Yellow");
 	gui_addKeyAndText ("tileTypeFuture", "Future");
 	gui_addKeyAndText ("tileTypeRetro", "Retro");
+
+	gui_addKeyAndText ("hudPaused", "Paused");
 }
 

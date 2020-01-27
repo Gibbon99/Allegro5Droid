@@ -253,7 +253,7 @@ void sys_displayScreen (double interpolation)
 			break;
 
 			case MODE_GAME:
-
+			case MODE_GAME_PAUSED:
 				if (1 == renderBackdrop)
 					sys_drawBitmap ("backdrop", 0, 0, RENDER_FULLSCREEN, 1.0, 1.0);
 

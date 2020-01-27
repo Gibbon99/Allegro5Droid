@@ -9,6 +9,8 @@ DONE - Darken level when all droids dead
 DONE - Fix Audio setting checkbox in GUI and config file
 DONE - Select tile color and style from GUI - write to config file
 DONE - GUI Window checkboxes - all ticked
+DONE - Level background sound not restarting after terminal
+DONE - Draw terminal level maps as vectors / shapes and scale to fit screen - scroll sideways ?
 
 Do GUI options
 DO GUI Popup box for restart and 'Sure to exit'
@@ -17,8 +19,9 @@ Collisions for droids to ignore
 Particles still around on exploding droids sometimes
 Doors getting stuck open
 transferRender - stop drawing on -1 for numDroidTokens
-Draw terminal level maps as vectors / shapes and scale to fit screen - scroll sideways ?
-Level background sound not restarting after terminal
+Disruptor not damaging other droids?
+Start on Random level
+
 
 Change working directory
 --------------------------

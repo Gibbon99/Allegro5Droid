@@ -20,6 +20,7 @@
 #include <hdr/gui/gui_slider.h>
 #include <hdr/io/io_resources.h>
 #include <hdr/io/io_resourceImage.h>
+#include <hdr/system/sys_eventsEngine.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -85,9 +86,18 @@ void sys_gameTickRun (double tickTime)
 		case MODE_PRE_GAME:
 			sys_loadTileBitmap(gui_hostGetSliderValue("optionsGraphicsTileType"), gui_hostGetSliderValue("optionsGraphicsTileColor"));
 
-			lvl_changeToLevel ("Staterooms", 0);
+			lvl_changeToLevel ("Staterooms", 0);    // TODO - Random level
 			gam_startNewGame();
 			sys_changeMode (MODE_GAME, false);
+			break;
+
+		case MODE_GAME_RETURN:
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, currentAlertLevelSoundName);
+			sys_changeMode (MODE_GAME, false);
+			break;
+
+		case MODE_GAME_PAUSED:
+			io_processKeyActions();
 			break;
 
 		case MODE_GAME:
@@ -105,10 +115,6 @@ void sys_gameTickRun (double tickTime)
 			par_processEmitterQueue ();
 			par_animateParticles (tickTime);
 			sys_processPhysics (tickTime);
-
-//			if (false == snd_isPlaying ("greenAlert"))
-//				printf("Sound [ %s ] is NOT playing.\n", "greenAlert");
-
 			break;
 
 		case MODE_LIFT_VIEW:
