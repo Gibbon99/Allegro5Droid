@@ -7,7 +7,7 @@
 #include "system/sys_main.h"
 
 // Draw the current level onto the entire screen
-void gam_showCurrentLevel (float ratio);
+void gui_showCurrentLevel ();
 
 // Get the deckview bitmap
 PARA_BITMAP *gam_getDeckViewBitmap();

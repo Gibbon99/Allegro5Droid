@@ -28,6 +28,7 @@ ALLEGRO_TIMER   *fadeTimer;
 ALLEGRO_TIMER   *splashTimer;
 ALLEGRO_DISPLAY *display;
 ALLEGRO_BITMAP  *windowIcon;
+ALLEGRO_TIMER   *deckviewLocationTimer;
 
 bool initResourcesAllDone = false;
 

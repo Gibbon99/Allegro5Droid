@@ -1148,14 +1148,14 @@ void as_guiSetupTutorial ()
 void as_setupTerminalDeckviewScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	float buttonStartY = 80; //logicalHeight - (buttonHeight * 2);
+	float buttonStartY = 90; //logicalHeight - (buttonHeight * 2);
 
 	as_guiCreateNewScreen ("terminalDeckviewScreen");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "deckviewCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "deckviewCancelButton", "terminalDeckviewScreen");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "deckviewCancelButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
-	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "deckviewCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "deckviewCancelButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "deckviewCancelButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "deckviewCancelButton", true);
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "deckviewCancelButton", "gui");
@@ -1167,14 +1167,14 @@ void as_setupTerminalDeckviewScreen ()
 void as_setupTerminalShipviewScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	float buttonStartY = 80; //logicalHeight - (buttonHeight * 2);
+	float buttonStartY = 90; //logicalHeight - (buttonHeight * 2);
 
 	as_guiCreateNewScreen ("terminalShipviewScreen");
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "shipviewCancelButton");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "shipviewCancelButton", "terminalShipviewScreen");
 	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "shipviewCancelButton", GUI_COORD_TYPE_PERCENT, 50, buttonStartY, 65, buttonHeight);
-	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "shipviewCancelButton", GUI_LABEL_CENTER, gui_getString ("cancelButton"));
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "shipviewCancelButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "shipviewCancelButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "shipviewCancelButton", true);
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "shipviewCancelButton", "gui");

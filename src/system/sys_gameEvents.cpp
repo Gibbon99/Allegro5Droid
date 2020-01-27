@@ -225,6 +225,9 @@ void evt_handleEvents ()
 				if (splashTimer == event.timer.source)
 					tim_changeToGUI (&event.timer);
 
+				if (deckviewLocationTimer == event.timer.source)
+					tim_animateLocationIcon (&event.timer);
+
 				break;
 		}
 	}

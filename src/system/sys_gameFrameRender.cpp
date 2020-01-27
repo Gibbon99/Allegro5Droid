@@ -57,10 +57,6 @@ void sys_screenFade ()
 						PARA_presentFrame (display, trn_getTransferScreen ());
 					break;
 
-					case MODE_GUI_TERMINAL_DECKVIEW:
-						PARA_presentFrame (display, gam_getDeckViewBitmap ());
-					break;
-
 					default:
 						PARA_presentFrame (display, backingBitmap);
 					break;
@@ -235,11 +231,10 @@ void sys_displayScreen (double interpolation)
 			case MODE_PLAY_TRANSFER_GAME:
 				trn_renderTransferGame ();
 			hud_renderHUD ();
-
 			break;
 
 			case MODE_GUI_TERMINAL_DECKVIEW:
-				gam_showCurrentLevel (deckViewRatio);
+				gui_showCurrentLevel ();
 			hud_renderHUD ();
 			gui_drawGUI ();
 			break;

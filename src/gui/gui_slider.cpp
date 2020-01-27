@@ -3,7 +3,6 @@
 #include <hdr/io/io_resourceLevel.h>
 #include "hdr/gui/gui_slider.h"
 
-
 //-----------------------------------------------------------------------------
 //
 // Get the value of the current slot in a slider

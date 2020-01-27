@@ -5,6 +5,7 @@
 #include "hdr/system/sys_timerFunctions.h"
 
 int splashTimeout;
+bool locationIconVisible = true;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
@@ -50,6 +51,16 @@ bool tim_initAllTimers ()
 			return false;
 		}
 	al_register_event_source (eventQueue, al_get_timer_event_source (splashTimer));
+
+	deckviewLocationTimer = al_create_timer(0.5);
+	if (nullptr == deckviewLocationTimer)
+	{
+		quitProgram = true;
+		al_show_native_message_box (nullptr, "Allegro Error", "Unable to start Timers. Exiting", "Could not start timer for splash countdown.", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+		return false;
+	}
+	al_register_event_source (eventQueue, al_get_timer_event_source (deckviewLocationTimer));
+	al_start_timer (deckviewLocationTimer);
 
 	return true;
 }
@@ -111,4 +122,22 @@ void tim_changeToGUI(ALLEGRO_TIMER_EVENT *timer_event)
 	al_stop_timer(splashTimer);
 	al_destroy_timer(splashTimer);
 	sys_changeMode (MODE_GUI, true);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Function to animate the deckview location icon
+void tim_animateLocationIcon(ALLEGRO_TIMER_EVENT *time_event)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	locationIconVisible = !locationIconVisible;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Return the value of the Icon visible flag
+bool tim_getIconState()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	return locationIconVisible;
 }

@@ -6,6 +6,7 @@ extern ALLEGRO_DISPLAY *display;
 extern ALLEGRO_TIMER   *timingTimer;
 extern ALLEGRO_TIMER   *fadeTimer;
 extern ALLEGRO_TIMER   *splashTimer;
+extern ALLEGRO_TIMER   *deckviewLocationTimer;
 
 extern bool initResourcesAllDone;
 extern int  fullScreen; // Set for checkbox in GUI script
