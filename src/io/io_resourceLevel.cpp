@@ -34,7 +34,7 @@ void lvl_setCurrentLevelName (std::string newName)
 					return;
 				}
 		}
-	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Attemping to chenge to unknown level [ %s ]", newName.c_str ()));
+	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Attempting to change to unknown level [ %s ]", newName.c_str ()));
 }
 
 //---------------------------------------------------------
@@ -403,4 +403,24 @@ void lvl_changeToLevel (const std::string &newLevelName, int whichLift)
 	gam_drawAllTiles ();
 	gam_processScore (0.0f);
 	evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, currentAlertLevelSoundName);
+}
+
+//---------------------------------------------------------
+//
+// Get the starting level for a new game
+std::string lvl_getStartingLevel()
+//---------------------------------------------------------
+{
+	std::vector<std::string>    startingLevelNames;
+	int randomLevel = 0;
+
+	startingLevelNames.emplace_back("Staterooms");
+	startingLevelNames.emplace_back("Stores");
+	startingLevelNames.emplace_back("Research");
+	startingLevelNames.emplace_back("Repairs");
+	startingLevelNames.emplace_back("Quarters");
+
+	randomLevel = sys_getCappedRandomNum(startingLevelNames.size() - 1);
+
+	return startingLevelNames.at(randomLevel);
 }

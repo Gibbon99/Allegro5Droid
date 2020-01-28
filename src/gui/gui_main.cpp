@@ -1118,8 +1118,6 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 	int selectedSlider, selectedKeyCode;
 	b2Vec2 mouseLocation;
 
-//	indexCount = 0;
-
 	selectedSlider = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
 //	selectedKeyCode = guiScreens[currentGUIScreen].objectIDIndex[guiScreens[currentGUIScreen].selectedObject];
 
@@ -1308,7 +1306,6 @@ void gui_setImageKeyName (const std::string objectID, const std::string keyName)
 			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("ERROR: Couldn't find GUI object index [ %s ]", objectID.c_str ()));
 			return;
 		}
-
 	strcpy (guiImages[objectIndex].__GUI_element.image.keyName, keyName.c_str ());
 }
 
@@ -1321,6 +1318,7 @@ void gui_addNewElement (const std::string objectID, const std::string newLabel, 
 #ifdef DEBUG_GUI_SETUP
 	log_logMessage(LOG_LEVEL_DEBUG, sys_getString("Setting image keyName [ %s ] for - [ %s ]", keyName.c_str(), objectID.c_str()));
 #endif // DEBUG_GUI_SETUP
+
 	_sliderElement tmpElement;
 
 	int objectIndex = 0;
@@ -1338,6 +1336,4 @@ void gui_addNewElement (const std::string objectID, const std::string newLabel, 
 	tmpElement.type = type;
 
 	guiSliders[objectIndex].element.push_back (tmpElement);
-
-	printf("Slider - add object [ %s ] label [ %s ] Value [ %s ]\n", objectID.c_str(), newLabel.c_str(), newValue.c_str());
 }

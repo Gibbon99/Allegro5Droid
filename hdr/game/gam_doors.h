@@ -23,6 +23,13 @@ typedef struct
 	float          frameDelay;                // speed to animate them at
 	int            numberUsing;
 	int            direction;
+
+	bool inUse;
+	b2Vec2         topLeft;
+	b2Vec3         topRight;
+	b2Vec2         botLeft;
+	b2Vec2         botRight;
+
 	b2Vec2         worldPosition  = {0, 0};
 	b2Vec2         renderPosition = {0, 0};
 	b2BodyDef      bodyDef;                      // Used for physics and collisions
@@ -66,7 +73,13 @@ void gam_animateDoor (int whichDoor, int state);
 void gam_renderDoorFrames ();
 
 // Clear out memory for door triggers
-void gam_clearAllDoors();
+void gam_clearAllDoors ();
 
 // Change the collision filters for a door
 void gam_changeDoorFilters (int doorState, int whichDoor);
+
+// Process all the doors that are currently inUse
+void gam_doorProcessActions();
+
+// Check door trigger areas against sprite positions
+void gam_doorCheckTriggerAreas();

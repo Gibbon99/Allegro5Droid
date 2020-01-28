@@ -21,6 +21,7 @@
 #include <hdr/io/io_resources.h>
 #include <hdr/io/io_resourceImage.h>
 #include <hdr/system/sys_eventsEngine.h>
+#include <hdr/game/gam_doors.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -86,7 +87,7 @@ void sys_gameTickRun (double tickTime)
 		case MODE_PRE_GAME:
 			sys_loadTileBitmap(gui_hostGetSliderValue("optionsGraphicsTileType"), gui_hostGetSliderValue("optionsGraphicsTileColor"));
 
-			lvl_changeToLevel ("Staterooms", 0);    // TODO - Random level
+			lvl_changeToLevel (lvl_getStartingLevel(), 0);    // TODO - Random level
 			gam_startNewGame();
 			sys_changeMode (MODE_GAME, false);
 			break;
@@ -115,6 +116,8 @@ void sys_gameTickRun (double tickTime)
 			par_processEmitterQueue ();
 			par_animateParticles (tickTime);
 			sys_processPhysics (tickTime);
+			gam_doorProcessActions();
+			gam_doorCheckTriggerAreas();
 			break;
 
 		case MODE_LIFT_VIEW:

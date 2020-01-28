@@ -190,3 +190,6 @@ void lvl_changeToLevel (const std::string &newLevelName, int whichLift);
 
 // Return the iterator for a level name
 std::unordered_map<std::string, _levelStruct>::const_iterator lvl_getLevelIndex (const std::string levelName);
+
+// Get the starting level for a new game
+std::string lvl_getStartingLevel();

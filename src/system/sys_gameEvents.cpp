@@ -78,6 +78,7 @@ auto evt_processGameEventQueue () -> void *
 
 					switch (gameLoopEvent.game.eventAction)
 					{
+						/*
 						case GAME_EVENT_DOOR:
 							gam_handleDoorTrigger (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
 							break;
@@ -85,7 +86,7 @@ auto evt_processGameEventQueue () -> void *
 						case GAME_EVENT_DOOR_ANIMATE:
 							gam_animateDoor (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
 							break;
-
+*/
 						case GAME_EVENT_HEALING_START:
 							gam_startHealing (gameLoopEvent.game.eventData1, gameLoopEvent.game.eventData2);
 							break;

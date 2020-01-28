@@ -62,7 +62,7 @@ void contactListener::BeginContact (b2Contact *contact)
 							//
 							// Damage to player from enemy bullet
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
-							printf ("Damage to player\n");
+							printf ("Damage to player\n");  // TODO - Remove
 
 							return;
 						}
@@ -71,17 +71,6 @@ void contactListener::BeginContact (b2Contact *contact)
 						{
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, 0, bodyUserData_B->dataValue, bodyUserData_A->dataValue, {0, 0});
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_A->dataValue, {0, 0});
-							return;
-						}
-					break;
-				}
-
-			case PHYSIC_TYPE_DOOR_OPEN:
-			case PHYSIC_TYPE_DOOR_CLOSED:
-				{
-					if ((bodyUserData_B->userType == PHYSIC_TYPE_PLAYER) || (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY))
-						{
-							evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_DOOR, bodyUserData_A->dataValue, GAME_DOOR_STATE_ENTER, "");
 							return;
 						}
 					break;
@@ -209,17 +198,6 @@ void contactListener::BeginContact (b2Contact *contact)
 						{
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, 0, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
 							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
-							return;
-						}
-					break;
-				}
-
-			case PHYSIC_TYPE_DOOR_OPEN:
-			case PHYSIC_TYPE_DOOR_CLOSED:
-				{
-					if ((bodyUserData_A->userType == PHYSIC_TYPE_PLAYER) || (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY))
-						{
-							evt_pushEvent (0, PARA_EVENT_GAME, GAME_EVENT_DOOR, bodyUserData_B->dataValue, GAME_DOOR_STATE_ENTER, "");
 							return;
 						}
 					break;

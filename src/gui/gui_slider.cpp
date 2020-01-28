@@ -77,7 +77,7 @@ void gui_drawSlider(int whichSlider, bool hasFocus)
 
 	float sliderSelectorRadius = 5.0f;
 
-	float textStartX, textStartY;
+//	float textStartX, textStartY;
 
 	if (guiSliders.empty ())
 		return;
