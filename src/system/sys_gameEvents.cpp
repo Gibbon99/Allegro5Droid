@@ -188,6 +188,9 @@ void evt_handleEvents ()
 				if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 					quitProgram = true;
 
+				if (event.keyboard.keycode == ALLEGRO_KEY_D)
+					gam_debugDoors();
+
 				if (event.keyboard.keycode == keyBinding[gamePause].keyValue)
 					keyBinding[gamePause].currentlyPressed = true;
 

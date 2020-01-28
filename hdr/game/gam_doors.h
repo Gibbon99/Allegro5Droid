@@ -63,12 +63,6 @@ extern std::vector<_doorTrigger> doorBulletSensor;
 // Find the doors for this level and prepare a sensor objecty
 void gam_doorTriggerSetup (const std::string levelName);
 
-// Handle door sensor trigger
-void gam_handleDoorTrigger (int whichDoor, int state);
-
-// Process the animation of a door
-void gam_animateDoor (int whichDoor, int state);
-
 // Render current door frames onto map
 void gam_renderDoorFrames ();
 
@@ -83,3 +77,6 @@ void gam_doorProcessActions();
 
 // Check door trigger areas against sprite positions
 void gam_doorCheckTriggerAreas();
+
+// Debug door states and current frame
+void gam_debugDoors();

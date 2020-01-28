@@ -14,44 +14,45 @@ float doorAnimSpeed = 1.0f;         // From script
 // ----------------------------------------------------------------------------
 //
 // Check door trigger areas against sprite positions
-void gam_doorCheckTriggerAreas()
+void gam_doorCheckTriggerAreas ()
 // ----------------------------------------------------------------------------
 {
 	int i = 0;
 	int j = 0;
 
-	if (0 == doorTriggers.size())
-		return;		// no doors on this level to process
+	if (0 == doorTriggers.size ())
+		return;        // no doors on this level to process
 
-	for (i = 0; i != doorTriggers.size(); i++)
+	for (auto &doorItr : doorTriggers)
 	{
-		if ((   previousPlayerWorldPos.x  > doorTriggers[i].topLeft.x)
-		    && (previousPlayerWorldPos.y  > doorTriggers[i].topLeft.y)
-		    && (previousPlayerWorldPos.x  < doorTriggers[i].botRight.x)
-		    && (previousPlayerWorldPos.y  < doorTriggers[i].botRight.y))
-		{	// player sprite is inside a trigger area
-			doorTriggers[i].inUse = true;
+		if ((previousPlayerWorldPos.x > doorItr.topLeft.x) &&
+		    (previousPlayerWorldPos.y > doorItr.topLeft.y) &&
+		    (previousPlayerWorldPos.x < doorItr.botRight.x) &&
+		    (previousPlayerWorldPos.y < doorItr.botRight.y))
+
+		{    // player sprite is inside a trigger area
+			doorItr.inUse = true;
 		}
 		else
 		{
-			doorTriggers[i].inUse = false;	// this will reset all the doors the player is not in
+			doorItr.inUse = false;    // this will reset all the doors the player is not in
 		}
 	}
 	//
 	// now check all the enemy sprites against the doors
 	//
-	for (i = 0; i != doorTriggers.size(); i++)
+	for (auto &doorItr : doorTriggers)
 	{
 		for (j = 0; j != shipLevel[lvl_getCurrentLevelName ()].numDroids; j++)
 		{
-			if (shipLevel.at (lvl_getCurrentLevelName ()).droid[i].currentMode == DROID_MODE_NORMAL)
+			if (shipLevel.at (lvl_getCurrentLevelName ()).droid[j].currentMode == DROID_MODE_NORMAL)
 			{
-				if ((shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.x + (SPRITE_SIZE / 2) > doorTriggers[i].topLeft.x) &&
-				    (shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.y + (SPRITE_SIZE / 2) > doorTriggers[i].topLeft.y) &&
-				    (shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.x + (SPRITE_SIZE / 2) < doorTriggers[i].botRight.x) &&
-				    (shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.y + (SPRITE_SIZE / 2) < doorTriggers[i].botRight.y))
+				if ((shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.x + (SPRITE_SIZE / 2) > doorItr.topLeft.x) &&
+				    (shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.y + (SPRITE_SIZE / 2) > doorItr.topLeft.y) &&
+				    (shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.x + (SPRITE_SIZE / 2) < doorItr.botRight.x) &&
+				    (shipLevel[lvl_getCurrentLevelName ()].droid[j].worldPos.y + (SPRITE_SIZE / 2) < doorItr.botRight.y))
 				{
-					doorTriggers[i].inUse = true;
+					doorItr.inUse = true;
 				}
 			}
 		}
@@ -61,16 +62,16 @@ void gam_doorCheckTriggerAreas()
 // ----------------------------------------------------------------------------
 //
 // Process all the doors that are currently inUse
-void gam_doorProcessActions()
+void gam_doorProcessActions ()
 // ----------------------------------------------------------------------------
 {
 	int i;
 	int doorDelayTime = 0;
 
-	if (doorTriggers.size() == 0)
+	if (doorTriggers.size () == 0)
 		return;
-	
-	for (i = 0; i < doorTriggers.size(); i++)
+
+	for (i = 0; i < doorTriggers.size (); i++)
 	{
 		if (doorTriggers[i].inUse)
 		{
@@ -120,13 +121,13 @@ void gam_doorProcessActions()
 						doorTriggers[i].currentFrame = DOOR_UP_CLOSING_1;
 						break;
 
-				}	// end of switch statement
+				}    // end of switch statement
 				shipLevel.at (lvl_getCurrentLevelName ()).tiles[doorTriggers[i].tileIndex] = doorTriggers[i].currentFrame;
 				gam_changeDoorFilters (doorTriggers[i].currentFrame, i);
-			}	// end of nextFrame test
-		}	// end of inUse is true text
+			}    // end of nextFrame test
+		}    // end of inUse is true text
 		else
-		{	// trigger is not in use
+		{    // trigger is not in use
 			doorTriggers[i].frameDelay -= doorAnimSpeed * (1.0f / TICKS_PER_SECOND);
 			if (doorTriggers[i].frameDelay > 0.0f)
 			{
@@ -159,7 +160,7 @@ void gam_doorProcessActions()
 				gam_changeDoorFilters (doorTriggers[i].currentFrame, i);
 			}
 		}
-	}	// end of for each door loop
+	}    // end of for each door loop
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -171,17 +172,18 @@ void gam_renderDoorFrames ()
 	al_set_target_bitmap (gam_getCompleteLevel ());
 
 	for (const auto &doorIndex : doorTriggers)
+	{
+		if (sys_visibleOnScreen (doorIndex.renderPosition, TILE_SIZE))
 		{
-			if (sys_visibleOnScreen (doorIndex.renderPosition, TILE_SIZE))
-				{
-					gam_drawSingleTile (doorIndex.renderPosition.x, doorIndex.renderPosition.y, doorIndex.currentFrame);
-				}
+			gam_drawSingleTile (doorIndex.renderPosition.x, doorIndex.renderPosition.y, doorIndex.currentFrame);
 		}
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Change the collision filters for a door
+// Used by bullet to see if it passes through an open door
 void gam_changeDoorFilters (int doorState, int whichDoor)
 //----------------------------------------------------------------------------------------------------------------------
 {
@@ -191,16 +193,16 @@ void gam_changeDoorFilters (int doorState, int whichDoor)
 	b2Filter  filter   = fixture->GetFilterData ();
 
 	switch (doorState)
-		{
-			case DOOR_ACROSS_OPENED:
-			case DOOR_UP_OPENED:
-				filter.categoryBits = PHYSIC_TYPE_DOOR_OPEN;
+	{
+		case DOOR_ACROSS_OPENED:
+		case DOOR_UP_OPENED:
+			filter.categoryBits = PHYSIC_TYPE_DOOR_OPEN;
 			break;
 
-			default:
-				filter.categoryBits = PHYSIC_TYPE_DOOR_CLOSED;
+		default:
+			filter.categoryBits = PHYSIC_TYPE_DOOR_CLOSED;
 			break;
-		}
+	}
 	//
 	// Set the updated category
 	fixture->SetFilterData (filter);
@@ -233,6 +235,21 @@ void gam_createDoorBulletSensor (unsigned long whichDoor)
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Debug door states and current frame
+void gam_debugDoors()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	int counter = 0;
+
+	for (auto &doorItr : doorTriggers)
+	{
+		printf("Door [ %i ] currentFrame : %i InUse : %i \n", counter, doorItr.currentFrame, doorItr.inUse);
+		counter++;
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Clear out memory for door triggers
 void gam_clearAllDoors ()
 //----------------------------------------------------------------------------------------------------------------------
@@ -240,12 +257,12 @@ void gam_clearAllDoors ()
 	doorTriggers.clear ();
 
 	for (auto &doorBulletItr : doorBulletSensor)
-		{
-			if (doorBulletItr.userData != nullptr)
-				delete (doorBulletItr.userData);
-			if (doorBulletItr.body != nullptr)
-				sys_getPhysicsWorld ()->DestroyBody (doorBulletItr.body);
-		}
+	{
+		if (doorBulletItr.userData != nullptr)
+			delete (doorBulletItr.userData);
+		if (doorBulletItr.body != nullptr)
+			sys_getPhysicsWorld ()->DestroyBody (doorBulletItr.body);
+	}
 	doorBulletSensor.clear ();
 }
 
@@ -264,118 +281,118 @@ void gam_doorTriggerSetup (const std::string levelName)
 	_doorTrigger tempDoorBulletSensor;
 
 	if (!doorTriggers.empty ())  // Empty out array
-		{
-			gam_clearAllDoors ();
-		}
+	{
+		gam_clearAllDoors ();
+	}
 
 	sourceX = 0.0f;
 	sourceY = 0.0f;
 	for (i  = 0; i != shipLevel.at (levelName).levelDimensions.x * shipLevel.at (levelName).levelDimensions.y; i++)
+	{
+		currentTile = shipLevel.at (levelName).tiles[i];
+		if (currentTile < 0)
 		{
-			currentTile = shipLevel.at (levelName).tiles[i];
-			if (currentTile < 0)
-				{
-					log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Tile in doorTriggerSetup is invalid - Tile [ %i ]", i));
-				}
-
-			switch (currentTile)
-				{
-					case DOOR_ACROSS_CLOSED:
-					case DOOR_ACROSS_OPEN_1:
-					case DOOR_ACROSS_OPEN_2:
-					case DOOR_ACROSS_OPENED:
-					case DOOR_ACROSS_CLOSING_1:
-					case DOOR_ACROSS_CLOSING_2:
-						{
-							tempDoorTrigger.height           = TILE_SIZE;
-							tempDoorTrigger.width            = TILE_SIZE * 2;
-
-							tempDoorTrigger.topLeft.x = (sourceX * TILE_SIZE) - (TILE_SIZE / 2);
-							tempDoorTrigger.topLeft.y = (sourceY * TILE_SIZE) - (TILE_SIZE);
-
-							tempDoorTrigger.topRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
-							tempDoorTrigger.topRight.y = (sourceY * TILE_SIZE) - (TILE_SIZE);
-
-							tempDoorTrigger.botLeft.x = (sourceX * TILE_SIZE) - (TILE_SIZE / 2);
-							tempDoorTrigger.botLeft.y = (sourceY * TILE_SIZE) + (TILE_SIZE * 2);
-
-							tempDoorTrigger.botRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
-							tempDoorTrigger.botRight.y = (sourceY * TILE_SIZE) + (TILE_SIZE * 2);
-
-							tempDoorTrigger.worldPosition.x  = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorTrigger.worldPosition.y  = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorTrigger.renderPosition.x = sourceX * TILE_SIZE;
-							tempDoorTrigger.renderPosition.y = sourceY * TILE_SIZE;
-							tempDoorTrigger.tileIndex        = i;
-							tempDoorTrigger.frameDelay       = 1.0f;
-							tempDoorTrigger.inUse = false;
-							tempDoorTrigger.currentFrame     = DOOR_ACROSS_CLOSED;
-							doorTriggers.push_back (tempDoorTrigger);
-
-							tempDoorBulletSensor.height          = TILE_SIZE * 0.5f;
-							tempDoorBulletSensor.width           = TILE_SIZE / 4;
-							tempDoorBulletSensor.worldPosition.x = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorBulletSensor.worldPosition.y = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorBulletSensor.currentFrame    = DOOR_ACROSS_CLOSED;
-							tempDoorBulletSensor.direction       = DIRECTION_ACROSS;
-							doorBulletSensor.push_back (tempDoorBulletSensor);
-
-							gam_createDoorBulletSensor (doorBulletSensor.size () - 1);
-							break;
-						}
-
-					case DOOR_UP_CLOSED:
-					case DOOR_UP_OPEN_1:
-					case DOOR_UP_OPEN_2:
-					case DOOR_UP_OPENED:
-					case DOOR_UP_CLOSING_1:
-					case DOOR_UP_CLOSING_2:
-						{
-							tempDoorTrigger.height           = TILE_SIZE * 2;
-							tempDoorTrigger.width            = TILE_SIZE;
-
-							tempDoorTrigger.topLeft.x = (sourceX * TILE_SIZE) - TILE_SIZE;
-							tempDoorTrigger.topLeft.y = (sourceY * TILE_SIZE) - (TILE_SIZE / 2);
-
-							tempDoorTrigger.topRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE * 2);
-							tempDoorTrigger.topRight.y = (sourceY * TILE_SIZE) - (TILE_SIZE / 2);
-
-							tempDoorTrigger.botLeft.x = (sourceX * TILE_SIZE) - TILE_SIZE;
-							tempDoorTrigger.botLeft.y = (sourceY * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
-
-							tempDoorTrigger.botRight.x =  (sourceX * TILE_SIZE) + (TILE_SIZE * 2);
-							tempDoorTrigger.botRight.y = (sourceY * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
-
-							tempDoorTrigger.worldPosition.x  = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorTrigger.worldPosition.y  = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorTrigger.renderPosition.x = sourceX * TILE_SIZE;
-							tempDoorTrigger.renderPosition.y = sourceY * TILE_SIZE;
-							tempDoorTrigger.tileIndex        = i;
-							tempDoorTrigger.frameDelay       = 1.0f;
-							tempDoorTrigger.inUse = false;
-							tempDoorTrigger.currentFrame     = DOOR_UP_CLOSED;
-							doorTriggers.push_back (tempDoorTrigger);
-
-							tempDoorBulletSensor.height          = TILE_SIZE / 4;
-							tempDoorBulletSensor.width           = TILE_SIZE * 0.5f;
-							tempDoorBulletSensor.worldPosition.x = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorBulletSensor.worldPosition.y = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
-							tempDoorBulletSensor.currentFrame    = DOOR_UP_CLOSED;
-							tempDoorBulletSensor.direction       = DIRECTION_UP;
-							doorBulletSensor.push_back (tempDoorBulletSensor);
-
-							gam_createDoorBulletSensor (doorBulletSensor.size () - 1);
-							break;
-						}
-
-					default:
-						break;
-				}
-			sourceX++;
-			if (sourceX == (int) shipLevel.at (levelName).levelDimensions.x)
-				{
-					sourceX = 0;
-					sourceY++;
-				}
+			log_logMessage (LOG_LEVEL_ERROR, sys_getString ("Tile in doorTriggerSetup is invalid - Tile [ %i ]", i));
 		}
+
+		switch (currentTile)
+		{
+			case DOOR_ACROSS_CLOSED:
+			case DOOR_ACROSS_OPEN_1:
+			case DOOR_ACROSS_OPEN_2:
+			case DOOR_ACROSS_OPENED:
+			case DOOR_ACROSS_CLOSING_1:
+			case DOOR_ACROSS_CLOSING_2:
+			{
+				tempDoorTrigger.height = TILE_SIZE;
+				tempDoorTrigger.width  = TILE_SIZE * 2;
+
+				tempDoorTrigger.topLeft.x = (sourceX * TILE_SIZE) - (TILE_SIZE / 2);
+				tempDoorTrigger.topLeft.y = (sourceY * TILE_SIZE) - (TILE_SIZE);
+
+				tempDoorTrigger.topRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
+				tempDoorTrigger.topRight.y = (sourceY * TILE_SIZE) - (TILE_SIZE);
+
+				tempDoorTrigger.botLeft.x = (sourceX * TILE_SIZE) - (TILE_SIZE / 2);
+				tempDoorTrigger.botLeft.y = (sourceY * TILE_SIZE) + (TILE_SIZE * 2);
+
+				tempDoorTrigger.botRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
+				tempDoorTrigger.botRight.y = (sourceY * TILE_SIZE) + (TILE_SIZE * 2);
+
+				tempDoorTrigger.worldPosition.x  = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.worldPosition.y  = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.renderPosition.x = sourceX * TILE_SIZE;
+				tempDoorTrigger.renderPosition.y = sourceY * TILE_SIZE;
+				tempDoorTrigger.tileIndex        = i;
+				tempDoorTrigger.frameDelay       = 1.0f;
+				tempDoorTrigger.inUse            = false;
+				tempDoorTrigger.currentFrame     = DOOR_ACROSS_CLOSED;
+				doorTriggers.push_back (tempDoorTrigger);
+
+				tempDoorBulletSensor.height          = TILE_SIZE * 0.5f;
+				tempDoorBulletSensor.width           = TILE_SIZE / 4;
+				tempDoorBulletSensor.worldPosition.x = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorBulletSensor.worldPosition.y = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorBulletSensor.currentFrame    = DOOR_ACROSS_CLOSED;
+				tempDoorBulletSensor.direction       = DIRECTION_ACROSS;
+				doorBulletSensor.push_back (tempDoorBulletSensor);
+
+				gam_createDoorBulletSensor (doorBulletSensor.size () - 1);
+				break;
+			}
+
+			case DOOR_UP_CLOSED:
+			case DOOR_UP_OPEN_1:
+			case DOOR_UP_OPEN_2:
+			case DOOR_UP_OPENED:
+			case DOOR_UP_CLOSING_1:
+			case DOOR_UP_CLOSING_2:
+			{
+				tempDoorTrigger.height = TILE_SIZE * 2;
+				tempDoorTrigger.width  = TILE_SIZE;
+
+				tempDoorTrigger.topLeft.x = (sourceX * TILE_SIZE) - TILE_SIZE;
+				tempDoorTrigger.topLeft.y = (sourceY * TILE_SIZE) - (TILE_SIZE / 2);
+
+				tempDoorTrigger.topRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE * 2);
+				tempDoorTrigger.topRight.y = (sourceY * TILE_SIZE) - (TILE_SIZE / 2);
+
+				tempDoorTrigger.botLeft.x = (sourceX * TILE_SIZE) - TILE_SIZE;
+				tempDoorTrigger.botLeft.y = (sourceY * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
+
+				tempDoorTrigger.botRight.x = (sourceX * TILE_SIZE) + (TILE_SIZE * 2);
+				tempDoorTrigger.botRight.y = (sourceY * TILE_SIZE) + (TILE_SIZE) + (TILE_SIZE / 2);
+
+				tempDoorTrigger.worldPosition.x  = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.worldPosition.y  = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorTrigger.renderPosition.x = sourceX * TILE_SIZE;
+				tempDoorTrigger.renderPosition.y = sourceY * TILE_SIZE;
+				tempDoorTrigger.tileIndex        = i;
+				tempDoorTrigger.frameDelay       = 1.0f;
+				tempDoorTrigger.inUse            = false;
+				tempDoorTrigger.currentFrame     = DOOR_UP_CLOSED;
+				doorTriggers.push_back (tempDoorTrigger);
+
+				tempDoorBulletSensor.height          = TILE_SIZE / 4;
+				tempDoorBulletSensor.width           = TILE_SIZE * 0.5f;
+				tempDoorBulletSensor.worldPosition.x = ((sourceX * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorBulletSensor.worldPosition.y = ((sourceY * TILE_SIZE) + (TILE_SIZE / 2));
+				tempDoorBulletSensor.currentFrame    = DOOR_UP_CLOSED;
+				tempDoorBulletSensor.direction       = DIRECTION_UP;
+				doorBulletSensor.push_back (tempDoorBulletSensor);
+
+				gam_createDoorBulletSensor (doorBulletSensor.size () - 1);
+				break;
+			}
+
+			default:
+				break;
+		}
+		sourceX++;
+		if (sourceX == (int) shipLevel.at (levelName).levelDimensions.x)
+		{
+			sourceX = 0;
+			sourceY++;
+		}
+	}
 }
