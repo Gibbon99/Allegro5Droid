@@ -145,6 +145,13 @@ void gam_doorProcessActions ()
 						doorTriggers[i].currentFrame = DOOR_ACROSS_CLOSED;
 						break;
 
+					case DOOR_ACROSS_OPEN_1:
+						doorTriggers[i].currentFrame = DOOR_ACROSS_CLOSING_1;
+						break;
+					case DOOR_ACROSS_OPEN_2:
+						doorTriggers[i].currentFrame = DOOR_ACROSS_CLOSING_2;
+						break;
+
 					case DOOR_UP_OPENED:
 //						gam_playDoorSound(i);
 						doorTriggers[i].currentFrame = DOOR_UP_CLOSING_1;
@@ -154,6 +161,13 @@ void gam_doorProcessActions ()
 						break;
 					case DOOR_UP_CLOSING_2:
 						doorTriggers[i].currentFrame = DOOR_UP_CLOSED;
+						break;
+
+					case DOOR_UP_OPEN_1:
+						doorTriggers[i].currentFrame = DOOR_UP_CLOSING_1;
+						break;
+					case DOOR_UP_OPEN_2:
+						doorTriggers[i].currentFrame = DOOR_UP_CLOSING_2;
 						break;
 				}
 				shipLevel.at (lvl_getCurrentLevelName ()).tiles[doorTriggers[i].tileIndex] = doorTriggers[i].currentFrame;

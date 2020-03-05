@@ -6,6 +6,30 @@ int ALLEGRO_PLAYMODE_LOOP = 0x101;
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Handle the actions for dialog boxes
+void as_guiHandleDialogAction(string &in objectID)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	if (currentDialogBox == as_guiFindIndex(GUI_OBJECT_DIALOG, "confirmExitGameDialog"))
+	{
+		if (currentObjectSelectedDialog == as_guiFindIndex (GUI_OBJECT_BUTTON, "confirmExitGameButton"))
+		{
+			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
+			sys_changeCurrentMode (MODE_GUI, true);
+			as_guiSetObjectFocus ("startGameButton");
+			return;
+		}
+
+		if (currentObjectSelectedDialog == as_guiFindIndex (GUI_OBJECT_BUTTON, "returnToGameButton"))
+		{
+			// Return to game
+			return;
+		}
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Handle the actions for the transfer game
 void as_guiHandleTransferAction (string &in objectID)
 //----------------------------------------------------------------------------------------------------------------------
@@ -488,7 +512,7 @@ void as_guiHandleElementAction (string &in objectID)
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup the values for the database scrollbox
-void script_setupDatabaseScreen ()
+void as_setupDatabaseScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	float buttonStartY                 = 94;
@@ -547,7 +571,7 @@ void script_setupDatabaseScreen ()
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup the values for the intro scrollbox
-void script_setupIntroScrollBox ()
+void as_setupIntroScrollBox ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	int introScrollBoxBorderWidth = 10;
@@ -1246,7 +1270,7 @@ void as_setupTransferOne ()
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "labelTransferOne");
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "labelTransferOne", "guiTransferOne");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferOne", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferOne", GUI_COORD_TYPE_PERCENT, 8, 20, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "labelTransferOne", GUI_LABEL_CENTER, gui_getString ("labelTransferOne"));
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "labelTransferOne", true);
 	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "labelTransferOne", "gui");
@@ -1257,12 +1281,6 @@ void as_setupTransferOne ()
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", GUI_LABEL_LEFT, gui_getString ("textBoxTransferOne"));
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", true);
 	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "textBoxTransferOne", "gui");
-
-//	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
-//	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
-//	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_lift"), gam_getTextureHeight ("tut_lift"));
-//	as_guiSetImageKeyName ("tutImageLift", "tut_lift");
-//	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageLift", true);
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTransferOneNext");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTransferOneNext", "guiTransferOne");
@@ -1283,7 +1301,7 @@ void as_setupTransferTwo ()
 
 	as_guiCreateObject (GUI_OBJECT_LABEL, "labelTransferTwo");
 	as_guiAddObjectToScreen (GUI_OBJECT_LABEL, "labelTransferTwo", "guiTransferTwo");
-	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_COORD_TYPE_PERCENT, 8, 30, 10, 10);
+	as_guiSetObjectPosition (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_COORD_TYPE_PERCENT, 8, 20, 10, 10);
 	as_guiSetObjectLabel (GUI_OBJECT_LABEL, "labelTransferTwo", GUI_LABEL_CENTER, gui_getString ("labelTransferTwo"));
 	as_guiSetReadyState (GUI_OBJECT_LABEL, "labelTransferTwo", true);
 	as_guiSetObjectFontName (GUI_OBJECT_LABEL, "labelTransferTwo", "gui");
@@ -1294,12 +1312,6 @@ void as_setupTransferTwo ()
 	as_guiSetObjectLabel (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", GUI_LABEL_LEFT, gui_getString ("textBoxTransferTwo"));
 	as_guiSetReadyState (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", true);
 	as_guiSetObjectFontName (GUI_OBJECT_TEXTBOX, "textBoxTransferTwo", "gui");
-
-//	as_guiCreateObject (GUI_OBJECT_IMAGE, "tutImageLift");
-//	as_guiAddObjectToScreen (GUI_OBJECT_IMAGE, "tutImageLift", "scrTutLifts");
-//	as_guiSetObjectPosition (GUI_OBJECT_IMAGE, "tutImageLift", GUI_COORD_TYPE_ABSOLUTE, 192, 100, gam_getTextureWidth ("tut_lift"), gam_getTextureHeight ("tut_lift"));
-//	as_guiSetImageKeyName ("tutImageLift", "tut_lift");
-//	as_guiSetReadyState (GUI_OBJECT_IMAGE, "tutImageLift", true);
 
 	as_guiCreateObject (GUI_OBJECT_BUTTON, "buttonTransferTwoNext");
 	as_guiAddObjectToScreen (GUI_OBJECT_BUTTON, "buttonTransferTwoNext", "guiTransferTwo");
@@ -1393,11 +1405,27 @@ void as_setSideviewColors ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //
-// Setup any message box instances
-void as_setupMessageBoxes ()
+// Setup any dialog boxes that need to be shown
+void as_setupDialogBoxes()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	as_guiAddMessageBox (MESSAGE_BOX_PAUSED, gui_getString ("pausedTitle"), gui_getString ("pausedText"), -1, -1, false);
+	as_guiAddDialogBox ("confirmExitGameDialog", gui_getString("confirmExitTitle"), gui_getString("confirmExitText"), -1, -1, true);
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "confirmExitGameButton");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "confirmExitGameButton", GUI_COORD_TYPE_ABSOLUTE, 10, 5, 65, 20);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "confirmExitGameButton", GUI_LABEL_CENTER, gui_getString ("confirmExitGameButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "confirmExitGameButton", "as_guiHandleDialogAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "confirmExitGameButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "confirmExitGameButton", "gui");
+	as_guiAddObjectToDialog (GUI_OBJECT_BUTTON, "confirmExitGameButton", "confirmExitGameDialog");
+
+	as_guiCreateObject (GUI_OBJECT_BUTTON, "returnToGameButton");
+	as_guiSetObjectPosition (GUI_OBJECT_BUTTON, "returnToGameButton", GUI_COORD_TYPE_ABSOLUTE, -10, 5, 65, 20);
+	as_guiSetObjectLabel (GUI_OBJECT_BUTTON, "returnToGameButton", GUI_LABEL_CENTER, gui_getString ("backButton"));
+	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "returnToGameButton", "as_guiHandleDialogAction");
+	as_guiSetReadyState (GUI_OBJECT_BUTTON, "returnToGameButton", true);
+	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "returnToGameButton", "gui");
+	as_guiAddObjectToDialog (GUI_OBJECT_BUTTON, "returnToGameButton", "confirmExitGameDialog");
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -1410,7 +1438,7 @@ void script_initGUI ()
 
 	as_setLanguageStrings ();
 	as_setSideviewColors ();
-	script_setupIntroScrollBox ();
+	as_setupIntroScrollBox ();
 	as_setupMainScreen ();
 	as_setupOptionsScreen ();
 	as_setupOptionsVideoScreen ();
@@ -1421,9 +1449,10 @@ void script_initGUI ()
 	as_setupMainTerminalScreen ();
 	as_setupTerminalDeckviewScreen ();
 	as_setupTerminalShipviewScreen ();
-	script_setupDatabaseScreen ();
+	as_setupDatabaseScreen ();
 	as_setupTransferOne ();
 	as_setupTransferTwo ();
+	as_setupDialogBoxes();
 
 //	as_setupMessageBoxes();
 

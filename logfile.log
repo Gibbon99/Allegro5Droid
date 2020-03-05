@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-28-01-2020	14:36:52
+05-03-2020	16:00:52
 Logfile started...
 INFO | Packfile: Supported archive types.
 INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
@@ -161,6 +161,8 @@ INFO | Script: Registered variable - [ string volumeLevelStr ]
 INFO | Script: Registered variable - [ int volumeLevel ]
 INFO | Script: Registered variable - [ string tileType ]
 INFO | Script: Registered variable - [ string tileColor ]
+INFO | Script: Registered variable - [ int currentObjectSelectedDialog ]
+INFO | Script: Registered variable - [ int currentDialogBox ]
 INFO | Script: Registered function - [ void sys_printConInt(string &in, uint param) ]
 INFO | Script: Registered function - [ void sys_loadResource(string &in, string &in, int type, int numFrames, int size) ]
 INFO | Script: Registered function - [ bool lvl_loadShipLevel (string &in) ]
@@ -190,7 +192,6 @@ INFO | Script: Registered function - [ void as_guiSetCheckboxValue (string &in, 
 INFO | Script: Registered function - [ int as_guiGetCheckboxValue (string &in) ]
 INFO | Script: Registered function - [ void as_guiSetSliderValue(string &in, string &in) ]
 INFO | Script: Registered function - [ string as_guiGetSliderValue(string &in) ]
-INFO | Script: Registered function - [ void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal) ]
 INFO | Script: Registered function - [ void as_guiAddNewElement (string &in, string &in, string &in, int type) ]
 INFO | Script: Registered function - [ void as_guiSetImageKeyName(string &in, string &in) ]
 INFO | Script: Registered function - [ void sys_changeCurrentMode(int newMode, bool fade) ]
@@ -209,7 +210,9 @@ INFO | Script: Registered function - [ void cfg_setConfigValue(string &in, strin
 INFO | Script: Registered function - [ string sys_boolToString(bool boolValue) ]
 INFO | Script: Registered function - [ string sys_intToString(int intValue) ]
 INFO | Script: Registered function - [ int sys_stringToInt(string &in) ]
-INFO | Script: Registered function - [ void sys_loadTileBitmap(string tileType, string tileColor) ]
+INFO | Script: Registered function - [ void sys_loadTileBitmap(string &in, string &in) ]
+INFO | Script: Registered function - [ void as_guiAddDialogBox (string &in, string &in, string &in, int posX, int posY, bool modal) ]
+INFO | Script: Registered function - [ void as_guiAddObjectToDialog (int guiObjectType, string &in, string &in) ]
 INFO | Section has been added [ english.sc ]
 INFO | Section has been added [ german.sc ]
 INFO | Section has been added [ gui.sc ]
@@ -218,103 +221,103 @@ INFO | Section has been added [ language.sc ]
 INFO | Section has been added [ particles.sc ]
 INFO | Section has been added [ resources.sc ]
 INFO | Section has been added [ transfer.sc ]
-INFO | gui.sc (491, 1) : INFO : Compiling void script_setupDatabaseScreen()
-INFO | gui.sc (524, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (524, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (532, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (532, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (540, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (540, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (582, 1) : INFO : Compiling void as_setupOptionsAudioScreen()
-INFO | gui.sc (591, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (629, 108) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (639, 1) : INFO : Compiling void as_setupOptionsGraphicsScreen()
-INFO | gui.sc (648, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (698, 113) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (708, 1) : INFO : Compiling void as_setupOptionsVideoScreen()
-INFO | gui.sc (717, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (782, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (794, 1) : INFO : Compiling void as_setupOptionsControlsScreen()
-INFO | gui.sc (817, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (827, 1) : INFO : Compiling void as_setupOptionsScreen()
-INFO | gui.sc (836, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (844, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (852, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (860, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (868, 114) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (876, 112) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (886, 1) : INFO : Compiling void as_guiSetupTutorial()
-INFO | gui.sc (895, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (909, 103) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (917, 106) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (930, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (944, 104) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (952, 106) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (965, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (979, 108) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (987, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1000, 94) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1015, 163) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1015, 149) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1015, 129) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1015, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1020, 103) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1028, 105) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1041, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1056, 167) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1056, 153) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1056, 133) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1056, 120) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1061, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1069, 109) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1082, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1097, 166) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1097, 152) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1097, 132) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1097, 119) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1102, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1110, 108) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1123, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1137, 105) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1148, 1) : INFO : Compiling void as_setupTerminalDeckviewScreen()
-INFO | gui.sc (1157, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1157, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1167, 1) : INFO : Compiling void as_setupTerminalShipviewScreen()
-INFO | gui.sc (1176, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1176, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1186, 1) : INFO : Compiling void as_setupMainTerminalScreen()
-INFO | gui.sc (1197, 96) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1204, 116) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1204, 98) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1213, 118) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1213, 100) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1222, 118) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1222, 100) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1231, 118) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1231, 100) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1242, 1) : INFO : Compiling void as_setupTransferOne()
-INFO | gui.sc (1269, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1279, 1) : INFO : Compiling void as_setupTransferTwo()
-INFO | gui.sc (1306, 107) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1316, 1) : INFO : Compiling void as_setupMainScreen()
-INFO | gui.sc (1330, 92) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1337, 111) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1337, 93) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1346, 109) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1346, 91) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1355, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1355, 92) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1364, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1364, 92) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1373, 110) : WARN : Float value truncated in implicit conversion to integer
-INFO | gui.sc (1373, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (515, 1) : INFO : Compiling void as_setupDatabaseScreen()
+INFO | gui.sc (548, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (548, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (556, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (556, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (564, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (564, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (606, 1) : INFO : Compiling void as_setupOptionsAudioScreen()
+INFO | gui.sc (615, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (653, 108) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (663, 1) : INFO : Compiling void as_setupOptionsGraphicsScreen()
+INFO | gui.sc (672, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (722, 113) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (732, 1) : INFO : Compiling void as_setupOptionsVideoScreen()
+INFO | gui.sc (741, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (806, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (818, 1) : INFO : Compiling void as_setupOptionsControlsScreen()
+INFO | gui.sc (841, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (851, 1) : INFO : Compiling void as_setupOptionsScreen()
+INFO | gui.sc (860, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (868, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (876, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (884, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (892, 114) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (900, 112) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (910, 1) : INFO : Compiling void as_guiSetupTutorial()
+INFO | gui.sc (919, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (933, 103) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (941, 106) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (954, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (968, 104) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (976, 106) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (989, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1003, 108) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1011, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1024, 94) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1039, 163) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1039, 149) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1039, 129) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1039, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1044, 103) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1052, 105) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1065, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1080, 167) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1080, 153) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1080, 133) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1080, 120) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1085, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1093, 109) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1106, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1121, 166) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1121, 152) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1121, 132) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1121, 119) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1126, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1134, 108) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1147, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1161, 105) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1172, 1) : INFO : Compiling void as_setupTerminalDeckviewScreen()
+INFO | gui.sc (1181, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1181, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1191, 1) : INFO : Compiling void as_setupTerminalShipviewScreen()
+INFO | gui.sc (1200, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1200, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1210, 1) : INFO : Compiling void as_setupMainTerminalScreen()
+INFO | gui.sc (1221, 96) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1228, 116) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1228, 98) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1237, 118) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1237, 100) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1246, 118) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1246, 100) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1255, 118) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1255, 100) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1266, 1) : INFO : Compiling void as_setupTransferOne()
+INFO | gui.sc (1287, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1297, 1) : INFO : Compiling void as_setupTransferTwo()
+INFO | gui.sc (1318, 107) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1328, 1) : INFO : Compiling void as_setupMainScreen()
+INFO | gui.sc (1342, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1349, 111) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1349, 93) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1358, 109) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1358, 91) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1367, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1367, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1376, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1376, 92) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1385, 110) : WARN : Float value truncated in implicit conversion to integer
+INFO | gui.sc (1385, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ -1749391504 ]
-INFO | Func ID for [ void script_initGUI() ] - [ -1749395216 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ -1749414816 ]
-INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ -1749415824 ]
-INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ -1749416896 ]
-INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ -1749418064 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 1553920992 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 1553917280 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 1553897776 ]
+INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 1553896704 ]
+INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 1553895696 ]
+INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ 1553894624 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -352,8 +355,8 @@ DEBUG | Loaded [ hud.bmp ]
 DEBUG | Loaded [ tut_healing.bmp ]
 DEBUG | Loaded [ tut_lift.bmp ]
 DEBUG | Loaded [ tut_terminal.bmp ]
-DEBUG | Loaded [ retro_turquoise.bmp ]
-DEBUG | Loaded [ retro_dark.bmp ]
+DEBUG | Loaded [ future_gray.bmp ]
+DEBUG | Loaded [ future_dark.bmp ]
 DEBUG | Loaded [ universe.bmp ]
 DEBUG | Loaded [ particleSpark.bmp ]
 INFO | Loaded ship level [ Vehicle Hold ] - index [ 0 ]
@@ -446,324 +449,6 @@ DEBUG | Node [ MOVE_TO ] added. Num Children for [ AI_PATROL ] now [ 2 ]
 DEBUG | Child index set to [ 21 ]
 DEBUG | Node [ FIND_WP ] added. Num Children for [ AI_PATROL ] now [ 3 ]
 DEBUG | Child index set to [ 22 ]
-DEBUG | Loaded [ retro_turquoise.bmp ]
-DEBUG | Loaded [ retro_dark.bmp ]
+DEBUG | Loaded [ future_gray.bmp ]
+DEBUG | Loaded [ future_dark.bmp ]
 DEBUG | Clearing out emitters
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-ERROR | Sample [ laser ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ explode2 ] failed to play
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ explode2 ] failed to play
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ -1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 0 ]
-DEBUG | Done initEmitter - bullet [ -1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]

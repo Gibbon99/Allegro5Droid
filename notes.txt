@@ -14,15 +14,17 @@ DONE - Draw terminal level maps as vectors / shapes and scale to fit screen - sc
 DONE - Popup for Pause - done with text in HUD
 DONE - Disruptor not damaging other droids?
 DONE - Start on Random level
+DONE - Doors getting stuck open
+DONE - Doors not opening fast enough
 
 Do GUI options
 DO GUI Popup box for restart and 'Sure to exit'
 Collisions for droids to ignore
 Particles still around on exploding droids sometimes
-Doors getting stuck open
 transferRender - stop drawing on -1 for numDroidTokens
 Bullets can spawn with no speed from player
-Doors not opening fast enough
+Highscore Table
+End of game screen - static and image
 
 Change working directory
 --------------------------

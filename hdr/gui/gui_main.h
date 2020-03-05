@@ -3,7 +3,8 @@
 #include <map>
 #include "system/sys_main.h"
 
-enum GUI_ACTIONS {
+enum GUI_ACTIONS
+{
 	GUI_MOVE_UP = 0,
 	GUI_MOVE_DOWN,
 	GUI_MOVE_LEFT,
@@ -12,27 +13,31 @@ enum GUI_ACTIONS {
 	GUI_MOUSE_MOTION
 };
 
-struct __BOUNDING_BOX {
+struct __BOUNDING_BOX
+{
 	float w;
 	float h;
 	float x;
 	float y;
 };
 
-typedef struct {
+typedef struct
+{
 	int              selectedObject;
 	std::string      screenID;               // Name of this screen
 	std::vector<int> objectIDIndex;          // Index into object array
 	std::vector<int> objectType;             // Which object array
 } _screenObject;
 
-typedef struct {
+typedef struct
+{
 	std::string label;    // Text to display
 	std::string value;    // Value of this element
 	int         type;    // What type of element - convert on query
 } _sliderElement;
 
-struct __GUI_slider {
+struct __GUI_slider
+{
 	int            coordType;
 	float          startX = -1;
 	float          startY = -1;
@@ -49,10 +54,10 @@ struct __GUI_slider {
 	ALLEGRO_COLOR  color{};
 	ALLEGRO_COLOR  hasFocusColor{};
 	ALLEGRO_COLOR  noFocusColor{};
-	ALLEGRO_COLOR            labelHasFocusColor{};
-	ALLEGRO_COLOR            labelNoFocusColor{};
+	ALLEGRO_COLOR  labelHasFocusColor{};
+	ALLEGRO_COLOR  labelNoFocusColor{};
 
-	int                       labelPos;
+	int                         labelPos;
 	bool                        canFocus;
 	bool                        positionCalled;
 	float                       gapSize;
@@ -60,7 +65,8 @@ struct __GUI_slider {
 	std::vector<_sliderElement> element;    // Value for this step
 };
 
-struct __GUI_scrollBox {
+struct __GUI_scrollBox
+{
 	int           currentChar;
 	float         scrollSpeed;
 	float         scrollDelay;
@@ -72,18 +78,21 @@ struct __GUI_scrollBox {
 	char          fontName[32];
 };
 
-struct __GUI_checkBox {
+struct __GUI_checkBox
+{
 	int  whichGroup;
 	int  boxSize;       // TODO - set this for bounding box calculation - get font size from script?
 	bool isChecked;
 	int  value;          // What value is set when box is ticked
 };
 
-struct __GUI_image {
+struct __GUI_image
+{
 	char keyName[32];
 };
 
-struct __GUI_object {
+struct __GUI_object
+{
 	bool                     ready          = false;
 	std::string              objectID       = "";
 	int                      screenID       = -1;                      // which screen does this belong to
@@ -117,7 +126,8 @@ struct __GUI_object {
 	__BOUNDING_BOX           boundingBox;
 	std::vector<std::string> scrollBoxLineText;
 
-	union {
+	union
+	{
 		struct __GUI_scrollBox scrollBox;
 		struct __GUI_checkBox  checkBox;
 		struct __GUI_image     image;
@@ -126,7 +136,9 @@ struct __GUI_object {
 };
 
 extern int                        currentGUIScreen;
+extern int                        currentDialogBox;
 extern int                        currentObjectSelected;  // Pass this to script to act on
+extern int                        currentObjectSelectedDialog;    // Pass to script
 extern bool                       isGUIStarted;
 extern std::vector<__GUI_object>  guiButtons;
 extern std::vector<__GUI_object>  guiCheckBoxes;
@@ -140,7 +152,7 @@ extern __GUI_object introScrollBox;
 extern __GUI_object databaseScrollBox;
 
 // Convert int value to string and return
-std::string gui_IntToString(int intValue);
+std::string gui_IntToString (int intValue);
 
 // Change to a new GUI screen
 void gui_changeToGUIScreen (int newScreen);
@@ -192,3 +204,6 @@ void gui_hostSetObjectFontName (int guiObjectType, const std::string &objectID, 
 
 // Add an element to a slider
 void gui_addNewElement (const std::string objectID, const std::string newLabel, const std::string newValue, int type);
+
+// Associate the object to a dialog box, recording its index and type
+void gui_hostAddObjectToDialog (int guiObjectType, std::string objectID, std::string whichDialog);

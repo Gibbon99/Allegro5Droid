@@ -7,6 +7,7 @@
 #include <hdr/game/gam_hud.h>
 #include <hdr/system/sys_audio.h>
 #include <hdr/game/gam_pauseMode.h>
+#include <hdr/gui/gui_dialogBox.h>
 #include "hdr/io/io_keyboard.h"
 
 __KeyBindings keyBinding[NUMBER_ACTIONS];
@@ -120,8 +121,43 @@ void io_processKeyActions ()
 			break;
 
 		case MODE_GAME_PAUSED:
-			if (keyBinding[gamePause].currentlyPressed)
-				gam_handlePauseMode(false);
+			if (dialogBoxActive)
+			{
+				if (keyBinding[gameUp].currentlyPressed)
+				{
+					keyBinding[gameUp].currentlyPressed = false;
+					gui_handleFocusMove (GUI_MOVE_UP, false, false);
+				}
+
+				if (keyBinding[gameDown].currentlyPressed)
+				{
+					keyBinding[gameDown].currentlyPressed = false;
+					gui_handleFocusMove (GUI_MOVE_DOWN, false, false);
+				}
+
+				if (keyBinding[gameLeft].currentlyPressed)
+				{
+					keyBinding[gameLeft].currentlyPressed = false;
+					gui_handleFocusMove (GUI_MOVE_LEFT, false, false);
+				}
+
+				if (keyBinding[gameRight].currentlyPressed)
+				{
+					keyBinding[gameRight].currentlyPressed = false;
+					gui_handleFocusMove (GUI_MOVE_RIGHT, false, false);
+				}
+
+				if (keyBinding[gameAction].currentlyPressed)
+				{
+					keyBinding[gameAction].currentlyPressed = false;
+					gui_handleFocusMove (GUI_ACTION, true, false);
+				}
+			}
+			else
+			{
+				if (keyBinding[gamePause].currentlyPressed)
+					gam_handlePauseMode (false);
+			}
 			break;
 
 		case MODE_GAME:

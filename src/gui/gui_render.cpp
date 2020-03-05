@@ -5,6 +5,7 @@
 #include <hdr/gui/gui_button.h>
 #include <hdr/gui/gui_checkBox.h>
 #include <hdr/gui/gui_slider.h>
+#include <hdr/gui/gui_dialogBox.h>
 #include "hdr/gui/gui_render.h"
 
 //-----------------------------------------------------------------------------
@@ -65,5 +66,10 @@ void gui_drawGUI ()
 			gui_drawObject (guiScreens[currentGUIScreen].objectType[indexCount], guiScreens[currentGUIScreen].objectIDIndex[indexCount], true);
 		else
 			gui_drawObject (guiScreens[currentGUIScreen].objectType[indexCount], guiScreens[currentGUIScreen].objectIDIndex[indexCount], false);
+	}
+
+	if (dialogBoxActive)   // Display current active dialog box
+	{
+		gui_renderDialogBox();
 	}
 }

@@ -2,22 +2,29 @@
 
 #include "system/sys_main.h"
 
-struct __GUI_messageBox
+struct __GUI_dialogBox
 {
-	int objectID;
-	std::string title;
-	std::string text;
-	int positionX;
-	int positionY;
-	int width;
-	int height;
-	bool modal;
+	std::string      title;
+	std::string      text;
+	int              positionX;
+	int              positionY;
+	int              width;
+	int              height;
+	bool             modal;
+	int              selectedObject;
+	std::vector<int> objectIDIndex;          // Index into object array
+	std::vector<int> objectType;             // Which object array
 };
 
-extern std::map<int, __GUI_messageBox> messageBox;
+extern std::map<std::string, __GUI_dialogBox> dialogBox;
+extern bool                                   dialogBoxActive;
+extern std::string                            currentDialogBoxName;
 
-// Render a message box
-void gui_renderMessageBox(int objectID);
+// Render a dialog box
+void gui_renderDialogBox ();
 
-// Setup a message box from the script
-void gui_addMessageBox(int boxName, std::string title, std::string text, int posX, int posY, bool modal);
+// Setup a dialog box from the script
+void gui_addDialogBox (const std::string &dialogName, std::string title, std::string text, int posX, int posY, bool modal);
+
+// Activate a dialog box
+void gui_activateDialogBox (const std::string &dialogName);

@@ -24,6 +24,7 @@
 #include <hdr/game/gam_particles.h>
 #include <hdr/game/gam_transfer.h>
 #include <hdr/game/gam_transferRender.h>
+#include <hdr/gui/gui_dialogBox.h>
 #include "hdr/system/sys_gameFrameRender.h"
 #include "hdr/game/gam_droids.h"
 
@@ -265,7 +266,6 @@ void sys_displayScreen (double interpolation)
 
 			gam_renderPlayer ();
 			bul_renderBullets ();
-//			io_renderTintedSpriteFrame ("123", io_getFrame (), screenWidth / 2, screenHeight / 2, 0, 0, 0);
 			hud_renderHUD ();
 
 			par_renderParticles ();
@@ -274,6 +274,9 @@ void sys_displayScreen (double interpolation)
 //			lvl_showWayPoints (lvl_getCurrentLevelName());
 			if (showDebugPhysics)
 				sys_getPhysicsWorld ()->DrawDebugData ();
+
+			if (dialogBoxActive)   // Display current active dialog box
+				gui_renderDialogBox();
 
 			break;
 

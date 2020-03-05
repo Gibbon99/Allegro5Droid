@@ -1,62 +1,103 @@
 #include <map>
 #include <hdr/system/sys_font.h>
+#include <hdr/gui/gui_render.h>
+#include <hdr/game/gam_pauseMode.h>
 #include "hdr/gui/gui_dialogBox.h"
 
-std::map<int, __GUI_messageBox> messageBox;
-int gapSize = 4;
+std::map<std::string, __GUI_dialogBox> dialogBox;
+int                                    gapSize         = 4;
+bool                                    dialogBoxActive = false;
+std::string                             currentDialogBoxName;
+
+//
+// Add other elements to a messagebox
+//
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Setup a message box from the script
-void gui_addMessageBox(int boxName, std::string title, std::string text, int posX, int posY, bool modal)
+void gui_addDialogBox (const std::string& dialogName, std::string title, std::string text, int posX, int posY, bool modal)
 //----------------------------------------------------------------------------------------------------------------------
 {
-	__GUI_messageBox tempMessageBox;
+	__GUI_dialogBox tempMessageBox;
 
-	tempMessageBox.title     = std::move(title);
-	tempMessageBox.text      = std::move(text);
+	fnt_setTTF ("gui");
+
+	tempMessageBox.title     = std::move (title);
+	tempMessageBox.text      = std::move (text);
 	tempMessageBox.positionX = posX;
 	tempMessageBox.positionY = posY;
 	tempMessageBox.modal     = modal;
 
-	tempMessageBox.width  = fnt_getWidth(tempMessageBox.text) + (gapSize * 2);
-	tempMessageBox.height = fnt_getHeight() * 4;
+	tempMessageBox.width  = fnt_getWidth (tempMessageBox.text) + (gapSize * 2);
+	tempMessageBox.height = fnt_getHeight () * 4;
 
-	messageBox.insert(std::pair<int, __GUI_messageBox>(boxName, tempMessageBox));
+	dialogBox.insert (std::pair<std::string, __GUI_dialogBox> (dialogName, tempMessageBox));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //
 // Render a message box
-void gui_renderMessageBox(int objectID)
+void gui_renderDialogBox ()
 //----------------------------------------------------------------------------------------------------------------------
 {
 	int radius = 3;
 	int tempPosX, tempPosY;
+	int indexCount = 0;
 
-	fnt_setTTF("gui");
+	fnt_setTTF ("gui");
 
-	messageBox[objectID].width  = fnt_getWidth(messageBox[objectID].text) + (gapSize * 2);
-	messageBox[objectID].height = fnt_getHeight() * 4;
+	dialogBox.at (currentDialogBoxName).width  = fnt_getWidth (dialogBox.at (currentDialogBoxName).text) + (gapSize * 2);
+	dialogBox.at (currentDialogBoxName).height = fnt_getHeight () * 4;
 
-	if (messageBox[objectID].positionX == -1)
-		tempPosX = (screenWidth - messageBox[objectID].width) / 2;
+	if (dialogBox.at (currentDialogBoxName).positionX == -1)
+		tempPosX = (screenWidth - dialogBox.at (currentDialogBoxName).width) / 2;
 	else
-		tempPosX = messageBox[objectID].positionX;
+		tempPosX = dialogBox.at (currentDialogBoxName).positionX;
 
-	if (messageBox[objectID].positionY == -1)
-		tempPosY = (screenHeight - messageBox[objectID].height) / 2;
+	if (dialogBox.at (currentDialogBoxName).positionY == -1)
+		tempPosY = (screenHeight - dialogBox.at (currentDialogBoxName).height) / 2;
 	else
-		tempPosY = messageBox[objectID].positionY;
+		tempPosY = dialogBox.at (currentDialogBoxName).positionY;
 
-	al_draw_filled_rounded_rectangle(tempPosX, tempPosY,
-	                                 tempPosX + messageBox[objectID].width, tempPosY + messageBox[objectID].height,
-			radius, radius, al_map_rgba_f(1.0f, 1.0f, 1.0f, 1.0f));
+	al_draw_filled_rounded_rectangle (tempPosX, tempPosY, tempPosX + dialogBox.at (currentDialogBoxName).width, tempPosY + dialogBox.at (currentDialogBoxName).height, radius, radius, al_map_rgba_f (1.0f, 1.0f, 1.0f, 1.0f));
 
-	al_draw_line(tempPosX, tempPosY + fnt_getHeight(), tempPosX + messageBox[objectID].width, tempPosY + fnt_getHeight(),
-	                  al_map_rgba_f(1.0f, 0.2f, 0.2f, 1.0f), 3);
+	al_draw_line (tempPosX, tempPosY + fnt_getHeight (), tempPosX + dialogBox.at (currentDialogBoxName).width, tempPosY + fnt_getHeight (), al_map_rgba_f (1.0f, 0.2f, 0.2f, 1.0f), 3);
 
-	fnt_render(b2Vec2{tempPosX + gapSize, tempPosY + gapSize}, messageBox[objectID].title);
+	fnt_render (b2Vec2{static_cast<float32>(tempPosX + gapSize), static_cast<float32>(tempPosY + gapSize)}, dialogBox.at (currentDialogBoxName).title);
 
-	fnt_render(b2Vec2{tempPosX+ gapSize, tempPosY + (fnt_getHeight() * 2)}, messageBox[objectID].text);
+	fnt_render (b2Vec2{static_cast<float32>(tempPosX + gapSize), tempPosY + (fnt_getHeight () * 2)}, dialogBox.at (currentDialogBoxName).text);
+
+	for (indexCount = 0; indexCount != dialogBox.at(currentDialogBoxName).objectIDIndex.size (); indexCount++)
+	{
+		if (dialogBox.at(currentDialogBoxName).selectedObject == indexCount)
+			gui_drawObject (dialogBox.at(currentDialogBoxName).objectType[indexCount], dialogBox.at(currentDialogBoxName).objectIDIndex[indexCount], true);
+		else
+			gui_drawObject (dialogBox.at(currentDialogBoxName).objectType[indexCount], dialogBox.at(currentDialogBoxName).objectIDIndex[indexCount], false);
+	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
+// Activate a dialog box
+void gui_activateDialogBox (const std::string &dialogName)
+//----------------------------------------------------------------------------------------------------------------------
+{
+	int indexCount = 0;
+
+	dialogBoxActive = true;
+	gam_handlePauseMode(true);
+
+	indexCount = 0;
+
+	for (auto itr : dialogBox)
+	{
+		if (itr.first == dialogName)    // Match the map key
+		{
+			currentDialogBox = indexCount;
+			currentDialogBoxName = dialogName;
+			return;
+		}
+		indexCount++;
+	}
 }

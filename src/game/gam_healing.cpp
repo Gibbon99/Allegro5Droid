@@ -99,6 +99,8 @@ void gam_renderHealingFrames (const std::string &levelName)
 {
 	al_set_target_bitmap (gam_getCompleteLevel ());
 
+	// TODO : Put in try / catch
+
 	for (const auto &healingItr : shipLevel.at (levelName).healing)
 	{
 		if (sys_visibleOnScreen (healingItr.renderPosition, TILE_SIZE))

@@ -196,6 +196,8 @@ void scr_Output(const asSMessageInfo *msg, void *param)
 	}
 
 	log_logMessage(LOG_LEVEL_INFO, sys_getString("%s (%d, %d) : %s : %s", msg->section, msg->row, msg->col, type, msg->message));
+
+	printf("%s\n", sys_getString("%s (%d, %d) : %s : %s", msg->section, msg->row, msg->col, type, msg->message).c_str());
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -331,6 +333,7 @@ bool sys_loadAndCompileScripts()
 	if (retCode < 0)
 	{
 		log_logMessage(LOG_LEVEL_EXIT, sys_getString("Failed to build the script module."));
+		sleep(25);
 		return false;
 	}
 

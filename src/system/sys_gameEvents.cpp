@@ -12,6 +12,7 @@
 #include <hdr/system/sys_audio.h>
 #include <hdr/game/gam_hud.h>
 #include <hdr/game/gam_pauseMode.h>
+#include <hdr/gui/gui_dialogBox.h>
 #include "hdr/system/sys_gameEvents.h"
 
 ALLEGRO_EVENT_QUEUE    *eventQueue;
@@ -189,7 +190,8 @@ void evt_handleEvents ()
 					quitProgram = true;
 
 				if (event.keyboard.keycode == ALLEGRO_KEY_D)
-					gam_debugDoors();
+					gui_activateDialogBox ("confirmExitGameDialog");
+					//gam_debugDoors();
 
 				if (event.keyboard.keycode == keyBinding[gamePause].keyValue)
 					keyBinding[gamePause].currentlyPressed = true;

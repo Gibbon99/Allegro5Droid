@@ -689,7 +689,7 @@ void trn_renderTransferGame ()
 
 						case -2:
 						default:
-							trn_renderToken (TOKEN_DIRECTION_RIGHT, gapWidth, transferRows[playerBlockPos].startY, transferColorLeft);
+							trn_renderToken (TOKEN_DIRECTION_RIGHT, (gapWidth / 2) + BLOCK_WIDTH * 2, transferRows[playerBlockPos].startY + 4, transferColorLeft);
 						trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_LEFT_COLOR);
 							break;
 					}
@@ -704,8 +704,7 @@ void trn_renderTransferGame ()
 					trn_renderToken (TOKEN_DIRECTION_RIGHT, transferSidebarGap - (BLOCK_WIDTH * 3), transferRows[i].startY, transferColorLeft);
 				}
 
-			io_renderTintedSpriteFrame (gam_getSpriteName (trn_getTransferTargetDroid ()), 0, droidX, droidY,
-			                            0.0, 0.0, 0.0, 1.0);
+			io_renderTintedSpriteFrame (gam_getSpriteName (trn_getTransferTargetDroid ()), 0, droidX, droidY,0.0, 0.0, 0.0, 1.0);
 
 			droidX = (transferBitmapWidth - (transferSidebarGap + transferSidebarWidth)) - gapWidth;
 

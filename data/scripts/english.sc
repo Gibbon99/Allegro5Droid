@@ -137,5 +137,8 @@ void as_setEnglishText ()
 	gui_addKeyAndText ("tileTypeRetro", "Retro");
 
 	gui_addKeyAndText ("hudPaused", "Paused");
+	gui_addKeyAndText ("confirmExitTitle", "Confirm Exit");
+	gui_addKeyAndText ("confirmExitText", "Do you wish to exit the game ?");
+	gui_addKeyAndText ("confirmExitGameButton", "Confirm");
 }
 

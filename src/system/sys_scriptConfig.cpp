@@ -183,10 +183,13 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("float disrupterFadeAmount", &disrupterFadeAmount);
 
 	sys_scriptAddHostVariable ("string volumeLevelStr", &volumeLevelStr);
-	sys_scriptAddHostVariable("int volumeLevel", &volumeLevel);
+	sys_scriptAddHostVariable ("int volumeLevel", &volumeLevel);
 
 	sys_scriptAddHostVariable ("string tileType", &tileType);
 	sys_scriptAddHostVariable ("string tileColor", &tileColor);
+
+	sys_scriptAddHostVariable ("int currentObjectSelectedDialog", &currentObjectSelectedDialog);
+	sys_scriptAddHostVariable ("int currentDialogBox", &currentDialogBox);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -228,10 +231,9 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("void as_guiSetCheckboxValue (string &in, int newValue)", (functionPtr) &gui_hostSetCheckboxValue);
 	sys_scriptAddHostFunction ("int as_guiGetCheckboxValue (string &in)", (functionPtr) &gui_hostGetCheckboxValue);
 
-	sys_scriptAddHostFunction ("void as_guiSetSliderValue(string &in, string &in)", (functionPtr)&gui_hostSetSliderValue);
+	sys_scriptAddHostFunction ("void as_guiSetSliderValue(string &in, string &in)", (functionPtr) &gui_hostSetSliderValue);
 	sys_scriptAddHostFunction ("string as_guiGetSliderValue(string &in)", (functionPtr) &gui_hostGetSliderValue);
 
-	sys_scriptAddHostFunction ("void as_guiAddMessageBox(int boxName, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addMessageBox);
 	sys_scriptAddHostFunction ("void as_guiAddNewElement (string &in, string &in, string &in, int type)", (functionPtr) &gui_addNewElement);
 	sys_scriptAddHostFunction ("void as_guiSetImageKeyName(string &in, string &in)", (functionPtr) &gui_setImageKeyName);
 	sys_scriptAddHostFunction ("void sys_changeCurrentMode(int newMode, bool fade)", (functionPtr) &sys_changeMode);
@@ -254,7 +256,10 @@ void sys_scriptInitFunctions ()
 	sys_scriptAddHostFunction ("string sys_boolToString(bool boolValue)", (functionPtr) &sys_boolToString);
 	sys_scriptAddHostFunction ("string sys_intToString(int intValue)", (functionPtr) &sys_intToString);
 	sys_scriptAddHostFunction ("int sys_stringToInt(string &in)", (functionPtr) &sys_stringToInt);
-	sys_scriptAddHostFunction("void sys_loadTileBitmap(string tileType, string tileColor)", (functionPtr) &sys_loadTileBitmap);
+	sys_scriptAddHostFunction ("void sys_loadTileBitmap(string &in, string &in)", (functionPtr) &sys_loadTileBitmap);
+
+	sys_scriptAddHostFunction ("void as_guiAddDialogBox (string &in, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addDialogBox);
+	sys_scriptAddHostFunction ("void as_guiAddObjectToDialog (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostAddObjectToDialog);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
