@@ -79,6 +79,18 @@ void gui_renderDialogBox ()
 
 //----------------------------------------------------------------------------------------------------------------------
 //
+// Remove the active dialog box
+void gui_removeDialogBox()
+//----------------------------------------------------------------------------------------------------------------------
+{
+	dialogBoxActive = false;
+	currentDialogBoxName = "";
+	currentDialogBox = -1;
+	gam_handlePauseMode (false);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//
 // Activate a dialog box
 void gui_activateDialogBox (const std::string &dialogName)
 //----------------------------------------------------------------------------------------------------------------------
@@ -90,7 +102,7 @@ void gui_activateDialogBox (const std::string &dialogName)
 
 	indexCount = 0;
 
-	for (auto itr : dialogBox)
+	for (const auto& itr : dialogBox)
 	{
 		if (itr.first == dialogName)    // Match the map key
 		{

@@ -260,6 +260,8 @@ void sys_scriptInitFunctions ()
 
 	sys_scriptAddHostFunction ("void as_guiAddDialogBox (string &in, string &in, string &in, int posX, int posY, bool modal)", (functionPtr) &gui_addDialogBox);
 	sys_scriptAddHostFunction ("void as_guiAddObjectToDialog (int guiObjectType, string &in, string &in)", (functionPtr) &gui_hostAddObjectToDialog);
+	sys_scriptAddHostFunction ("void as_guiRemoveDialogBox()", (functionPtr) &gui_removeDialogBox);
+	sys_scriptAddHostFunction ("void as_sndStopAllPlaying()", (functionPtr) &snd_stopAllPlaying);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -274,4 +276,5 @@ void sys_scriptInitScriptFunctions ()
 	sys_scriptAddScriptFunction ("void as_guiHandleTerminalAction(string &in objectID)", "as_guiHandleTerminalAction");
 	sys_scriptAddScriptFunction ("void as_guiHandleDatabaseAction(string &in objectID)", "as_guiHandleDatabaseAction");
 	sys_scriptAddScriptFunction ("void as_guiHandleTransferAction(string &in objectID)", "as_guiHandleTransferAction");
+	sys_scriptAddScriptFunction ("void as_guiHandleDialogAction(string &in objectID)", "as_guiHandleDialogAction");
 }

@@ -14,15 +14,19 @@ void as_guiHandleDialogAction(string &in objectID)
 	{
 		if (currentObjectSelectedDialog == as_guiFindIndex (GUI_OBJECT_BUTTON, "confirmExitGameButton"))
 		{
+			as_guiRemoveDialogBox();
 			as_guiChangeCurrentScreen (as_guiFindIndex (GUI_OBJECT_SCREEN, "mainGUIScreen"));
 			sys_changeCurrentMode (MODE_GUI, true);
 			as_guiSetObjectFocus ("startGameButton");
+			as_sndStopAllPlaying();
 			return;
 		}
 
 		if (currentObjectSelectedDialog == as_guiFindIndex (GUI_OBJECT_BUTTON, "returnToGameButton"))
 		{
 			// Return to game
+			as_sndStopAllPlaying();
+			sys_changeCurrentMode(MODE_GAME_RETURN, false);
 			return;
 		}
 	}

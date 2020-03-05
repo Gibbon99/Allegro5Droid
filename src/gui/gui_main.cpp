@@ -4,6 +4,7 @@
 #include <hdr/gui/gui_main.h>
 #include <hdr/system/sys_audio.h>
 #include <hdr/gui/gui_dialogBox.h>
+#include <hdr/io/io_keyboard.h>
 #include "hdr/gui/gui_main.h"
 
 std::vector<_screenObject> guiScreens;
@@ -151,6 +152,9 @@ int gui_findIndex (int guiObjectType, const std::string objectID)
 			{
 				if (iter.first == objectID)
 				{
+
+					printf("Found dialog [ %i ] - [ %s ]\n", indexCount, objectID.c_str());
+
 					return indexCount;
 				}
 				indexCount++;
@@ -206,11 +210,10 @@ void gui_hostAddObjectToDialog (int guiObjectType, std::string objectID, std::st
 						guiButtons.at (objectIndex).startX = ((screenWidth - dialogBox.at (whichDialog).width) / 2) + guiButtons.at (objectIndex).startX;
 					else
 						guiButtons.at (objectIndex).startX = dialogBox.at (whichDialog).positionX + guiButtons.at (objectIndex).startX;
+				else if (dialogBox.at (whichDialog).positionX == -1)
+					guiButtons.at (objectIndex).startX = (((screenWidth - dialogBox.at (whichDialog).width) / 2) + dialogBox.at (whichDialog).width) - ((guiButtons.at (objectIndex).width) + abs (guiButtons.at (objectIndex).startX));
 				else
-					if (dialogBox.at (whichDialog).positionX == -1)
-						guiButtons.at (objectIndex).startX = (((screenWidth - dialogBox.at (whichDialog).width) / 2) + dialogBox.at (whichDialog).width) - ((guiButtons.at (objectIndex).width) + abs(guiButtons.at (objectIndex).startX));
-					else
-						guiButtons.at (objectIndex).startX = (dialogBox.at (whichDialog).positionX + dialogBox.at (whichDialog).width) - ((guiButtons.at (objectIndex).width)); // + abs(guiButtons.at (objectIndex).startX)));
+					guiButtons.at (objectIndex).startX = (dialogBox.at (whichDialog).positionX + dialogBox.at (whichDialog).width) - ((guiButtons.at (objectIndex).width)); // + abs(guiButtons.at (objectIndex).startX)));
 
 				if (guiButtons.at (objectIndex).startY > 0)
 					if (dialogBox.at (whichDialog).positionY == -1)
@@ -1197,7 +1200,9 @@ void gui_handleFocusMoveDialog (int moveDirection, bool takeAction, int eventSou
 
 	if (takeAction)
 	{
-		currentObjectSelectedDialog = dialogBox.at (currentDialogBoxName).selectedObject;
+		currentObjectSelectedDialog = dialogBox.at(currentDialogBoxName).objectIDIndex[dialogBox.at (currentDialogBoxName).selectedObject];
+
+//		printf("Button pressed [ %s ]\n", )
 
 		evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "keyPressGood");
 		switch (dialogBox.at (currentDialogBoxName).objectType[dialogBox.at (currentDialogBoxName).selectedObject])
@@ -1205,6 +1210,9 @@ void gui_handleFocusMoveDialog (int moveDirection, bool takeAction, int eventSou
 			case GUI_OBJECT_BUTTON:
 				if (!eventSource)
 				{   // Not a mouse action
+
+					printf("Run script [ %s ] for object [ %s ]\n", guiButtons[currentObjectSelectedDialog].action.c_str (), guiButtons[currentObjectSelectedDialog].objectID.c_str());
+
 					sys_runScriptFunction (guiButtons[currentObjectSelectedDialog].action, guiButtons[currentObjectSelectedDialog].objectID);
 				}
 				else
@@ -1212,6 +1220,7 @@ void gui_handleFocusMoveDialog (int moveDirection, bool takeAction, int eventSou
 					if (sys_isPointInRect (mouseLocation, guiButtons[currentObjectSelectedDialog].boundingBox))
 					{
 						sys_runScriptFunction (guiButtons[currentObjectSelectedDialog].action, guiButtons[currentObjectSelectedDialog].objectID);
+						keyBinding[gameAction].currentlyPressed = false;
 					}
 				}
 				break;
@@ -1243,6 +1252,7 @@ void gui_handleFocusMoveDialog (int moveDirection, bool takeAction, int eventSou
 			break;
 
 		case GUI_MOVE_DOWN:
+		case GUI_MOVE_RIGHT:
 			indexCount = 1;
 			if (dialogBox.at (currentDialogBoxName).selectedObject != (int) dialogBox.at (currentDialogBoxName).objectIDIndex.size () - 1)     // Don't go past number of objects in this dialog
 			{
@@ -1265,6 +1275,7 @@ void gui_handleFocusMoveDialog (int moveDirection, bool takeAction, int eventSou
 			break;
 
 		case GUI_MOVE_UP:
+		case GUI_MOVE_LEFT:
 			indexCount = 1;
 			if (dialogBox.at (currentDialogBoxName).selectedObject > 0)
 			{
@@ -1432,6 +1443,7 @@ void gui_handleFocusMove (int moveDirection, bool takeAction, int eventSource)
 			break;
 
 		case GUI_MOVE_LEFT:
+
 			switch (guiScreens[currentGUIScreen].objectType[guiScreens[currentGUIScreen].selectedObject])
 			{
 				case GUI_OBJECT_SLIDER:

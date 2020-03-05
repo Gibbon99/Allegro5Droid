@@ -28,3 +28,6 @@ void gui_addDialogBox (const std::string &dialogName, std::string title, std::st
 
 // Activate a dialog box
 void gui_activateDialogBox (const std::string &dialogName);
+
+// Remove the active dialog box
+void gui_removeDialogBox();

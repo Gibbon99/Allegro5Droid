@@ -198,7 +198,7 @@ void evt_handleEvents ()
 
 				//
 				// Only use Pause key when in isPaused state
-				if (!isPaused)
+//				if (!isPaused)
 				{
 					if (event.keyboard.keycode == keyBinding[gameLeft].keyValue)
 						keyBinding[gameLeft].currentlyPressed = true;

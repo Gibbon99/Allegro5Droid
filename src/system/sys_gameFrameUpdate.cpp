@@ -22,6 +22,8 @@
 #include <hdr/io/io_resourceImage.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_doors.h>
+#include <hdr/game/gam_pauseMode.h>
+#include <hdr/gui/gui_dialogBox.h>
 #include "hdr/system/sys_gameFrameUpdate.h"
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -93,7 +95,8 @@ void sys_gameTickRun (double tickTime)
 			break;
 
 		case MODE_GAME_RETURN:
-			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, currentAlertLevelSoundName);
+			dialogBoxActive = false;
+			gam_handlePauseMode(false);
 			sys_changeMode (MODE_GAME, false);
 			break;
 
