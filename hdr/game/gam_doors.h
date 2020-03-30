@@ -59,6 +59,7 @@ typedef struct
 
 extern float                     doorAnimSpeed;
 extern std::vector<_doorTrigger> doorBulletSensor;
+extern std::vector<_doorTrigger> doorTriggers;
 
 // Find the doors for this level and prepare a sensor objecty
 void gam_doorTriggerSetup (const std::string levelName);

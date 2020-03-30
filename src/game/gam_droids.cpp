@@ -102,7 +102,7 @@ void gam_renderDroids (const std::string levelName, float interpolate)
 		{
 			if (shipLevel.at (levelName).droid[index].currentMode != DROID_MODE_DEAD)
 				{
-//					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
+					if (shipLevel.at (levelName).droid[index].visibleToPlayer)
 					{
 						if (sys_visibleOnScreen (shipLevel.at (levelName).droid[index].worldPos, SPRITE_SIZE))
 							{

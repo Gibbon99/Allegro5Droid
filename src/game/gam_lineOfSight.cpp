@@ -29,8 +29,8 @@ class RayCastAnyCallback : public b2RayCastCallback {
 					{
 						//
 						// Look through open doors, ignoring the bullet sensor
-						if ((DOOR_ACROSS_OPENED == doorBulletSensor[userData->dataValue].currentFrame) ||
-						    (DOOR_UP_OPENED == doorBulletSensor[userData->dataValue].currentFrame))
+						if ((DOOR_ACROSS_OPENED == doorTriggers[userData->dataValue].currentFrame) ||
+						    (DOOR_UP_OPENED == doorTriggers[userData->dataValue].currentFrame))
 							{
 								m_hit = false;
 								return 1.0f;
@@ -44,7 +44,8 @@ class RayCastAnyCallback : public b2RayCastCallback {
 							}
 					}
 				break;
-			}
+		}
+
 		m_hit            = false;
 		return 1.0f;
 	}

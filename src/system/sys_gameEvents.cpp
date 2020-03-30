@@ -186,10 +186,10 @@ void evt_handleEvents ()
 				//
 				// Key pressed down - record state
 			case ALLEGRO_EVENT_KEY_DOWN:
-				if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-					quitProgram = true;
+//				if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+//					quitProgram = true;
 
-				if (event.keyboard.keycode == ALLEGRO_KEY_D)
+				if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
 					gui_activateDialogBox ("confirmExitGameDialog");
 					//gam_debugDoors();
 

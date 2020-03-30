@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-05-03-2020	18:18:24
+31-03-2020	09:16:56
 Logfile started...
 INFO | Packfile: Supported archive types.
 INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
@@ -314,13 +314,13 @@ INFO | gui.sc (1380, 92) : WARN : Float value truncated in implicit conversion t
 INFO | gui.sc (1389, 110) : WARN : Float value truncated in implicit conversion to integer
 INFO | gui.sc (1389, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ -736508960 ]
-INFO | Func ID for [ void script_initGUI() ] - [ -736512672 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ -736532176 ]
-INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ -736533248 ]
-INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ -736534256 ]
-INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ -736535328 ]
-INFO | Func ID for [ void as_guiHandleDialogAction(string &in objectID) ] - [ -736536496 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ -1796416576 ]
+INFO | Func ID for [ void script_initGUI() ] - [ -1796420288 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ -1796439792 ]
+INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ -1796440864 ]
+INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ -1796441872 ]
+INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ -1796442944 ]
+INFO | Func ID for [ void as_guiHandleDialogAction(string &in objectID) ] - [ -1796444112 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -352,13 +352,14 @@ DEBUG | Loaded [ levelShutdown.wav ]
 DEBUG | Loaded [ redAlert.wav ]
 DEBUG | Loaded [ transfer1.wav ]
 DEBUG | Loaded [ transferStart.wav ]
-DEBUG | Loaded [ door.wav ]
+DEBUG | Loaded [ doorOpen.wav ]
+DEBUG | Loaded [ doorClose.wav ]
 DEBUG | Loaded [ splash.bmp ]
 DEBUG | Loaded [ hud.bmp ]
 DEBUG | Loaded [ tut_healing.bmp ]
 DEBUG | Loaded [ tut_lift.bmp ]
 DEBUG | Loaded [ tut_terminal.bmp ]
-DEBUG | Loaded [ future_gray.bmp ]
+DEBUG | Loaded [ future_blue.bmp ]
 DEBUG | Loaded [ future_dark.bmp ]
 DEBUG | Loaded [ universe.bmp ]
 DEBUG | Loaded [ particleSpark.bmp ]
@@ -452,9 +453,11 @@ DEBUG | Node [ MOVE_TO ] added. Num Children for [ AI_PATROL ] now [ 2 ]
 DEBUG | Child index set to [ 21 ]
 DEBUG | Node [ FIND_WP ] added. Num Children for [ AI_PATROL ] now [ 3 ]
 DEBUG | Child index set to [ 22 ]
-DEBUG | Loaded [ future_gray.bmp ]
+DEBUG | Loaded [ future_blue.bmp ]
 DEBUG | Loaded [ future_dark.bmp ]
 DEBUG | Clearing out emitters
-DEBUG | Loaded [ future_gray.bmp ]
-DEBUG | Loaded [ future_dark.bmp ]
-DEBUG | Clearing out emitters
+ERROR | Sample [ doorOpen ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play

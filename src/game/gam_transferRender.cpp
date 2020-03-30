@@ -690,7 +690,7 @@ void trn_renderTransferGame ()
 						case -2:
 						default:
 							trn_renderToken (TOKEN_DIRECTION_RIGHT, (gapWidth / 2) + BLOCK_WIDTH * 2, transferRows[playerBlockPos].startY + 4, transferColorLeft);
-						trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_LEFT_COLOR);
+							trn_renderLineForRow (transferRows[0], gapWidth, TRANSFER_ROW_LAUNCHER_LEFT_COLOR);
 							break;
 					}
 		}

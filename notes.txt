@@ -16,9 +16,9 @@ DONE - Disruptor not damaging other droids?
 DONE - Start on Random level
 DONE - Doors getting stuck open
 DONE - Doors not opening fast enough
+DONE - DO GUI Popup box for restart and 'Sure to exit'
 
 Do GUI options
-DO GUI Popup box for restart and 'Sure to exit'
 Collisions for droids to ignore
 Particles still around on exploding droids sometimes
 transferRender - stop drawing on -1 for numDroidTokens

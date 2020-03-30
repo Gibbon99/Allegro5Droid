@@ -94,7 +94,8 @@ void script_loadAllResources ()
 	sys_loadResource ("redAlert", "redAlert.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("transfer1", "transfer1.wav", RESOURCE_AUDIO, 0, 0);
 	sys_loadResource ("transferStart", "transferStart.wav", RESOURCE_AUDIO, 0, 0);
-	sys_loadResource ("door", "door.wav", RESOURCE_AUDIO, 0, 0);
+	sys_loadResource ("doorOpen", "doorOpen.wav", RESOURCE_AUDIO, 0, 0);
+	sys_loadResource ("doorClose", "doorClose.wav", RESOURCE_AUDIO, 0, 0);
 
 	sys_loadResource ("splash", "splash.bmp", RESOURCE_BITMAP, 0, 0);
 	sys_loadResource ("hud", "hud.bmp", RESOURCE_BITMAP, 0, 0);

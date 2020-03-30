@@ -4,6 +4,7 @@
 #include <hdr/game/gam_render.h>
 #include <hdr/game/gam_player.h>
 #include <hdr/game/gam_droids.h>
+#include <hdr/system/sys_audio.h>
 #include "hdr/game/gam_doors.h"
 
 std::vector<_doorTrigger> doorTriggers;
@@ -66,9 +67,9 @@ void gam_doorProcessActions ()
 // ----------------------------------------------------------------------------
 {
 	int i;
-	int doorDelayTime = 0;
+//	int doorDelayTime = 0;
 
-	if (doorTriggers.size () == 0)
+	if (doorTriggers.empty())
 		return;
 
 	for (i = 0; i < doorTriggers.size (); i++)
@@ -83,6 +84,7 @@ void gam_doorProcessActions ()
 				{
 					case DOOR_ACROSS_CLOSED:
 						doorTriggers[i].currentFrame = DOOR_ACROSS_OPEN_1;
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "doorOpen");
 						//gam_playDoorSound(i);
 						break;
 					case DOOR_ACROSS_OPEN_1:
@@ -103,6 +105,7 @@ void gam_doorProcessActions ()
 
 					case DOOR_UP_CLOSED:
 						doorTriggers[i].currentFrame = DOOR_UP_OPEN_1;
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "doorOpen");
 						//gam_playDoorSound(i);
 						break;
 					case DOOR_UP_OPEN_1:
@@ -137,6 +140,7 @@ void gam_doorProcessActions ()
 					case DOOR_ACROSS_OPENED:
 //						gam_playDoorSound(i);
 						doorTriggers[i].currentFrame = DOOR_ACROSS_CLOSING_1;
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "doorClose");
 						break;
 					case DOOR_ACROSS_CLOSING_1:
 						doorTriggers[i].currentFrame = DOOR_ACROSS_CLOSING_2;
@@ -155,6 +159,7 @@ void gam_doorProcessActions ()
 					case DOOR_UP_OPENED:
 //						gam_playDoorSound(i);
 						doorTriggers[i].currentFrame = DOOR_UP_CLOSING_1;
+						evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_ONCE, "doorClose");
 						break;
 					case DOOR_UP_CLOSING_1:
 						doorTriggers[i].currentFrame = DOOR_UP_CLOSING_2;
