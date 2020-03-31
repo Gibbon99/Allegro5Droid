@@ -17,6 +17,7 @@ DONE - Start on Random level
 DONE - Doors getting stuck open
 DONE - Doors not opening fast enough
 DONE - DO GUI Popup box for restart and 'Sure to exit'
+DONE - See through open doors correctly
 
 Do GUI options
 Collisions for droids to ignore

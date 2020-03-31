@@ -107,8 +107,11 @@ void contactListener::BeginContact (b2Contact *contact)
 			case PHYSIC_TYPE_ENEMY:
 				if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
 					{
-						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
-						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, bodyUserData_A->dataValue, {0, 0});
+
+						gam_addPhysicAction (PHYSIC_EVENT_TYPE_COLLIDE, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
+
+//						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
+//						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, bodyUserData_A->dataValue, {0, 0});
 						return;
 					}
 			break;
@@ -196,8 +199,10 @@ void contactListener::BeginContact (b2Contact *contact)
 
 					if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
 						{
-							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, 0, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
-							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
+
+							gam_addPhysicAction (PHYSIC_EVENT_TYPE_COLLIDE, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
+//							gam_addPhysicAction (PHYSIC_EVENT_TYPE_BULLET, PHYSIC_DAMAGE_BULLET, 0, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
+//							gam_addPhysicAction (PHYSIC_EVENT_TYPE_REMOVE_BULLET, 0, 0, 0, bodyUserData_B->dataValue, {0, 0});
 							return;
 						}
 					break;
@@ -368,9 +373,10 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 			case PHYSIC_TYPE_PLAYER:
 				if (bodyUserData_B->userType == PHYSIC_TYPE_WALL)
 					{
-//						contact->SetEnabled (false);
+						contact->SetEnabled (false);
 						return;
 					}
+				break;
 
 			case PHYSIC_TYPE_BULLET_ENEMY:
 				{
@@ -385,6 +391,20 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 								}
 						}
 				}
+				break;
+
+			case PHYSIC_TYPE_ENEMY:
+			{
+				if (shipLevel.at(lvl_getCurrentLevelName ()).droid[bodyUserData_A->dataValue].ignoreCollisions)
+				{
+					contact->SetEnabled (false);
+
+//					printf("Ignoring collision for [ %i %i ]\n", bodyUserData_A->dataValue, bodyUserData_B->dataValue);
+
+					return;
+				}
+			}
+			break;
 		}
 
 	switch (bodyUserData_B->userType)
@@ -392,9 +412,10 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 			case PHYSIC_TYPE_PLAYER:
 				if (bodyUserData_A->userType == PHYSIC_TYPE_WALL)
 					{
-//								contact->SetEnabled (false);
+								contact->SetEnabled (false);
 						return;
 					}
+				break;
 
 			case PHYSIC_TYPE_BULLET_ENEMY:
 				{
@@ -409,5 +430,19 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 								}
 						}
 				}
+				break;
+
+			case PHYSIC_TYPE_ENEMY:
+			{
+				if (shipLevel.at(lvl_getCurrentLevelName ()).droid[bodyUserData_B->dataValue].ignoreCollisions)
+				{
+					contact->SetEnabled (false);
+
+//					printf("Ignoring collision for [ %i %i ]\n", bodyUserData_A->dataValue, bodyUserData_B->dataValue);
+
+					return;
+				}
+			}
+				break;
 		}
 }

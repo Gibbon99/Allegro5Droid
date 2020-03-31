@@ -16,8 +16,8 @@ void script_loadAllResources ()
 	playerRadius             = 12.0f;
 	playerFriction           = 0.5f;
 	playerElastic            = 0.8f;
-	playerAcceleration       = 150.0f;
-	playerMaxSpeed           = 250.0f;
+//	playerAcceleration       = 150.0f;
+//	playerMaxSpeed           = 250.0f;
 	gravity                  = 190.0f;
 	sideviewDrawScaleScript  = 0.415f;
 	droidAnimateSpeed        = 60.0f;

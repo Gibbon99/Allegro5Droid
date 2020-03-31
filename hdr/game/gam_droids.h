@@ -26,13 +26,13 @@ void gam_animateThisLevel ( std::string levelName );
 void gam_damageToDroid (int targetDroid, int damageSource, int sourceDroid, int eventSource);
 
 // process ignore collosions
-void gam_processIgnoreCollisions ( std::string whichLevel, int whichDroid );
+void gam_processIgnoreCollisions ( const std::string& whichLevel, int whichDroid );
 
 // Process weapon timings
 void gam_droidWeaponCharge ( const std::string& levelName, int whichDroid, float tickTime );
 
 // Create the lookup table between droid type and sprite name
-void gl_setupDroidToSpriteLookup();
+void gam_setupDroidToSpriteLookup();
 
 // Return the sprite name for a droidType
 std::string gam_getSpriteName(int droidType);
@@ -41,4 +41,4 @@ std::string gam_getSpriteName(int droidType);
 void gam_removeDroid(int whichDroid);
 
 // Droid health has changed; either damage or healing - adjust the animation
-void gam_adjustHealthAnimation(std::string tempCurrentLevel, int targetDroid);
+void gam_adjustHealthAnimation(const std::string& tempCurrentLevel, int targetDroid);

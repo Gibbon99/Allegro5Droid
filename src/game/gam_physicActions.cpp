@@ -2,6 +2,7 @@
 #include <hdr/game/gam_game.h>
 #include <hdr/game/gam_droids.h>
 #include <hdr/game/gam_bullet.h>
+#include <hdr/game/gam_droidAIPatrol.h>
 #include "hdr/game/gam_physicActions.h"
 
 std::queue<__physicAction> physicActionQueue;
@@ -74,7 +75,10 @@ void gam_processPhysicActions()
 				break;
 
 			case PHYSIC_EVENT_TYPE_PARTICLE:
+				break;
 
+			case PHYSIC_EVENT_TYPE_COLLIDE:     // Handle two droids colliding with each other
+				ai_handleDroidCollision(physicEvent.sourceIndex, physicEvent.targetIndex);
 				break;
 		}
 	}

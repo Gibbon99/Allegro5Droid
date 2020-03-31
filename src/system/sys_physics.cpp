@@ -10,6 +10,7 @@
 #include <hdr/game/gam_lifts.h>
 #include <hdr/game/gam_healing.h>
 #include <hdr/system/sys_gameFrameRender.h>
+#include <hdr/game/gam_droidAI.h>
 
 typedef struct
 {

@@ -15,8 +15,6 @@
 #include "hdr/game/gam_terminal.h"
 
 b2Vec2 previousPlayerWorldPos;
-float  playerAcceleration;      // From script
-float  playerMaxSpeed;          // From script
 float  gravity;                 // From script
 _droid playerDroid;
 
@@ -39,19 +37,19 @@ void gam_weaponRechargePlayer (float tickTime)
 //-----------------------------------------------------------------------------
 {
 	if (!playerDroid.weaponCanFire)
-		{
-			if (dataBaseEntry[playerDroid.droidType].canShoot)
-				playerDroid.weaponDelay += dataBaseEntry[playerDroid.droidType].rechargeTime * tickTime;
-			else
-				playerDroid.weaponDelay += dataBaseEntry[0].rechargeTime * tickTime;
+	{
+		if (dataBaseEntry[playerDroid.droidType].canShoot)
+			playerDroid.weaponDelay += dataBaseEntry[playerDroid.droidType].rechargeTime * tickTime;
+		else
+			playerDroid.weaponDelay += dataBaseEntry[0].rechargeTime * tickTime;
 
-			if (playerDroid.weaponDelay > 1.0f)
-				{
-					playerDroid.weaponDelay   = 0.0f;
-					playerDroid.weaponCanFire = true;
-					hud_setText (false, "hudMoving");
-				}
+		if (playerDroid.weaponDelay > 1.0f)
+		{
+			playerDroid.weaponDelay   = 0.0f;
+			playerDroid.weaponCanFire = true;
+			hud_setText (false, "hudMoving");
 		}
+	}
 }
 
 // ----------------------------------------------------------------------------
@@ -68,7 +66,8 @@ void gam_initPlayerValues ()
 	playerDroid.frameDelay              = 1.0f;
 	playerDroid.frameAnimCounter        = 1.0f;
 	playerDroid.currentSpeed            = 0.0f;
-	playerDroid.acceleration            = 0.4f; // TODO dataBaseEntry[playerDroid.droidType].accelerate;
+	playerDroid.acceleration            = dataBaseEntry[playerDroid.droidType].accelerate;
+	playerDroid.maxSpeed                = dataBaseEntry[playerDroid.droidType].maxSpeed;
 	playerDroid.bulletName              = bul_getBulletName (playerDroid.droidType);
 	playerDroid.playerDroidTypeDBIndex  = "db_" + gam_getSpriteName (playerDroid.droidType);
 	playerDroid.weaponCanFire           = true;
@@ -92,34 +91,34 @@ b2Vec2 gam_getLiftWorldPosition (int whichLift, std::string whichLevel)
 	liftCounter = 0;
 
 	for (countY = 0; countY != shipLevel.at (whichLevel).levelDimensions.y; countY++)
+	{
+		for (countX = 0; countX != shipLevel.at (whichLevel).levelDimensions.x; countX++)
 		{
-			for (countX = 0; countX != shipLevel.at (whichLevel).levelDimensions.x; countX++)
+			whichTile = shipLevel.at (whichLevel).tiles[(countY * shipLevel.at (whichLevel).levelDimensions.x) + countX];
+
+			if (LIFT_TILE == whichTile)
+			{
+				if (liftCounter == whichLift)
 				{
-					whichTile = shipLevel.at (whichLevel).tiles[(countY * shipLevel.at (whichLevel).levelDimensions.x) + countX];
+					tilePosX = countX * TILE_SIZE; //countX - ((screenWidth / TILE_SIZE) / 2);
+					tilePosY = countY * TILE_SIZE; //countY - ((screenHeight / TILE_SIZE) / 2);
+					tilePosY += TILE_SIZE;
 
-					if (LIFT_TILE == whichTile)
-						{
-							if (liftCounter == whichLift)
-								{
-									tilePosX = countX * TILE_SIZE; //countX - ((screenWidth / TILE_SIZE) / 2);
-									tilePosY = countY * TILE_SIZE; //countY - ((screenHeight / TILE_SIZE) / 2);
-									tilePosY += TILE_SIZE;
+					pixelX = TILE_SIZE / 2;
+					pixelY = -TILE_SIZE / 2;
 
-									pixelX = TILE_SIZE / 2;
-									pixelY = -TILE_SIZE / 2;
+					returnPosition.x = tilePosX + pixelX;
+					returnPosition.y = tilePosY + pixelY;
 
-									returnPosition.x = tilePosX + pixelX;
-									returnPosition.y = tilePosY + pixelY;
-
-									return returnPosition;
-								}
-							else
-								{
-									liftCounter++;
-								}
-						}
+					return returnPosition;
 				}
+				else
+				{
+					liftCounter++;
+				}
+			}
 		}
+	}
 
 	log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Unable to find lift tile on level [ %s ]", whichLevel.c_str ()));
 	return returnPosition;
@@ -132,91 +131,91 @@ void gam_processPlayerMovement ()
 //-----------------------------------------------------------------------------
 {
 	if (keyBinding[gameLeft].currentlyPressed)
-		{
+	{
 
-			playerDroid.velocity.x -= playerAcceleration;
-			if (playerDroid.velocity.x < -playerMaxSpeed)
-				{
-					playerDroid.velocity.x = -playerMaxSpeed;
-				}
+		playerDroid.velocity.x -= playerDroid.acceleration;
+		if (playerDroid.velocity.x < -playerDroid.maxSpeed)
+		{
+			playerDroid.velocity.x = -playerDroid.maxSpeed;
 		}
+	}
 
 	else if (keyBinding[gameRight].currentlyPressed)
+	{
+		playerDroid.velocity.x += playerDroid.acceleration;
+		if (playerDroid.velocity.x > playerDroid.maxSpeed)
 		{
-			playerDroid.velocity.x += playerAcceleration;
-			if (playerDroid.velocity.x > playerMaxSpeed)
-				{
-					playerDroid.velocity.x = playerMaxSpeed;
-				}
+			playerDroid.velocity.x = playerDroid.maxSpeed;
 		}
+	}
 
 	if (keyBinding[gameUp].currentlyPressed)
+	{
+		playerDroid.velocity.y -= playerDroid.acceleration;
+		if (playerDroid.velocity.y < -playerDroid.maxSpeed)
 		{
-			playerDroid.velocity.y -= playerAcceleration;
-			if (playerDroid.velocity.y < -playerMaxSpeed)
-				{
-					playerDroid.velocity.y = -playerMaxSpeed;
-				}
+			playerDroid.velocity.y = -playerDroid.maxSpeed;
 		}
+	}
 
 	else if (keyBinding[gameDown].currentlyPressed)
+	{
+		playerDroid.velocity.y += playerDroid.acceleration;
+		if (playerDroid.velocity.y > playerDroid.maxSpeed)
 		{
-			playerDroid.velocity.y += playerAcceleration;
-			if (playerDroid.velocity.y > playerMaxSpeed)
-				{
-					playerDroid.velocity.y = playerMaxSpeed;
-				}
+			playerDroid.velocity.y = playerDroid.maxSpeed;
 		}
+	}
 
 //
 // Do gravity slowdown when no key is pressed
 	if (!keyBinding[gameLeft].currentlyPressed)
+	{
+		if (playerDroid.velocity.x < 0.0f)
 		{
-			if (playerDroid.velocity.x < 0.0f)
-				{
-					playerDroid.velocity.x += gravity;
-					if (playerDroid.velocity.x > 0.0f)
-						{
-							playerDroid.velocity.x = 0.0f;
-						}
-				}
+			playerDroid.velocity.x += gravity;
+			if (playerDroid.velocity.x > 0.0f)
+			{
+				playerDroid.velocity.x = 0.0f;
+			}
 		}
+	}
 
 	if (!keyBinding[gameRight].currentlyPressed)
+	{
+		if (playerDroid.velocity.x > 0.0f)
 		{
-			if (playerDroid.velocity.x > 0.0f)
-				{
-					playerDroid.velocity.x -= gravity;
-					if (playerDroid.velocity.x < 0.0f)
-						{
-							playerDroid.velocity.x = 0.0f;
-						}
-				}
+			playerDroid.velocity.x -= gravity;
+			if (playerDroid.velocity.x < 0.0f)
+			{
+				playerDroid.velocity.x = 0.0f;
+			}
 		}
+	}
 
 	if (!keyBinding[gameUp].currentlyPressed)
+	{
+		if (playerDroid.velocity.y < 0.0f)
 		{
-			if (playerDroid.velocity.y < 0.0f)
-				{
-					playerDroid.velocity.y += gravity;
-					if (playerDroid.velocity.y > 0.0f)
-						{
-							playerDroid.velocity.y = 0.0f;
-						}
-				}
+			playerDroid.velocity.y += gravity;
+			if (playerDroid.velocity.y > 0.0f)
+			{
+				playerDroid.velocity.y = 0.0f;
+			}
 		}
+	}
 
 	if (!keyBinding[gameDown].currentlyPressed)
+	{
+		if (playerDroid.velocity.y > 0.0f)
 		{
-			if (playerDroid.velocity.y > 0.0f)
-				{
-					playerDroid.velocity.y -= gravity;
-					if (playerDroid.velocity.y < 0.0f)
-						{
-							playerDroid.velocity.y = 0.0f;
-						}
-				}
+			playerDroid.velocity.y -= gravity;
+			if (playerDroid.velocity.y < 0.0f)
+			{
+				playerDroid.velocity.y = 0.0f;
+			}
 		}
+	}
 
 	previousPlayerWorldPos = playerDroid.worldPos;
 	playerDroid.worldPos = playerDroid.body->GetPosition ();     // GetPosition is in meters
@@ -237,58 +236,58 @@ void gam_processActionKey ()
 	//
 	// Actions when no movements are down
 	if ((!keyBinding[gameLeft].currentlyPressed) && (!keyBinding[gameRight].currentlyPressed) && (!keyBinding[gameDown].currentlyPressed) && (!keyBinding[gameUp].currentlyPressed))
+	{
+		if (playerDroid.overLiftTile)
 		{
-			if (playerDroid.overLiftTile)
-				{
-					if (!playerDroid.inTransferMode)
-						{
-							gam_performLiftAction ();
-							keyBinding[gameAction].currentlyPressed = false;
-							return;
-						}
-				}
-
-			if (playerDroid.overTerminalTile)
-				{
-					if (!playerDroid.inTransferMode)
-						{
-							gam_performTerminalAction ();
-							keyBinding[gameAction].currentlyPressed = false;
-							return;
-						}
-				}
-
 			if (!playerDroid.inTransferMode)
-				{
-					playerDroid.inTransferMode = true;
-					evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, "transferMove");
-					hud_setText (false, "hudTransfer");
-				}
+			{
+				gam_performLiftAction ();
+				keyBinding[gameAction].currentlyPressed = false;
+				return;
+			}
 		}
+
+		if (playerDroid.overTerminalTile)
+		{
+			if (!playerDroid.inTransferMode)
+			{
+				gam_performTerminalAction ();
+				keyBinding[gameAction].currentlyPressed = false;
+				return;
+			}
+		}
+
+		if (!playerDroid.inTransferMode)
+		{
+			playerDroid.inTransferMode = true;
+			evt_pushEvent (0, PARA_EVENT_AUDIO, GAME_EVENT_PLAY_AUDIO, volumeLevel, ALLEGRO_PLAYMODE_LOOP, "transferMove");
+			hud_setText (false, "hudTransfer");
+		}
+	}
 
 	if (!playerDroid.inTransferMode)
+	{
+		if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
 		{
-			if ((keyBinding[gameLeft].currentlyPressed) || (keyBinding[gameRight].currentlyPressed) || (keyBinding[gameDown].currentlyPressed) || (keyBinding[gameUp].currentlyPressed))
-				{
-					if (playerDroid.weaponCanFire)
-						{
-							gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
-							keyBinding[gameAction].currentlyPressed = false;
-							playerDroid.weaponCanFire               = false;
-							hud_setText (false, "hudRecharging");
-							return;
-						}
-				}
+			if (playerDroid.weaponCanFire)
+			{
+				gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
+				keyBinding[gameAction].currentlyPressed = false;
+				playerDroid.weaponCanFire               = false;
+				hud_setText (false, "hudRecharging");
+				return;
+			}
 		}
+	}
 }
 
 //---------------------------------------------------------------------------------------------------------------
 //
 // Destroy the player and end game
-void gam_destroyPlayer()
+void gam_destroyPlayer ()
 //---------------------------------------------------------------------------------------------------------------
 {
 
-	printf("Player is dead\n");
+	printf ("Player is dead\n");
 
 }

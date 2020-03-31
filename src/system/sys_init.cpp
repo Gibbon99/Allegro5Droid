@@ -240,7 +240,7 @@ void sys_initAll ()
 		return;
 	}
 
-	gl_setupDroidToSpriteLookup ();
+	gam_setupDroidToSpriteLookup ();
 
 	//
 	// Load resources from file system

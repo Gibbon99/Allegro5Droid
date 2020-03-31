@@ -58,6 +58,7 @@ typedef struct {
 	float       frameAnimCounter;
 	float       currentSpeed;
 	float       acceleration;
+	float       maxSpeed;
 	std::string spriteName;
 	std::string bulletName;
 
@@ -93,7 +94,7 @@ typedef struct {
 	float beenShotCountdown;
 
 	int   collisionCount;             // how many collision have occured to ignore them
-	bool  hasCollided;
+//	bool  hasCollided;
 	int   collidedWith;               // Who did the droid hit
 	float ignoreCollisionsCounter;
 

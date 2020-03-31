@@ -48,8 +48,6 @@ void sys_scriptInitVariables ()
 	sys_scriptAddHostVariable ("float playerFriction", &playerFriction);
 	sys_scriptAddHostVariable ("float playerElastic", &playerElastic);
 	sys_scriptAddHostVariable ("float pixelsPerMeter", &pixelsPerMeter);
-	sys_scriptAddHostVariable ("float playerAcceleration", &playerAcceleration);
-	sys_scriptAddHostVariable ("float playerMaxSpeed", &playerMaxSpeed);
 	sys_scriptAddHostVariable ("float gravity", &gravity);
 	sys_scriptAddHostVariable ("float doorAnimSpeed", &doorAnimSpeed);
 	sys_scriptAddHostVariable ("float sideviewDrawScaleScript", &sideviewDrawScaleScript);
