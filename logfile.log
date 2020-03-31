@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 Log file opened:
-31-03-2020	14:59:06
+31-03-2020	16:28:08
 Logfile started...
 INFO | Packfile: Supported archive types.
 INFO | Packfile: [ ZIP ] : [ PkZip/WinZip/Info-Zip compatible ]
@@ -312,13 +312,13 @@ INFO | gui.sc (1380, 92) : WARN : Float value truncated in implicit conversion t
 INFO | gui.sc (1389, 110) : WARN : Float value truncated in implicit conversion to integer
 INFO | gui.sc (1389, 92) : WARN : Float value truncated in implicit conversion to integer
 INFO | Compiled scripts.
-INFO | Func ID for [ void script_loadAllResources() ] - [ -2049647808 ]
-INFO | Func ID for [ void script_initGUI() ] - [ -2049651520 ]
-INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ -2049671024 ]
-INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ -2049672096 ]
-INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ -2049673104 ]
-INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ -2049674176 ]
-INFO | Func ID for [ void as_guiHandleDialogAction(string &in objectID) ] - [ -2049675344 ]
+INFO | Func ID for [ void script_loadAllResources() ] - [ 1907280592 ]
+INFO | Func ID for [ void script_initGUI() ] - [ 1907276880 ]
+INFO | Func ID for [ void as_guiHandleElementAction(string &in objectID) ] - [ 1907257376 ]
+INFO | Func ID for [ void as_guiHandleTerminalAction(string &in objectID) ] - [ 1907256304 ]
+INFO | Func ID for [ void as_guiHandleDatabaseAction(string &in objectID) ] - [ 1907255296 ]
+INFO | Func ID for [ void as_guiHandleTransferAction(string &in objectID) ] - [ 1907254224 ]
+INFO | Func ID for [ void as_guiHandleDialogAction(string &in objectID) ] - [ 1907253056 ]
 DEBUG | Loaded [ collosion1.wav ]
 DEBUG | Loaded [ endTransmission1.wav ]
 DEBUG | Loaded [ greenAlert.wav ]
@@ -454,232 +454,29 @@ DEBUG | Child index set to [ 22 ]
 DEBUG | Loaded [ future_blue.bmp ]
 DEBUG | Loaded [ future_dark.bmp ]
 DEBUG | Clearing out emitters
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ doorClose ] failed to play
 DEBUG | Put new emitter request into queue - bullet [ 0 ]
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorClose ] failed to play
 ERROR | Sample [ doorOpen ] failed to play
 ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-ERROR | Sample [ doorClose ] failed to play
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ disrupter ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
 DEBUG | Put new emitter request into queue - bullet [ 1 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 1 ]
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
 DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
 DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-ERROR | Attempting to remove invalid bullet index
-
-ERROR | Sample [ disrupter ] failed to play
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-ERROR | Sample [ laser ] failed to play
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
 DEBUG | Put new emitter request into queue - bullet [ 0 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
 DEBUG | Put new emitter request into queue - bullet [ 1 ]
 DEBUG | Removing bullet emitter - [ 1 ]
 DEBUG | Adding new emitter - type [ 2 ]
@@ -689,117 +486,376 @@ DEBUG | Put new emitter request into queue - bullet [ 1 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ doorOpen ] failed to play
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
+DEBUG | Done initEmitter - bullet [ 3 ]
 DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
 DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Attempting to remove invalid bullet index
-
-ERROR | Sample [ disrupter ] failed to play
-ERROR | Sample [ damage ] failed to play
 DEBUG | Adding new emitter - type [ 2 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
 ERROR | Sample [ doorOpen ] failed to play
 DEBUG | Put new emitter request into queue - bullet [ 0 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+ERROR | Sample [ doorOpen ] failed to play
 DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 1 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
 DEBUG | Removing bullet emitter - [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
 DEBUG | Removing bullet emitter - [ 1 ]
 ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ doorOpen ] failed to play
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ laser ] failed to play
+ERROR | Sample [ doorClose ] failed to play
 DEBUG | Adding new emitter - type [ 2 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+ERROR | Sample [ damage ] failed to play
 ERROR | Sample [ doorClose ] failed to play
 DEBUG | Put new emitter request into queue - bullet [ 0 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
 DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+ERROR | Sample [ doorClose ] failed to play
 DEBUG | Adding new emitter - type [ 2 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 1 ]
 ERROR | Sample [ doorClose ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+ERROR | Sample [ laser ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
 DEBUG | Put new emitter request into queue - bullet [ 0 ]
 DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ -1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ explode2 ] failed to play
+DEBUG | Adding new emitter - type [ 0 ]
+DEBUG | Done initEmitter - bullet [ -1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+ERROR | Sample [ doorOpen ] failed to play
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+ERROR | Sample [ doorClose ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ laser ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Error: Reached invalid end of function (ai_findNearestTile).
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
 DEBUG | Put new emitter request into queue - bullet [ -1 ]
 DEBUG | Removing bullet emitter - [ 1 ]
 DEBUG | Removing bullet emitter - [ 1 ]
-ERROR | Sample [ explode2 ] failed to play
 DEBUG | Adding new emitter - type [ 0 ]
 DEBUG | Done initEmitter - bullet [ -1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
 ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
 DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 1 ]
-ERROR | Sample [ doorClose ] failed to play
 ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+ERROR | Sample [ doorOpen ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
 DEBUG | Removing bullet emitter - [ 1 ]
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorClose ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-ERROR | Sample [ doorOpen ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
 DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+ERROR | Sample [ doorClose ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
 DEBUG | Removing bullet emitter - [ 0 ]
 DEBUG | Removing bullet emitter - [ 0 ]
 ERROR | Sample [ damage ] failed to play
@@ -807,14 +863,14 @@ DEBUG | Put new emitter request into queue - bullet [ 0 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-DEBUG | Removing bullet emitter - [ 0 ]
-ERROR | Sample [ damage ] failed to play
-DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
 DEBUG | Adding new emitter - type [ 1 ]
-DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
 DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
 DEBUG | Done initEmitter - bullet [ 1 ]
 DEBUG | Removing bullet emitter - [ 0 ]
 DEBUG | Removing bullet emitter - [ 0 ]
@@ -823,16 +879,240 @@ DEBUG | Put new emitter request into queue - bullet [ 0 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ -1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 0 ]
+DEBUG | Done initEmitter - bullet [ -1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
 DEBUG | Put new emitter request into queue - bullet [ -1 ]
 DEBUG | Removing bullet emitter - [ 1 ]
 DEBUG | Removing bullet emitter - [ 1 ]
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
 ERROR | Sample [ explode2 ] failed to play
 DEBUG | Adding new emitter - type [ 0 ]
 DEBUG | Done initEmitter - bullet [ -1 ]
 DEBUG | Put new emitter request into queue - bullet [ 1 ]
-DEBUG | Removing bullet emitter - [ 0 ]
 ERROR | Sample [ laser ] failed to play
 DEBUG | Adding new emitter - type [ 1 ]
 DEBUG | Done initEmitter - bullet [ 1 ]
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+ERROR | Sample [ damage ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
 DEBUG | Removing bullet emitter - [ 1 ]
-ERROR | Sample [ doorClose ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+ERROR | Sample [ damage ] failed to play
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+ERROR | Sample [ doorOpen ] failed to play
+ERROR | Sample [ damage ] failed to play
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+ERROR | Sample [ laser ] failed to play
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 3 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 3 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 2 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 1 ]
+DEBUG | Adding new emitter - type [ 2 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+DEBUG | Removing bullet emitter - [ 3 ]
+ERROR | Error: Reached invalid end of function (ai_findNearestTile).
+DEBUG | Put new emitter request into queue - bullet [ 1 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 1 ]
+DEBUG | Put new emitter request into queue - bullet [ 2 ]
+DEBUG | Put new emitter request into queue - bullet [ -1 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Removing bullet emitter - [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 2 ]
+DEBUG | Adding new emitter - type [ 0 ]
+DEBUG | Done initEmitter - bullet [ -1 ]
+DEBUG | Put new emitter request into queue - bullet [ 0 ]
+DEBUG | Adding new emitter - type [ 1 ]
+DEBUG | Done initEmitter - bullet [ 0 ]

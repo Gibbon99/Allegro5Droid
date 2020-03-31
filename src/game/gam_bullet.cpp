@@ -8,6 +8,7 @@
 #include <hdr/system/sys_audio.h>
 #include <hdr/system/sys_eventsEngine.h>
 #include <hdr/game/gam_droids.h>
+#include <hdr/system/sys_shutdown.h>
 #include "hdr/game/gam_bullet.h"
 
 std::vector<__bulletObject> bullets;
@@ -151,6 +152,14 @@ auto bul_setupNewBullet (int bulletSourceIndex, int arrayIndex) -> __bulletObjec
 		tempBullet.worldPos.y = playerDroid.worldPos.y;
 		tempBullet.velocity   = playerDroid.velocity;
 
+		if ((tempBullet.velocity.x == 0.0f) &&
+				(tempBullet.velocity.y == 0.0))
+		{
+			printf("\nERROR: Attempted to create bullet with no velocity. Ignoring.\n");
+			tempBullet.type = -1;
+			return tempBullet;
+		}
+
 		tempPos = playerDroid.velocity;
 		tempPos.Normalize ();
 		tempPos.operator*= (12.0f);
@@ -279,13 +288,15 @@ auto bul_setupNewBullet (int bulletSourceIndex, int arrayIndex) -> __bulletObjec
 void bul_createNewBullet (int bulletSourceIndex)
 //---------------------------------------------------------------------------------------------------------------
 {
-	__bulletObject tempBullet;
+//	auto tempBullet;
 
 	for (int i = 0; i != bullets.size (); i++)
 	{
 		if (!bullets.at (i).inUse)
 		{
-			bullets.at (i) = bul_setupNewBullet (bulletSourceIndex, i);
+			auto tempBullet = bul_setupNewBullet (bulletSourceIndex, i);
+			if (tempBullet.type != -1)
+				bullets.at (i) = tempBullet;
 			return;
 		}
 	}

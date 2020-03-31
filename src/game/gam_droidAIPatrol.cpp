@@ -276,7 +276,6 @@ void ai_handleDroidCollision (int indexDroidA, int indexDroidB)
 //-----------------------------------------------------------------------------
 {
 	shipLevel.at (lvl_getCurrentLevelName ()).droid[indexDroidA].collidedWith = indexDroidB;
-
 	shipLevel.at (lvl_getCurrentLevelName ()).droid[indexDroidB].collidedWith = indexDroidA;
 
 	shipLevel.at (lvl_getCurrentLevelName ()).droid[indexDroidA].collisionCount++;

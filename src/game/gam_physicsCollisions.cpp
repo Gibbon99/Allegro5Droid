@@ -231,7 +231,6 @@ void contactListener::BeginContact (b2Contact *contact)
 				if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
 					{
 						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_B->dataValue, bodyUserData_A->dataValue, {0, 0});
-						gam_addPhysicAction (PHYSIC_EVENT_TYPE_DROID, PHYSIC_DAMAGE_BUMP, -1, bodyUserData_A->dataValue, bodyUserData_B->dataValue, {0, 0});
 					}
 			break;
 
