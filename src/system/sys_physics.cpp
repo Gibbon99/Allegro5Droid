@@ -200,12 +200,12 @@ void sys_setupPlayerPhysics ()
 	playerDroid.shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
 	playerDroid.shape.m_p.Set (0, 0);
 
-	playerDroid.fixtureDef.shape       = &playerDroid.shape;
-	playerDroid.fixtureDef.density     = 1.0f;
-	playerDroid.fixtureDef.friction    = playerFriction;
-	playerDroid.fixtureDef.restitution = 1.0f;
+	playerDroid.fixtureDef.shape               = &playerDroid.shape;
+	playerDroid.fixtureDef.density             = 1.0f;
+	playerDroid.fixtureDef.friction            = playerFriction;
+	playerDroid.fixtureDef.restitution         = 1.0f;
 	playerDroid.fixtureDef.filter.categoryBits = PHYSIC_TYPE_PLAYER;
-	playerDroid.fixtureDef.filter.maskBits = PHYSIC_TYPE_WALL | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED | PHYSIC_TYPE_ENEMY;
+	playerDroid.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_DOOR_CLOSED | PHYSIC_TYPE_ENEMY;
 	playerDroid.body->CreateFixture (&playerDroid.fixtureDef);
 
 	playerDroid.velocity.x = 0.0f;
@@ -242,7 +242,7 @@ bool sys_setupPhysicsEngine ()
 void sys_freePhysicsEngine ()
 //----------------------------------------------------------------------------------------------------------------------
 {
-	gam_clearHealing();
+	gam_clearHealing ();
 	gam_clearLifts ();
 	sys_clearSolidWalls ();
 	sys_clearDroids ();
@@ -303,15 +303,16 @@ void sys_setupSolidWalls (const std::string levelName)
 		tempWall.bodyDef.position.Set (0, 0);
 		tempWall.body = physicsWorld->CreateBody (&tempWall.bodyDef);
 
-		tempWall.userData            = new _userData;
-		tempWall.userData->userType  = PHYSIC_TYPE_WALL;
-		tempWall.userData->dataValue = i;
+		tempWall.userData                 = new _userData;
+		tempWall.userData->userType       = PHYSIC_TYPE_WALL;
+		tempWall.userData->dataValue      = -1;
+		tempWall.userData->wallIndexValue = i;
 		tempWall.body->SetUserData (tempWall.userData);
 
 		tempWall.shape.Set (wallStart, wallFinish);
-		tempWall.fixture.shape = &tempWall.shape;
+		tempWall.fixture.shape               = &tempWall.shape;
 		tempWall.fixture.filter.categoryBits = PHYSIC_TYPE_WALL;
-		tempWall.fixture.filter.maskBits = PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_PARTICLE;
+		tempWall.fixture.filter.maskBits     = PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_PARTICLE;
 		tempWall.body->CreateFixture (&tempWall.fixture);
 
 		solidWalls.push_back (tempWall);
@@ -349,7 +350,7 @@ void sys_clearDroids ()
 //-------------------------------------------------------------------
 //
 // Create the physics bodies and shapes for the enemy droids
-void sys_setupEnemyPhysics (const std::string levelName)
+void sys_setupEnemyPhysics (const std::string &levelName)
 //-------------------------------------------------------------------
 {
 	_physicObject tempDroid;
@@ -375,20 +376,24 @@ void sys_setupEnemyPhysics (const std::string levelName)
 			tempDroid.bodyDef.angle = 0;
 			tempDroid.body          = physicsWorld->CreateBody (&tempDroid.bodyDef);
 
-			tempDroid.userData            = new _userData;
-			tempDroid.userData->userType  = PHYSIC_TYPE_ENEMY;
-			tempDroid.userData->dataValue = i;
+			tempDroid.userData                 = new _userData;
+			tempDroid.userData->userType       = PHYSIC_TYPE_ENEMY;
+			tempDroid.userData->dataValue      = i;
+			tempDroid.userData->wallIndexValue = -1;
+
+			printf ("Setting droid dataValue to [ %i ]\n", tempDroid.userData->dataValue);
+
 			tempDroid.body->SetUserData (tempDroid.userData);
 
 			tempDroid.shape.m_radius = (float) (SPRITE_SIZE * 0.5f) / pixelsPerMeter;
 			tempDroid.shape.m_p.Set (0, 0);
 
-			tempDroid.fixtureDef.shape       = &tempDroid.shape;
-			tempDroid.fixtureDef.density     = 1;
-			tempDroid.fixtureDef.friction    = 0.3f;
-			tempDroid.fixtureDef.restitution = 1.0f;
+			tempDroid.fixtureDef.shape               = &tempDroid.shape;
+			tempDroid.fixtureDef.density             = 1;
+			tempDroid.fixtureDef.friction            = 0.3f;
+			tempDroid.fixtureDef.restitution         = 1.0f;
 			tempDroid.fixtureDef.filter.categoryBits = PHYSIC_TYPE_ENEMY;
-			tempDroid.fixtureDef.filter.maskBits = PHYSIC_TYPE_WALL | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
+			tempDroid.fixtureDef.filter.maskBits     = PHYSIC_TYPE_WALL | PHYSIC_TYPE_BULLET_PLAYER | PHYSIC_TYPE_BULLET_ENEMY | PHYSIC_TYPE_PLAYER | PHYSIC_TYPE_ENEMY | PHYSIC_TYPE_DOOR_CLOSED;
 			tempDroid.body->CreateFixture (&tempDroid.fixtureDef);
 
 			droidPhysics.push_back (tempDroid);

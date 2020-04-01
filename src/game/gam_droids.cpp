@@ -157,7 +157,7 @@ void gam_initDroidValues (const std::string levelName)
 		tempDroid.acceleration      = dataBaseEntry[0].accelerate + dataBaseEntry[tempDroid.droidType].accelerate;      // Work off 011 acceleration
 		tempDroid.maxSpeed          = dataBaseEntry[0].maxSpeed + dataBaseEntry[tempDroid.droidType].maxSpeed;       // Work off 001 max speed
 
-		tempDroid.worldPos          = shipLevel.at (levelName).wayPoints[tempDroid.wayPointIndex];    // In pixels
+		tempDroid.worldPos = shipLevel.at (levelName).wayPoints[tempDroid.wayPointIndex];    // In pixels
 
 		tempDroid.previousWorldPos = tempDroid.worldPos;
 		tempDroid.middlePosition   = shipLevel.at (levelName).wayPoints[i];        // TODO - do maths for this
@@ -466,20 +466,21 @@ void gam_processIgnoreCollisions (const std::string &whichLevel, int whichDroid)
 	// Process the time to ignore collisions for
 	if (shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisions)
 	{
-		shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisionsCounter -= 1.0f * (1.0f / 30.0f);
-		if (shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisionsCounter < 0)
+		shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisionsCounter -= 1.0f; // * (1.0f / 30.0f);
+
+		if (shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisionsCounter < 0.0f)
 		{
 			shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisionsCounter = 0;
 			shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisions        = false;
-
-			printf ("Droid [ %i ] has finised ignoring collisions\n", whichDroid);
-
+			shipLevel.at (whichLevel).droid[whichDroid].collisionCount          = 0;
 			return;
 		}
+		return;
 	}
+
 	//
 	// If there have been a number of collisions then start to ignore them
-	if (shipLevel.at (whichLevel).droid[whichDroid].collisionCount > 3) // TODO define value
+	if (shipLevel.at (whichLevel).droid[whichDroid].collisionCount > (rand() % 5) + 1)      // Never 0
 	{
 		shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisions        = true;
 		shipLevel.at (whichLevel).droid[whichDroid].ignoreCollisionsCounter = IGNORE_COLLISION_TIME;

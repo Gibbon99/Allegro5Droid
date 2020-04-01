@@ -22,6 +22,7 @@ typedef struct
 {
 	int userType;
 	int dataValue;
+	int wallIndexValue;
 } _userData;
 
 typedef struct _physicObject
@@ -92,7 +93,7 @@ void sys_setupPlayerPhysics ();
 void sys_setPlayerPhysicsPosition (b2Vec2 newPosition);
 
 // Create the physics bodies and shapes for the enemy droids
-void sys_setupEnemyPhysics (const std::string levelName);
+void sys_setupEnemyPhysics (const std::string& levelName);
 
 // Update the droids information from physics properties
 void sys_updateDroidPosition (const std::string levelName, int whichDroid);

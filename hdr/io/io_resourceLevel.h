@@ -184,7 +184,7 @@ int lvl_getDeckNumber (const std::string levelName);
 std::string lvl_getCurrentLevelName ();
 
 // Set the new level name - check it matches against the existing level names
-void lvl_setCurrentLevelName (std::string newName);
+void lvl_setCurrentLevelName (const std::string& newName);
 
 // Change to a new level
 void lvl_changeToLevel (const std::string &newLevelName, int whichLift);

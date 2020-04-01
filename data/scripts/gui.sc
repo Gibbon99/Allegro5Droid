@@ -1206,6 +1206,9 @@ void as_setupTerminalShipviewScreen ()
 	as_guiSetObjectFunction (GUI_OBJECT_BUTTON, "shipviewCancelButton", "as_guiHandleTerminalAction");
 	as_guiSetReadyState (GUI_OBJECT_BUTTON, "shipviewCancelButton", true);
 	as_guiSetObjectFontName (GUI_OBJECT_BUTTON, "shipviewCancelButton", "gui");
+
+	sideViewTextPosX = 5.0f;
+	sideViewTextPosY = logicalHeight - buttonStartY;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

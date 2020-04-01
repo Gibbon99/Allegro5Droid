@@ -271,6 +271,9 @@ void gam_processActionKey ()
 		{
 			if (playerDroid.weaponCanFire)
 			{
+				if ((playerDroid.velocity.x == 0.0f) && (playerDroid.velocity.y == 0.0f))       // Don't create bullet with no velocity
+					return;
+
 				gam_addPhysicAction (PHYSIC_EVENT_TYPE_NEW_BULLET, 0, 0, 0, -1, {0, 0});
 				keyBinding[gameAction].currentlyPressed = false;
 				playerDroid.weaponCanFire               = false;
@@ -287,7 +290,6 @@ void gam_processActionKey ()
 void gam_destroyPlayer ()
 //---------------------------------------------------------------------------------------------------------------
 {
-
 	printf ("Player is dead\n");
 
 }

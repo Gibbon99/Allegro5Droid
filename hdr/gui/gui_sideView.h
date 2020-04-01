@@ -45,9 +45,10 @@ extern int                 currentTunnel;
 extern int                 currentDeckNumber;
 extern float               sideviewDrawScaleScript;
 extern _sideviewBasicLevel sideviewLevels[MAX_LEVELS];
+extern float               sideViewTextPosX, sideViewTextPosY;
 
 // load the sideview data from the external file
-bool gui_loadSideViewData (const std::string sideviewFileName);
+bool gui_loadSideViewData (const std::string& sideviewFileName);
 
 // Create a color into the sideview array
 void gui_createSideViewColor (int index, int red, int green, int blue, int alpha);

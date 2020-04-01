@@ -19,13 +19,20 @@ DONE - Doors not opening fast enough
 DONE - DO GUI Popup box for restart and 'Sure to exit'
 DONE - See through open doors correctly
 DONE - Bullets can spawn with no speed from player.
+DONE - Collisions for droids to ignore ( check data from userdata )
+DONE - Console Sideview - highlite current deck
+DONE - Display current deckname on sideview
 
 Do GUI options
-Collisions for droids to ignore
 Particles still around on exploding droids sometimes
 transferRender - stop drawing on -1 for numDroidTokens
 Highscore Table
 End of game screen - static and image
+Transfer to new droid
+Stalemate for transfer
+Check score value in droid ini file
+Change alert level based on score backlog
+Check font size in terminal GUI buttons ( too small )
 
 Change working directory
 --------------------------

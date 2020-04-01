@@ -367,6 +367,24 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 	bodyUserData_A = static_cast<_userData *>(contact->GetFixtureA ()->GetBody ()->GetUserData ());
 	bodyUserData_B = static_cast<_userData *>(contact->GetFixtureB ()->GetBody ()->GetUserData ());
 
+	if (bodyUserData_A->dataValue > shipLevel.at (lvl_getCurrentLevelName ()).numDroids)
+	{
+		if (bodyUserData_A->userType == PHYSIC_TYPE_ENEMY)
+		{
+			printf ("ERROR: Value [ %i ] more than number of Droids on level[ %i ]\n", bodyUserData_A->dataValue, shipLevel.at (lvl_getCurrentLevelName ()).numDroids);
+			return;
+		}
+	}
+
+	if (bodyUserData_B->dataValue > shipLevel.at (lvl_getCurrentLevelName ()).numDroids)
+	{
+		if (bodyUserData_B->userType == PHYSIC_TYPE_ENEMY)
+		{
+			printf ("ERROR: Value [ %i ] more than number of Droids on level[ %i ]\n", bodyUserData_B->dataValue, shipLevel.at (lvl_getCurrentLevelName ()).numDroids);
+			return;
+		}
+	}
+
 	switch (bodyUserData_A->userType)
 		{
 			case PHYSIC_TYPE_PLAYER:
@@ -437,7 +455,7 @@ void contactListener::PreSolve (b2Contact *contact, const b2Manifold *manifold)
 				{
 					contact->SetEnabled (false);
 
-//					printf("Ignoring collision for [ %i %i ]\n", bodyUserData_A->dataValue, bodyUserData_B->dataValue);
+					printf("Ignoring collision for [ %i %i ]\n", bodyUserData_A->dataValue, bodyUserData_B->dataValue);
 
 					return;
 				}

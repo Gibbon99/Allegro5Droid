@@ -170,9 +170,6 @@ int ai_moveDroidToWaypoint (int whichDroid, const std::string levelName)
 	b2Vec2 destinationCoordsInMeters;
 	b2Vec2 worldPositionInMeters;
 
-	if (0 == whichDroid)
-		printf("Droid maxSpeed [ %3.3f ] Acceleration [ %3.3f ] currentSpeed [ %3.3f ]\n", shipLevel.at (levelName).droid[0].maxSpeed, shipLevel.at (levelName).droid[0].acceleration, shipLevel.at (levelName).droid[0].currentSpeed);
-
 	destinationCoordsInMeters = shipLevel.at (levelName).droid[whichDroid].destinationCoords;
 	destinationCoordsInMeters.x /= pixelsPerMeter;
 	destinationCoordsInMeters.y /= pixelsPerMeter;
@@ -248,24 +245,34 @@ int ai_moveDroidToWaypoint (int whichDroid, const std::string levelName)
 int ai_canReverseDirection (int whichDroid, const std::string &levelName)
 //-----------------------------------------------------------------------------
 {
-	if (shipLevel.at (levelName).droid[whichDroid].droidType < shipLevel.at (levelName).droid[shipLevel.at (levelName).droid[whichDroid].collidedWith].droidType)
+	int droidIndexToReverse = 0;
+
+	if (shipLevel.at(levelName).droid[droidIndexToReverse].ignoreCollisions == false)
+		return AI_RESULT_SUCCESS;
+
+	if (shipLevel.at (levelName).droid[whichDroid].maxSpeed < shipLevel.at (levelName).droid[shipLevel.at (levelName).droid[whichDroid].collidedWith].maxSpeed)
+		droidIndexToReverse = shipLevel.at (levelName).droid[whichDroid].collidedWith;
+	else
+		droidIndexToReverse = whichDroid;
+
+	switch (shipLevel.at (levelName).droid[droidIndexToReverse].wayPointDirection)
 	{
+		case WAYPOINT_DOWN:
+			shipLevel.at (levelName).droid[droidIndexToReverse].wayPointDirection = WAYPOINT_UP;
+			break;
 
-		printf("Droid [ %i ] is reversing direction\n", whichDroid);
-
-		switch (shipLevel.at (levelName).droid[whichDroid].wayPointDirection)
-		{
-			case WAYPOINT_DOWN:
-				shipLevel.at (levelName).droid[whichDroid].wayPointDirection = WAYPOINT_UP;
-				break;
-
-			case WAYPOINT_UP:
-				shipLevel.at (levelName).droid[whichDroid].wayPointDirection = WAYPOINT_DOWN;
-				break;
-		}
-
-		ai_getNextWaypoint (whichDroid, levelName);
+		case WAYPOINT_UP:
+			shipLevel.at (levelName).droid[droidIndexToReverse].wayPointDirection = WAYPOINT_DOWN;
+			break;
 	}
+
+	ai_getNextWaypoint (droidIndexToReverse, levelName);
+
+	shipLevel.at(levelName).droid[droidIndexToReverse].ignoreCollisions = false;
+	shipLevel.at(levelName).droid[droidIndexToReverse].collidedWith = -1;
+	shipLevel.at(levelName).droid[droidIndexToReverse].collisionCount = 0;
+	shipLevel.at(levelName).droid[droidIndexToReverse].ignoreCollisionsCounter = 0;
+
 	return AI_RESULT_SUCCESS;
 }
 
@@ -280,6 +287,4 @@ void ai_handleDroidCollision (int indexDroidA, int indexDroidB)
 
 	shipLevel.at (lvl_getCurrentLevelName ()).droid[indexDroidA].collisionCount++;
 	shipLevel.at (lvl_getCurrentLevelName ()).droid[indexDroidB].collisionCount++;
-
-//	printf ("Droid [ %i ] has set collided flag to true\n", indexDroidA);
 }

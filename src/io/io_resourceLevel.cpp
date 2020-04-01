@@ -23,10 +23,10 @@ b2ChainShape                                  solidWallChain;
 //---------------------------------------------------------
 //
 // Set the new level name - check it matches against the existing level names
-void lvl_setCurrentLevelName (std::string newName)
+void lvl_setCurrentLevelName (const std::string& newName)
 //---------------------------------------------------------
 {
-	for (auto shipItr : shipLevel)
+	for (const auto& shipItr : shipLevel)
 		{
 			if (newName == shipItr.first)
 				{

@@ -2,21 +2,23 @@
 #include <hdr/io/io_logFile.h>
 #include <hdr/io/io_resourceLevel.h>
 #include <hdr/game/gam_game.h>
+#include <hdr/system/sys_font.h>
 #include "hdr/gui/gui_sideView.h"
 
 _basicTunnel        tunnel[NUM_OF_TUNNELS];
 _sideviewBasicLevel sideviewLevels[MAX_LEVELS];
 _sideviewColors     sideviewColors[SIDEVIEW_NUM_COLORS];
-int                 drawOffsetX       = 0;
+float               drawOffsetX       = 0;
 float               sideviewDrawScale;      // From Script
 int                 currentDeckNumber = -1;
 int                 currentTunnel     = 0;
 float               sideviewDrawScaleScript;
+float               sideViewTextPosX, sideViewTextPosY;
 
 // ----------------------------------------------------------------------------
 //
 // Wrap drawing a rectangle into our own function
-void gui_sideviewDrawRect (int x1, int y1, int x2, int y2, PARA_COLOR whichColor)
+void gui_sideviewDrawRect (float x1, float y1, float x2, float y2, PARA_COLOR whichColor)
 // ----------------------------------------------------------------------------
 {
 	al_draw_filled_rounded_rectangle (x1 - drawOffsetX, y1, x2 - drawOffsetX, y2, 1, 1, al_map_rgba (whichColor.r, whichColor.g, whichColor.b, whichColor.a));
@@ -31,9 +33,9 @@ void gui_createSideViewColor (int index, int red, int green, int blue, int alpha
 //-----------------------------------------------------------------------------
 {
 	if ((index < 0) || (index > SIDEVIEW_NUM_COLORS))
-		{
-			return;
-		}
+	{
+		return;
+	}
 
 	sideviewColors[index].color.r = red;
 	sideviewColors[index].color.g = green;
@@ -121,7 +123,7 @@ void gui_setupTunnels ()
 // ----------------------------------------------------------------------------
 //
 // load the sideview data from the external file
-bool gui_loadSideViewData (const std::string sideviewFileName)
+bool gui_loadSideViewData (const std::string &sideviewFileName)
 // ----------------------------------------------------------------------------
 {
 	int           fileLength;
@@ -141,67 +143,67 @@ bool gui_loadSideViewData (const std::string sideviewFileName)
 
 	fileLength = (int) io_getFileSize (sideviewFileName.c_str ());
 	if (fileLength < 0)
-		{
-			log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", sideviewFileName.c_str ()));
-			return false;
-		}
+	{
+		log_logMessage (LOG_LEVEL_INFO, sys_getString ("Fatal error getting level file size [ %s ].", sideviewFileName.c_str ()));
+		return false;
+	}
 
 	fileBuffer = (char *) malloc (sizeof (char) * fileLength);
 	if (nullptr == fileBuffer)
-		{
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation error when loading level file [ %s ].", sideviewFileName.c_str ()));
-		}
+	{
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation error when loading level file [ %s ].", sideviewFileName.c_str ()));
+	}
 
 	if (-1 == io_getFileIntoMemory (sideviewFileName.c_str (), fileBuffer))
-		{
-			free (fileBuffer);
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str ()));
-		}
+	{
+		free (fileBuffer);
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Fatal memory allocation when loading file [ %s ].", sideviewFileName.c_str ()));
+	}
 
 	fp = PARA_openMemFile (fileBuffer, fileLength);
 	if (nullptr == fp)
-		{
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str ()));
-		}
+	{
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Mapping memory to file failed for file [ %s ]", sideviewFileName.c_str ()));
+	}
 
 	PARA_readFile (fp, &levelCount, sizeof (levelCount));
 	numberLevels = levelCount[0];
 
 	if (MAX_LEVELS != numberLevels)
-		{
-			log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Bad format or date when reading file [ %s ]", sideviewFileName.c_str ()));
-		}
+	{
+		log_logMessage (LOG_LEVEL_EXIT, sys_getString ("Bad format or date when reading file [ %s ]", sideviewFileName.c_str ()));
+	}
 
 	for (count = 0; count != numberLevels; count++)
+	{
+		float temp;
+
+		PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
+		temp = (float) buf[0] * sideviewDrawScale;
+		sideviewLevels[count].x1 = temp;
+
+		if (sideviewLevels[count].x1 < smallX)
 		{
-			float temp;
-
-			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x1));
-			temp = (float) buf[0] * sideviewDrawScale;
-			sideviewLevels[count].x1 = temp;
-
-			if (sideviewLevels[count].x1 < smallX)
-				{
-					smallX = sideviewLevels[count].x1;
-				}
-
-			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
-			temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
-			sideviewLevels[count].y1 = temp;
-
-			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
-			temp = (float) buf[0] * sideviewDrawScale;
-			sideviewLevels[count].x2 = temp;
-
-			if (sideviewLevels[count].x2 > largeX)
-				{
-					largeX = sideviewLevels[count].x2;
-				}
-
-			PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
-			temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
-			sideviewLevels[count].y2 = temp;
+			smallX = sideviewLevels[count].x1;
 		}
+
+		PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y1));
+		temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
+		sideviewLevels[count].y1 = temp;
+
+		PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].x2));
+		temp = (float) buf[0] * sideviewDrawScale;
+		sideviewLevels[count].x2 = temp;
+
+		if (sideviewLevels[count].x2 > largeX)
+		{
+			largeX = sideviewLevels[count].x2;
+		}
+
+		PARA_readFile (fp, (void *) &buf, sizeof (sideviewLevels[count].y2));
+		temp = (float) (buf[0] - 100.0f) * sideviewDrawScale;
+		sideviewLevels[count].y2 = temp;
+	}
 	PARA_closeFile (fp);
 
 	free (fileBuffer);
@@ -224,136 +226,126 @@ void gui_drawSideView ()
 	int        count;
 	int        lifts   = 8;
 	int        toLifts = 0;
-	int        x1;
-	int        y1;
+	float      x1;
+	float      y1;
 	PARA_COLOR tempAlert;
 	b2Vec2     textPosition;
 	int        fontLineWidth, fontLineHeight;
 
-//	currentDeckNumber = lvl_getDeckNumber (lvl_getCurrentLevelName ());
-
+	//
+	// Draw hold level
 	count = 0;
 	x1    = sideviewLevels[count].x2;
 	y1    = sideviewLevels[count].y2;
 	gui_sideviewDrawRect (x1, y1, sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 	toLifts++;
 
+	//
+	// Draw all the decks in normal color
 	for (count = 1; count != MAX_LEVELS - lifts; count++)
-		{
-			gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
-			toLifts++;
-		}
+	{
+		gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+		toLifts++;
+	}
 
+	//
+	// Highlite the current deck in use for lift mode
 	if (currentMode == MODE_LIFT_VIEW)
+	{
+		//
+		// highlite current level
+		if (0 == currentDeckNumber)
 		{
-//		currentLevel = tunnel[currentTunnel].current;
-			// highlite current level
-			if (0 == currentDeckNumber)
-				{
-					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
-				}
-			else
-				{
-					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
-				}
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
 		}
-	else
+		else
 		{
-			switch (currentAlertLevel)
-				{
-					case ALERT_GREEN_TILE:
-						tempAlert = al_map_rgba (0, 255, 0, 255);
-					break;
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
+		}
+	}
+	else    // Static view of ship from terminal
+	{
+		currentDeckNumber = lvl_getDeckNumber (lvl_getCurrentLevelName ());
 
-					case ALERT_YELLOW_TILE:
-						tempAlert = al_map_rgba (255, 255, 0, 255);
-					break;
+		switch (currentAlertLevel)
+		{
+			case ALERT_GREEN_TILE:
+				tempAlert.r = 0;
+				tempAlert.g = 255;
+				tempAlert.b = 0;
+				tempAlert.a = 255;
+				break;
 
-					case ALERT_RED_TILE:
-						tempAlert = al_map_rgba (255, 0, 0, 255);
-					break;
+			case ALERT_YELLOW_TILE:
+				tempAlert.r = 255;
+				tempAlert.g = 255;
+				tempAlert.b = 0;
+				tempAlert.a = 255;
+				break;
 
-					default:
-						tempAlert = al_map_rgba (255, 255, 255, 255);
-					break;
-				}
+			case ALERT_RED_TILE:
+				tempAlert.r = 255;
+				tempAlert.g = 0;
+				tempAlert.b = 0;
+				tempAlert.a = 255;
+				break;
 
-			if (0 == currentDeckNumber)
-				{
-					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, tempAlert);
-				}
-			else
-				{
-					gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, tempAlert);
-				}
+			default:
+				tempAlert.r = 255;
+				tempAlert.g = 255;
+				tempAlert.b = 255;
+				tempAlert.a = 255;
+				break;
 		}
 
+		if (0 == currentDeckNumber)
+		{
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, tempAlert);
+		}
+		else
+		{
+			gui_sideviewDrawRect (sideviewLevels[currentDeckNumber].x1, sideviewLevels[currentDeckNumber].y1, sideviewLevels[currentDeckNumber].x2, sideviewLevels[currentDeckNumber].y2, tempAlert);
+		}
+	}
+
+	//
+	// Redraw the level and tunnel that overlap
 	if ((currentTunnel != 3) && (currentTunnel != 6))
+	{
+		count = 13;
+		gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
+	}
+	else
+	{
+		// using tunnel connecting to level 13
+		if (currentDeckNumber != 13)
 		{
 			count = 13;
 			gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
 		}
-	else
-		{
-			// using tunnel connecting to level 13
-			if (currentDeckNumber != 13)
-				{
-					count = 13;
-					gui_sideviewDrawRect (sideviewLevels[count].x1, sideviewLevels[count].y1, sideviewLevels[count].x2, sideviewLevels[count].y2, sideviewColors[SIDEVIEW_SHIP_COLOR].color);
-				}
-		}
+	}
 
+	//
 	// fill in engine part
 	gui_sideviewDrawRect (sideviewLevels[7].x1, sideviewLevels[7].y1, sideviewLevels[7].x2, sideviewLevels[7].y2, sideviewColors[SIDEVIEW_ENGINE_COLOR].color);
 	//
 	// draw the lifts
-	//
 	for (count = 0; count != lifts; count++)
+	{
+		if (currentMode == MODE_LIFT_VIEW)      // Only draw highlighted tunnel in lift view
 		{
+			if (currentTunnel == count) // Draw currentTunnel in use
+				gui_sideviewDrawRect (sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_ACTIVE_LIFT_COLOR].color);
+			else
+				gui_sideviewDrawRect (sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
+		}
+		else
 			gui_sideviewDrawRect (sideviewLevels[count + toLifts].x1, sideviewLevels[count + toLifts].y1, sideviewLevels[count + toLifts].x2, sideviewLevels[count + toLifts].y2, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
-		}
-
-	/*
-	if (currentMode == MODE_LIFT_VIEW)
-	{
-		// highlight the current tunnel
-		gui_sideviewDrawRect(sideviewLevels[21 + currentTunnel].x1, sideviewLevels[21 +
-		                                                                           currentTunnel].y1, sideviewLevels[
-				                     21 + currentTunnel].x2, sideviewLevels[21 +
-		                                                                    currentTunnel].y2, sideviewColors[SIDEVIEW_ACTIVE_LIFT_COLOR].color);
-
-		gui_sideviewDrawRect(20, screenHeight - 85, 30, screenHeight - 65, sideviewColors[SIDEVIEW_ACTIVE_LIFT_COLOR].color);
-		gui_renderText(guiFontName, glm::vec2{33, winHeight - 95}, glm::vec3{
-				sideviewColors[SIDEVIEW_ACTIVE_LIFT_COLOR].color.r, sideviewColors[SIDEVIEW_ACTIVE_LIFT_COLOR].color.g,
-				sideviewColors[SIDEVIEW_ACTIVE_LIFT_COLOR].color.b}, guiSurface, "Active lift");
-
-		gui_sideviewDrawRect(20, winHeight - 55, 30, winHeight - 35, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color);
-		gui_renderText(guiFontName, glm::vec2{33, winHeight - 65}, glm::vec3{
-				sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color.r, sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color.g,
-				sideviewColors[SIDEVIEW_ACTIVE_DECK_COLOR].color.b}, guiSurface, "Current Deck");
-
-		gui_sideviewDrawRect(20, winHeight - 25, 30, winHeight - 5, sideviewColors[SIDEVIEW_LIFT_COLOR].color);
-		gui_renderText(guiFontName, glm::vec2{33, winHeight - 35}, glm::vec3{
-				sideviewColors[SIDEVIEW_LIFT_COLOR].color.r, sideviewColors[SIDEVIEW_LIFT_COLOR].color.g,
-				sideviewColors[SIDEVIEW_LIFT_COLOR].color.b}, guiSurface, "Inactive Lift");
 	}
-	else
-	{
-		textPosition = io_getTextureSize("hud");
-		if (textPosition.y > 0)
-		{
-			string deckLocationString;
 
-			deckLocationString = "Deck [ " + lvl_getCurrentLevelName() + " ]";
+	fnt_setColor_f (1.0f, 1.0f, 1.0f, 1.0f);
+	fnt_setTTF ("gui");
 
-			TTF_SizeText(ttfFonts[gui_getFontIndex(guiFontName)].ttfFont, deckLocationString.c_str(), &fontLineWidth, &fontLineHeight);
-
-			textPosition.x = (winWidth - fontLineWidth) * 0.5f;
-			textPosition.y += fontLineHeight;
-
-			gui_renderText(guiFontName, glm::vec2{textPosition.x, textPosition.y}, glm::vec3{255, 255,
-			                                                                                 255}, guiSurface, deckLocationString);
-		}
-		*/
+	fnt_render (b2Vec2{sideViewTextPosX, sideViewTextPosY}, sys_getString ("Deck [ %s ]", lvl_returnLevelNameFromDeck (currentDeckNumber).c_str()));
 }
 

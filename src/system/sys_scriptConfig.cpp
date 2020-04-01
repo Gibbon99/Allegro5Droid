@@ -188,6 +188,9 @@ void sys_scriptInitVariables ()
 
 	sys_scriptAddHostVariable ("int currentObjectSelectedDialog", &currentObjectSelectedDialog);
 	sys_scriptAddHostVariable ("int currentDialogBox", &currentDialogBox);
+
+	sys_scriptAddHostVariable ("float sideViewTextPosX", &sideViewTextPosX);
+	sys_scriptAddHostVariable ("float sideViewTextPosY", &sideViewTextPosY);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
